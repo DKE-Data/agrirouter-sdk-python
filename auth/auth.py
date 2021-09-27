@@ -1,10 +1,8 @@
 from urllib.parse import urlparse, parse_qs
 
-from auth.exceptions import InvalidEnvironmentSetup
 from auth.parameters import AuthUrlParameter
 from auth.response import AuthResponse
 from environments.environmental_services import EnvironmentalService
-from environments.environments import ProductionEnvironment, QAEnvironment
 
 
 class Authorization(EnvironmentalService):

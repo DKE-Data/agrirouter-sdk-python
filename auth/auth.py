@@ -3,26 +3,16 @@ from urllib.parse import urlparse, parse_qs
 from auth.exceptions import InvalidEnvironmentSetup
 from auth.parameters import AuthUrlParameter
 from auth.response import AuthResponse
+from environments.environmental_services import EnvironmentalService
 from environments.environments import ProductionEnvironment, QAEnvironment
 
 
-class Authorization:
+class Authorization(EnvironmentalService):
 
     SIGNATURE_KEY = "signature"
     STATE_KEY = "state"
     TOKEN_KEY = "token"
     ERROR_KEY = "error"
-
-    def __init__(self, env):
-        self._set_env(env)
-
-    def _set_env(self, env) -> None:
-        if env == "QA":
-            self._environment = QAEnvironment()
-        elif env == "Production":
-            self._environment = ProductionEnvironment()
-        else:
-            raise InvalidEnvironmentSetup(env=env)
 
     def get_auth_request_url(self, parameters: AuthUrlParameter) -> str:
         auth_parameters = parameters.get_parameters()

@@ -35,10 +35,10 @@ class SoftwareOnboardingParameter(BaseOnboardingParameter):
         self.application_id = application_id
         self.content_type = content_type
         self.certification_version_id = certification_version_id
-        self.gateway_id = gateway_id
+        self.gateway_id = str(gateway_id)
         self.certificate_type = certificate_type
-        self.utc_timestamp = utc_timestamp
-        self.time_zone = time_zone
+        self.utc_timestamp = str(utc_timestamp)
+        self.time_zone = str(time_zone)
         self.reg_code = reg_code
 
     def get_header_params(self):
@@ -50,7 +50,7 @@ class SoftwareOnboardingParameter(BaseOnboardingParameter):
 
     def get_body_params(self):
         return {
-            "id": self.id_,
+            "id_": self.id_,
             "application_id": self.application_id,
             "certification_version_id": self.certification_version_id,
             "gateway_id": self.gateway_id,
@@ -87,7 +87,7 @@ class CUOnboardingParameter(BaseOnboardingParameter):
 
     def get_body_params(self):
         return {
-            "id": self.id_,
+            "id_": self.id_,
             "application_id": self.application_id,
             "certification_version_id": self.certification_version_id,
             "gateway_id": self.gateway_id,

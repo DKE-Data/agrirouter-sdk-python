@@ -2,12 +2,10 @@ import requests
 
 from environments.environmental_services import EnvironmentalService
 from onboarding.headers import SoftwareOnboardingHeader, CUOnboardingHeader
-from onboarding.parameters import SoftwareOnboardingParameter, BaseOnboardingParameter, RevokingParameter, \
-    CUOnboardingParameter
+from onboarding.parameters import SoftwareOnboardingParameter, BaseOnboardingParameter, CUOnboardingParameter
 from onboarding.request import SoftwareOnboardingRequest, BaseOnboardingRequest, CUOnboardingRequest
 from onboarding.request_body import SoftwareOnboardingBody, CUOnboardingBody
-from onboarding.response import SoftwareVerifyOnboardingResponse, SoftwareOnboardingResponse, RevokingResponse, \
-    CUOnboardingResponse
+from onboarding.response import SoftwareVerifyOnboardingResponse, SoftwareOnboardingResponse, CUOnboardingResponse
 
 
 class SoftwareOnboarding(EnvironmentalService):

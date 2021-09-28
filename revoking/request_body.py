@@ -1,3 +1,6 @@
+import json
+
+
 class RevokingBody:
     def __init__(self,
                  account_id,
@@ -28,3 +31,9 @@ class RevokingBody:
             "UTCTimestamp": utc_timestamp,
             "timeZone": time_zone,
         }
+
+    def json(self, new_lines: bool = True) -> str:
+        result = json.dumps(self.get_parameters(), indent="")
+        if not new_lines:
+            return result.replace("\n", "")
+        return result

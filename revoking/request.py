@@ -1,3 +1,4 @@
+from onboarding.signature import create_signature
 from revoking.headers import RevokingHeader
 from revoking.request_body import RevokingBody
 
@@ -17,12 +18,8 @@ class RevokingRequest:
     def get_header(self):
         return self.header.get_header()
 
-    def sign(self):
-        """
-        TODO: add here create_signature
-        :return:
-        """
-        signature = ...     # create signature
+    def sign(self, private_key):
+        signature = create_signature(self.body.json(new_lines=False), private_key)
         self.header.sign(signature)
 
     @property

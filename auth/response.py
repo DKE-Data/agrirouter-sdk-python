@@ -1,6 +1,11 @@
 import base64
 import json
 from typing import Union
+from urllib.parse import unquote
+
+from cryptography.exceptions import InvalidSignature
+
+from onboarding.signature import verify_signature
 
 
 class AuthResponse:
@@ -19,7 +24,7 @@ class AuthResponse:
         self.is_successful = not bool(self._error)
         self.is_valid = False
 
-    def verify(self) -> None:
+    def verify(self, public_key) -> None:
         """
         Validates signature according to docs:
         https://docs.my-agrirouter.com/agrirouter-interface-documentation/latest/integration/authorization.html#analyse-result
@@ -29,17 +34,23 @@ class AuthResponse:
 
         :return:
         """
-        # TODO: implement validation of response according to docs:
-        # https://docs.my-agrirouter.com/agrirouter-interface-documentation/latest/integration/authorization.html#analyse-result
+        encoded_data = self._state + self._token
+        unquoted_signature = unquote(self._signature)
+        encoded_signature = base64.b64decode(unquoted_signature.encode("utf-8"))
+        try:
+            verify_signature(encoded_data, encoded_signature, public_key)
+        except InvalidSignature:
+            print("Response is invalid: invalid signature.")
+            self.is_valid = False
 
         self.is_valid = True
 
     @staticmethod
     def decode_token(token: Union[str, bytes]) -> dict:
         if type(token) == str:
-            token = token.encode("ASCII")
+            token = token.encode("utf-8")
         base_64_decoded_token = base64.b64decode(token)
-        decoded_token = base_64_decoded_token.decode("ASCII")
+        decoded_token = base_64_decoded_token.decode("utf-8")
         return json.loads(decoded_token)
 
     def get_auth_result(self) -> dict:

@@ -1,6 +1,11 @@
 import requests
 
 from environments.environmental_services import EnvironmentalService
+from revoking.headers import RevokingHeader
+from revoking.parameters import RevokingParameter
+from revoking.request import RevokingRequest
+from revoking.request_body import RevokingBody
+from revoking.response import RevokingResponse
 
 
 class Revoking(EnvironmentalService):
@@ -10,7 +15,6 @@ class Revoking(EnvironmentalService):
         request_body = RevokingBody(**body_params)
 
         header_params = params.get_header_params()
-        header_params["request_body"] = request_body.json(new_lines=False)
         request_header = RevokingHeader(**header_params)
 
         return RevokingRequest(header=request_header, body=request_body, url=url)

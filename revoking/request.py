@@ -1,4 +1,8 @@
-class BaseOnboardingRequest:
+from revoking.headers import RevokingHeader
+from revoking.request_body import RevokingBody
+
+
+class RevokingRequest:
     def __init__(self, header: RevokingHeader, body: RevokingBody, url: str):
         self.header = header
         self.body = body

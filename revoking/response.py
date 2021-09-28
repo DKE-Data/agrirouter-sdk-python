@@ -1,4 +1,4 @@
-class RevokingResonse:
+class RevokingResponse:
     """
     Response from revoking request
     """

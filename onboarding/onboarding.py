@@ -15,7 +15,6 @@ class SoftwareOnboarding(EnvironmentalService):
         request_body = SoftwareOnboardingBody(**body_params)
 
         header_params = params.get_header_params()
-        header_params["request_body"] = request_body.json(new_lines=False)
         request_header = SoftwareOnboardingHeader(**header_params)
 
         return SoftwareOnboardingRequest(header=request_header, body=request_body, url=url)
@@ -48,7 +47,6 @@ class CUOnboarding(EnvironmentalService):
         request_body = CUOnboardingBody(**body_params)
 
         header_params = params.get_header_params()
-        header_params["request_body"] = request_body.json(new_lines=False)
         request_header = CUOnboardingHeader(**header_params)
 
         return CUOnboardingRequest(header=request_header, body=request_body, url=url)

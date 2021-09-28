@@ -1,5 +1,6 @@
 from onboarding.headers import SoftwareOnboardingHeader, BaseOnboardingHeader
 from onboarding.request_body import SoftwareOnboardingBody, BaseOnboardingBody
+from onboarding.signature import create_signature
 
 
 class BaseOnboardingRequest:
@@ -17,14 +18,9 @@ class BaseOnboardingRequest:
     def get_header(self):
         return self.header.get_header()
 
-    def sign(self):
-        """
-        TODO: add here create_signature
-        :return:
-        """
-        signature = ...     # create signature
+    def sign(self, private_key):
+        signature = create_signature(self.body.json(new_lines=False), private_key)
         self.header.sign(signature)
-        pass
 
     @property
     def is_signed(self):
@@ -32,11 +28,6 @@ class BaseOnboardingRequest:
         if header_has_signature:
             return True
         return False
-
-    @property
-    def is_valid(self):
-        if not self.is_signed:
-            return False
 
 
 class SoftwareOnboardingRequest(BaseOnboardingRequest):

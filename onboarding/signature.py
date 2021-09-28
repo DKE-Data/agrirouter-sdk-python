@@ -18,7 +18,7 @@ def create_signature(request_body: str, private_key: str) -> bytes:
     return signature
 
 
-def verify_signature(request_body: str, signature: bytearray, public_key: str) -> None:
+def verify_signature(request_body: str, signature: bytes, public_key: str) -> None:
     public_key_bytes = bytearray(public_key.encode('utf-8'))
     public_key_data = load_pem_public_key(public_key_bytes)
     public_key_data.verify(

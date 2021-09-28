@@ -1,10 +1,22 @@
-from abc import ABC, abstractmethod
+from requests import Response
 
 
-class BaseOnboardingResonse(ABC):
-    @abstractmethod
-    def __init__(self, http_response):
-        self.response = http_response
+class BaseOnboardingResonse:
+
+    def __init__(self, http_response: Response):
+        self.response:  Response = http_response
+
+    @property
+    def data(self):
+        return self.response.json()
+
+    @property
+    def status_code(self):
+        return self.response.status_code
+
+    @property
+    def text(self):
+        return self.response.text
 
 
 class SoftwareVerifyOnboardingResponse(BaseOnboardingResonse):

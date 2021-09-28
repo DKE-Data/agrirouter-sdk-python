@@ -16,6 +16,10 @@ class BaseOnboardingHeader(ABC):
     def _set_params(self, *args, **kwargs):
         ...
 
+    @abstractmethod
+    def sign(self, *args, **kwargs):
+        ...
+
 
 class SoftwareOnboardingHeader(BaseOnboardingHeader):
     def __init__(self,

@@ -18,6 +18,10 @@ class BaseOnboardingBody(ABC):
     def _set_params(self, *args, **kwargs):
         ...
 
+    @abstractmethod
+    def json(self, *args, **kwargs):
+        ...
+
 
 class SoftwareOnboardingBody(BaseOnboardingBody):
     def __init__(self,

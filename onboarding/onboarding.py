@@ -1,6 +1,7 @@
 import requests
 
 from environments.environmental_services import EnvironmentalService
+from onboarding.exceptions import RequestNotSigned
 from onboarding.headers import SoftwareOnboardingHeader, CUOnboardingHeader
 from onboarding.parameters import SoftwareOnboardingParameter, BaseOnboardingParameter, CUOnboardingParameter
 from onboarding.request import SoftwareOnboardingRequest, BaseOnboardingRequest, CUOnboardingRequest
@@ -9,6 +10,11 @@ from onboarding.response import SoftwareVerifyOnboardingResponse, SoftwareOnboar
 
 
 class SoftwareOnboarding(EnvironmentalService):
+
+    def __init__(self, *args, **kwargs):
+        self._public_key = kwargs.pop("public_key")
+        self._private_key = kwargs.pop("private_key")
+        super(SoftwareOnboarding, self).__init__(*args, **kwargs)
 
     def _create_request(self, params: BaseOnboardingParameter, url: str) -> SoftwareOnboardingRequest:
         body_params = params.get_body_params()
@@ -21,11 +27,14 @@ class SoftwareOnboarding(EnvironmentalService):
 
     def _perform_request(self, params: BaseOnboardingParameter, url: str) -> requests.Response:
         request = self._create_request(params, url)
-        return requests.post(
-            url=request.get_url(),
-            data=request.get_data(),
-            headers=request.get_header()
-        )
+        request.sign(self._private_key)
+        if request.is_signed:
+            return requests.post(
+                url=request.get_url(),
+                data=request.get_data(),
+                headers=request.get_header()
+            )
+        raise RequestNotSigned
 
     def verify(self, params: SoftwareOnboardingParameter) -> SoftwareOnboardingResponse:
         url = self._environment.get_verify_onboard_request_url()
@@ -42,6 +51,11 @@ class SoftwareOnboarding(EnvironmentalService):
 
 class CUOnboarding(EnvironmentalService):
 
+    def __init__(self, *args, **kwargs):
+        self._public_key = kwargs.pop("public_key")
+        self._private_key = kwargs.pop("private_key")
+        super(CUOnboarding, self).__init__(*args, **kwargs)
+
     def _create_request(self, params: CUOnboardingParameter, url: str) -> CUOnboardingRequest:
         body_params = params.get_body_params()
         request_body = CUOnboardingBody(**body_params)
@@ -53,11 +67,14 @@ class CUOnboarding(EnvironmentalService):
 
     def _perform_request(self, params: CUOnboardingParameter, url: str) -> requests.Response:
         request = self._create_request(params, url)
-        return requests.post(
-            url=request.get_url(),
-            data=request.get_data(),
-            headers=request.get_header()
-        )
+        request.sign(self._private_key)
+        if request.is_signed:
+            return requests.post(
+                url=request.get_url(),
+                data=request.get_data(),
+                headers=request.get_header()
+            )
+        raise RequestNotSigned
 
     def onboard(self, params: CUOnboardingParameter) -> CUOnboardingResponse:
         url = self._environment.get_onboard_url()

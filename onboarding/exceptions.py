@@ -16,6 +16,8 @@ class WrongGateWay(AgriRouuterBaseException):
 
 
 class RequestNotSigned(AgriRouuterBaseException):
-    _message = "Request does not contain signature header. Please sign the request with request.sign() method.\n" \
-               "Details on: https://docs.my-agrirouter.com/agrirouter-interface-documentation/latest/" \
-               "integration/onboarding.html#signing-requests"
+    _message = """
+    Request does not contain signature header. Please sign the request with request.sign() method.\n
+    Details on: https://docs.my-agrirouter.com/agrirouter-interface-documentation/latest/
+    integration/onboarding.html#signing-requests
+    """

@@ -12,6 +12,11 @@ class Authorization(EnvironmentalService):
     TOKEN_KEY = "token"
     ERROR_KEY = "error"
 
+    def __init__(self, *args, **kwargs):
+        self._public_key = kwargs.pop("public_key")
+        self._private_key = kwargs.pop("private_key")
+        super(Authorization, self).__init__(*args, **kwargs)
+
     def get_auth_request_url(self, parameters: AuthUrlParameter) -> str:
         auth_parameters = parameters.get_parameters()
         return self._environment.get_secured_onboarding_authorization_url(**auth_parameters)
@@ -21,8 +26,9 @@ class Authorization(EnvironmentalService):
         query_params = self._extract_query_params(parsed_url.query)
         return AuthResponse(query_params)
 
-    def verify_auth_response(self):
-        pass
+    @staticmethod
+    def verify_auth_response(response, public_key):
+        response.verify(public_key)
 
     @staticmethod
     def _extract_query_params(query_params: str) -> dict:

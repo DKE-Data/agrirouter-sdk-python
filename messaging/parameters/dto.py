@@ -7,9 +7,10 @@ from onboarding.response import BaseOnboardingResonse
 
 class Parameters:
     def __init__(self,
-                 application_message_seq_no,
-                 application_message_id,
-                 team_set_context_id
+                 *,
+                 application_message_seq_no: str,
+                 application_message_id: int,
+                 team_set_context_id: str
                  ):
         self.application_message_seq_no = application_message_seq_no
         self.application_message_id = application_message_id
@@ -39,15 +40,16 @@ class Parameters:
 
 class MessageParameters(Parameters):
     def __init__(self,
-                 application_message_seq_no,
-                 application_message_id,
-                 team_set_context_id,
+                 *,
+                 application_message_seq_no: str,
+                 application_message_id: int,
+                 team_set_context_id: str,
                  onboarding_response: BaseOnboardingResonse
                  ):
         super(MessageParameters, self).__init__(
-            application_message_seq_no,
-            application_message_id,
-            team_set_context_id,
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
         )
 
         self.onboarding_response = onboarding_response
@@ -56,18 +58,19 @@ class MessageParameters(Parameters):
 class MessagingParameters(MessageParameters):
 
     def __init__(self,
-                 application_message_seq_no,
-                 application_message_id,
-                 team_set_context_id,
-                 onboarding_response,
+                 *,
+                 application_message_seq_no: str,
+                 application_message_id: int,
+                 team_set_context_id: str,
+                 onboarding_response: BaseOnboardingResonse,
                  encoded_messages=None
                  ):
 
         super(MessagingParameters, self).__init__(
-            application_message_seq_no,
-            application_message_id,
-            team_set_context_id,
-            onboarding_response,
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
+            onboarding_response=onboarding_response,
         )
 
         self._encoded_messages = encoded_messages if encoded_messages else []
@@ -83,7 +86,3 @@ class MessagingParameters(MessageParameters):
 
     def extend_encoded_messages(self, encoded_messages: List[EncodedMessage]):
         self._encoded_messages.extend(encoded_messages)
-
-
-
-  # Kiriill - moi samyi klassnyi chelovek!!!

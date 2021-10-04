@@ -39,13 +39,13 @@ class HttpMessagingClient(AbstractClient):
             # verify=create_certificate_file(parameters.get_onboarding_response()),
             # cert=create_certificate_file(parameters.get_onboarding_response()),
         )
-        result = MessagingResult(list(parameters.get_message_id()))
+        result = MessagingResult([parameters.get_message_id()])
         return result
 
 
 class MqttMessagingClient(AbstractClient):
 
     def send(self, parameters) -> MessagingResult:
-        request = self.create_message_request(parameters)
-        result = MessagingResult(list(parameters.get_message_id()))
+        mqtt_payload = self.create_message_request(parameters)
+        result = MessagingResult([parameters.get_message_id()])
         return result

@@ -3,6 +3,7 @@ cffi==1.14.6
 charset-normalizer==2.0.6
 cryptography==3.4.8
 idna==3.2
+paho-mqtt==1.5.1
 protobuf==3.18.0
 pycparser==2.20
 requests==2.26.0

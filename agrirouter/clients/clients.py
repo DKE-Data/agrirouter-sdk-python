@@ -1,4 +1,4 @@
-from environments.environments import ProductionEnvironment, QAEnvironment
+from agrirouter.environments.environments import ProductionEnvironment, QAEnvironment
 
 
 class InvalidEnvironmentSetup(Exception):

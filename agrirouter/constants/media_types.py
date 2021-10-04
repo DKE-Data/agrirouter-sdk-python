@@ -1,4 +1,4 @@
-from auth.enums import BaseEnum
+from agrirouter.auth.enums import BaseEnum
 
 
 class ContentTypes(BaseEnum):

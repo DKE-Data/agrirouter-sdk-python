@@ -1,12 +1,12 @@
 import requests
 
-from environments.environmental_services import EnvironmentalService
-from onboarding.exceptions import RequestNotSigned
-from revoking.headers import RevokingHeader
-from revoking.parameters import RevokingParameter
-from revoking.request import RevokingRequest
-from revoking.request_body import RevokingBody
-from revoking.response import RevokingResponse
+from agrirouter.environments.environmental_services import EnvironmentalService
+from agrirouter.onboarding.exceptions import RequestNotSigned
+from agrirouter.revoking.headers import RevokingHeader
+from agrirouter.revoking.parameters import RevokingParameter
+from agrirouter.revoking.request import RevokingRequest
+from agrirouter.revoking.request_body import RevokingBody
+from agrirouter.revoking.response import RevokingResponse
 
 
 class Revoking(EnvironmentalService):

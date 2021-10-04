@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from constants.media_types import ContentTypes
+from agrirouter.constants.media_types import ContentTypes
 
 
 class BaseOnboardingHeader(ABC):

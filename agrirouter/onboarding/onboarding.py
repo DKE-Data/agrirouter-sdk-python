@@ -1,12 +1,12 @@
 import requests
 
-from environments.environmental_services import EnvironmentalService
-from onboarding.exceptions import RequestNotSigned
-from onboarding.headers import SoftwareOnboardingHeader, CUOnboardingHeader
-from onboarding.parameters import SoftwareOnboardingParameter, BaseOnboardingParameter, CUOnboardingParameter
-from onboarding.request import SoftwareOnboardingRequest, BaseOnboardingRequest, CUOnboardingRequest
-from onboarding.request_body import SoftwareOnboardingBody, CUOnboardingBody
-from onboarding.response import SoftwareVerifyOnboardingResponse, SoftwareOnboardingResponse, CUOnboardingResponse
+from agrirouter.environments.environmental_services import EnvironmentalService
+from agrirouter.onboarding.exceptions import RequestNotSigned
+from agrirouter.onboarding.headers import SoftwareOnboardingHeader, CUOnboardingHeader
+from agrirouter.onboarding.parameters import SoftwareOnboardingParameter, BaseOnboardingParameter, CUOnboardingParameter
+from agrirouter.onboarding.request import SoftwareOnboardingRequest, BaseOnboardingRequest, CUOnboardingRequest
+from agrirouter.onboarding.request_body import SoftwareOnboardingBody, CUOnboardingBody
+from agrirouter.onboarding.response import SoftwareVerifyOnboardingResponse, SoftwareOnboardingResponse, CUOnboardingResponse
 
 
 class SoftwareOnboarding(EnvironmentalService):

@@ -12,7 +12,7 @@ class MessageHeaderParameters(Parameters):
                  chunk_component: ChunkComponent,
                  team_set_context_id: str,
                  application_message_seq_no: str,
-                 application_message_id: int,
+                 application_message_id: int = None,
                  ):
         super(MessageHeaderParameters, self).__init__(
             application_message_seq_no=application_message_seq_no,

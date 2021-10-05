@@ -9,7 +9,7 @@ class Parameters:
     def __init__(self,
                  *,
                  application_message_seq_no: str,
-                 application_message_id: int,
+                 application_message_id: int = None,
                  team_set_context_id: str
                  ):
         self.application_message_seq_no = application_message_seq_no

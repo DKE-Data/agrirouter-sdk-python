@@ -13,8 +13,8 @@ _sym_db = _symbol_database.Default()
 
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from google.protobuf import any_pb2 as google_dot_protobuf_dot_any__pb2
-from commons import message_pb2 as commons_dot_message__pb2
-from commons import chunk_pb2 as commons_dot_chunk__pb2
+from generated.commons import message_pb2 as commons_dot_message__pb2
+from generated.commons import chunk_pb2 as commons_dot_chunk__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(

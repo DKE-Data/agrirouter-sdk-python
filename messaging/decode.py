@@ -9,6 +9,7 @@ from generated.messaging.response.payload.account.endpoints_pb2 import ListEndpo
 from generated.messaging.response.payload.feed.feed_response_pb2 import HeaderQueryResponse, MessageQueryResponse
 from generated.messaging.response.response_pb2 import ResponseEnvelope, ResponsePayloadWrapper
 from messaging.messages import DecodedMessage
+from utils.type_url import TypeUrl
 
 
 def read_properties_buffers_from_input_stream(input_stream) -> tuple:
@@ -38,11 +39,11 @@ def decode_response(message: bytes) -> DecodedMessage:
 
 
 def decode_details(details: Any):
-    if details.type_url == "Messages":
+    if details.type_url == TypeUrl.get_type_url(Messages.__name__):
         return Messages().MergeFromString(details.value)
-    elif details.type_url == "ListEndpointsResponse":
+    elif details.type_url == TypeUrl.get_type_url(ListEndpointsResponse.__name__):
         return ListEndpointsResponse().MergeFromString(details.value)
-    elif details.type_url == "HeaderQueryResponse":
+    elif details.type_url == TypeUrl.get_type_url(HeaderQueryResponse.__name__):
         return HeaderQueryResponse().MergeFromString(details.value)
-    elif details.type_url == "MessageQueryResponse":
+    elif details.type_url == TypeUrl.get_type_url(MessageQueryResponse.__name__):
         return MessageQueryResponse().MergeFromString(details.value)

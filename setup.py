@@ -23,6 +23,16 @@ setup(
             'Programming Language :: Python :: 3.9',
             'Programming Language :: Python :: 3.10',
         ],
+    install_requires=[
+            'certifi~=2021.5.30',
+            'cffi~=1.14.6',
+            'charset-normalizer~=2.0.6',
+            'cryptography~=3.4.8',
+            'idna~=3.2',
+            'pycparser~=2.20',
+            'requests~=2.26.0',
+            'urllib3~=1.26.7'
+        ],
     project_urls={
         'Documentation': 'https://github.com/DKE-Data/agrirouter-sdk-python',
         'Source': 'https://github.com/DKE-Data/agrirouter-sdk-python',

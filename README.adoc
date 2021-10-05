@@ -1,0 +1,67 @@
+= agrirouter-sdk-python
+:imagesdir: assets/images
+:toc:
+:toc-title:
+:toclevels: 4
+
+[abstract]
+== Abstract
+image::agrirouter.svg[agrirouter]
+
+The agrirouter is a universal data exchange platform for farmers and agricultural contractors that makes it possible to connect machinery and agricultural software, regardless of vendor or manufacturer. Agrirouter does not save data; it transfers data.
+As a universal data exchange platform, agrirouter fills a gap on the way to Farming 4.0. Its underlying concept unites cross-vendor and discrimination-free data transfer. You retain full control over your data. Even data exchange with service providers (e.g. agricultural contractors) and other partners is uncomplicated: Data are very rapidly transferred via the online connection, and if you wish, is intelligently connected to other datasets.
+
+== Supporters & Maintainers
+image::lmis.svg[agrirouter]
+
+The LMIS AG is a recognised german IT service company, certified according to DIN EN ISO 9001:2015 and based in
+Osnabrück, Berlin, Friedland and Wuppertal. Our core competence is the individual development, optimisation and support
+of IT solutions. We also provide professional IT consulting services and training courses. We have been supporting
+the whole project during the development in the field of test management and are currently responsible for the development
+support of the platform.
+
+We are active maintainers of the SDK and are using the SDK for internal testing purposes as well. Therefore, we have a
+high interest in a stable and usable interface to connect to the agrirouter.
+
+Feel free to get in touch by visiting our https://www.lmis.de[website] or contacting us via GitHub.
+
+== The current project you're looking at
+
+This project contains the SDK for the communication with the agrirouter. Everything you need for the onboard process, secure communication and much more.
+
+== Installation
+
+The necessary dependencies are installed via `composer`. Just run the following command to add the SDK to your project.
+
+
+`git clone https://github.com/DKE-Data/agrirouter-sdk-python.git`
+
+To install the SDK run the 'setup.py' script in the main directory (for a global install you will need to run this command with root privileges):
+
+`cd agrirouter-sdk-python`
+
+`virtualenv venv`
+
+`...`
+
+`$ . venv/bin/activate`
+
+`python setup.py install`
+
+For more install options type:
+
+`python setup.py --help`
+
+== Requirements
+
+Python 3.6 or above is required.
+
+
+== External resources
+
+Here are some external resources for the development:
+
+* https://my-agrirouter.com[My Agrirouter Website]
+* https://github.com/DKE-Data/agrirouter-interface-documentation[Integration Guide]
+* https://www.aef-online.org[EFDI Protobuf Definition]
+* https://www.lmis.de[LMIS - Maintenance & Support]

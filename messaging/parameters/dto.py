@@ -54,14 +54,17 @@ class MessageParameters(Parameters):
 
         self.onboarding_response = onboarding_response
 
+    def get_onboarding_response(self):
+        return self.onboarding_response
+
 
 class MessagingParameters(MessageParameters):
 
     def __init__(self,
                  *,
-                 application_message_seq_no: str,
-                 application_message_id: int,
-                 team_set_context_id: str,
+                 application_message_seq_no: str = None,
+                 application_message_id: int = None,
+                 team_set_context_id: str = None,
                  onboarding_response: BaseOnboardingResonse,
                  encoded_messages=None
                  ):

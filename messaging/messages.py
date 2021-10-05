@@ -14,6 +14,18 @@ class EncodedMessage:
         return self.content
 
 
+class DecodedMessage:
+    def __init__(self, response_envelope, response_payload):
+        self.response_envelope = response_envelope
+        self.response_payload = response_payload
+
+    def get_response_payload(self):
+        return self.response_payload
+
+    def get_response_envelope(self):
+        return self.response_envelope
+
+
 class Message:
     MESSAGE = "message"
     TIMESTAMP = "timestamp"

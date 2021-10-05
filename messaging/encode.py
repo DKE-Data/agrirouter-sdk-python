@@ -18,7 +18,7 @@ def write_proto_parts_to_buffer(parts: list, buffer: bytes = b""):
     return buffer
 
 
-def encode(header_parameters: MessageHeaderParameters, payload_parameters: MessagePayloadParameters) -> bytes:
+def encode_message(header_parameters: MessageHeaderParameters, payload_parameters: MessagePayloadParameters) -> bytes:
     request_envelope = encode_header(header_parameters)
     request_payload = encode_payload(payload_parameters)
 

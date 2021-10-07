@@ -30,9 +30,6 @@ class AbstractMessagingClient(ABC):
 
 class HttpMessagingService(AbstractMessagingClient):
 
-    def __init__(self, onboarding_response):
-        self.onboarding_response = onboarding_response
-
     def send(self, parameters) -> MessagingResult:
         request = self.create_message_request(parameters)
         response = requests.post(

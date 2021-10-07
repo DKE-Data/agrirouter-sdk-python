@@ -1,6 +1,6 @@
-from onboarding.headers import SoftwareOnboardingHeader, BaseOnboardingHeader
-from onboarding.request_body import SoftwareOnboardingBody, BaseOnboardingBody
-from onboarding.signature import create_signature
+from agrirouter.onboarding.headers import SoftwareOnboardingHeader, BaseOnboardingHeader
+from agrirouter.onboarding.request_body import SoftwareOnboardingBody, BaseOnboardingBody
+from agrirouter.onboarding.signature import create_signature
 
 
 class BaseOnboardingRequest:

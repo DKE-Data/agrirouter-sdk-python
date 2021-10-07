@@ -5,7 +5,7 @@ from urllib.parse import unquote
 
 from cryptography.exceptions import InvalidSignature
 
-from onboarding.signature import verify_signature
+from agrirouter.onboarding.signature import verify_signature
 
 
 class AuthResponse:

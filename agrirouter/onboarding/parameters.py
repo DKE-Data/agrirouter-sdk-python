@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from constants.media_types import ContentTypes
-from onboarding.enums import CertificateTypes
+from agrirouter.constants.media_types import ContentTypes
+from agrirouter.onboarding.enums import CertificateTypes
 
 
 class BaseOnboardingParameter(ABC):

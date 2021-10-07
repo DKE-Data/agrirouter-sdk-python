@@ -1,8 +1,8 @@
 import json
 from abc import ABC, abstractmethod
 
-from onboarding.enums import CertificateTypes, GateWays
-from onboarding.exceptions import WrongCertificationType, WrongGateWay
+from agrirouter.onboarding.enums import CertificateTypes, GateWays
+from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWay
 
 
 class BaseOnboardingBody(ABC):

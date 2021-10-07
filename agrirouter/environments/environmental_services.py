@@ -1,5 +1,5 @@
-from environments.exceptions import InvalidEnvironmentSetup
-from environments.environments import ProductionEnvironment, QAEnvironment
+from agrirouter.environments.exceptions import InvalidEnvironmentSetup
+from agrirouter.environments.environments import ProductionEnvironment, QAEnvironment
 
 
 class EnvironmentalService:

@@ -26,8 +26,8 @@ class Authorization(EnvironmentalService):
         query_params = self._extract_query_params(parsed_url.query)
         return AuthResponse(query_params)
 
-    @staticmethod
-    def verify_auth_response(response, public_key):
+    def verify_auth_response(self, response, public_key=None):
+        public_key = public_key if public_key else self._environment.get_env_public_key()
         response.verify(public_key)
 
     @staticmethod

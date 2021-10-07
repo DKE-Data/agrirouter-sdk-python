@@ -22,7 +22,16 @@ class AuthResponse:
         self._token = query_params.get(self.TOKEN_KEY, None)
         self._error = query_params.get(self.ERROR_KEY, None)
         self.is_successful = not bool(self._error)
-        self.is_valid = False
+        self._was_verified = False
+        self._is_valid = False
+
+    @property
+    def is_valid(self):
+        if not self._was_verified:
+            raise PermissionError("The response was not verified yet. Please verify first. "
+                                  "You can access is_valid only after verifying")
+
+        return self._is_valid
 
     def verify(self, public_key) -> None:
         """
@@ -37,13 +46,14 @@ class AuthResponse:
         encoded_data = self._state + self._token
         unquoted_signature = unquote(self._signature)
         encoded_signature = base64.b64decode(unquoted_signature.encode("utf-8"))
+        self._was_verified = True
         try:
             verify_signature(encoded_data, encoded_signature, public_key)
         except InvalidSignature:
             print("Response is invalid: invalid signature.")
-            self.is_valid = False
+            self._is_valid = False
 
-        self.is_valid = True
+        self._is_valid = True
 
     @staticmethod
     def decode_token(token: Union[str, bytes]) -> dict:
@@ -63,7 +73,3 @@ class AuthResponse:
             self.TOKEN_KEY: self._token,
             self.CRED_KEY: decoded_token
         }
-
-
-def decorator(func):
-    pass

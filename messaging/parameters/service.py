@@ -198,6 +198,90 @@ class ListEndpointsParameters(MessageParameters):
         self.filtered = filtered
 
 
+class QueryMessageParameters(MessageParameters):
+    def __init__(self,
+                 senders: list = None,
+                 message_ids: list = None,
+                 validity_period: ValidityPeriod = None,
+                 **kwargs):
+        self.senders = senders
+        self.message_ids = message_ids
+        self.validity_period = validity_period
+        super(QueryMessageParameters, self).__init__(**kwargs)
+
+    def get_senders(self) -> list:
+        return self.senders
+
+    def set_senders(self, senders: list) -> None:
+        self.senders = senders
+
+    def add_senders(self, sender) -> None:
+        self.senders.append(sender)
+
+    def extend_senders(self, senders) -> None:
+        self.senders.extend(senders)
+
+    def get_message_ids(self) -> list:
+        return self.message_ids
+
+    def set_message_ids(self, message_ids: list) -> None:
+        self.message_ids = message_ids
+
+    def add_message_ids(self, message_id) -> None:
+        self.message_ids.append(message_id)
+
+    def extend_message_ids(self, message_ids) -> None:
+        self.message_ids.extend(message_ids)
+
+    def get_validity_period(self) -> ValidityPeriod:
+        return self.validity_period
+
+    def set_validity_period(self, validity_period: list) -> None:
+        self.validity_period = validity_period
+
+
+class QueryHeaderParameters(MessageParameters):
+    def __init__(self,
+                 senders: list = None,
+                 message_ids: list = None,
+                 validity_period: ValidityPeriod = None,
+                 **kwargs):
+        self.senders = senders
+        self.message_ids = message_ids
+        self.validity_period = validity_period
+        super(QueryHeaderParameters, self).__init__(**kwargs)
+
+    def get_senders(self) -> list:
+        return self.senders
+
+    def set_senders(self, senders: list) -> None:
+        self.senders = senders
+
+    def add_senders(self, sender) -> None:
+        self.senders.append(sender)
+
+    def extend_senders(self, senders) -> None:
+        self.senders.extend(senders)
+
+    def get_message_ids(self) -> list:
+        return self.message_ids
+
+    def set_message_ids(self, message_ids: list) -> None:
+        self.message_ids = message_ids
+
+    def add_message_ids(self, message_id) -> None:
+        self.message_ids.append(message_id)
+
+    def extend_message_ids(self, message_ids) -> None:
+        self.message_ids.extend(message_ids)
+
+    def get_validity_period(self) -> ValidityPeriod:
+        return self.validity_period
+
+    def set_validity_period(self, validity_period: list) -> None:
+        self.validity_period = validity_period
+
+
 class SubscriptionParameters(MessageParameters):
     def __init__(self,
                  subscription_items: List[Subscription.MessageTypeSubscriptionItem] = None,

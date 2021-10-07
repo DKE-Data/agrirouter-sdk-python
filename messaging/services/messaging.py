@@ -1,14 +1,15 @@
 from generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
 from generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm
+from generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageQuery
 from generated.messaging.request.request_pb2 import RequestEnvelope
 from messaging.encode import encode_message
 from messaging.enums import TechnicalMessageType
 from messaging.messages import EncodedMessage
 from messaging.parameters.dto import MessageParameters, MessagingParameters
 from messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, CapabilityParameters, \
-    FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, SubscriptionParameters
+    FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, SubscriptionParameters, QueryHeaderParameters, \
+    QueryMessageParameters
 from utils.type_url import TypeUrl
 from utils.uuid_util import new_uuid
 
@@ -148,6 +149,70 @@ class ListEndpointsService(AbstractService):
         message_payload_parameters = MessagePayloadParameters(
             type_url=TypeUrl.get_type_url(ListEndpointsQuery.__name__),
             value=list_endpoints_query.SerializeToString()
+        )
+
+        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        encoded_message = EncodedMessage(
+            id_=new_uuid(),
+            content=message_content
+        )
+
+        return encoded_message
+
+
+class QueryMessagesService(AbstractService):
+
+    @staticmethod
+    def encode(parameters: QueryMessageParameters) -> EncodedMessage:
+        message_header_parameters = MessageHeaderParameters(
+            application_message_id=parameters.get_application_message_id(),
+            application_message_seq_no=parameters.get_application_message_seq_no(),
+            team_set_context_id=parameters.get_team_set_context_id(),
+            mode=RequestEnvelope.Mode.Value("DIRECT"),
+            technical_message_type=TechnicalMessageType.FEED_MESSAGE_QUERY.value
+        )
+
+        message_query = MessageQuery(
+            senders=parameters.get_senders(),
+            message_ids=parameters.get_message_ids(),
+            validity_period=parameters.get_validity_period(),
+        )
+
+        message_payload_parameters = MessagePayloadParameters(
+            type_url=TypeUrl.get_type_url(MessageQuery.__name__),
+            value=message_query.SerializeToString()
+        )
+
+        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        encoded_message = EncodedMessage(
+            id_=new_uuid(),
+            content=message_content
+        )
+
+        return encoded_message
+
+
+class QueryHeaderService(AbstractService):
+
+    @staticmethod
+    def encode(parameters: QueryHeaderParameters) -> EncodedMessage:
+        message_header_parameters = MessageHeaderParameters(
+            application_message_id=parameters.get_application_message_id(),
+            application_message_seq_no=parameters.get_application_message_seq_no(),
+            team_set_context_id=parameters.get_team_set_context_id(),
+            mode=RequestEnvelope.Mode.Value("DIRECT"),
+            technical_message_type=TechnicalMessageType.FEED_HEADER_QUERY.value
+        )
+
+        message_query = MessageQuery(
+            senders=parameters.get_senders(),
+            message_ids=parameters.get_message_ids(),
+            validity_period=parameters.get_validity_period(),
+        )
+
+        message_payload_parameters = MessagePayloadParameters(
+            type_url=TypeUrl.get_type_url(MessageQuery.__name__),
+            value=message_query.SerializeToString()
         )
 
         message_content = encode_message(message_header_parameters, message_payload_parameters)

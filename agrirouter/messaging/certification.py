@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from onboarding.response import BaseOnboardingResonse
+from agrirouter.onboarding.response import BaseOnboardingResonse
 
 
 def create_certificate_file(onboard_response: BaseOnboardingResonse=None, dir: Path=None):

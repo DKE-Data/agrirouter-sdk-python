@@ -1,6 +1,6 @@
 from typing import List
 
-from messaging.messages import Message
+from agrirouter.messaging.messages import Message
 
 
 class MessageRequest:

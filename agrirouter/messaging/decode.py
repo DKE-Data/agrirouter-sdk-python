@@ -4,12 +4,13 @@ from ctypes import Union
 from google.protobuf.any_pb2 import Any
 from google.protobuf.internal.decoder import _DecodeVarint
 
-from generated.commons.message_pb2 import Messages
-from generated.messaging.response.payload.account.endpoints_pb2 import ListEndpointsResponse
-from generated.messaging.response.payload.feed.feed_response_pb2 import HeaderQueryResponse, MessageQueryResponse
-from generated.messaging.response.response_pb2 import ResponseEnvelope, ResponsePayloadWrapper
-from messaging.messages import DecodedMessage
-from utils.type_url import TypeUrl
+from agrirouter.generated.commons.message_pb2 import Messages
+from agrirouter.generated.messaging.response.payload.account.endpoints_pb2 import ListEndpointsResponse
+from agrirouter.generated.messaging.response.payload.feed.feed_response_pb2 import HeaderQueryResponse, \
+    MessageQueryResponse
+from agrirouter.generated.messaging.response.response_pb2 import ResponseEnvelope, ResponsePayloadWrapper
+from agrirouter.messaging.messages import DecodedMessage
+from agrirouter.utils.type_url import TypeUrl
 
 
 def read_properties_buffers_from_input_stream(input_stream) -> tuple:

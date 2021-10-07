@@ -1,8 +1,8 @@
 from copy import deepcopy
 from typing import List
 
-from messaging.messages import EncodedMessage
-from onboarding.response import BaseOnboardingResonse
+from agrirouter.messaging.messages import EncodedMessage
+from agrirouter.onboarding.response import BaseOnboardingResonse
 
 
 class Parameters:

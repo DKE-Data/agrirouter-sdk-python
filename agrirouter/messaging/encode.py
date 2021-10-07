@@ -3,10 +3,10 @@ import base64
 from google.protobuf.any_pb2 import Any
 from google.protobuf.internal.encoder import _VarintBytes
 
-from generated.messaging.request.request_pb2 import RequestEnvelope, RequestPayloadWrapper
-from messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters
-from utils.utc_time_util import now_as_utc_timestamp
-from utils.uuid_util import new_uuid
+from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope, RequestPayloadWrapper
+from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters
+from agrirouter.utils.utc_time_util import now_as_utc_timestamp
+from agrirouter.utils.uuid_util import new_uuid
 
 
 def write_proto_parts_to_buffer(parts: list, buffer: bytes = b""):

@@ -1,4 +1,4 @@
-from onboarding.exceptions import AgriRouuterBaseException
+from agrirouter.onboarding.exceptions import AgriRouuterBaseException
 
 
 class TypeUrlNotFoundError(AgriRouuterBaseException):

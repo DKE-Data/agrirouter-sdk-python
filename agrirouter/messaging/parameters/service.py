@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 from copy import deepcopy
 from typing import List
 
-from generated.commons.chunk_pb2 import ChunkComponent
-from generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
-from messaging.parameters.dto import MessageParameters, Parameters
+from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
+from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
+from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
+from agrirouter.messaging.parameters.dto import MessageParameters, Parameters
 
 
 class MessageHeaderParameters(Parameters):

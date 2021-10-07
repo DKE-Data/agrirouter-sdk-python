@@ -2,7 +2,7 @@ import json
 from datetime import datetime, timezone
 from typing import Union, List, Dict
 
-from messaging.exceptions import WrongFieldError
+from agrirouter.messaging.exceptions import WrongFieldError
 
 
 class EncodedMessage:

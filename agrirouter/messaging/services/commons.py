@@ -2,11 +2,11 @@ from abc import ABC, abstractmethod
 
 import requests
 
-from messaging.certification import create_certificate_file
-from messaging.clients.mqtt import MqttClient
-from messaging.messages import Message
-from messaging.request import MessageRequest
-from messaging.result import MessagingResult
+from agrirouter.messaging.certification import create_certificate_file
+from agrirouter.messaging.clients.mqtt import MqttClient
+from agrirouter.messaging.messages import Message
+from agrirouter.messaging.request import MessageRequest
+from agrirouter.messaging.result import MessagingResult
 
 
 class AbstractMessagingClient(ABC):

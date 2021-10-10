@@ -1,9 +1,11 @@
-import os
-
-
-application_id = os.getenv("APPLICATION_ID", "8c947a45-c57d-42d2-affc-206e21d63a50")
-ENV = os.getenv("ENVIRONMENT", "QA")
-auth_result_url = "http://fuf.me/?state=46c81f94-d117-4658-9a38-a85692448219&token=eyJhY2NvdW50IjoiMGJhMjRlZWUtYzMwYi00N2U1LWJkYzktNzcwM2NmYjEzNmEwIiwicmVnY29kZSI6IjhlYWNiMTk4ZmMiLCJleHBpcmVzIjoiMjAyMS0wOS0yM1QxNjowODo0My44ODhaIn0%3D&signature=SUL9SQMWAfG4%2FEyT0rejkRfAyioxJIOs4sxI5wxeB8TkIiv0MR6YFKw1tPIkM4lluZKHEIgr5WvM3b3SvII9TtEbzZf995R8GIlNP6yyP51TF%2F4vZMbkMjq%2B2g1o0qw%2FyuDQcGz1RpOJWCuBOjMXu9quzGO8xvDW7LjrN%2BMA9rzJZYb1toNf51O0eO4BDWL5L1oLvrKrqvaErKcIoRJtTVJ51awOWMARDkGZahcRdWrZbdGUbQwIyKJQu4vH8%2B4ytlyXPSWEYwKE2VFoAjhzWsKODdRRxDbNNLWsW8sxKamdXjSOC8inHUFsFNoxLbwZEnKROm2s3OfKGYuibXOpXw%3D%3D"
+application_id = "8c947a45-c57d-42d2-affc-206e21d63a50"
+ENV = "QA"
+auth_result_url = "http://fuf.me/?state=46c81f94-d117-4658-9a38-a85692448219&token=eyJhY2NvdW50IjoiMGJhMjRlZWUtYzMwY" \
+                  "i00N2U1LWJkYzktNzcwM2NmYjEzNmEwIiwicmVnY29kZSI6IjhlYWNiMTk4ZmMiLCJleHBpcmVzIjoiMjAyMS0wOS0yM1QxNj" \
+                  "owODo0My44ODhaIn0%3D&signature=SUL9SQMWAfG4%2FEyT0rejkRfAyioxJIOs4sxI5wxeB8TkIiv0MR6YFKw1tPIkM4ll" \
+                  "uZKHEIgr5WvM3b3SvII9TtEbzZf995R8GIlNP6yyP51TF%2F4vZMbkMjq%2B2g1o0qw%2FyuDQcGz1RpOJWCuBOjMXu9quzGO" \
+                  "8xvDW7LjrN%2BMA9rzJZYb1toNf51O0eO4BDWL5L1oLvrKrqvaErKcIoRJtTVJ51awOWMARDkGZahcRdWrZbdGUbQwIyKJQu4" \
+                  "vH8%2B4ytlyXPSWEYwKE2VFoAjhzWsKODdRRxDbNNLWsW8sxKamdXjSOC8inHUFsFNoxLbwZEnKROm2s3OfKGYuibXOpXw%3D%3D"
 private_key = (
     "-----BEGIN PRIVATE KEY-----\n"
     "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC8WVUWBhEiQYvo\n"
@@ -47,4 +49,8 @@ public_key = (
     "-----END PUBLIC KEY-----"
 )
 
-AR_PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy8xF9661acn+iS+QS+9Y\n3HvTfUVcismzbuvxHgHA7YeoOUFxyj3lkaTnXm7hzQe4wDEDgwpJSGAzxIIYSUXe\n8EsWLorg5O0tRexx5SP3+kj1i83DATBJCXP7k+bAF4u2FVJphC1m2BfLxelGLjzx\nVAS/v6+EwvYaT1AI9FFqW/a2o92IsVPOh9oM9eds3lBOAbH/8XrmVIeHofw+XbTH\n1/7MLD6IE2+HbEeY0F96nioXArdQWXcjUQsTch+p0p9eqh23Ak4ef5oGcZhNd4yp\nY8M6ppvIMiXkgWSPJevCJjhxRJRmndY+ajYGx7CLePx7wNvxXWtkng3yh+7WiZ/Y\nqwIDAQAB\n-----END PUBLIC KEY-----"
+AR_PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy8xF9661acn+iS+QS+9Y\n3HvTfUV" \
+                "cismzbuvxHgHA7YeoOUFxyj3lkaTnXm7hzQe4wDEDgwpJSGAzxIIYSUXe\n8EsWLorg5O0tRexx5SP3+kj1i83DATBJCXP7k+bAF4" \
+                "u2FVJphC1m2BfLxelGLjzx\nVAS/v6+EwvYaT1AI9FFqW/a2o92IsVPOh9oM9eds3lBOAbH/8XrmVIeHofw+XbTH\n1/7MLD6IE2+" \
+                "HbEeY0F96nioXArdQWXcjUQsTch+p0p9eqh23Ak4ef5oGcZhNd4yp\nY8M6ppvIMiXkgWSPJevCJjhxRJRmndY+ajYGx7CLePx7wN" \
+                "vxXWtkng3yh+7WiZ/Y\nqwIDAQAB\n-----END PUBLIC KEY-----"

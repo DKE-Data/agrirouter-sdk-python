@@ -1,9 +1,6 @@
 """Test agrirouter/messaging/decode.py"""
 
-from agrirouter.messaging.decode import (
-    read_properties_buffers_from_input_stream,
-    decode_details,
-)
+from agrirouter.messaging.decode import read_properties_buffers_from_input_stream
 
 
 def test_read_properties_buffers_from_input_stream():

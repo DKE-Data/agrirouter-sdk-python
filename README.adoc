@@ -43,9 +43,9 @@ For more install options type:
 
 Python 3.6 or above is required.
 
-== Tests
+== Running unit tests
 
-'pytest'
+`$ pytest`
 
 == External resources
 

@@ -1,5 +1,5 @@
 """Tests agrirouter/auth/response.py"""
-import base64
+
 import re
 from agrirouter.auth.response import AuthResponse
 

@@ -4,8 +4,7 @@ import os
 application_id = os.getenv("APPLICATION_ID", "8c947a45-c57d-42d2-affc-206e21d63a50")
 ENV = os.getenv("ENVIRONMENT", "QA")
 auth_result_url = "http://fuf.me/?state=46c81f94-d117-4658-9a38-a85692448219&token=eyJhY2NvdW50IjoiMGJhMjRlZWUtYzMwYi00N2U1LWJkYzktNzcwM2NmYjEzNmEwIiwicmVnY29kZSI6IjhlYWNiMTk4ZmMiLCJleHBpcmVzIjoiMjAyMS0wOS0yM1QxNjowODo0My44ODhaIn0%3D&signature=SUL9SQMWAfG4%2FEyT0rejkRfAyioxJIOs4sxI5wxeB8TkIiv0MR6YFKw1tPIkM4lluZKHEIgr5WvM3b3SvII9TtEbzZf995R8GIlNP6yyP51TF%2F4vZMbkMjq%2B2g1o0qw%2FyuDQcGz1RpOJWCuBOjMXu9quzGO8xvDW7LjrN%2BMA9rzJZYb1toNf51O0eO4BDWL5L1oLvrKrqvaErKcIoRJtTVJ51awOWMARDkGZahcRdWrZbdGUbQwIyKJQu4vH8%2B4ytlyXPSWEYwKE2VFoAjhzWsKODdRRxDbNNLWsW8sxKamdXjSOC8inHUFsFNoxLbwZEnKROm2s3OfKGYuibXOpXw%3D%3D"
-private_key = os.getenv(
-    "PRIVATE_KEY",
+private_key = (
     "-----BEGIN PRIVATE KEY-----\n"
     "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC8WVUWBhEiQYvo\n"
     "DL9q/Z5LbIhqDtcdFYWBUV7A96AXJaNRA9J7m3a6es05S7pRynv9yT8i+bhz/qDf\n"
@@ -33,7 +32,7 @@ private_key = os.getenv(
     "ooU5V9gOjFVKC52VWnTNgmOWTqgZuqxPJtCTN5wPvhOSggQuHPwBHa9ioshJ0dGE\n"
     "6jdxGaJjAc82q2KZu9VEqoH/Xa2aS8dPEHwfJtzUVTia6WkrFtMFNaDMFd6byWDQ\n"
     "ai+T4i2J3/SDL0BfsFWdQuje\n"
-    "-----END PRIVATE KEY-----",
+    "-----END PRIVATE KEY-----"
 )
 
 public_key = (

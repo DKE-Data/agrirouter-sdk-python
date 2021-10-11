@@ -6,12 +6,11 @@
 >>> ########################################################
 >>> # Authorization
 
->>> from agrirouter.auth.auth import Authorization
->>> from agrirouter.auth.parameters import AuthUrlParameter
->>> from agrirouter.auth.enums import ResponseType
+>>> import agrirouter as ar
+>>> from agrirouter.auth.enums import GateWays
 
->>> auth_params = AuthUrlParameter(application_id=application_id, response_type="onboard")
->>> auth_client = Authorization("QA", public_key=public_key, private_key=private_key)
+>>> auth_params = ar.AuthUrlParameter(application_id=application_id, response_type="onboard")
+>>> auth_client = ar.Authorization("QA", public_key=public_key, private_key=private_key)
 >>> auth_url = auth_client.get_auth_request_url(auth_params)	# use this url to authorize the user as described at https://docs.my-agrirouter.com/agrirouter-interface-documentation/latest/integration/authorization.html#perform-authorization
 
 >>> auth_result_url = ...	# the url the user was redirected after his authorization.
@@ -43,17 +42,13 @@ True
 >>> # Onboarding
 
 
->>> from agrirouter.onboarding.onboarding import SoftwareOnboarding
->>> from agrirouter.onboarding.parameters import SoftwareOnboardingParameter
->>> from agrirouter.onboarding.enums import GateWays
-
 >>> id_ = "mydeviceid"
 >>> certification_version_id = ...	# get from AR UI
 >>> utc_timestamp = "2018-06-20T07:29:23.457Z"
 >>> time_zone = "+03:00"
 
->>> onboarding_client = SoftwareOnboarding("QA", public_key=public_key, private_key=private_key)
->>> onboarding_parameters = SoftwareOnboardingParameter(id_=id_, application_id=application_id, certification_version_id=certification_version_id, gateway_id=GateWays.REST.value, utc_timestamp=utc_timestamp, time_zone=time_zone, reg_code=auth_data["credentials"]["regcode"])
+>>> onboarding_client = ar.SoftwareOnboarding("QA", public_key=public_key, private_key=private_key)
+>>> onboarding_parameters = ar.SoftwareOnboardingParameter(id_=id_, application_id=application_id, certification_version_id=certification_version_id, gateway_id=GateWays.REST.value, utc_timestamp=utc_timestamp, time_zone=time_zone, reg_code=auth_data["credentials"]["regcode"])
 >>> onboarding_verifying_response = onboarding_client.verify(onboarding_parameters)
 >>> onboarding_response = onboarding_client.onboard(onboarding_parameters)
 >>> onboarding_response.status_code()

@@ -35,7 +35,7 @@ class SoftwareOnboardingHeader(BaseOnboardingHeader):
         return self.params
 
     def sign(self, signature):
-        self.params["X-Agrirouter-Signature"] = signature.decode()
+        self.params["X-Agrirouter-Signature"] = str(signature)
 
     def _set_params(self, reg_code: str, application_id: str, signature: str, content_type: str):
         header = dict()

@@ -14,7 +14,7 @@
 
 >>> auth_result_url = ...	# the url the user was redirected after his authorization.
 >>> auth_response = auth_client.extract_auth_response(auth_result_url) 	# auth_response containing the results of the auth process
->>> auth_client.verify_auth_response(auth_response, public_key)				# you may verify auth_response to ensure answer was from AR
+>>> auth_client.verify_auth_response(auth_response)				# you may verify auth_response to ensure answer was from AR
 
 >>> auth_response.is_successfull	# True if user accepted application, False if he rejected
 True

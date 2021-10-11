@@ -7,7 +7,6 @@
 >>> # Authorization
 
 >>> import agrirouter as ar
->>> from agrirouter.auth.enums import GateWays
 
 >>> auth_params = ar.AuthUrlParameter(application_id=application_id, response_type="onboard")
 >>> auth_client = ar.Authorization("QA", public_key=public_key, private_key=private_key)
@@ -41,6 +40,8 @@ True
 
 >>> # Onboarding
 
+
+>>> from agrirouter.onboarding.enums import GateWays
 
 >>> id_ = "mydeviceid"
 >>> certification_version_id = ...	# get from AR UI

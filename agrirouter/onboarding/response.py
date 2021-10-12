@@ -42,7 +42,18 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
     """
     Response from onboarding request used for Farming Software or Telemetry Platform
     """
-    pass
+
+    def get_connection_criteria(self) -> dict:
+        response_data = self.data()
+        return response_data.get("connectionCriteria")
+
+    def get_sensor_alternate_id(self):
+        response_data = self.data()
+        return response_data.get("sensorAlternateId")
+
+    def get_authentication(self):
+        response_data = self.data()
+        return response_data.get("authentication")
 
 
 class CUOnboardingResponse(BaseOnboardingResonse):

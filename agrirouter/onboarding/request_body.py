@@ -70,11 +70,8 @@ class SoftwareOnboardingBody(BaseOnboardingBody):
             "timeZone": time_zone,
         }
 
-    def json(self, new_lines: bool = True) -> str:
-        result = json.dumps(self.get_parameters(), indent="")
-        if not new_lines:
-            return result.replace("\n", "")
-        return result
+    def json(self) -> str:
+        return str(self.get_parameters())
 
     @staticmethod
     def _validate_certificate_type(certificate_type: str) -> None:

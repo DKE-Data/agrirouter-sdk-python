@@ -1,6 +1,6 @@
 from agrirouter.onboarding.headers import SoftwareOnboardingHeader, BaseOnboardingHeader
 from agrirouter.onboarding.request_body import SoftwareOnboardingBody, BaseOnboardingBody
-from agrirouter.onboarding.signature import create_signature
+from agrirouter.onboarding.signature import create_signature, verify_signature
 
 
 class BaseOnboardingRequest:
@@ -18,8 +18,10 @@ class BaseOnboardingRequest:
     def get_header(self):
         return self.header.get_header()
 
-    def sign(self, private_key):
-        signature = create_signature(self.body.json(), private_key)
+    def sign(self, private_key, public_key):
+        body = self.body.json().replace("\n", "")
+        signature = create_signature(body, private_key)
+        verify_signature(body, bytes.fromhex(signature), public_key)
         self.header.sign(signature)
 
     @property

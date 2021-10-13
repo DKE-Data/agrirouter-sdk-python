@@ -19,7 +19,7 @@ class BaseOnboardingRequest:
         return self.header.get_header()
 
     def sign(self, private_key):
-        signature = create_signature(self.body.json(new_lines=False), private_key)
+        signature = create_signature(self.body.json(), private_key)
         self.header.sign(signature)
 
     @property

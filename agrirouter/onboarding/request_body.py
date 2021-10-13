@@ -1,5 +1,6 @@
 import json
 from abc import ABC, abstractmethod
+from datetime import datetime
 
 from agrirouter.onboarding.enums import CertificateTypes, GateWays
 from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWay
@@ -25,17 +26,20 @@ class BaseOnboardingBody(ABC):
 
 class SoftwareOnboardingBody(BaseOnboardingBody):
     def __init__(self,
+                 *,
                  id_,
                  application_id,
                  certification_version_id,
                  gateway_id,
                  certificate_type,
-                 utc_timestamp,
-                 time_zone
+                 time_zone,
+                 utc_timestamp=None
                  ):
 
         self._validate_certificate_type(certificate_type)
         self._validate_gateway_id(gateway_id)
+
+        utc_timestamp = utc_timestamp if utc_timestamp else datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
         self._set_params(
             id_,
@@ -70,11 +74,8 @@ class SoftwareOnboardingBody(BaseOnboardingBody):
             "timeZone": time_zone,
         }
 
-    def json(self, new_lines: bool = True) -> str:
-        result = json.dumps(self.get_parameters(), indent="")
-        if not new_lines:
-            return result.replace("\n", "")
-        return result
+    def json(self) -> str:
+        return json.dumps(self.get_parameters())
 
     @staticmethod
     def _validate_certificate_type(certificate_type: str) -> None:

@@ -1,3 +1,5 @@
+import json
+
 import requests
 
 from agrirouter.environments.environmental_services import EnvironmentalService
@@ -6,7 +8,8 @@ from agrirouter.onboarding.headers import SoftwareOnboardingHeader, CUOnboarding
 from agrirouter.onboarding.parameters import SoftwareOnboardingParameter, BaseOnboardingParameter, CUOnboardingParameter
 from agrirouter.onboarding.request import SoftwareOnboardingRequest, BaseOnboardingRequest, CUOnboardingRequest
 from agrirouter.onboarding.request_body import SoftwareOnboardingBody, CUOnboardingBody
-from agrirouter.onboarding.response import SoftwareVerifyOnboardingResponse, SoftwareOnboardingResponse, CUOnboardingResponse
+from agrirouter.onboarding.response import SoftwareVerifyOnboardingResponse, SoftwareOnboardingResponse, \
+    CUOnboardingResponse
 
 
 class SoftwareOnboarding(EnvironmentalService):
@@ -31,7 +34,7 @@ class SoftwareOnboarding(EnvironmentalService):
         if request.is_signed:
             return requests.post(
                 url=request.get_url(),
-                data=request.get_data(),
+                data=json.dumps(request.get_data()),
                 headers=request.get_header()
             )
         raise RequestNotSigned

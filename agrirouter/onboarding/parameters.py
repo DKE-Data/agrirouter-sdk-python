@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from datetime import datetime
 
 from agrirouter.constants.media_types import ContentTypes
 from agrirouter.onboarding.enums import CertificateTypes
@@ -20,15 +21,16 @@ class BaseOnboardingParameter(ABC):
 
 class SoftwareOnboardingParameter(BaseOnboardingParameter):
     def __init__(self,
+                 *,
                  id_,
                  application_id,
                  certification_version_id,
                  gateway_id,
-                 utc_timestamp,
                  time_zone,
                  reg_code,
+                 utc_timestamp=None,
                  content_type=ContentTypes.APPLICATION_JSON.value,
-                 certificate_type=CertificateTypes.P12.value,
+                 certificate_type=CertificateTypes.PEM.value,
                  ):
 
         self.id_ = id_
@@ -37,7 +39,8 @@ class SoftwareOnboardingParameter(BaseOnboardingParameter):
         self.certification_version_id = certification_version_id
         self.gateway_id = str(gateway_id)
         self.certificate_type = certificate_type
-        self.utc_timestamp = str(utc_timestamp)
+        self.utc_timestamp = str(utc_timestamp) if utc_timestamp \
+            else datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ")
         self.time_zone = str(time_zone)
         self.reg_code = reg_code
 

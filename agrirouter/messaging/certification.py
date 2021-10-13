@@ -16,7 +16,8 @@ def create_certificate_file(onboard_response: BaseOnboardingResonse):
     try:
         with os.fdopen(fd, 'w') as tmp:
             tmp.write(data)
-    except Exception:
+    except Exception as exc:
         os.remove(path)
+        raise exc
 
     return path

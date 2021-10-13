@@ -1,3 +1,4 @@
+import os
 from abc import ABC, abstractmethod
 
 import requests
@@ -33,15 +34,19 @@ class HttpMessagingService(AbstractMessagingClient):
 
     def send(self, parameters) -> MessagingResult:
         request = self.create_message_request(parameters)
-        response = requests.post(
-            url=parameters.get_onboarding_response().get_connection_criteria().get_measures(),
-            headers={"Content-type": "application/json"},
-            data=request.json_serialize(),
-            cert=(
-                create_certificate_file(parameters.get_onboarding_response()),
-                parameters.get_onboarding_response().get_authentication().get_secret()
-            ),
-        )
+        cert_file_path = create_certificate_file(parameters.get_onboarding_response())
+        try:
+            response = requests.post(
+                url=parameters.get_onboarding_response().get_connection_criteria().get_measures(),
+                headers={"Content-type": "application/json"},
+                data=request.json_serialize(),
+                cert=(
+                    cert_file_path,
+                    parameters.get_onboarding_response().get_authentication().get_secret()
+                ),
+            )
+        finally:
+            os.remove(cert_file_path)
         result = MessagingResult([parameters.get_message_id()])
         return result
 

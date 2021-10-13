@@ -16,7 +16,7 @@
 >>> auth_response = auth_client.extract_auth_response(auth_result_url) 	# auth_response containing the results of the auth process
 >>> auth_client.verify_auth_response(auth_response)				# you may verify auth_response to ensure answer was from AR
 
->>> auth_response.is_successfull	# True if user accepted application, False if he rejected
+>>> auth_response.is_successful	# True if user accepted application, False if he rejected
 True
 >>> auth_response.is_valid	# Result of verification, if False, response was not validated by public key. Doesn't indicate was the auth successfull. Accessible only after response verifying
 True
@@ -45,12 +45,13 @@ True
 
 >>> id_ = "mydeviceid"
 >>> certification_version_id = ...	# get from AR UI
->>> utc_timestamp = "2018-06-20T07:29:23.457Z"
 >>> time_zone = "+03:00"
 
 >>> onboarding_client = ar.SoftwareOnboarding("QA", public_key=public_key, private_key=private_key)
->>> onboarding_parameters = ar.SoftwareOnboardingParameter(id_=id_, application_id=application_id, certification_version_id=certification_version_id, gateway_id=GateWays.REST.value, utc_timestamp=utc_timestamp, time_zone=time_zone, reg_code=auth_data["credentials"]["regcode"])
+>>> onboarding_parameters = ar.SoftwareOnboardingParameter(id_=id_, application_id=application_id, certification_version_id=certification_version_id, gateway_id=GateWays.REST.value, time_zone=time_zone, reg_code=auth_data["credentials"]["regcode"])
 >>> onboarding_verifying_response = onboarding_client.verify(onboarding_parameters)
+>>> onboarding_verifying_response.status_code
+>>> onboarding_verifying_response.text
 >>> onboarding_response = onboarding_client.onboard(onboarding_parameters)
 >>> onboarding_response.status_code()
 >>> onboarding_response.data()		# or onboarding_response.text()

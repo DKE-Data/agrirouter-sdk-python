@@ -8,7 +8,8 @@ from agrirouter.onboarding.headers import SoftwareOnboardingHeader, CUOnboarding
 from agrirouter.onboarding.parameters import SoftwareOnboardingParameter, BaseOnboardingParameter, CUOnboardingParameter
 from agrirouter.onboarding.request import SoftwareOnboardingRequest, BaseOnboardingRequest, CUOnboardingRequest
 from agrirouter.onboarding.request_body import SoftwareOnboardingBody, CUOnboardingBody
-from agrirouter.onboarding.response import SoftwareVerifyOnboardingResponse, SoftwareOnboardingResponse, CUOnboardingResponse
+from agrirouter.onboarding.response import SoftwareVerifyOnboardingResponse, SoftwareOnboardingResponse, \
+    CUOnboardingResponse
 
 
 class SoftwareOnboarding(EnvironmentalService):

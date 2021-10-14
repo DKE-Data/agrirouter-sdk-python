@@ -37,6 +37,9 @@ class SoftwareVerifyOnboardingResponse(BaseOnboardingResonse):
             details=response_body.get("error").get("details"),
         ) if response_body.get("error", None) else None
 
+    def get_account_id(self) -> str:
+        return self.account_id
+
 
 class SoftwareOnboardingResponse(BaseOnboardingResonse):
     """

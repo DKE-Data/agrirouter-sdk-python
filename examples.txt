@@ -94,8 +94,8 @@ True
 >>> onboarding_verifying_response.status_code
 >>> onboarding_verifying_response.text
 >>> onboarding_response = onboarding_client.onboard(onboarding_parameters)
->>> onboarding_response.status_code()
->>> onboarding_response.data()		# or onboarding_response.text()
+>>> onboarding_response.status_code
+>>> onboarding_response.text
 
 {
   "authentication": {

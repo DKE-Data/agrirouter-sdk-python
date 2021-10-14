@@ -6,10 +6,45 @@ from agrirouter.onboarding.dto import ErrorResponse, ConnectionCriteria, Authent
 class BaseOnboardingResonse:
 
     def __init__(self, http_response: Response):
-        response_body = http_response.json()
 
         self._status_code = http_response.status_code
         self._text = http_response.text
+
+    @property
+    def status_code(self):
+        return self._status_code
+
+    @property
+    def text(self):
+        return self._text
+
+
+class SoftwareVerifyOnboardingResponse(BaseOnboardingResonse):
+    """
+    Response from verify request used for Farming Software or Telemetry Platform before onboarding
+    """
+
+    def __init__(self, http_response: Response):
+        super(SoftwareVerifyOnboardingResponse, self).__init__(http_response)
+        response_body = http_response.json()
+
+        self.account_id = response_body.get("accountId", None)
+
+        self.error = ErrorResponse(
+            code=response_body.get("error").get("code"),
+            message=response_body.get("error").get("message"),
+            target=response_body.get("error").get("target"),
+            details=response_body.get("error").get("details"),
+        ) if response_body.get("error", None) else None
+
+
+class SoftwareOnboardingResponse(BaseOnboardingResonse):
+    """
+    Response from onboarding request used for Farming Software or Telemetry Platform
+    """
+    def __init__(self, http_response: Response):
+        super(SoftwareOnboardingResponse, self).__init__(http_response)
+        response_body = http_response.json()
 
         self.connection_criteria = ConnectionCriteria(
             gateway_id=response_body.get("connectionCriteria").get("gatewayId"),
@@ -49,39 +84,6 @@ class BaseOnboardingResonse:
 
     def get_capability_alternate_id(self) -> str:
         return self.capability_alternate_id
-
-    @property
-    def status_code(self):
-        return self._status_code
-
-    @property
-    def text(self):
-        return self._text
-
-
-class SoftwareVerifyOnboardingResponse(BaseOnboardingResonse):
-    """
-    Response from verify request used for Farming Software or Telemetry Platform before onboarding
-    """
-    pass
-
-
-class SoftwareOnboardingResponse(BaseOnboardingResonse):
-    """
-    Response from onboarding request used for Farming Software or Telemetry Platform
-    """
-
-    def get_connection_criteria(self) -> dict:
-        response_data = self.data()
-        return response_data.get("connectionCriteria")
-
-    def get_sensor_alternate_id(self):
-        response_data = self.data()
-        return response_data.get("sensorAlternateId")
-
-    def get_authentication(self):
-        response_data = self.data()
-        return response_data.get("authentication")
 
 
 class CUOnboardingResponse(BaseOnboardingResonse):

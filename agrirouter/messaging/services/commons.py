@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 import requests
 
 from agrirouter.messaging.certification import create_certificate_file
+from agrirouter.messaging.clients.http import HttpClient
 from agrirouter.messaging.clients.mqtt import MqttClient
 from agrirouter.messaging.messages import Message
 from agrirouter.messaging.request import MessageRequest
@@ -32,21 +33,16 @@ class AbstractMessagingClient(ABC):
 
 class HttpMessagingService(AbstractMessagingClient):
 
+    def __init__(self, on_message_callback, timeout):
+        self.client = HttpClient(on_message_callback=on_message_callback, timeout=timeout)
+
     def send(self, parameters) -> MessagingResult:
         request = self.create_message_request(parameters)
-        cert_file_path = create_certificate_file(parameters.get_onboarding_response())
-        try:
-            response = requests.post(
-                url=parameters.get_onboarding_response().get_connection_criteria().get_measures(),
-                headers={"Content-type": "application/json"},
-                data=request.json_serialize(),
-                cert=(
-                    cert_file_path,
-                    parameters.get_onboarding_response().get_authentication().get_secret()
-                ),
-            )
-        finally:
-            os.remove(cert_file_path)
+        response = self.client.send(
+            "POST",
+            parameters.get_onboarding_response(),
+            request
+        )
         result = MessagingResult([parameters.get_message_id()])
         return result
 

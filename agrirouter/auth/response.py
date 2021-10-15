@@ -46,12 +46,14 @@ class AuthResponse:
         encoded_data = self._state + self._token
         unquoted_signature = unquote(self._signature)
         encoded_signature = base64.b64decode(unquoted_signature.encode("utf-8"))
-        self._was_verified = True
+
         try:
             verify_signature(encoded_data, encoded_signature, public_key)
         except InvalidSignature:
             print("Response is invalid: invalid signature.")
             self._is_valid = False
+        finally:
+            self._was_verified = True
 
         self._is_valid = True
 

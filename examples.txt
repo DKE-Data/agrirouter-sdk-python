@@ -1,3 +1,44 @@
+
+public_key = "-----BEGIN PUBLIC KEY-----\n" \
+             "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvFlVFgYRIkGL6Ay/av2e\n" \
+             "S2yIag7XHRWFgVFewPegFyWjUQPSe5t2unrNOUu6Ucp7/ck/Ivm4c/6g39fDDzmq\n" \
+             "i4JU8OfMpVbUxpiJSGa/OSiXnDuWkJyjdac/C8ip0EpOCFjAWdE+pnGhDny1XAwp\n" \
+             "i4t0/WtO8U+IOYtjxpyyOp3daX97C7ihM1I6eOecVN6Caz9B38EnPg12UGA5NkZO\n" \
+             "pnz4BHMwYUZqgxaeOPlh4MquAnF5fdjOV3TkmFWkbP1un3BJkU6owcadbjN5DQCG\n" \
+             "jguFzX8VVfJEgn2VtIFbbhqsRivvNDmWst1XNZ0GRpviFFQRymz1WroV0lB9P9vK\n" \
+             "mwIDAQAB\n" \
+             "-----END PUBLIC KEY-----"
+
+private_key = "-----BEGIN PRIVATE KEY-----\n" \
+                        "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC8WVUWBhEiQYvo\n" \
+                        "DL9q/Z5LbIhqDtcdFYWBUV7A96AXJaNRA9J7m3a6es05S7pRynv9yT8i+bhz/qDf\n" \
+                        "18MPOaqLglTw58ylVtTGmIlIZr85KJecO5aQnKN1pz8LyKnQSk4IWMBZ0T6mcaEO\n" \
+                        "fLVcDCmLi3T9a07xT4g5i2PGnLI6nd1pf3sLuKEzUjp455xU3oJrP0HfwSc+DXZQ\n" \
+                        "YDk2Rk6mfPgEczBhRmqDFp44+WHgyq4CcXl92M5XdOSYVaRs/W6fcEmRTqjBxp1u\n" \
+                        "M3kNAIaOC4XNfxVV8kSCfZW0gVtuGqxGK+80OZay3Vc1nQZGm+IUVBHKbPVauhXS\n" \
+                        "UH0/28qbAgMBAAECggEANVX8vMBaEL/L/RnDCOqp7UTeOl5adx91j2G5+d4FhRiA\n" \
+                        "73usGpmzHOqSe/OgXvH+e6cGDIL3w00rREgGsiSL0XbGU/PoJTf6CAUA9zI1W1vN\n" \
+                        "1w2evPPGbBZAybb4s4WfJEjxq12QJrUNvRr+hoLhLuV+axb8o2P4uQbqab9Mz0ER\n" \
+                        "lczCbHi4VDs1fwmNR3o47T1J4Qffzv1nMlor3pSrDzRDebic7/DC5JFkYZNGUtHk\n" \
+                        "jKDF5Uv7Vzxgb4Of+i3JA5mRMqvG33pdenvvetwl9X69WOiC29bVlymSHyybBE4A\n" \
+                        "ItfCAHIiY3nUL7UqzoIXpsyPs3ftkiy3Hn7isVSpLQKBgQDjadkGlqIgXCKZ8RS6\n" \
+                        "a4iLTTTlh8Ur+vMrejBLPul1oxz2dRWZy8zykfNN2MPz7q2xT8wXGuxgj+jei/fi\n" \
+                        "Gk08+UudMhV5Dtshb3fFq0NFCBe1ZUEX/wAcKC4Ed9xuuHpe7HOKAG0AsnzS8MPC\n" \
+                        "lcMiL1/vz0GuRbsiyMY6hXweZQKBgQDUBmQNqOBWDTQkO/8MFHopo6Ju9iNvZ4fC\n" \
+                        "u4SWqL+5BO3nnQHAQyslsj8FNilqhgMI+zaFFbZMZPv5opBSaAR0CQanKxMe3c9I\n" \
+                        "XYkAJH2+M0fpp80LtxwShD411UDhIypzumfKe8vUXRW/8TWfl6VidfEVjxw6Rc2D\n" \
+                        "g9btI4k0/wKBgQC42plnGZq/4yTdLXJD9pUPZrrQuQQ1M8/mT3RiNclfri8kxxe/\n" \
+                        "5EG8C5dSeBkQd7sInmyve1sZQuFvxSbBy89s+NfV95gsxz6odwtMymHsAyACe0Pm\n" \
+                        "VYmpWZ/OUgAEoEAYWOuyCZaRMoT0knEOAt6TMx8wt7AUEOqE497+QvMZYQKBgQC6\n" \
+                        "ARlJenvEQjUaDKBFYrmBShK4MasIktThG0zINyZrFE35wR3GI6b4nRT4Z3mSABst\n" \
+                        "h+Vef5u8DWOYrurZwHMXsMtrYDiX/ZNZMuV7gIfnkmlmLFWQD4XLIMTKyVjvqcAW\n" \
+                        "YtOnKU+58CeiieO3LHxkkn97oF7tKEuRMtock+5M1QKBgC2fquqxXMrBEIoMGCZs\n" \
+                        "ooU5V9gOjFVKC52VWnTNgmOWTqgZuqxPJtCTN5wPvhOSggQuHPwBHa9ioshJ0dGE\n" \
+                        "6jdxGaJjAc82q2KZu9VEqoH/Xa2aS8dPEHwfJtzUVTia6WkrFtMFNaDMFd6byWDQ\n" \
+                        "ai+T4i2J3/SDL0BfsFWdQuje\n" \
+                        "-----END PRIVATE KEY-----"
+
+
 >>> private_key = ...	# store here your private key you get in AR UI during application creation
 >>> public_key = ...	# store here your public key you get in AR UI during application creation
 >>> application_id = "8c947a45-c57d-4fd2-affc-206e2sdg3a50"		# # store here your application id. You can find it in AR UI
@@ -12,13 +53,13 @@
 >>> auth_client = ar.Authorization("QA", public_key=public_key, private_key=private_key)
 >>> auth_url = auth_client.get_auth_request_url(auth_params)	# use this url to authorize the user as described at https://docs.my-agrirouter.com/agrirouter-interface-documentation/latest/integration/authorization.html#perform-authorization
 
->>> auth_result_url = ...	# the url the user was redirected after his authorization.
->>> auth_response = auth_client.extract_auth_response(auth_result_url) 	# auth_response containing the results of the auth process
+>>> auth_result_url = ...	# the url the user was redirected to after his authorization.
+>>> auth_response = auth_client.extract_auth_response(auth_result_url) 	# auth_response contains the results of the auth process
 >>> auth_client.verify_auth_response(auth_response)				# you may verify auth_response to ensure answer was from AR
 
->>> auth_response.is_successfull	# True if user accepted application, False if he rejected
+>>> auth_response.is_successful	# True if user accepted application, False if he rejected
 True
->>> auth_response.is_valid	# Result of verification, if False, response was not validated by public key. Doesn't indicate was the auth successfull. Accessible only after response verifying
+>>> auth_response.is_valid	# Result of verification, if False, response was not validated by public key. Doesn't indicate the auth was successfull. Accessible only after response verifying
 True
 
 >>> # Get dict containing data from auth process you will use for futher communication.
@@ -45,15 +86,16 @@ True
 
 >>> id_ = "mydeviceid"
 >>> certification_version_id = ...	# get from AR UI
->>> utc_timestamp = "2018-06-20T07:29:23.457Z"
 >>> time_zone = "+03:00"
 
 >>> onboarding_client = ar.SoftwareOnboarding("QA", public_key=public_key, private_key=private_key)
->>> onboarding_parameters = ar.SoftwareOnboardingParameter(id_=id_, application_id=application_id, certification_version_id=certification_version_id, gateway_id=GateWays.REST.value, utc_timestamp=utc_timestamp, time_zone=time_zone, reg_code=auth_data["credentials"]["regcode"])
+>>> onboarding_parameters = ar.SoftwareOnboardingParameter(id_=id_, application_id=application_id, certification_version_id=certification_version_id, gateway_id=GateWays.REST.value, time_zone=time_zone, reg_code=auth_data["credentials"]["regcode"])
 >>> onboarding_verifying_response = onboarding_client.verify(onboarding_parameters)
+>>> onboarding_verifying_response.status_code
+>>> onboarding_verifying_response.text
 >>> onboarding_response = onboarding_client.onboard(onboarding_parameters)
->>> onboarding_response.status_code()
->>> onboarding_response.data()		# or onboarding_response.text()
+>>> onboarding_response.status_code
+>>> onboarding_response.text
 
 {
   "authentication": {

@@ -30,11 +30,11 @@ class SoftwareOnboarding(EnvironmentalService):
 
     def _perform_request(self, params: BaseOnboardingParameter, url: str) -> requests.Response:
         request = self._create_request(params, url)
-        request.sign(self._private_key)
+        request.sign(self._private_key, self._public_key)
         if request.is_signed:
             return requests.post(
                 url=request.get_url(),
-                data=json.dumps(request.get_data()),
+                json=request.get_data(),
                 headers=request.get_header()
             )
         raise RequestNotSigned

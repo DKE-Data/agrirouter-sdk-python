@@ -3,7 +3,7 @@ import json
 import os
 import ssl
 
-from agrirouter.messaging.certification import create_certificate_file
+from agrirouter.messaging.certification import create_certificate_file_from_pen
 from agrirouter.onboarding.dto import ConnectionCriteria
 from agrirouter.onboarding.response import SoftwareOnboardingResponse
 
@@ -35,16 +35,23 @@ class HttpClient:
         )
         return connection
 
-    def send(self, method: str, request, onboard_response: SoftwareOnboardingResponse):
-        certificate_file_path = create_certificate_file(onboard_response)
+    def send(self, method: str, onboard_response: SoftwareOnboardingResponse, request_body=None):
+        certificate_file_path = create_certificate_file_from_pen(onboard_response)
         try:
             connection = self.make_connection(certificate_file_path, onboard_response)
-            connection.request(
-                method=method,
-                url=onboard_response.get_connection_criteria().get_measures(),
-                headers=self.headers,
-                body=json.dumps(request.json_serialize())
-            )
+            if request_body is not None:
+                connection.request(
+                    method=method,
+                    url=onboard_response.get_connection_criteria().get_measures(),
+                    headers=self.headers,
+                    body=json.dumps(request_body)
+                )
+            else:
+                connection.request(
+                    method=method,
+                    url=onboard_response.get_connection_criteria().get_measures(),
+                    headers=self.headers,
+                )
             response = connection.getresponse()
         finally:
             os.remove(certificate_file_path)

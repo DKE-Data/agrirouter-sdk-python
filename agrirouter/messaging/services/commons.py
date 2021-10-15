@@ -40,8 +40,8 @@ class HttpMessagingService(AbstractMessagingClient):
         request = self.create_message_request(parameters)
         response = self.client.send(
             "POST",
-            request,
             parameters.get_onboarding_response(),
+            request
         )
         result = MessagingResult([parameters.get_message_id()])
         return result

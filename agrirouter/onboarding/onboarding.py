@@ -39,11 +39,11 @@ class SoftwareOnboarding(EnvironmentalService):
             )
         raise RequestNotSigned
 
-    def verify(self, params: SoftwareOnboardingParameter) -> SoftwareOnboardingResponse:
+    def verify(self, params: SoftwareOnboardingParameter) -> SoftwareVerifyOnboardingResponse:
         url = self._environment.get_verify_onboard_request_url()
         http_response = self._perform_request(params=params, url=url)
 
-        return SoftwareOnboardingResponse(http_response)
+        return SoftwareVerifyOnboardingResponse(http_response)
 
     def onboard(self, params: SoftwareOnboardingParameter) -> SoftwareOnboardingResponse:
         url = self._environment.get_secured_onboard_url()

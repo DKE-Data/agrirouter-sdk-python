@@ -75,7 +75,7 @@ class SoftwareOnboardingBody(BaseOnboardingBody):
         }
 
     def json(self) -> str:
-        return json.dumps(self.get_parameters())
+        return json.dumps(self.get_parameters(), separators=(',', ':'))
 
     @staticmethod
     def _validate_certificate_type(certificate_type: str) -> None:

@@ -34,7 +34,7 @@ class SoftwareOnboarding(EnvironmentalService):
         if request.is_signed:
             return requests.post(
                 url=request.get_url(),
-                json=request.get_data(),
+                data=request.get_body_content(),
                 headers=request.get_header()
             )
         raise RequestNotSigned
@@ -74,7 +74,7 @@ class CUOnboarding(EnvironmentalService):
         if request.is_signed:
             return requests.post(
                 url=request.get_url(),
-                data=request.get_data(),
+                data=request.get_body_content(),
                 headers=request.get_header()
             )
         raise RequestNotSigned

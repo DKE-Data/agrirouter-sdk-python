@@ -1,11 +1,14 @@
 """Tests agrirouter/auth/dto.py"""
-from agrirouter.onboarding.dto import AuthorizationToken, ConnectionCriteria, Authentication
+from agrirouter.onboarding.dto import (
+    AuthorizationToken,
+    ConnectionCriteria,
+    Authentication,
+)
 from agrirouter.messaging.exceptions import WrongFieldError
 import pytest
 
 
 class TestAuthorizationToken:
-
     def test_json_deserialize(self):
         account = "account"
         regcode = "regcode"
@@ -50,7 +53,6 @@ class TestAuthorizationToken:
 
 
 class TestConnectionCriteria:
-
     def test_json_deserialize(self):
         client_id = "1"
         commands = "commands"
@@ -95,7 +97,6 @@ class TestConnectionCriteria:
 
 
 class TestAuthentication:
-
     def test_json_deserialize(self):
         type = "type"
         secret = "secret"
@@ -110,20 +111,14 @@ class TestAuthentication:
         assert test_object.secret == secret
         assert test_object.certificate == certificate
 
-        test_object_1 = Authentication(
-            type=type,
-            certificate=certificate
-        )
+        test_object_1 = Authentication(type=type, certificate=certificate)
         test_object_1.json_deserialize({"secret": secret})
         assert test_object_1
         assert test_object_1.type == type
         assert test_object_1.secret == secret
         assert test_object_1.certificate == certificate
 
-        test_object_2 = Authentication(
-            secret=secret,
-            certificate=certificate
-        )
+        test_object_2 = Authentication(secret=secret, certificate=certificate)
         test_object_2.json_deserialize({"type": type})
         assert test_object_2
         assert test_object_2.type == type

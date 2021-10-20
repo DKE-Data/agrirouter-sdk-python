@@ -11,7 +11,6 @@ class TestSoftwareOnboardingHeader:
     )
 
     def test_get_header(self):
-        assert isinstance(self.test_object.get_header(), dict)
         assert (
             self.test_object.get_header()["Authorization"] == "Bearer " + self.reg_code
         )

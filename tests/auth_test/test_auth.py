@@ -15,7 +15,6 @@ from re import search
 class TestAuthorization:
     def test_extract_auth_response(self):
         auth_client = Authorization(ENV, public_key=public_key, private_key=private_key)
-        assert isinstance(auth_client.extract_auth_response(auth_result_url), object)
         assert search(
             "<agrirouter.auth.response.AuthResponse",
             str(auth_client.extract_auth_response(auth_result_url)),

@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from typing import Union, List, Dict
 
 from agrirouter.messaging.exceptions import WrongFieldError
+from agrirouter.utils.utc_time_util import now_as_utc_str
 
 
 class EncodedMessage:
@@ -36,12 +37,12 @@ class Message:
 
     def __init__(self, content):
         self.content = content
-        self.timestamp = datetime.utcnow()
+        self.timestamp = now_as_utc_str()
 
     def json_serialize(self) -> dict:
         return {
             self.MESSAGE: self.content,
-            self.TIMESTAMP: self.timestamp.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            self.TIMESTAMP: self.timestamp
         }
 
 

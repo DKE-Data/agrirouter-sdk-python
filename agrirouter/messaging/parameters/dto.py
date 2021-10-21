@@ -9,7 +9,7 @@ class Parameters:
     def __init__(self,
                  *,
                  application_message_seq_no: str,
-                 application_message_id: int = None,
+                 application_message_id: str = None,
                  team_set_context_id: str
                  ):
         self.application_message_seq_no = application_message_seq_no
@@ -42,8 +42,8 @@ class MessageParameters(Parameters):
     def __init__(self,
                  *,
                  application_message_seq_no: str,
-                 application_message_id: int,
-                 team_set_context_id: str,
+                 application_message_id: str,
+                 team_set_context_id: str = None,
                  onboarding_response: BaseOnboardingResonse
                  ):
         super(MessageParameters, self).__init__(
@@ -54,7 +54,7 @@ class MessageParameters(Parameters):
 
         self.onboarding_response = onboarding_response
 
-    def get_onboarding_response(self):
+    def get_onboarding_response(self) -> BaseOnboardingResonse:
         return self.onboarding_response
 
 
@@ -63,7 +63,7 @@ class MessagingParameters(MessageParameters):
     def __init__(self,
                  *,
                  application_message_seq_no: str = None,
-                 application_message_id: int = None,
+                 application_message_id: str = None,
                  team_set_context_id: str = None,
                  onboarding_response: BaseOnboardingResonse,
                  encoded_messages=None

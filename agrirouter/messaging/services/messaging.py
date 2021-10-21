@@ -55,7 +55,7 @@ class CapabilityService(AbstractService):
             capability_specification.capabilities = parameters.get_capability_parameters()
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(CapabilitySpecification.__name__),
+            type_url=TypeUrl.get_type_url(CapabilitySpecification),
             value=capability_specification.SerializeToString()
         )
 
@@ -85,7 +85,7 @@ class FeedConfirmService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(MessageConfirm.__name__),
+            type_url=TypeUrl.get_type_url(MessageConfirm),
             value=message_confirm.SerializeToString()
         )
 
@@ -115,7 +115,7 @@ class FeedDeleteService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(MessageConfirm.__name__),
+            type_url=TypeUrl.get_type_url(MessageConfirm),
             value=message_confirm.SerializeToString()
         )
 
@@ -147,7 +147,7 @@ class ListEndpointsService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(ListEndpointsQuery.__name__),
+            type_url=TypeUrl.get_type_url(ListEndpointsQuery),
             value=list_endpoints_query.SerializeToString()
         )
 
@@ -179,7 +179,7 @@ class QueryMessagesService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(MessageQuery.__name__),
+            type_url=TypeUrl.get_type_url(MessageQuery),
             value=message_query.SerializeToString()
         )
 
@@ -211,7 +211,7 @@ class QueryHeaderService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(MessageQuery.__name__),
+            type_url=TypeUrl.get_type_url(MessageQuery),
             value=message_query.SerializeToString()
         )
 
@@ -241,7 +241,7 @@ class SubscriptionService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(Subscription.__name__),
+            type_url=TypeUrl.get_type_url(Subscription),
             value=subscription.SerializeToString()
         )
 

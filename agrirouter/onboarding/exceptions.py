@@ -21,3 +21,7 @@ class RequestNotSigned(AgriRouuterBaseException):
     Details on: https://docs.my-agrirouter.com/agrirouter-interface-documentation/latest/
     integration/onboarding.html#signing-requests
     """
+
+
+class BadMessagingResult(AgriRouuterBaseException):
+    _message = "Messaging Request failed"

@@ -18,7 +18,7 @@ class MessageHeaderParameters(Parameters):
                  application_message_seq_no: str = None,
                  recipients: list = None,
                  chunk_component: ChunkComponent = None,
-                 application_message_id: int = None,
+                 application_message_id: str = None,
                  ):
         super(MessageHeaderParameters, self).__init__(
             application_message_seq_no=application_message_seq_no,
@@ -217,7 +217,7 @@ class FeedDeleteParameters(MessageParameters):
 class ListEndpointsParameters(MessageParameters):
     def __init__(self,
                  technical_message_type: str = None,
-                 direction: str = None,
+                 direction: int = None,
                  filtered: bool = False,
                  **kwargs):
         self.technical_message_type = technical_message_type
@@ -231,10 +231,10 @@ class ListEndpointsParameters(MessageParameters):
     def set_technical_message_type(self, technical_message_type: str):
         self.technical_message_type = technical_message_type
 
-    def get_direction(self) -> str:
+    def get_direction(self) -> int:
         return self.direction
 
-    def set_direction(self, direction: str):
+    def set_direction(self, direction: int):
         self.direction = direction
 
     def is_filtered(self):

@@ -13,3 +13,18 @@ class TechnicalMessageType(BaseEnum):
     FEED_MESSAGE_QUERY = "dke:feed_message_query"
     CLOUD_ONBOARD_ENDPOINTS = "dke:cloud_onboard_endpoints"
     CLOUD_OFFBOARD_ENDPOINTS = "dke:cloud_offboard_endpoints"
+
+
+class CapabilityTypeDefinitions(BaseEnum):
+    ISO_11783_TASKDATA_ZIP = "iso:11783:-10:taskdata:zip"
+    ISO_11783_DEVICE_DESCRIPTION_PROTOBUF = "iso:11783:-10:device_description:protobuf"
+    ISO_11783_TIMELOG_PROTOBUF = "iso:11783:-10:time_log:protobuf"
+    IMG_BMP = "img:bmp"
+    IMG_JPEG = "img:jpeg"
+    IMG_PNG = "img:png"
+    SHP_SHAPE_ZIP = "shp:shape:zip"
+    DOC_PDF = "doc:pdf"
+    VID_AVI = "vid:avi"
+    VID_MP4 = "vid:mp4"
+    VID_WMV = "vid:wmv"
+    GPS_INFO = "gps:info"

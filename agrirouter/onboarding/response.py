@@ -1,3 +1,5 @@
+import json
+
 from requests import Response
 
 from agrirouter.onboarding.dto import ErrorResponse, ConnectionCriteria, Authentication
@@ -54,6 +56,8 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
             measures=response_body.get("connectionCriteria").get("measures"),
             commands=response_body.get("connectionCriteria").get("commands"),
             host=response_body.get("connectionCriteria").get("host"),
+            port=response_body.get("connectionCriteria").get("port"),
+            client_id=response_body.get("connectionCriteria").get("client_id")
         ) if response_body.get("connectionCriteria", None) else None
 
         self.authentication = Authentication(

@@ -2,6 +2,7 @@ import http.client
 import json
 import os
 import ssl
+from urllib.parse import urlparse
 
 from agrirouter.messaging.certification import create_certificate_file_from_pen
 from agrirouter.onboarding.dto import ConnectionCriteria
@@ -20,8 +21,7 @@ class HttpClient:
         self.on_message_callback = on_message_callback
         self.timeout = timeout
 
-    @staticmethod
-    def make_connection(certificate_file_path: str, onboard_response: SoftwareOnboardingResponse):
+    def make_connection(self, certificate_file_path: str, onboard_response: SoftwareOnboardingResponse):
         context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
         context.load_cert_chain(
             certfile=certificate_file_path,
@@ -29,8 +29,8 @@ class HttpClient:
             password=onboard_response.get_authentication().get_secret(),
         )
         connection = http.client.HTTPSConnection(
-            host=onboard_response.connection_criteria.get_host(),
-            port=onboard_response.connection_criteria.get_port(),
+            host=self.get_host(onboard_response.connection_criteria.get_measures()),
+            port=self.get_port(onboard_response.connection_criteria.get_measures()),
             context=context
         )
         return connection
@@ -44,7 +44,7 @@ class HttpClient:
                     method=method,
                     url=onboard_response.get_connection_criteria().get_measures(),
                     headers=self.headers,
-                    body=json.dumps(request_body)
+                    body=json.dumps(request_body.json_serialize())
                 )
             else:
                 connection.request(
@@ -66,3 +66,10 @@ class HttpClient:
 
     def _start_loop(self):
         pass
+
+    def get_host(self, uri):
+        return urlparse(uri).netloc
+
+    def get_port(self, uri):
+        return urlparse(uri).port if urlparse(uri).port else None
+

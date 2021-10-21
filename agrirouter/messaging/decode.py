@@ -40,11 +40,11 @@ def decode_response(message: bytes) -> DecodedMessage:
 
 
 def decode_details(details: Any):
-    if details.type_url == TypeUrl.get_type_url(Messages.__name__):
+    if details.type_url == TypeUrl.get_type_url(Messages):
         return Messages().MergeFromString(details.value)
-    elif details.type_url == TypeUrl.get_type_url(ListEndpointsResponse.__name__):
+    elif details.type_url == TypeUrl.get_type_url(ListEndpointsResponse):
         return ListEndpointsResponse().MergeFromString(details.value)
-    elif details.type_url == TypeUrl.get_type_url(HeaderQueryResponse.__name__):
+    elif details.type_url == TypeUrl.get_type_url(HeaderQueryResponse):
         return HeaderQueryResponse().MergeFromString(details.value)
-    elif details.type_url == TypeUrl.get_type_url(MessageQueryResponse.__name__):
+    elif details.type_url == TypeUrl.get_type_url(MessageQueryResponse):
         return MessageQueryResponse().MergeFromString(details.value)

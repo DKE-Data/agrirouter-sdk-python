@@ -10,6 +10,6 @@ def test_json_serialize():
         capability_alternate_id="1",
         messages=[Message(content="content")],
     ).json_serialize()
-    assert isinstance(message_request, dict)
     assert message_request["capabilityAlternateId"] == "1"
     assert message_request["sensorAlternateId"] == "1"
+    assert message_request["measures"]

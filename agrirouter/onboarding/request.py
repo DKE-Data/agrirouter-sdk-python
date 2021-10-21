@@ -18,8 +18,11 @@ class BaseOnboardingRequest:
     def get_header(self):
         return self.header.get_header()
 
+    def get_body_content(self):
+        return self.body.json().replace("\n", "")
+
     def sign(self, private_key, public_key):
-        body = self.body.json().replace("\n", "")
+        body = self.get_body_content()
         signature = create_signature(body, private_key)
         verify_signature(body, bytes.fromhex(signature), public_key)
         self.header.sign(signature)

@@ -28,10 +28,3 @@ class RevokingRequest:
         if header_has_signature:
             return True
         return False
-
-    @property
-    def is_valid(self) -> bool:
-        if not self.is_signed:
-            return False
-        signature = self.get_header().get("X-Agrirouter-Signature")
-        # return validate_signature(signature)

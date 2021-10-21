@@ -34,16 +34,16 @@ class SoftwareOnboarding(EnvironmentalService):
         if request.is_signed:
             return requests.post(
                 url=request.get_url(),
-                json=request.get_data(),
+                data=request.get_body_content(),
                 headers=request.get_header()
             )
         raise RequestNotSigned
 
-    def verify(self, params: SoftwareOnboardingParameter) -> SoftwareOnboardingResponse:
+    def verify(self, params: SoftwareOnboardingParameter) -> SoftwareVerifyOnboardingResponse:
         url = self._environment.get_verify_onboard_request_url()
         http_response = self._perform_request(params=params, url=url)
 
-        return SoftwareOnboardingResponse(http_response)
+        return SoftwareVerifyOnboardingResponse(http_response)
 
     def onboard(self, params: SoftwareOnboardingParameter) -> SoftwareOnboardingResponse:
         url = self._environment.get_secured_onboard_url()
@@ -70,11 +70,11 @@ class CUOnboarding(EnvironmentalService):
 
     def _perform_request(self, params: CUOnboardingParameter, url: str) -> requests.Response:
         request = self._create_request(params, url)
-        request.sign(self._private_key)
+        request.sign(self._private_key, self._public_key)
         if request.is_signed:
             return requests.post(
                 url=request.get_url(),
-                data=request.get_data(),
+                data=request.get_body_content(),
                 headers=request.get_header()
             )
         raise RequestNotSigned

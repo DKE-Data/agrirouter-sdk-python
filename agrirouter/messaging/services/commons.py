@@ -1,3 +1,4 @@
+import json
 import os
 from abc import ABC, abstractmethod
 
@@ -65,7 +66,7 @@ class MqttMessagingService(AbstractMessagingClient):
 
         self.onboarding_response = onboarding_response
         self.client = MqttClient(
-            client_id=self.onboarding_response.get_client_id(),
+            client_id="asdfg",
             on_message_callback=on_message_callback,
         )
         self.client.connect(
@@ -74,9 +75,10 @@ class MqttMessagingService(AbstractMessagingClient):
         )
 
     def send(self, parameters, qos: int = 0) -> MessagingResult:
-        mqtt_payload = self.create_message_request(parameters)
+        message_request = self.create_message_request(parameters)
+        mqtt_payload = message_request.json_serialize()
         self.client.publish(
-            self.onboarding_response.get_connection_criteria().get_measures(), mqtt_payload,
+            self.onboarding_response.get_connection_criteria().get_measures(), json.dumps(mqtt_payload),
             qos=qos
         )
         result = MessagingResult([parameters.get_application_message_id()])

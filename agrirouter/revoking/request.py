@@ -18,8 +18,12 @@ class RevokingRequest:
     def get_header(self):
         return self.header.get_header()
 
+    def get_body_content(self):
+        return self.body.json().replace("\n", "")
+
     def sign(self, private_key):
-        signature = create_signature(self.body.json(new_lines=False), private_key)
+        body = self.get_body_content()
+        signature = create_signature(body, private_key)
         self.header.sign(signature)
 
     @property

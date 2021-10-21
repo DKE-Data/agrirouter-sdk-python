@@ -29,9 +29,9 @@ class Revoking(EnvironmentalService):
         request = self._create_request(params, url)
         request.sign(self._private_key)
         if request.is_signed:
-            return requests.post(
+            return requests.delete(
                 url=request.get_url(),
-                data=request.get_data(),
+                json=request.get_data(),
                 headers=request.get_header()
             )
         raise RequestNotSigned

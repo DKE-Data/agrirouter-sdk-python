@@ -123,6 +123,8 @@ True
 >>> from agrirouter.messaging.enums import CapabilityTypeDefinitions
 >>> from agrirouter.messaging.services.commons import HttpMessagingService, MqttMessagingService
 >>> from agrirouter import ListEndpointsParameters, ListEndpointsService
+>>> from agrirouter.utils.uuid_util import new_uuid
+
 
 >>> client = HttpClient(client_id="8c942k45-c03d-44y2-affc-206e893m63a50", on_message_callback=lambda x: x)    # Enter your client_id and on_message_callback
 >>> messaging_service = HttpMessagingService(client)

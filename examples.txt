@@ -119,7 +119,12 @@ True
 
 
 >>> from agrirouter.messaging.clients.http import HttpClient
->>> client = HttpClient(lambda x: x)
+>>> from agrirouter.messaging.clients.mqtt import MqttClient
+>>> from agrirouter.messaging.enums import CapabilityTypeDefinitions
+>>> from agrirouter.messaging.services.commons import HttpMessagingService, MqttMessagingService
+>>> from agrirouter import ListEndpointsParameters, ListEndpointsService
+
+>>> client = HttpClient(client_id="8c942k45-c03d-44y2-affc-206e893m63a50", on_message_callback=lambda x: x)    # Enter your client_id and on_message_callback
 >>> messaging_service = HttpMessagingService(client)
 >>> list_endpoint_parameters = ListEndpointsParameters(
         technical_message_type=CapabilityTypeDefinitions.ISO_11783_TASKDATA_ZIP.value,

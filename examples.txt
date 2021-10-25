@@ -118,6 +118,7 @@ True
 >>> Messaging
 
 
+>>> from agrirouter.messaging.clients.http import HttpClient
 >>> client = HttpClient(lambda x: x)
 >>> messaging_service = HttpMessagingService(client)
 >>> list_endpoint_parameters = ListEndpointsParameters(

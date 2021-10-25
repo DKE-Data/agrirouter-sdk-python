@@ -112,3 +112,21 @@ True
   "deviceAlternateId": "c067272a-d3a7-4dcf-ab58-5c45ba66ad60",
   "sensorAlternateId": "5564ce96-385f-448a-9502-9ea3c940a259"
 }
+
+
+>>> ##########################
+>>> Messaging
+
+
+>>> client = HttpClient(lambda x: x)
+>>> messaging_service = HttpMessagingService(client)
+>>> list_endpoint_parameters = ListEndpointsParameters(
+        technical_message_type=CapabilityTypeDefinitions.ISO_11783_TASKDATA_ZIP.value,
+        direction=2,
+        filtered=False,
+        onboarding_response=onboarding_response,
+        application_message_id=new_uuid(),
+        application_message_seq_no=1,
+    )
+>>> list_endpoint_service = ListEndpointsService(messaging_service)
+>>> list_endpoint_service.send(list_endpoint_parameters)

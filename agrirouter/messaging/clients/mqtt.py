@@ -7,7 +7,7 @@ from paho.mqtt.client import MQTTv31, MQTTMessageInfo
 class MqttClient:
 
     def __init__(self,
-                 client_id: str = "",
+                 client_id,
                  on_message_callback: callable = None,
                  userdata: Any = None,
                  clean_session: bool = True
@@ -88,6 +88,13 @@ class MqttClient:
     def _get_on_connect_callback() -> callable:
 
         def on_connect(client, userdata, flags, rc, properties=None):
+            print("Connection started")
+            with open("connection.txt", "w") as file:
+                file.write("Connection started")
+                if rc == 0:
+                    file.write("Connected!!")
+                else:
+                    file.write("Do not Connected!!")
             if rc == 0:
                 print("Connected to MQTT Broker!")
             else:

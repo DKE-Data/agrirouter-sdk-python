@@ -60,13 +60,14 @@ class HttpMessagingService(AbstractMessagingClient):
 class MqttMessagingService(AbstractMessagingClient):
 
     def __init__(self,
+                 client_id,
                  onboarding_response,
                  on_message_callback: callable = None,
                  ):
 
         self.onboarding_response = onboarding_response
         self.client = MqttClient(
-            client_id="asdfg",
+            client_id=client_id,
             on_message_callback=on_message_callback,
         )
         self.client.connect(

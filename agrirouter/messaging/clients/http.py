@@ -17,7 +17,7 @@ class HttpClient:
         context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
         context.load_cert_chain(
             certfile=certificate_file_path,
-#            keyfile=certificate_file_path,
+            keyfile=certificate_file_path,
             password=onboard_response.get_authentication().get_secret(),
         )
         connection = http.client.HTTPSConnection(

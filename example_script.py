@@ -94,13 +94,13 @@ print(f"onboarding_response.text: {onboarding_response.text}")
 # Messaging
 
 
-from agrirouter.messaging.clients.http import HttpClient
-from agrirouter.messaging.clients.mqtt import MqttClient
 from agrirouter.messaging.enums import CapabilityTypeDefinitions
+from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.messaging.services.commons import HttpMessagingService, MqttMessagingService
-from agrirouter import ListEndpointsParameters, ListEndpointsService
+from agrirouter import ListEndpointsParameters, ListEndpointsService, SubscriptionService, SubscriptionParameters
 from agrirouter.utils.uuid_util import new_uuid
 
+# List Endpoints
 
 messaging_service = HttpMessagingService()
 list_endpoint_parameters = ListEndpointsParameters(
@@ -113,3 +113,18 @@ list_endpoint_parameters = ListEndpointsParameters(
     )
 list_endpoint_service = ListEndpointsService(messaging_service)
 list_endpoint_service.send(list_endpoint_parameters)
+
+# Subscription
+
+messaging_service = HttpMessagingService()
+subscription_service = SubscriptionService(messaging_service)
+
+tmt = CapabilityTypeDefinitions.ISO_11783_TASKDATA_ZIP.value
+subscription_item = Subscription.MessageTypeSubscriptionItem(technical_message_type=tmt)
+subscription_parameters = SubscriptionParameters(
+        subscription_items=[subscription_item],
+        onboarding_response=onboarding_response,
+        application_message_id=new_uuid(),
+        application_message_seq_no=1,
+)
+subscription_service.send(subscription_parameters)

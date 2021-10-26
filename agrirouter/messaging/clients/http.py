@@ -11,7 +11,10 @@ from agrirouter.onboarding.response import SoftwareOnboardingResponse
 
 class HttpClient:
 
-    headers = {"Content-Type": "application/json"}
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+    }
 
     def make_connection(self, certificate_file_path: str, onboard_response: SoftwareOnboardingResponse):
         context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
@@ -34,14 +37,14 @@ class HttpClient:
             if request_body is not None:
                 connection.request(
                     method=method,
-                    url=onboard_response.get_connection_criteria().get_measures(),
+                    url=self.get_path(onboard_response.get_connection_criteria().get_measures()),
                     headers=self.headers,
                     body=json.dumps(request_body.json_serialize())
                 )
             else:
                 connection.request(
                     method=method,
-                    url=onboard_response.get_connection_criteria().get_measures(),
+                    url=self.get_path(onboard_response.get_connection_criteria().get_measures()),
                     headers=self.headers,
                 )
             response = connection.getresponse()
@@ -57,3 +60,7 @@ class HttpClient:
     @staticmethod
     def get_port(uri):
         return urlparse(uri).port if urlparse(uri).port else None
+
+    @staticmethod
+    def get_path(uri):
+        return urlparse(uri).path

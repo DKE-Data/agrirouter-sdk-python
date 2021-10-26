@@ -35,8 +35,8 @@ class AbstractMessagingClient(ABC):
 
 class HttpMessagingService(AbstractMessagingClient):
 
-    def __init__(self, on_message_callback):
-        self.client = HttpClient(on_message_callback=on_message_callback)
+    def __init__(self):
+        self.client = HttpClient()
 
     def send(self, parameters) -> MessagingResult:
         request = self.create_message_request(parameters)

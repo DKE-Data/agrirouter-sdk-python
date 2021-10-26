@@ -13,14 +13,6 @@ class HttpClient:
 
     headers = {"Content-Type": "application/json"}
 
-    def __init__(
-            self,
-            on_message_callback: callable,
-            timeout=20
-    ):
-        self.on_message_callback = on_message_callback
-        self.timeout = timeout
-
     def make_connection(self, certificate_file_path: str, onboard_response: SoftwareOnboardingResponse):
         context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
         context.load_cert_chain(
@@ -58,18 +50,10 @@ class HttpClient:
 
         return response
 
-    def subscribe(self):
-        pass
-
-    def unsubscribe(self):
-        pass
-
-    def _start_loop(self):
-        pass
-
-    def get_host(self, uri):
+    @staticmethod
+    def get_host(uri):
         return urlparse(uri).netloc
 
-    def get_port(self, uri):
+    @staticmethod
+    def get_port(uri):
         return urlparse(uri).port if urlparse(uri).port else None
-

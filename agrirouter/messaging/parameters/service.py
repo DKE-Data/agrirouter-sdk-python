@@ -6,6 +6,7 @@ from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
 from agrirouter.messaging.parameters.dto import MessageParameters, Parameters
+from agrirouter.onboarding.response import BaseOnboardingResonse
 
 
 class MessageHeaderParameters(Parameters):
@@ -330,10 +331,20 @@ class QueryHeaderParameters(MessageParameters):
 
 class SubscriptionParameters(MessageParameters):
     def __init__(self,
+                 *,
+                 application_message_seq_no: int,
+                 application_message_id: str,
+                 team_set_context_id: str = None,
+                 onboarding_response: BaseOnboardingResonse,
                  subscription_items: List[Subscription.MessageTypeSubscriptionItem] = None,
-                 **kwargs):
+                 ):
         self.subscription_items = subscription_items if subscription_items else []
-        super(SubscriptionParameters, self).__init__(**kwargs)
+        super(SubscriptionParameters, self).__init__(
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
+            onboarding_response=onboarding_response
+        )
 
     def get_subscription_items(self) -> List[Subscription.MessageTypeSubscriptionItem]:
         return self.subscription_items

@@ -8,7 +8,7 @@ from agrirouter.onboarding.response import BaseOnboardingResonse
 class Parameters:
     def __init__(self,
                  *,
-                 application_message_seq_no: str,
+                 application_message_seq_no: int,
                  application_message_id: str = None,
                  team_set_context_id: str
                  ):
@@ -41,7 +41,7 @@ class Parameters:
 class MessageParameters(Parameters):
     def __init__(self,
                  *,
-                 application_message_seq_no: str,
+                 application_message_seq_no: int,
                  application_message_id: str,
                  team_set_context_id: str = None,
                  onboarding_response: BaseOnboardingResonse

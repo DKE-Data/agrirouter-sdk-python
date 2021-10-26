@@ -101,8 +101,8 @@ from agrirouter.messaging.services.commons import HttpMessagingService, MqttMess
 from agrirouter import ListEndpointsParameters, ListEndpointsService
 from agrirouter.utils.uuid_util import new_uuid
 
-client = HttpClient(on_message_callback=lambda x: x)    # Enter your client_id and on_message_callback
-messaging_service = HttpMessagingService(client)
+
+messaging_service = HttpMessagingService()
 list_endpoint_parameters = ListEndpointsParameters(
         technical_message_type=CapabilityTypeDefinitions.ISO_11783_TASKDATA_ZIP.value,
         direction=2,

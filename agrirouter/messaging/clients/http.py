@@ -17,7 +17,7 @@ class HttpClient:
         context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
         context.load_cert_chain(
             certfile=certificate_file_path,
-            keyfile=certificate_file_path,
+#            keyfile=certificate_file_path,
             password=onboard_response.get_authentication().get_secret(),
         )
         connection = http.client.HTTPSConnection(
@@ -34,14 +34,14 @@ class HttpClient:
             if request_body is not None:
                 connection.request(
                     method=method,
-                    url=onboard_response.get_connection_criteria().get_measures(),
+                    url=urlparse(onboard_response.get_connection_criteria().get_measures()).path,
                     headers=self.headers,
                     body=json.dumps(request_body.json_serialize())
                 )
             else:
                 connection.request(
                     method=method,
-                    url=onboard_response.get_connection_criteria().get_measures(),
+                    url=urlparse(onboard_response.get_connection_criteria().get_measures()).path,
                     headers=self.headers,
                 )
             response = connection.getresponse()

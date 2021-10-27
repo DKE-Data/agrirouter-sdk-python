@@ -53,8 +53,8 @@ class Command:
         self.message = message
 
     def json_deserialize(self, data: Union[Dict[str, str], str]):
-        messages = data if type(data) == list else json.loads(data)
-        for key, value in messages.keys():
+        messages = data if type(data) == dict else json.loads(data)
+        for key, value in messages.items():
             if key == self.MESSAGE:
                 self.message = value
             else:
@@ -84,7 +84,7 @@ class OutboxMessage:
 
     def json_deserialize(self, data: Union[dict, str]):
         data = data if type(data) == dict else json.loads(data)
-        for key, value in data.keys():
+        for (key, value) in data.items():
             if key == self.CAPABILITY_ALTERNATE_ID:
                 self.capability_alternate_id = value
             elif key == self.SENSOR_ALTERNATE_ID:

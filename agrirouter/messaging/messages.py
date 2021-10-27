@@ -113,6 +113,3 @@ class OutboxMessage:
 
     def set_command(self, command: Command) -> None:
         self.command = command
-
-    def json_deserialize(self):
-        pass

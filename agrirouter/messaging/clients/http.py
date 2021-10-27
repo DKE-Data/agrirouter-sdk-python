@@ -16,7 +16,7 @@ class HttpClient:
         "Accept": "application/json"
     }
 
-    def make_connection(self, certificate_file_path: str, onboard_response: SoftwareOnboardingResponse):
+    def make_connection(self, certificate_file_path: str, uri: str, onboard_response: SoftwareOnboardingResponse):
         context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
         context.load_cert_chain(
             certfile=certificate_file_path,
@@ -24,27 +24,43 @@ class HttpClient:
             password=onboard_response.get_authentication().get_secret(),
         )
         connection = http.client.HTTPSConnection(
-            host=self.get_host(onboard_response.connection_criteria.get_measures()),
-            port=self.get_port(onboard_response.connection_criteria.get_measures()),
+            host=self.get_host(uri),
+            port=self.get_port(uri),
             context=context
         )
         return connection
 
-    def send(self, method: str, onboard_response: SoftwareOnboardingResponse, request_body=None):
+    def send_measure(self, onboard_response: SoftwareOnboardingResponse, request_body=None):
+        return self.send(
+            method="POST",
+            uri=onboard_response.get_connection_criteria().get_measures(),
+            onboard_response=onboard_response,
+            request_body=request_body
+        )
+
+    def send_command(self, onboard_response: SoftwareOnboardingResponse, request_body=None):
+        return self.send(
+            method="GET",
+            uri=onboard_response.get_connection_criteria().get_commands(),
+            onboard_response=onboard_response,
+            request_body=request_body
+        )
+
+    def send(self, method: str, uri: str, onboard_response: SoftwareOnboardingResponse, request_body=None):
         certificate_file_path = create_certificate_file_from_pen(onboard_response)
         try:
-            connection = self.make_connection(certificate_file_path, onboard_response)
+            connection = self.make_connection(certificate_file_path, uri, onboard_response)
             if request_body is not None:
                 connection.request(
                     method=method,
-                    url=self.get_path(onboard_response.get_connection_criteria().get_measures()),
+                    url=self.get_path(uri),
                     headers=self.headers,
                     body=json.dumps(request_body.json_serialize())
                 )
             else:
                 connection.request(
                     method=method,
-                    url=self.get_path(onboard_response.get_connection_criteria().get_measures()),
+                    url=self.get_path(uri),
                     headers=self.headers,
                 )
             response = connection.getresponse()

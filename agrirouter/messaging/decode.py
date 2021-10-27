@@ -9,6 +9,7 @@ from agrirouter.generated.messaging.response.payload.account.endpoints_pb2 impor
 from agrirouter.generated.messaging.response.payload.feed.feed_response_pb2 import HeaderQueryResponse, \
     MessageQueryResponse
 from agrirouter.generated.messaging.response.response_pb2 import ResponseEnvelope, ResponsePayloadWrapper
+from agrirouter.messaging.exceptions import DecodeMessageException
 from agrirouter.messaging.messages import DecodedMessage
 from agrirouter.utils.type_url import TypeUrl
 
@@ -31,8 +32,10 @@ def decode_response(message: bytes) -> DecodedMessage:
     input_stream = base64.b64decode(message)
     response_envelope_buffer, response_payload_buffer = read_properties_buffers_from_input_stream(input_stream)
 
-    envelope = ResponseEnvelope().MergeFromString(response_envelope_buffer)
-    payload = ResponsePayloadWrapper().MergeFromString(response_payload_buffer)
+    envelope = ResponseEnvelope()
+    envelope.ParseFromString(response_envelope_buffer)
+    payload = ResponsePayloadWrapper()
+    payload.ParseFromString(response_payload_buffer)
 
     message = DecodedMessage(envelope, payload)
 
@@ -41,10 +44,20 @@ def decode_response(message: bytes) -> DecodedMessage:
 
 def decode_details(details: Any):
     if details.type_url == TypeUrl.get_type_url(Messages):
-        return Messages().MergeFromString(details.value)
+        messages = Messages()
+        messages.MergeFromString(details.value)
+        return messages
     elif details.type_url == TypeUrl.get_type_url(ListEndpointsResponse):
-        return ListEndpointsResponse().MergeFromString(details.value)
+        list_endpoints_response = ListEndpointsResponse()
+        list_endpoints_response.MergeFromString(details.value)
+        return list_endpoints_response
     elif details.type_url == TypeUrl.get_type_url(HeaderQueryResponse):
-        return HeaderQueryResponse().MergeFromString(details.value)
+        header_query_response = HeaderQueryResponse()
+        header_query_response.MergeFromString(details.value)
+        return header_query_response
     elif details.type_url == TypeUrl.get_type_url(MessageQueryResponse):
-        return MessageQueryResponse().MergeFromString(details.value)
+        message_query_response = MessageQueryResponse()
+        message_query_response.MergeFromString(details.value)
+        return message_query_response
+    else:
+        raise DecodeMessageException(f"Could not handle type {details.type_url} while decoding details.")

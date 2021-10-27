@@ -17,29 +17,29 @@ class TypeUrl:
 
     @classmethod
     def get_type_url(cls, class_):
-        if class_.__name__ == Messages.__name__:
-            return cls.prefix + class_.__name__
-        elif class_.__name__ == ListEndpointsResponse.__name__:
-            return cls.prefix + class_.__name__
-        elif class_.__name__ == HeaderQueryResponse.__name__:
-            return cls.prefix + class_.__name__
-        elif class_.__name__ == MessageQueryResponse.__name__:
-            return cls.prefix + class_.__name__
-        elif class_.__name__ == MessageDelete.__name__:
-            return cls.prefix + class_.__name__
-        elif class_.__name__ == MessageConfirm.__name__:
-            return cls.prefix + class_.__name__
-        elif class_.__name__ == OnboardingResponse.__name__:
-            return cls.prefix + class_.__name__
-        elif class_.__name__ == OnboardingRequest.__name__:
-            return cls.prefix + class_.__name__
-        elif class_.__name__ == CapabilitySpecification.__name__:
-            return cls.prefix + class_.__name__
-        elif class_.__name__ == Subscription.__name__:
-            return cls.prefix + class_.__name__
-        elif class_.__name__ == MessageQuery.__name__:
-            return cls.prefix + class_.__name__
-        elif class_.__name__ == ListEndpointsQuery.__name__:
-            return cls.prefix + class_.__name__
+        if class_ == Messages:
+            return cls.prefix + Messages.DESCRIPTOR.full_name
+        elif class_ == ListEndpointsResponse:
+            return cls.prefix + ListEndpointsResponse.DESCRIPTOR.full_name
+        elif class_ == HeaderQueryResponse:
+            return cls.prefix + HeaderQueryResponse.DESCRIPTOR.full_name
+        elif class_ == MessageQueryResponse:
+            return cls.prefix + MessageQueryResponse.DESCRIPTOR.full_name
+        elif class_ == MessageDelete:
+            return cls.prefix + MessageDelete.DESCRIPTOR.full_name
+        elif class_ == MessageConfirm:
+            return cls.prefix + MessageConfirm.DESCRIPTOR.full_name
+        elif class_ == OnboardingResponse:
+            return cls.prefix + OnboardingResponse.DESCRIPTOR.full_name
+        elif class_ == OnboardingRequest:
+            return cls.prefix + OnboardingRequest.DESCRIPTOR.full_name
+        elif class_ == CapabilitySpecification:
+            return cls.prefix + CapabilitySpecification.DESCRIPTOR.full_name
+        elif class_ == Subscription:
+            return cls.prefix + Subscription.DESCRIPTOR.full_name
+        elif class_ == MessageQuery:
+            return cls.prefix + MessageQuery.DESCRIPTOR.full_name
+        elif class_ == ListEndpointsQuery:
+            return cls.prefix + ListEndpointsQuery..DESCRIPTOR.full_name
         else:
             raise TypeUrlNotFoundError(f"The {class_} type url not found")

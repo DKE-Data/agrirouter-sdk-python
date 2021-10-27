@@ -1,8 +1,11 @@
+import json
 import os
 
 import requests
 
 from agrirouter.messaging.clients.http import HttpClient
+from agrirouter.messaging.exceptions import OutboxException
+from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.result import OutboxResponse
 
 from agrirouter.messaging.certification import create_certificate_file_from_pen
@@ -10,18 +13,18 @@ from agrirouter.messaging.certification import create_certificate_file_from_pen
 
 class OutboxService:
 
-    def __init__(self, on_message_callback, timeout):
-        self.client = HttpClient(on_message_callback=on_message_callback, timeout=timeout)
+    def __init__(self):
+        self.client = HttpClient()
 
     def fetch(self, onboarding_response) -> OutboxResponse:
-        response = self.client.send(
-            "GET",
-            onboarding_response,
-            None
-        )
+        response = self.client.send_command(onboarding_response, None)
 
-        outbox_response = OutboxResponse(status_code=response.status_code)
-        outbox_response.json_deserialize(response.json()["contents"])
+        if response.status == 200:
+            outbox_response = OutboxResponse(status_code=response.status)
+            response_body = response.read()
+            outbox_response.json_deserialize(response_body)
+        else:
+            raise OutboxException(f"Could not fetch messages from outbox. Status code was {response.status}")
 
         return outbox_response
 

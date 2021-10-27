@@ -82,15 +82,17 @@ class OutboxMessage:
         self.sensor_alternate_id = sensor_alternate_id
         self.command = command
 
-    def json_deserialize(self, data: Union[list, str]):
-        data = data if type(data) == list else json.loads(data)
+    def json_deserialize(self, data: Union[dict, str]):
+        data = data if type(data) == dict else json.loads(data)
         for key, value in data.keys():
             if key == self.CAPABILITY_ALTERNATE_ID:
                 self.capability_alternate_id = value
             elif key == self.SENSOR_ALTERNATE_ID:
                 self.sensor_alternate_id = value
             elif key == self.COMMAND:
-                self.command = Command.json_deserialize(value)
+                command = Command()
+                command.json_deserialize(value)
+                self.command = command
             else:
                 raise WrongFieldError(f"Unknown field `{key}` for {self.__class__}")
 

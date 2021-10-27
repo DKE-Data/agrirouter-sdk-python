@@ -40,12 +40,8 @@ class HttpMessagingService(AbstractMessagingClient):
 
     def send(self, parameters) -> MessagingResult:
         request = self.create_message_request(parameters)
-        response = self.client.send(
-            "POST",
-            parameters.get_onboarding_response(),
-            request
-        )
-        if response.status in [400, 401, 403, 404, 500]:
+        response = self.client.send_measure(parameters.get_onboarding_response(), request)
+        if response.status != 200:
             raise BadMessagingResult(f"Messaging Request failed with status code {response.status}")
         result = MessagingResult([parameters.get_application_message_id()])
         return result

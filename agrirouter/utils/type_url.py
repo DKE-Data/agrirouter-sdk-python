@@ -40,6 +40,6 @@ class TypeUrl:
         elif class_ == MessageQuery:
             return cls.prefix + MessageQuery.DESCRIPTOR.full_name
         elif class_ == ListEndpointsQuery:
-            return cls.prefix + ListEndpointsQuery..DESCRIPTOR.full_name
+            return cls.prefix + ListEndpointsQuery.DESCRIPTOR.full_name
         else:
             raise TypeUrlNotFoundError(f"The {class_} type url not found")

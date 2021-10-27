@@ -15,7 +15,7 @@ class TechnicalMessageType(BaseEnum):
     CLOUD_OFFBOARD_ENDPOINTS = "dke:cloud_offboard_endpoints"
 
 
-class CapabilityTypeDefinitions(BaseEnum):
+class CapabilityType(BaseEnum):
     ISO_11783_TASKDATA_ZIP = "iso:11783:-10:taskdata:zip"
     ISO_11783_DEVICE_DESCRIPTION_PROTOBUF = "iso:11783:-10:device_description:protobuf"
     ISO_11783_TIMELOG_PROTOBUF = "iso:11783:-10:time_log:protobuf"

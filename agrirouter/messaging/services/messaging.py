@@ -52,7 +52,7 @@ class CapabilityService(AbstractService):
             enable_push_notifications=parameters.get_enable_push_notification()
         )
         if parameters.get_capability_parameters():
-            capability_specification.capabilities = parameters.get_capability_parameters()
+            capability_specification.capabilities.extend(parameters.get_capability_parameters())
 
         message_payload_parameters = MessagePayloadParameters(
             type_url=TypeUrl.get_type_url(CapabilitySpecification),

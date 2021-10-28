@@ -46,12 +46,6 @@ class HttpMessagingService(AbstractMessagingClient):
         result = MessagingResult([parameters.get_application_message_id()])
         return result
 
-    def subscribe(self):
-        pass
-
-    def unsubscribe(self):
-        pass
-
 
 class MqttMessagingService(AbstractMessagingClient):
 

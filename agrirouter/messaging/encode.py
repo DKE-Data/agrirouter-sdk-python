@@ -34,7 +34,10 @@ def encode_header(header_parameters: MessageHeaderParameters) -> RequestEnvelope
     request_envelope.application_message_seq_no = header_parameters.get_application_message_seq_no()
     request_envelope.technical_message_type = header_parameters.get_technical_message_type()
     request_envelope.mode = header_parameters.get_mode()
+    if header_parameters.get_team_set_context_id() is not None:
+        request_envelope.team_set_context_id = header_parameters.get_team_set_context_id()
     request_envelope.timestamp.FromDatetime(now_as_utc_timestamp())
+
     return request_envelope
 
 

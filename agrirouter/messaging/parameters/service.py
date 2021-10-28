@@ -182,9 +182,21 @@ class CapabilityParameters(MessageParameters):
 
 
 class FeedConfirmParameters(MessageParameters):
-    def __init__(self, message_ids: list = None, **kwargs):
+    def __init__(self,
+                 *,
+                 message_ids: list = None,
+                 application_message_seq_no: int,
+                 application_message_id: str,
+                 team_set_context_id: str = None,
+                 onboarding_response: BaseOnboardingResonse
+                 ):
         self.message_ids = message_ids if message_ids else []
-        super(FeedConfirmParameters, self).__init__(**kwargs)
+        super(FeedConfirmParameters, self).__init__(
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
+            onboarding_response=onboarding_response
+        )
 
     def get_message_ids(self):
         return deepcopy(self.message_ids)
@@ -201,14 +213,24 @@ class FeedConfirmParameters(MessageParameters):
 
 class FeedDeleteParameters(MessageParameters):
     def __init__(self,
+                 *,
                  message_ids: list = None,
                  receivers: list = None,
                  validity_period: ValidityPeriod = None,
-                 **kwargs):
+                 application_message_seq_no: int,
+                 application_message_id: str,
+                 team_set_context_id: str = None,
+                 onboarding_response: BaseOnboardingResonse,
+                 ):
         self.message_ids = message_ids if message_ids else []
         self.receivers = receivers if receivers else []
         self.validity_period = validity_period
-        super(FeedDeleteParameters, self).__init__(**kwargs)
+        super(FeedDeleteParameters, self).__init__(
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
+            onboarding_response=onboarding_response
+        )
 
     def get_message_ids(self):
         return deepcopy(self.message_ids)
@@ -243,14 +265,24 @@ class FeedDeleteParameters(MessageParameters):
 
 class ListEndpointsParameters(MessageParameters):
     def __init__(self,
+                 *,
                  technical_message_type: str = None,
                  direction: int = None,
                  filtered: bool = False,
-                 **kwargs):
+                 application_message_seq_no: int,
+                 application_message_id: str,
+                 team_set_context_id: str = None,
+                 onboarding_response: BaseOnboardingResonse,
+                 ):
         self.technical_message_type = technical_message_type
         self.direction = direction
         self.filtered = filtered
-        super(ListEndpointsParameters, self).__init__(**kwargs)
+        super(ListEndpointsParameters, self).__init__(
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
+            onboarding_response=onboarding_response
+        )
 
     def get_technical_message_type(self) -> str:
         return self.technical_message_type
@@ -273,14 +305,24 @@ class ListEndpointsParameters(MessageParameters):
 
 class QueryMessageParameters(MessageParameters):
     def __init__(self,
+                 *,
                  senders: list = None,
                  message_ids: list = None,
                  validity_period: ValidityPeriod = None,
-                 **kwargs):
+                 application_message_seq_no: int,
+                 application_message_id: str,
+                 team_set_context_id: str = None,
+                 onboarding_response: BaseOnboardingResonse,
+                 ):
         self.senders = senders
         self.message_ids = message_ids
         self.validity_period = validity_period
-        super(QueryMessageParameters, self).__init__(**kwargs)
+        super(QueryMessageParameters, self).__init__(
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
+            onboarding_response=onboarding_response
+        )
 
     def get_senders(self) -> list:
         return self.senders
@@ -315,14 +357,24 @@ class QueryMessageParameters(MessageParameters):
 
 class QueryHeaderParameters(MessageParameters):
     def __init__(self,
+                 *,
                  senders: list = None,
                  message_ids: list = None,
                  validity_period: ValidityPeriod = None,
-                 **kwargs):
+                 application_message_seq_no: int,
+                 application_message_id: str,
+                 team_set_context_id: str = None,
+                 onboarding_response: BaseOnboardingResonse,
+                 ):
         self.senders = senders
         self.message_ids = message_ids
         self.validity_period = validity_period
-        super(QueryHeaderParameters, self).__init__(**kwargs)
+        super(QueryHeaderParameters, self).__init__(
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
+            onboarding_response=onboarding_response
+        )
 
     def get_senders(self) -> list:
         return self.senders

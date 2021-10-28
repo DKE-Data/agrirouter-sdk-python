@@ -4,6 +4,7 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from agrirouter import CapabilityParameters, CapabilityService, QueryHeaderService, QueryHeaderParameters
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
 
+from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.builders import CapabilityBuilder
 from agrirouter.messaging.decode import decode_response, decode_details
 from agrirouter.messaging.services.commons import HttpMessagingService
@@ -25,7 +26,9 @@ def test_given_task_data_capabilities_capability_service_http():
         application_id=application_id,
         certification_version_id=certification_version_id,
         enable_push_notification=1,
-        capability_parameters=CapabilityBuilder().with_task_data(2).build(),
+        capability_parameters=CapabilityBuilder().with_task_data(
+            CapabilitySpecification.Direction.Value("SEND_RECEIVE")
+        ).build(),
         onboarding_response=onboarding_response,
         application_message_id=new_uuid(),
         application_message_seq_no=1,

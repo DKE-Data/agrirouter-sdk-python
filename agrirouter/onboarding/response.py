@@ -91,11 +91,3 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
 
     def get_capability_alternate_id(self) -> str:
         return self.capability_alternate_id
-
-
-class CUOnboardingResponse(BaseOnboardingResonse):
-    """
-    Response from onboarding request used for CUs
-    """
-    pass
-

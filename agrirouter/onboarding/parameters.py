@@ -2,6 +2,7 @@ from datetime import datetime
 
 from agrirouter.constants.media_types import ContentTypes
 from agrirouter.onboarding.enums import CertificateTypes
+from agrirouter.utils.utc_time_util import now_as_utc_str
 
 
 class SoftwareOnboardingParameter:
@@ -24,8 +25,7 @@ class SoftwareOnboardingParameter:
         self.certification_version_id = certification_version_id
         self.gateway_id = str(gateway_id)
         self.certificate_type = certificate_type
-        self.utc_timestamp = str(utc_timestamp) if utc_timestamp \
-            else datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        self.utc_timestamp = str(utc_timestamp) if utc_timestamp else now_as_utc_str()
         self.time_zone = str(time_zone)
         self.reg_code = reg_code
 

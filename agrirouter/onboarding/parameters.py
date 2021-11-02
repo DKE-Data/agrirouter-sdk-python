@@ -1,25 +1,11 @@
-from abc import ABC, abstractmethod
 from datetime import datetime
 
 from agrirouter.constants.media_types import ContentTypes
 from agrirouter.onboarding.enums import CertificateTypes
+from agrirouter.utils.utc_time_util import now_as_utc_str
 
 
-class BaseOnboardingParameter(ABC):
-    @abstractmethod
-    def __init__(self, *args, **kwargs):
-        ...
-
-    @abstractmethod
-    def get_header_params(self, *args, **kwargs):
-        ...
-
-    @abstractmethod
-    def get_body_params(self, *args, **kwargs):
-        ...
-
-
-class SoftwareOnboardingParameter(BaseOnboardingParameter):
+class SoftwareOnboardingParameter:
     def __init__(self,
                  *,
                  id_,
@@ -39,8 +25,7 @@ class SoftwareOnboardingParameter(BaseOnboardingParameter):
         self.certification_version_id = certification_version_id
         self.gateway_id = str(gateway_id)
         self.certificate_type = certificate_type
-        self.utc_timestamp = str(utc_timestamp) if utc_timestamp \
-            else datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        self.utc_timestamp = str(utc_timestamp) if utc_timestamp else now_as_utc_str()
         self.time_zone = str(time_zone)
         self.reg_code = reg_code
 
@@ -60,39 +45,4 @@ class SoftwareOnboardingParameter(BaseOnboardingParameter):
             "certificate_type": self.certificate_type,
             "utc_timestamp": self.utc_timestamp,
             "time_zone": self.time_zone,
-        }
-
-
-class CUOnboardingParameter(BaseOnboardingParameter):
-    def __init__(self,
-                 id_,
-                 application_id,
-                 certification_version_id,
-                 gateway_id,
-                 reg_code,
-                 content_type=ContentTypes.APPLICATION_JSON.value,
-                 certificate_type=CertificateTypes.P12.value,
-                 ):
-
-        self.id_ = id_
-        self.application_id = application_id
-        self.content_type = content_type
-        self.certification_version_id = certification_version_id
-        self.gateway_id = gateway_id
-        self.certificate_type = certificate_type
-        self.reg_code = reg_code
-
-    def get_header_params(self):
-        return {
-            "content_type": self.content_type,
-            "reg_code": self.reg_code,
-        }
-
-    def get_body_params(self):
-        return {
-            "id_": self.id_,
-            "application_id": self.application_id,
-            "certification_version_id": self.certification_version_id,
-            "gateway_id": self.gateway_id,
-            "certificate_type": self.certificate_type,
         }

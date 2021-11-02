@@ -12,10 +12,10 @@ class Authorization(EnvironmentalService):
     TOKEN_KEY = "token"
     ERROR_KEY = "error"
 
-    def __init__(self, *args, **kwargs):
-        self._public_key = kwargs.pop("public_key")
-        self._private_key = kwargs.pop("private_key")
-        super(Authorization, self).__init__(*args, **kwargs)
+    def __init__(self, env, public_key, private_key):
+        self._public_key = public_key
+        self._private_key = private_key
+        super(Authorization, self).__init__(env)
 
     def get_auth_request_url(self, parameters: AuthUrlParameter) -> str:
         auth_parameters = parameters.get_parameters()

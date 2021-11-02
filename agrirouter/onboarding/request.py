@@ -1,10 +1,10 @@
-from agrirouter.onboarding.headers import SoftwareOnboardingHeader, BaseOnboardingHeader
-from agrirouter.onboarding.request_body import SoftwareOnboardingBody, BaseOnboardingBody
+from agrirouter.onboarding.headers import SoftwareOnboardingHeader
+from agrirouter.onboarding.request_body import SoftwareOnboardingBody
 from agrirouter.onboarding.signature import create_signature, verify_signature
 
 
-class BaseOnboardingRequest:
-    def __init__(self, header: BaseOnboardingHeader, body: BaseOnboardingBody, url: str):
+class SoftwareOnboardingRequest:
+    def __init__(self, header: SoftwareOnboardingHeader, body: SoftwareOnboardingBody, url: str):
         self.header = header
         self.body = body
         self.url = url
@@ -33,17 +33,3 @@ class BaseOnboardingRequest:
         if header_has_signature:
             return True
         return False
-
-
-class SoftwareOnboardingRequest(BaseOnboardingRequest):
-    """
-    Request must be used to onboard Farming Software or Telemetry Platform
-    """
-    pass
-
-
-class CUOnboardingRequest(BaseOnboardingRequest):
-    """
-    Request must be used to onboard CUs
-    """
-    pass

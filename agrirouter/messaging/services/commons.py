@@ -1,14 +1,16 @@
+import json
 import os
 from abc import ABC, abstractmethod
 
 import requests
 
-from agrirouter.messaging.certification import create_certificate_file
+from agrirouter.messaging.certification import create_certificate_file_from_pen
 from agrirouter.messaging.clients.http import HttpClient
 from agrirouter.messaging.clients.mqtt import MqttClient
 from agrirouter.messaging.messages import Message
 from agrirouter.messaging.request import MessageRequest
 from agrirouter.messaging.result import MessagingResult
+from agrirouter.onboarding.exceptions import BadMessagingResult
 
 
 class AbstractMessagingClient(ABC):
@@ -18,10 +20,10 @@ class AbstractMessagingClient(ABC):
         messages = []
         for encoded_message in parameters.get_encoded_messages():
             message = Message(encoded_message)
-            messages.append(message)
+            messages.append(message.json_serialize())
         message_request = MessageRequest(
-            parameters.get_sensor_alternate_id(),
-            parameters.get_capability_alternate_id(),
+            parameters.get_onboarding_response().get_sensor_alternate_id(),
+            parameters.get_onboarding_response().get_capability_alternate_id(),
             messages
         )
         return message_request
@@ -33,36 +35,29 @@ class AbstractMessagingClient(ABC):
 
 class HttpMessagingService(AbstractMessagingClient):
 
-    def __init__(self, on_message_callback, timeout):
-        self.client = HttpClient(on_message_callback=on_message_callback, timeout=timeout)
+    def __init__(self):
+        self.client = HttpClient()
 
     def send(self, parameters) -> MessagingResult:
         request = self.create_message_request(parameters)
-        response = self.client.send(
-            "POST",
-            parameters.get_onboarding_response(),
-            request
-        )
-        result = MessagingResult([parameters.get_message_id()])
+        response = self.client.send_measure(parameters.get_onboarding_response(), request)
+        if response.status != 200:
+            raise BadMessagingResult(f"Messaging Request failed with status code {response.status}")
+        result = MessagingResult([parameters.get_application_message_id()])
         return result
-
-    def subscribe(self):
-        pass
-
-    def unsubscribe(self):
-        pass
 
 
 class MqttMessagingService(AbstractMessagingClient):
 
     def __init__(self,
+                 client_id,
                  onboarding_response,
                  on_message_callback: callable = None,
                  ):
 
         self.onboarding_response = onboarding_response
         self.client = MqttClient(
-            client_id=self.onboarding_response.get_client_id(),
+            client_id=client_id,
             on_message_callback=on_message_callback,
         )
         self.client.connect(
@@ -71,12 +66,13 @@ class MqttMessagingService(AbstractMessagingClient):
         )
 
     def send(self, parameters, qos: int = 0) -> MessagingResult:
-        mqtt_payload = self.create_message_request(parameters)
+        message_request = self.create_message_request(parameters)
+        mqtt_payload = message_request.json_serialize()
         self.client.publish(
-            self.onboarding_response.get_connection_criteria().get_measures(), mqtt_payload,
+            self.onboarding_response.get_connection_criteria().get_measures(), json.dumps(mqtt_payload),
             qos=qos
         )
-        result = MessagingResult([parameters.get_message_id()])
+        result = MessagingResult([parameters.get_application_message_id()])
         return result
 
     def subscribe(self):

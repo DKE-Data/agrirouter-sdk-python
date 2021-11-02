@@ -11,7 +11,7 @@ class MessageRequest:
     def __init__(self,
                  sensor_alternate_id: str,
                  capability_alternate_id: str,
-                 messages: List[Message]
+                 messages: List[dict]
                  ):
         self.sensor_alternate_id = sensor_alternate_id
         self.capability_alternate_id = capability_alternate_id

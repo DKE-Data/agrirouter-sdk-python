@@ -1,28 +1,9 @@
 import base64
-from abc import ABC, abstractmethod
 
 from agrirouter.constants.media_types import ContentTypes
 
 
-class BaseOnboardingHeader(ABC):
-    @abstractmethod
-    def __init__(self, *args, **kwargs):
-        self._set_params(*args, **kwargs)
-
-    @abstractmethod
-    def get_header(self) -> dict:
-        ...
-
-    @abstractmethod
-    def _set_params(self, *args, **kwargs):
-        ...
-
-    @abstractmethod
-    def sign(self, *args, **kwargs):
-        ...
-
-
-class SoftwareOnboardingHeader(BaseOnboardingHeader):
+class SoftwareOnboardingHeader:
     def __init__(self,
                  reg_code,
                  application_id,
@@ -46,7 +27,3 @@ class SoftwareOnboardingHeader(BaseOnboardingHeader):
         header["X-Agrirouter-Signature"] = signature if signature else ""
 
         self.params = header
-
-
-class CUOnboardingHeader(BaseOnboardingHeader):
-    pass

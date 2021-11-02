@@ -26,14 +26,11 @@ class RevokingBody:
                     ) -> None:
 
         self.params = {
-            "account_id": account_id,
-            "endpoint_ids": endpoint_ids,
+            "accountId": account_id,
+            "endpointIds": endpoint_ids,
             "UTCTimestamp": utc_timestamp,
             "timeZone": time_zone,
         }
 
-    def json(self, new_lines: bool = True) -> str:
-        result = json.dumps(self.get_parameters(), indent="")
-        if not new_lines:
-            return result.replace("\n", "")
-        return result
+    def json(self) -> str:
+        return json.dumps(self.get_parameters(), separators=(',', ':'))

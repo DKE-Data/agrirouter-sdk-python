@@ -26,7 +26,13 @@ class OutboxResponse:
 
     def json_deserialize(self, data: Union[list, str]):
         messages = data if type(data) == list else json.loads(data)
-        self.set_messages([OutboxMessage.json_deserialize(message) for message in messages])
+        outbox_message_list = []
+        for message in messages:
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(message)
+            outbox_message_list.append(outbox_message)
+
+        self.set_messages(outbox_message_list)
 
     def get_status_code(self) -> int:
         return self.status_code

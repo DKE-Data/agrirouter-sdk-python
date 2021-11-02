@@ -1,30 +1,11 @@
 import json
-from abc import ABC, abstractmethod
 from datetime import datetime
 
 from agrirouter.onboarding.enums import CertificateTypes, GateWays
 from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWay
 
 
-class BaseOnboardingBody(ABC):
-    @abstractmethod
-    def __init__(self, *args, **kwargs):
-        ...
-
-    @abstractmethod
-    def get_parameters(self, *args, **kwargs) -> dict:
-        ...
-
-    @abstractmethod
-    def _set_params(self, *args, **kwargs):
-        ...
-
-    @abstractmethod
-    def json(self, *args, **kwargs):
-        ...
-
-
-class SoftwareOnboardingBody(BaseOnboardingBody):
+class SoftwareOnboardingBody:
     def __init__(self,
                  *,
                  id_,
@@ -86,21 +67,3 @@ class SoftwareOnboardingBody(BaseOnboardingBody):
     def _validate_gateway_id(gateway_id: str) -> None:
         if gateway_id not in GateWays.values_list():
             raise WrongGateWay
-
-
-class CUOnboardingBody(BaseOnboardingBody):
-
-    def __init__(self, *args, **kwargs):
-        ...
-
-    def get_parameters(self, *args, **kwargs) -> dict:
-        ...
-
-    def _set_params(self, *args, **kwargs):
-        ...
-
-    def json(self, new_lines: bool = True) -> str:
-        result = json.dumps(self.get_parameters(), indent="")
-        if not new_lines:
-            return result.replace("\n", "")
-        return result

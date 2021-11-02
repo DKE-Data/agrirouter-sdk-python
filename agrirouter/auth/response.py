@@ -5,6 +5,7 @@ from urllib.parse import unquote
 
 from cryptography.exceptions import InvalidSignature
 
+from agrirouter.auth.dto import AuthorizationToken
 from agrirouter.onboarding.signature import verify_signature
 
 
@@ -17,11 +18,11 @@ class AuthResponse:
     CRED_KEY = "credentials"
 
     def __init__(self, query_params):
-        self._state = query_params.get(self.STATE_KEY, None)
-        self._signature = query_params.get(self.SIGNATURE_KEY, None)
-        self._token = query_params.get(self.TOKEN_KEY, None)
-        self._error = query_params.get(self.ERROR_KEY, None)
-        self.is_successful = not bool(self._error)
+        self.state = query_params.get(self.STATE_KEY, None)
+        self.signature = query_params.get(self.SIGNATURE_KEY, None)
+        self.token = query_params.get(self.TOKEN_KEY, None)
+        self.error = query_params.get(self.ERROR_KEY, None)
+        self.is_successful = not bool(self.error)
         self._was_verified = False
         self._is_valid = False
 
@@ -43,8 +44,8 @@ class AuthResponse:
 
         :return:
         """
-        encoded_data = self._state + self._token
-        unquoted_signature = unquote(self._signature)
+        encoded_data = self.state + self.token
+        unquoted_signature = unquote(self.signature)
         encoded_signature = base64.b64decode(unquoted_signature.encode("utf-8"))
 
         try:
@@ -58,20 +59,41 @@ class AuthResponse:
         self._is_valid = True
 
     @staticmethod
-    def decode_token(token: Union[str, bytes]) -> dict:
+    def decode_token(token: Union[str, bytes]) -> AuthorizationToken:
         if type(token) == str:
             token = token.encode("utf-8")
         base_64_decoded_token = base64.b64decode(token)
         decoded_token = base_64_decoded_token.decode("utf-8")
-        return json.loads(decoded_token)
+
+        auth_token = AuthorizationToken()
+        auth_token.json_deserialize(json.loads(decoded_token))
+        return auth_token
 
     def get_auth_result(self) -> dict:
         if not self.is_successful:
-            return {self.ERROR_KEY: self._error}
-        decoded_token = self.decode_token(self._token)
+            return {self.ERROR_KEY: self.error}
+        decoded_token = self.decode_token(self.token)
         return {
-            self.SIGNATURE_KEY: self._signature,
-            self.STATE_KEY: self._state,
-            self.TOKEN_KEY: self._token,
+            self.SIGNATURE_KEY: self.signature,
+            self.STATE_KEY: self.state,
+            self.TOKEN_KEY: self.token,
             self.CRED_KEY: decoded_token
         }
+
+    def get_signature(self):
+        return self.signature
+
+    def set_signature(self, signature):
+        self.signature = signature
+
+    def get_state(self):
+        return self.state
+
+    def set_state(self, state):
+        self.state = state
+
+    def get_token(self):
+        return self.token
+
+    def set_token(self, token):
+        self.token = token

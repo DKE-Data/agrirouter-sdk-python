@@ -2,6 +2,7 @@ import http.client
 import json
 import os
 import ssl
+from urllib.parse import urlparse
 
 from agrirouter.messaging.certification import create_certificate_file_from_pen
 from agrirouter.onboarding.dto import ConnectionCriteria
@@ -10,18 +11,12 @@ from agrirouter.onboarding.response import SoftwareOnboardingResponse
 
 class HttpClient:
 
-    headers = {"Content-Type": "application/json"}
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+    }
 
-    def __init__(
-            self,
-            on_message_callback: callable,
-            timeout=20
-    ):
-        self.on_message_callback = on_message_callback
-        self.timeout = timeout
-
-    @staticmethod
-    def make_connection(certificate_file_path: str, onboard_response: SoftwareOnboardingResponse):
+    def make_connection(self, certificate_file_path: str, uri: str, onboard_response: SoftwareOnboardingResponse):
         context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
         context.load_cert_chain(
             certfile=certificate_file_path,
@@ -29,27 +24,43 @@ class HttpClient:
             password=onboard_response.get_authentication().get_secret(),
         )
         connection = http.client.HTTPSConnection(
-            host=onboard_response.connection_criteria.get_host(),
-            port=onboard_response.connection_criteria.get_port(),
+            host=self.get_host(uri),
+            port=self.get_port(uri),
             context=context
         )
         return connection
 
-    def send(self, method: str, onboard_response: SoftwareOnboardingResponse, request_body=None):
+    def send_measure(self, onboard_response: SoftwareOnboardingResponse, request_body=None):
+        return self.send(
+            method="POST",
+            uri=onboard_response.get_connection_criteria().get_measures(),
+            onboard_response=onboard_response,
+            request_body=request_body
+        )
+
+    def send_command(self, onboard_response: SoftwareOnboardingResponse, request_body=None):
+        return self.send(
+            method="GET",
+            uri=onboard_response.get_connection_criteria().get_commands(),
+            onboard_response=onboard_response,
+            request_body=request_body
+        )
+
+    def send(self, method: str, uri: str, onboard_response: SoftwareOnboardingResponse, request_body=None):
         certificate_file_path = create_certificate_file_from_pen(onboard_response)
         try:
-            connection = self.make_connection(certificate_file_path, onboard_response)
+            connection = self.make_connection(certificate_file_path, uri, onboard_response)
             if request_body is not None:
                 connection.request(
                     method=method,
-                    url=onboard_response.get_connection_criteria().get_measures(),
+                    url=self.get_path(uri),
                     headers=self.headers,
-                    body=json.dumps(request_body)
+                    body=json.dumps(request_body.json_serialize())
                 )
             else:
                 connection.request(
                     method=method,
-                    url=onboard_response.get_connection_criteria().get_measures(),
+                    url=self.get_path(uri),
                     headers=self.headers,
                 )
             response = connection.getresponse()
@@ -58,11 +69,14 @@ class HttpClient:
 
         return response
 
-    def subscribe(self):
-        pass
+    @staticmethod
+    def get_host(uri):
+        return urlparse(uri).netloc
 
-    def unsubscribe(self):
-        pass
+    @staticmethod
+    def get_port(uri):
+        return urlparse(uri).port if urlparse(uri).port else None
 
-    def _start_loop(self):
-        pass
+    @staticmethod
+    def get_path(uri):
+        return urlparse(uri).path

@@ -1,13 +1,18 @@
+import ssl
 from typing import Any, List, Tuple
 
-from paho.mqtt import client as mqtt_client
+import paho.mqtt.client as mqtt_client
 from paho.mqtt.client import MQTTv31, MQTTMessageInfo
+
+from agrirouter.messaging.certification import create_certificate_file_from_pen
 
 
 class MqttClient:
 
     def __init__(self,
-                 client_id,
+                 onboard_response,
+
+                 client_id: str,
                  on_message_callback: callable = None,
                  userdata: Any = None,
                  clean_session: bool = True
@@ -22,18 +27,29 @@ class MqttClient:
             protocol=MQTTv31,
             transport="tcp"
         )
+
         self.mqtt_client.on_message = on_message_callback if on_message_callback else self._get_on_message_callback()
         self.mqtt_client.on_connect = self._get_on_connect_callback()
         self.mqtt_client.on_disconnect = self._get_on_disconnect_callback()
+        self.mqtt_client.on_connect = self._get_on_connect_callback()
         self.mqtt_client.on_subscribe = self._get_on_subscribe_callback()
         self.mqtt_client.on_unsubscribe = self._get_on_unsubscribe_callback()
 
-    def connect(self, host: str, port: str) -> None:
-        self.mqtt_client.connect_async(
-            host=host,
-            port=port
+        certificate_file_path = create_certificate_file_from_pen(onboard_response)
+        context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+        context.load_cert_chain(
+            certfile=certificate_file_path,
+            keyfile=certificate_file_path,
+            password=onboard_response.get_authentication().get_secret(),
         )
-        self.mqtt_client.loop_start()
+        self.mqtt_client.tls_set_context()
+
+    def connect(self, host: str, port: str) -> None:
+        self.mqtt_client.connect(
+            host=host,
+            port=int(port)
+        )
+        self.mqtt_client.loop_forever()
 
     def disconnect(self):
         self.mqtt_client.loop_stop()
@@ -41,7 +57,6 @@ class MqttClient:
 
     def publish(self, topic, payload, qos=0) -> MQTTMessageInfo:
         """
-
         :param topic: str representing unique name of the topic that the message should be published on
         :param payload: The actual message to send
         :param qos: int representing the quality of service level to use. May be [0, 1, 2]
@@ -88,19 +103,9 @@ class MqttClient:
     def _get_on_connect_callback() -> callable:
 
         def on_connect(client, userdata, flags, rc, properties=None):
-            print("Connection started")
-            with open("connection.txt", "w") as file:
-                file.write("Connection started")
-                if rc == 0:
-                    file.write("Connected!!")
-                else:
-                    file.write("Do not Connected!!")
-            if rc == 0:
-                print("Connected to MQTT Broker!")
-            else:
-                print(f"Failed to connect, return code: {rc}")
-
-            return client, userdata, flags, rc, properties
+            print("On_connect func start...")
+            print(f"Connection with response code: {rc}, flags: {flags}")
+            print("-"*50)
 
         return on_connect
 
@@ -108,7 +113,7 @@ class MqttClient:
     def _get_on_message_callback() -> callable:
 
         def on_message(client, userdata, msg):
-            # print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+            print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
 
             return client, userdata, msg
 
@@ -117,29 +122,30 @@ class MqttClient:
     @staticmethod
     def _get_on_subscribe_callback() -> callable:
 
-        def on_subscribe(client, userdata, mid, granted_qos, properties=None):
-            # print(f"Subscribed {userdata} to `{properties}`")
+        # def on_subscribe(client, userdata, mid, granted_qos, properties=None):
+        def on_subscribe(*args, **kwargs):
+            print(f"Subscribed. Args: `{args}`, Kwargs: `{kwargs}`")
 
-            return client, userdata, mid, granted_qos, properties
+            return args, kwargs
 
         return on_subscribe
 
     @staticmethod
     def _get_on_disconnect_callback() -> callable:
 
-        def on_disconnect(client, userdata, rc):
-            # print(f"Disconnected from from `{properties}`")
+        def on_disconnect(*args, **kwargs):
+            print(f"Disconnected. Args: `{args}`, Kwargs: `{kwargs}`")
 
-            return client, userdata, rc
+            return args, kwargs
 
         return on_disconnect
 
     @staticmethod
     def _get_on_unsubscribe_callback() -> callable:
 
-        def on_unsubscribe(client, userdata, mid):
-            # print(f"Unsubscribed `{userdata}` from `{properties}`")
+        def on_unsubscribe(*args, **kwargs):
+            print(f"Unsubscribed. Args: `{args}`, Kwargs: `{kwargs}`")
 
-            return client, userdata, mid
+            return args, kwargs
 
         return on_unsubscribe

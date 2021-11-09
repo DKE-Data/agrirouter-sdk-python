@@ -89,7 +89,7 @@ True
 >>> time_zone = "+03:00"
 
 >>> onboarding_client = ar.SoftwareOnboarding("QA", public_key=public_key, private_key=private_key)
->>> onboarding_parameters = ar.SoftwareOnboardingParameter(id_=id_, application_id=application_id, certification_version_id=certification_version_id, gateway_id=GateWays.REST.value, time_zone=time_zone, reg_code=auth_data["credentials"]["regcode"])
+>>> onboarding_parameters = ar.SoftwareOnboardingParameter(id_=id_, application_id=application_id, certification_version_id=certification_version_id, gateway_id=GateWays.REST.value, time_zone=time_zone, reg_code=auth_data.get_decoded_token().regcode)
 >>> onboarding_verifying_response = onboarding_client.verify(onboarding_parameters)
 >>> onboarding_verifying_response.status_code
 >>> onboarding_verifying_response.text

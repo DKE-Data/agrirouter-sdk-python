@@ -42,7 +42,7 @@ class MqttClient:
             keyfile=certificate_file_path,
             password=onboard_response.get_authentication().get_secret(),
         )
-        self.mqtt_client.tls_set_context()
+        self.mqtt_client.tls_set_context(context)
 
     def connect(self, host: str, port: str) -> None:
         self.mqtt_client.connect(

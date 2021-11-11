@@ -79,7 +79,7 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
             commands=response_body.get("connectionCriteria").get("commands"),
             host=response_body.get("connectionCriteria").get("host"),
             port=response_body.get("connectionCriteria").get("port"),
-            client_id=response_body.get("connectionCriteria").get("client_id")
+            client_id=response_body.get("connectionCriteria").get("clientId")
         ) if response_body.get("connectionCriteria", None) else None
 
         self.authentication = Authentication(

@@ -121,7 +121,6 @@ class MqttClient:
     @staticmethod
     def _get_on_subscribe_callback() -> callable:
 
-        # def on_subscribe(client, userdata, mid, granted_qos, properties=None):
         def on_subscribe(*args, **kwargs):
             print(f"Subscribed. Args: `{args}`, Kwargs: `{kwargs}`")
 

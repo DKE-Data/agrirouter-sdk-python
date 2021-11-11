@@ -143,15 +143,15 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
         for (key, value) in data_dict.items():
             if key == self.DEVICE_ALTERNATE_ID:
                 self.device_alternate_id = value
-            if key == self.CAPABILITY_ALTERNATE_ID:
+            elif key == self.CAPABILITY_ALTERNATE_ID:
                 self.capability_alternate_id = value
-            if key == self.SENSOR_ALTERNATE_ID:
+            elif key == self.SENSOR_ALTERNATE_ID:
                 self.sensor_alternate_id = value
-            if key == self.CONNECTION_CRITERIA:
+            elif key == self.CONNECTION_CRITERIA:
                 connection_criteria = ConnectionCriteria()
                 connection_criteria.json_deserialize(value)
                 self.connection_criteria = connection_criteria
-            if key == self.AUTHENTICATION:
+            elif key == self.AUTHENTICATION:
                 authentication = Authentication()
                 authentication.json_deserialize(value)
                 self.authentication = authentication

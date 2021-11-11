@@ -58,7 +58,6 @@ class MqttMessagingService(AbstractMessagingClient):
         self.onboarding_response = onboarding_response
         self.client = MqttClient(
             onboard_response=onboarding_response,
-
             client_id=onboarding_response.get_connection_criteria().get_client_id(),
             on_message_callback=on_message_callback,
         )

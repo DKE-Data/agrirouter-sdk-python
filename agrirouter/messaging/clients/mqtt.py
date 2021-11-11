@@ -11,7 +11,6 @@ class MqttClient:
 
     def __init__(self,
                  onboard_response,
-
                  client_id: str,
                  on_message_callback: callable = None,
                  userdata: Any = None,

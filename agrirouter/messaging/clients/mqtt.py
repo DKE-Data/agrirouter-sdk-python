@@ -126,9 +126,7 @@ class MqttClient:
     def _get_on_connect_callback(onboard_response) -> callable:
 
         def on_connect(client: mqtt_client.Client, userdata, flags, rc, properties=None):
-            print(f"Connection with response code: {rc}, flags: {flags}")
             if rc == 0:
-                print(f"Subscribing to {onboard_response.connection_criteria.commands}")
                 client.subscribe(topic=onboard_response.connection_criteria.commands)
                 time.sleep(3)
 
@@ -138,8 +136,6 @@ class MqttClient:
     def _get_on_message_callback() -> callable:
 
         def on_message(client, userdata, msg):
-            print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
-
             return client, userdata, msg
 
         return on_message
@@ -148,8 +144,6 @@ class MqttClient:
     def _get_on_subscribe_callback() -> callable:
 
         def on_subscribe(*args, **kwargs):
-            print(f"Subscribed. Args: `{args}`, Kwargs: `{kwargs}`")
-
             return args, kwargs
 
         return on_subscribe
@@ -158,8 +152,6 @@ class MqttClient:
     def _get_on_disconnect_callback() -> callable:
 
         def on_disconnect(*args, **kwargs):
-            print(f"Disconnected. Args: `{args}`, Kwargs: `{kwargs}`")
-
             return args, kwargs
 
         return on_disconnect
@@ -168,8 +160,6 @@ class MqttClient:
     def _get_on_unsubscribe_callback() -> callable:
 
         def on_unsubscribe(*args, **kwargs):
-            print(f"Unsubscribed. Args: `{args}`, Kwargs: `{kwargs}`")
-
             return args, kwargs
 
         return on_unsubscribe

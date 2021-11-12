@@ -91,6 +91,12 @@ class ConnectionCriteria:
     def set_client_id(self, client_id: str) -> None:
         self.client_id = client_id
 
+    def __str__(self):
+        return str(self.json_serialize())
+
+    def __repr__(self):
+        return str(self.json_serialize())
+
 
 class Authentication:
     TYPE = 'type'
@@ -143,6 +149,12 @@ class Authentication:
 
     def set_certificate(self, certificate: str) -> None:
         self.certificate = certificate
+
+    def __str__(self):
+        return str(self.json_serialize())
+
+    def __repr__(self):
+        return str(self.json_serialize())
 
 
 class ErrorResponse:

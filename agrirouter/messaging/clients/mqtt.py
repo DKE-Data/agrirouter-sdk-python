@@ -1,3 +1,4 @@
+import time
 import ssl
 from typing import Any, List, Tuple
 
@@ -5,6 +6,7 @@ import paho.mqtt.client as mqtt_client
 from paho.mqtt.client import MQTTv31, MQTTMessageInfo
 
 from agrirouter.messaging.certification import create_certificate_file_from_pen
+from agrirouter.messaging.clients.constants import SYNC, ASYNC
 
 
 class MqttClient:
@@ -14,7 +16,7 @@ class MqttClient:
                  client_id: str,
                  on_message_callback: callable = None,
                  userdata: Any = None,
-                 clean_session: bool = True
+                 clean_session: bool = False
                  ):
         # TODO: Implement on_message_callback parameter validation:
         #  must take params as described at https://pypi.org/project/paho-mqtt/#callbacks
@@ -28,9 +30,8 @@ class MqttClient:
         )
 
         self.mqtt_client.on_message = on_message_callback if on_message_callback else self._get_on_message_callback()
-        self.mqtt_client.on_connect = self._get_on_connect_callback()
+        self.mqtt_client.on_connect = self._get_on_connect_callback(onboard_response)
         self.mqtt_client.on_disconnect = self._get_on_disconnect_callback()
-        self.mqtt_client.on_connect = self._get_on_connect_callback()
         self.mqtt_client.on_subscribe = self._get_on_subscribe_callback()
         self.mqtt_client.on_unsubscribe = self._get_on_unsubscribe_callback()
 
@@ -43,18 +44,37 @@ class MqttClient:
         )
         self.mqtt_client.tls_set_context(context)
 
+        self._mode = None
+
     def connect(self, host: str, port: str) -> None:
         self.mqtt_client.connect(
             host=host,
             port=int(port)
         )
-        self.mqtt_client.loop_forever()
+        self.mqtt_client.loop()
+
+        self._mode = SYNC
+
+    def connect_async(self, host: str, port: str):
+        self.mqtt_client.connect_async(
+            host=host,
+            port=int(port)
+        )
+        self.mqtt_client.loop_start()
+
+        self._mode = ASYNC
+
+        while self.mqtt_client._state == 0:
+            time.sleep(1)
 
     def disconnect(self):
         self.mqtt_client.loop_stop()
         self.mqtt_client.disconnect()
 
-    def publish(self, topic, payload, qos=0) -> MQTTMessageInfo:
+    def receive_outbox_messages(self):
+        self.mqtt_client.loop()
+
+    def publish(self, topic, payload, qos=2) -> MQTTMessageInfo:
         """
         :param topic: str representing unique name of the topic that the message should be published on
         :param payload: The actual message to send
@@ -66,6 +86,10 @@ class MqttClient:
             payload=payload,
             qos=qos
         )
+        if self._mode == SYNC:
+            self.mqtt_client.loop()
+            time.sleep(3)
+            self.mqtt_client.loop()
         return message_info
 
     def subscribe(self, topics: List[Tuple[str, int]]) -> tuple:
@@ -81,7 +105,7 @@ class MqttClient:
 
         :return: tuple
         """
-        result, mid = self.mqtt_client.subscribe(topics)
+        result, mid = self.mqtt_client.subscribe(topics, qos=2)
         return result, mid
 
     def unsubscribe(self, topics: List[str]) -> tuple:
@@ -99,12 +123,14 @@ class MqttClient:
         return result, mid
 
     @staticmethod
-    def _get_on_connect_callback() -> callable:
+    def _get_on_connect_callback(onboard_response) -> callable:
 
-        def on_connect(client, userdata, flags, rc, properties=None):
-            print("On_connect func start...")
+        def on_connect(client: mqtt_client.Client, userdata, flags, rc, properties=None):
             print(f"Connection with response code: {rc}, flags: {flags}")
-            print("-"*50)
+            if rc == 0:
+                print(f"Subscribing to {onboard_response.connection_criteria.commands}")
+                client.subscribe(topic=onboard_response.connection_criteria.commands)
+                time.sleep(3)
 
         return on_connect
 

@@ -273,7 +273,9 @@ def example_query_header_message_mqtt(onboarding_response_data, on_msg_callback)
     messaging_result = query_header_service.send(query_header_parameters)
     print("Sent message: ", messaging_result)
 
-    return messaging_result
+    # Is needed for waiting of messaging responses from outbox
+    while True:
+        time.sleep(1)
 
 
 def on_message_callback(client, userdata, msg):

@@ -134,8 +134,8 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
             self.DEVICE_ALTERNATE_ID: self.device_alternate_id,
             self.CAPABILITY_ALTERNATE_ID: self.capability_alternate_id,
             self.SENSOR_ALTERNATE_ID: self.sensor_alternate_id,
-            self.CONNECTION_CRITERIA: self.connection_criteria,
-            self.AUTHENTICATION: self.authentication
+            self.CONNECTION_CRITERIA: self.connection_criteria.json_serialize(),
+            self.AUTHENTICATION: self.authentication.json_serialize()
         }
 
     def json_deserialize(self, data: Union[dict, str]):

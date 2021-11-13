@@ -1,6 +1,9 @@
 from pprint import pprint
 
+from google.protobuf.timestamp_pb2 import Timestamp
+
 from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
+from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
 from agrirouter.onboarding.response import SoftwareOnboardingResponse
 import time
 
@@ -71,7 +74,8 @@ from agrirouter.onboarding.enums import GateWays
 from agrirouter.messaging.enums import CapabilityType
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.messaging.services.commons import HttpMessagingService, MqttMessagingService
-from agrirouter import ListEndpointsParameters, ListEndpointsService, SubscriptionService, SubscriptionParameters
+from agrirouter import ListEndpointsParameters, ListEndpointsService, SubscriptionService, SubscriptionParameters, \
+    QueryHeaderService, QueryHeaderParameters
 from agrirouter.utils.uuid_util import new_uuid
 
 
@@ -224,6 +228,52 @@ def example_subscription_mqtt(onboarding_response_data, on_msg_callback):
     # Is needed for waiting of messaging responses from outbox
     while True:
         time.sleep(1)
+
+
+def example_query_header_message_http(onboarding_response_data):
+    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response.json_deserialize(onboarding_response_data)
+
+    messaging_service = HttpMessagingService()
+    query_header_service = QueryHeaderService(messaging_service)
+    sent_from = Timestamp()
+    sent_to = Timestamp()
+    validity_period = ValidityPeriod(sent_from=sent_from, sent_to=sent_to)
+    query_header_parameters = QueryHeaderParameters(
+        message_ids=[new_uuid(), new_uuid()],
+        senders=[new_uuid(), new_uuid()],
+        validity_period=validity_period,
+        onboarding_response=onboarding_response,
+        application_message_id=new_uuid(),
+        application_message_seq_no=1,
+    )
+    messaging_result = query_header_service.send(query_header_parameters)
+    print("Sent message: ", messaging_result)
+
+    return messaging_result
+
+
+def example_query_header_message_mqtt(onboarding_response_data, on_msg_callback):
+    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response.json_deserialize(onboarding_response_data)
+
+    messaging_service = MqttMessagingService(onboarding_response, on_message_callback=on_msg_callback)
+    query_header_service = QueryHeaderService(messaging_service)
+    sent_from = Timestamp()
+    sent_to = Timestamp()
+    validity_period = ValidityPeriod(sent_from=sent_from, sent_to=sent_to)
+    query_header_parameters = QueryHeaderParameters(
+        message_ids=[new_uuid(), new_uuid()],
+        senders=[new_uuid(), new_uuid()],
+        validity_period=validity_period,
+        onboarding_response=onboarding_response,
+        application_message_id=new_uuid(),
+        application_message_seq_no=1,
+    )
+    messaging_result = query_header_service.send(query_header_parameters)
+    print("Sent message: ", messaging_result)
+
+    return messaging_result
 
 
 def on_message_callback(client, userdata, msg):

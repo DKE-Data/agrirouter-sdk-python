@@ -23,7 +23,7 @@ class SubscriptionItemBuilder:
         self._subscription_items.append(subscription_item)
         return self
 
-    def with_device_description(self, ddis: List[int]=None, position: bool=None):
+    def with_device_description(self, ddis: List[int] = None, position: bool = None):
         subscription_item = Subscription.MessageTypeSubscriptionItem(
             technical_message_type=CapabilityType.ISO_11783_DEVICE_DESCRIPTION_PROTOBUF.value,
             ddis=ddis,

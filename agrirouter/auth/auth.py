@@ -34,4 +34,3 @@ class Authorization(EnvironmentalService):
     def _extract_query_params(query_params: str) -> dict:
         qp_pairs = parse_qs(query_params)
         return {k: v[0] for k, v in qp_pairs.items()}
-

@@ -5,7 +5,6 @@ import ssl
 from urllib.parse import urlparse
 
 from agrirouter.messaging.certification import create_certificate_file_from_pen
-from agrirouter.onboarding.dto import ConnectionCriteria
 from agrirouter.onboarding.response import SoftwareOnboardingResponse
 
 

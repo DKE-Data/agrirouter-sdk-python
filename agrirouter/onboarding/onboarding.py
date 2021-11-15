@@ -1,5 +1,3 @@
-import json
-
 import requests
 
 from agrirouter.environments.environmental_services import EnvironmentalService

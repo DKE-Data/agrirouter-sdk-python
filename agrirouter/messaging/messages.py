@@ -1,6 +1,5 @@
 import json
-from datetime import datetime, timezone
-from typing import Union, List, Dict
+from typing import Union, Dict
 
 from agrirouter.messaging.exceptions import WrongFieldError
 from agrirouter.utils.utc_time_util import now_as_utc_str

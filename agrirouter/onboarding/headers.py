@@ -1,5 +1,3 @@
-import base64
-
 from agrirouter.constants.media_types import ContentTypes
 
 

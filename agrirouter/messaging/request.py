@@ -1,7 +1,5 @@
 from typing import List
 
-from agrirouter.messaging.messages import Message
-
 
 class MessageRequest:
     SENSOR_ALTERNATE_ID = "sensorAlternateId"

@@ -1,14 +1,6 @@
-import json
-import os
-
-import requests
-
 from agrirouter.messaging.clients.http import HttpClient
 from agrirouter.messaging.exceptions import OutboxException
-from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.result import OutboxResponse
-
-from agrirouter.messaging.certification import create_certificate_file_from_pen
 
 
 class OutboxService:
@@ -27,4 +19,3 @@ class OutboxService:
             raise OutboxException(f"Could not fetch messages from outbox. Status code was {response.status}")
 
         return outbox_response
-

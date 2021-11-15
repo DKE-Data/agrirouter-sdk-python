@@ -1,5 +1,4 @@
 import base64
-from ctypes import Union
 
 from google.protobuf.any_pb2 import Any
 from google.protobuf.internal.decoder import _DecodeVarint

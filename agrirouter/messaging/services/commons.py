@@ -11,6 +11,7 @@ from agrirouter.messaging.messages import Message
 from agrirouter.messaging.request import MessageRequest
 from agrirouter.messaging.result import MessagingResult
 from agrirouter.onboarding.exceptions import BadMessagingResult
+from agrirouter.onboarding.response import SoftwareOnboardingResponse
 
 
 class AbstractMessagingClient(ABC):
@@ -50,33 +51,35 @@ class HttpMessagingService(AbstractMessagingClient):
 class MqttMessagingService(AbstractMessagingClient):
 
     def __init__(self,
-                 client_id,
-                 onboarding_response,
+                 onboarding_response: SoftwareOnboardingResponse,
                  on_message_callback: callable = None,
+                 client_async: bool = True
                  ):
 
         self.onboarding_response = onboarding_response
         self.client = MqttClient(
-            client_id=client_id,
+            onboard_response=onboarding_response,
+            client_id=onboarding_response.get_connection_criteria().get_client_id(),
             on_message_callback=on_message_callback,
         )
-        self.client.connect(
-            self.onboarding_response.get_connection_criteria().get_host(),
-            self.onboarding_response.get_connection_criteria().get_port()
-        )
+        if client_async:
+            self.client.connect_async(
+                self.onboarding_response.get_connection_criteria().get_host(),
+                self.onboarding_response.get_connection_criteria().get_port()
+            )
+        else:
+            self.client.connect(
+                self.onboarding_response.get_connection_criteria().get_host(),
+                self.onboarding_response.get_connection_criteria().get_port()
+            )
 
     def send(self, parameters, qos: int = 0) -> MessagingResult:
         message_request = self.create_message_request(parameters)
         mqtt_payload = message_request.json_serialize()
         self.client.publish(
-            self.onboarding_response.get_connection_criteria().get_measures(), json.dumps(mqtt_payload),
+            topic=self.onboarding_response.get_connection_criteria().get_measures(),
+            payload=json.dumps(mqtt_payload),
             qos=qos
         )
         result = MessagingResult([parameters.get_application_message_id()])
         return result
-
-    def subscribe(self):
-        pass
-
-    def unsubscribe(self):
-        pass

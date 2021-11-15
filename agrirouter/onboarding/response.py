@@ -79,7 +79,7 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
             commands=response_body.get("connectionCriteria").get("commands"),
             host=response_body.get("connectionCriteria").get("host"),
             port=response_body.get("connectionCriteria").get("port"),
-            client_id=response_body.get("connectionCriteria").get("client_id")
+            client_id=response_body.get("connectionCriteria").get("clientId")
         ) if response_body.get("connectionCriteria", None) else None
 
         self.authentication = Authentication(
@@ -134,8 +134,8 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
             self.DEVICE_ALTERNATE_ID: self.device_alternate_id,
             self.CAPABILITY_ALTERNATE_ID: self.capability_alternate_id,
             self.SENSOR_ALTERNATE_ID: self.sensor_alternate_id,
-            self.CONNECTION_CRITERIA: self.connection_criteria,
-            self.AUTHENTICATION: self.authentication
+            self.CONNECTION_CRITERIA: self.connection_criteria.json_serialize(),
+            self.AUTHENTICATION: self.authentication.json_serialize()
         }
 
     def json_deserialize(self, data: Union[dict, str]):
@@ -143,17 +143,23 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
         for (key, value) in data_dict.items():
             if key == self.DEVICE_ALTERNATE_ID:
                 self.device_alternate_id = value
-            if key == self.CAPABILITY_ALTERNATE_ID:
+            elif key == self.CAPABILITY_ALTERNATE_ID:
                 self.capability_alternate_id = value
-            if key == self.SENSOR_ALTERNATE_ID:
+            elif key == self.SENSOR_ALTERNATE_ID:
                 self.sensor_alternate_id = value
-            if key == self.CONNECTION_CRITERIA:
+            elif key == self.CONNECTION_CRITERIA:
                 connection_criteria = ConnectionCriteria()
                 connection_criteria.json_deserialize(value)
                 self.connection_criteria = connection_criteria
-            if key == self.AUTHENTICATION:
+            elif key == self.AUTHENTICATION:
                 authentication = Authentication()
                 authentication.json_deserialize(value)
                 self.authentication = authentication
             else:
                 raise WrongFieldError(f"Unknown field `{key}` for {self.__class__}")
+
+    def __str__(self):
+        return str(self.json_serialize())
+
+    def __repr__(self):
+        return str(self.json_serialize())

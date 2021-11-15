@@ -1,0 +1,2 @@
+ASYNC = "ASYNC"
+SYNC = "SYNC"

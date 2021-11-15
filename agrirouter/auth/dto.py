@@ -4,44 +4,6 @@ from typing import Union
 from agrirouter.messaging.exceptions import WrongFieldError
 
 
-class AuthorizationResultUrl:
-    def __init__(self,
-                 *,
-                 state: str = None,
-                 signature: str = None,
-                 token: str = None,
-                 error: str = None
-                 ):
-        self.state = state
-        self.signature = signature
-        self.token = token
-        self.error = error
-
-    def get_state(self) -> str:
-        return self.state
-
-    def set_state(self, state: str) -> None:
-        self.state = state
-
-    def get_signature(self) -> str:
-        return self.signature
-
-    def set_signature(self, signature: str) -> None:
-        self.signature = signature
-
-    def get_token(self) -> str:
-        return self.token
-
-    def set_token(self, token: str) -> None:
-        self.token = token
-
-    def get_error(self) -> str:
-        return self.error
-
-    def set_error(self, error: str) -> None:
-        self.error = error
-
-
 class AuthorizationToken:
     ACCOUNT = 'account'
     REGISTRATION_CODE = 'regcode'
@@ -86,6 +48,52 @@ class AuthorizationToken:
 
     def set_expires(self, expires: str) -> None:
         self.expires = expires
+
+
+class AuthorizationResultUrl:
+    def __init__(self,
+                 *,
+                 state: str = None,
+                 signature: str = None,
+                 token: str = None,
+                 decoded_token: AuthorizationToken = None,
+                 error: str = None
+                 ):
+        self.state = state
+        self.signature = signature
+        self.token = token
+        self.decoded_token = decoded_token
+        self.error = error
+
+    def get_state(self) -> str:
+        return self.state
+
+    def set_state(self, state: str) -> None:
+        self.state = state
+
+    def get_signature(self) -> str:
+        return self.signature
+
+    def set_signature(self, signature: str) -> None:
+        self.signature = signature
+
+    def get_token(self) -> str:
+        return self.token
+
+    def set_token(self, token: str) -> None:
+        self.token = token
+
+    def get_error(self) -> str:
+        return self.error
+
+    def set_error(self, error: str) -> None:
+        self.error = error
+
+    def get_decoded_token(self) -> AuthorizationToken:
+        return self.decoded_token
+
+    def set_decoded_token(self, decoded_token: AuthorizationToken) -> None:
+        self.decoded_token = decoded_token
 
 
 class AuthorizationResult:

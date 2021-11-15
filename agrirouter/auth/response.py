@@ -5,7 +5,7 @@ from urllib.parse import unquote
 
 from cryptography.exceptions import InvalidSignature
 
-from agrirouter.auth.dto import AuthorizationToken
+from agrirouter.auth.dto import AuthorizationToken, AuthorizationResultUrl
 from agrirouter.onboarding.signature import verify_signature
 
 
@@ -69,16 +69,16 @@ class AuthResponse:
         auth_token.json_deserialize(json.loads(decoded_token))
         return auth_token
 
-    def get_auth_result(self) -> dict:
-        if not self.is_successful:
-            return {self.ERROR_KEY: self.error}
+    def get_auth_result(self) -> AuthorizationResultUrl:
         decoded_token = self.decode_token(self.token)
-        return {
-            self.SIGNATURE_KEY: self.signature,
-            self.STATE_KEY: self.state,
-            self.TOKEN_KEY: self.token,
-            self.CRED_KEY: decoded_token
-        }
+
+        return AuthorizationResultUrl(
+            signature=self.signature,
+            state=self.state,
+            token=self.token,
+            decoded_token=decoded_token,
+            error=self.error
+        )
 
     def get_signature(self):
         return self.signature

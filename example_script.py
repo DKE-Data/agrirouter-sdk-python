@@ -47,7 +47,7 @@ HjmgzBRxXFy5uph6Ue6dxyszaA==
 -----END PRIVATE KEY-----"""
 
 
-onboarding_response_mqtt = {
+onboarding_response_mqtt_data = {
     "deviceAlternateId": "2145df0e-3451-46cb-bf23-23191af66fce",
     "capabilityAlternateId": "523e4623-68d2-43d4-a0cc-e2ada2f68b5e",
     "sensorAlternateId": "1489638c-7bed-4205-ad77-8d11efdc779f",
@@ -297,14 +297,14 @@ def on_message_callback(client, userdata, msg):
     try:
         decoded_details = decode_details(decoded_message.response_payload.details)
         print(decoded_details)
-    except:
-        pass
+    except Exception as exc:
+        print("Error in decoding details: ", exc)
 
 
 if __name__ == "__main__":
     onboarding_response_mqtt = example_onboarding(GateWays.MQTT.value)
     example_list_endpoints_mqtt(onboarding_response_mqtt.json_serialize(), on_message_callback)
 
-    # of for http
-    onboarding_response_mqtt = example_onboarding(GateWays.REST.value)
-    example_list_endpoints_http(onboarding_response_mqtt.json_serialize())
+    # or for http
+    # onboarding_response_mqtt = example_onboarding(GateWays.REST.value)
+    # example_list_endpoints_http(onboarding_response_mqtt.json_serialize())

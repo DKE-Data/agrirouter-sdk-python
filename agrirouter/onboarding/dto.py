@@ -33,6 +33,7 @@ class ConnectionCriteria:
             self.GATEWAY_ID: self.gateway_id,
             self.MEASURES: self.measures,
             self.COMMANDS: self.commands,
+            self.HOST: self.host,
             self.PORT: self.port,
             self.CLIENT_ID: self.client_id
         }

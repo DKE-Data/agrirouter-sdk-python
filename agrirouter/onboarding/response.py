@@ -157,3 +157,9 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
                 self.authentication = authentication
             else:
                 raise WrongFieldError(f"Unknown field `{key}` for {self.__class__}")
+
+    def __str__(self):
+        return str(self.json_serialize())
+
+    def __repr__(self):
+        return str(self.json_serialize())

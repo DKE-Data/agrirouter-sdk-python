@@ -1,14 +1,12 @@
-import json
 import os
-import pathlib
-from pathlib import Path
 import tempfile
 
 
-from agrirouter.onboarding.response import BaseOnboardingResonse
+from agrirouter.onboarding.response import SoftwareOnboardingResponse
 
 
-def create_certificate_file(onboard_response: BaseOnboardingResonse):
+def create_certificate_file_from_pen(onboard_response: SoftwareOnboardingResponse):
+
     dir_ = tempfile.mkdtemp()
     prefix = onboard_response.get_sensor_alternate_id()
     data = onboard_response.get_authentication().get_certificate()

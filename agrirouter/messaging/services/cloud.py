@@ -28,7 +28,7 @@ class CloudOnboardService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(OnboardingRequest.__name__),
+            type_url=TypeUrl.get_type_url(OnboardingRequest),
             value=onboarding_request.SerializeToString()
         )
 
@@ -58,7 +58,7 @@ class CloudOffboardService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(OffboardingRequest.__name__),
+            type_url=TypeUrl.get_type_url(OffboardingRequest),
             value=offboarding_request.SerializeToString()
         )
 

@@ -1,8 +1,8 @@
 import json
-from datetime import datetime, timezone
-from typing import Union, List, Dict
+from typing import Union, Dict
 
 from agrirouter.messaging.exceptions import WrongFieldError
+from agrirouter.utils.utc_time_util import now_as_utc_str
 
 
 class EncodedMessage:
@@ -36,12 +36,12 @@ class Message:
 
     def __init__(self, content):
         self.content = content
-        self.timestamp = datetime.utcnow()
+        self.timestamp = now_as_utc_str()
 
     def json_serialize(self) -> dict:
         return {
             self.MESSAGE: self.content,
-            self.TIMESTAMP: self.timestamp.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            self.TIMESTAMP: self.timestamp
         }
 
 
@@ -52,8 +52,8 @@ class Command:
         self.message = message
 
     def json_deserialize(self, data: Union[Dict[str, str], str]):
-        messages = data if type(data) == list else json.loads(data)
-        for key, value in messages.keys():
+        messages = data if type(data) == dict else json.loads(data)
+        for key, value in messages.items():
             if key == self.MESSAGE:
                 self.message = value
             else:
@@ -81,15 +81,17 @@ class OutboxMessage:
         self.sensor_alternate_id = sensor_alternate_id
         self.command = command
 
-    def json_deserialize(self, data: Union[list, str]):
-        data = data if type(data) == list else json.loads(data)
-        for key, value in data.keys():
+    def json_deserialize(self, data: Union[dict, str]):
+        data = data if type(data) == dict else json.loads(data)
+        for (key, value) in data.items():
             if key == self.CAPABILITY_ALTERNATE_ID:
                 self.capability_alternate_id = value
             elif key == self.SENSOR_ALTERNATE_ID:
                 self.sensor_alternate_id = value
             elif key == self.COMMAND:
-                self.command = Command.json_deserialize(value)
+                command = Command()
+                command.json_deserialize(value)
+                self.command = command
             else:
                 raise WrongFieldError(f"Unknown field `{key}` for {self.__class__}")
 
@@ -110,6 +112,3 @@ class OutboxMessage:
 
     def set_command(self, command: Command) -> None:
         self.command = command
-
-    def json_deserialize(self):
-        pass

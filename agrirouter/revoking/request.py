@@ -18,8 +18,12 @@ class RevokingRequest:
     def get_header(self):
         return self.header.get_header()
 
+    def get_body_content(self):
+        return self.body.json().replace("\n", "")
+
     def sign(self, private_key):
-        signature = create_signature(self.body.json(new_lines=False), private_key)
+        body = self.get_body_content()
+        signature = create_signature(body, private_key)
         self.header.sign(signature)
 
     @property
@@ -28,10 +32,3 @@ class RevokingRequest:
         if header_has_signature:
             return True
         return False
-
-    @property
-    def is_valid(self) -> bool:
-        if not self.is_signed:
-            return False
-        signature = self.get_header().get("X-Agrirouter-Signature")
-        # return validate_signature(signature)

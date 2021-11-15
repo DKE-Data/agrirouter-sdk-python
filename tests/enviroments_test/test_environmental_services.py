@@ -7,5 +7,7 @@ from tests.constants import ENV
 
 
 def test_arclient_set_env():
+    assert EnvironmentalService(ENV)._set_env(ENV) is None
+    assert EnvironmentalService("Production")._set_env("Production") is None
     with pytest.raises(InvalidEnvironmentSetup):
         assert EnvironmentalService("WRONG")._set_env("WRONG")

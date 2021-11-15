@@ -6,7 +6,7 @@ from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.encode import encode_message
 from agrirouter.messaging.enums import TechnicalMessageType
 from agrirouter.messaging.messages import EncodedMessage
-from agrirouter.messaging.parameters.dto import MessageParameters, MessagingParameters
+from agrirouter.messaging.parameters.dto import MessagingParameters
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
     CapabilityParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
     SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters
@@ -52,10 +52,10 @@ class CapabilityService(AbstractService):
             enable_push_notifications=parameters.get_enable_push_notification()
         )
         if parameters.get_capability_parameters():
-            capability_specification.capabilities = parameters.get_capability_parameters()
+            capability_specification.capabilities.extend(parameters.get_capability_parameters())
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(CapabilitySpecification.__name__),
+            type_url=TypeUrl.get_type_url(CapabilitySpecification),
             value=capability_specification.SerializeToString()
         )
 
@@ -85,7 +85,7 @@ class FeedConfirmService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(MessageConfirm.__name__),
+            type_url=TypeUrl.get_type_url(MessageConfirm),
             value=message_confirm.SerializeToString()
         )
 
@@ -115,7 +115,7 @@ class FeedDeleteService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(MessageConfirm.__name__),
+            type_url=TypeUrl.get_type_url(MessageConfirm),
             value=message_confirm.SerializeToString()
         )
 
@@ -147,7 +147,7 @@ class ListEndpointsService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(ListEndpointsQuery.__name__),
+            type_url=TypeUrl.get_type_url(ListEndpointsQuery),
             value=list_endpoints_query.SerializeToString()
         )
 
@@ -179,7 +179,7 @@ class QueryMessagesService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(MessageQuery.__name__),
+            type_url=TypeUrl.get_type_url(MessageQuery),
             value=message_query.SerializeToString()
         )
 
@@ -211,7 +211,7 @@ class QueryHeaderService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(MessageQuery.__name__),
+            type_url=TypeUrl.get_type_url(MessageQuery),
             value=message_query.SerializeToString()
         )
 
@@ -241,7 +241,7 @@ class SubscriptionService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(Subscription.__name__),
+            type_url=TypeUrl.get_type_url(Subscription),
             value=subscription.SerializeToString()
         )
 

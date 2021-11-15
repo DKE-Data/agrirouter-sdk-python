@@ -6,7 +6,7 @@ class BaseEnvironment:
     _MQTT_URL_TEMPLATE = "ssl://{host}:{port}"
     _SECURED_ONBOARDING_AUTHORIZATION_LINK_TEMPLATE = \
         "/application/{application_id}/authorize" \
-        "?response_type={response_type}&state={state}&redirect_uri={redirect_uri}"
+        "?response_type={response_type}&state={state}"
 
     _ENV_BASE_URL = ""
     _API_PREFIX = ""
@@ -38,13 +38,13 @@ class BaseEnvironment:
     def get_agrirouter_login_url(self) -> str:
         return self.get_base_url() + self._AGRIROUTER_LOGIN_URL
 
-    def get_secured_onboarding_authorization_url(self, application_id, response_type, state, redirect_uri) -> str:
-        return self.get_base_url() + self._SECURED_ONBOARDING_AUTHORIZATION_LINK_TEMPLATE.format(
+    def get_secured_onboarding_authorization_url(self, application_id, response_type, state, redirect_uri=None) -> str:
+        auth_url = self.get_base_url() + self._SECURED_ONBOARDING_AUTHORIZATION_LINK_TEMPLATE.format(
             application_id=application_id,
             response_type=response_type,
-            state=state,
-            redirect_uri=redirect_uri
+            state=state
         )
+        return auth_url + f"&redirect_uri={redirect_uri}" if redirect_uri is not None else auth_url
 
     def get_mqtt_server_url(self, host, port) -> str:
         return self._MQTT_URL_TEMPLATE.format(host=host, port=port)

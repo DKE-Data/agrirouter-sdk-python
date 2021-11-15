@@ -1,10 +1,6 @@
 import json
-import os
 from abc import ABC, abstractmethod
 
-import requests
-
-from agrirouter.messaging.certification import create_certificate_file_from_pen
 from agrirouter.messaging.clients.http import HttpClient
 from agrirouter.messaging.clients.mqtt import MqttClient
 from agrirouter.messaging.messages import Message

@@ -40,10 +40,10 @@ class BaseEnvironment:
 
     def get_secured_onboarding_authorization_url(self, application_id, response_type, state, redirect_uri=None) -> str:
         auth_url = self.get_base_url() + self._SECURED_ONBOARDING_AUTHORIZATION_LINK_TEMPLATE.format(
-                application_id=application_id,
-                response_type=response_type,
-                state=state
-            )
+            application_id=application_id,
+            response_type=response_type,
+            state=state
+        )
         return auth_url + f"&redirect_uri={redirect_uri}" if redirect_uri is not None else auth_url
 
     def get_mqtt_server_url(self, host, port) -> str:

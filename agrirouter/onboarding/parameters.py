@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from agrirouter.constants.media_types import ContentTypes
 from agrirouter.onboarding.enums import CertificateTypes
 from agrirouter.utils.utc_time_util import now_as_utc_str

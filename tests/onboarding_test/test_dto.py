@@ -16,7 +16,7 @@ class TestConnectionCriteria:
 
         test_object = ConnectionCriteria()
 
-        data = {"client_id": "1", "commands": "commands", "gateway_id": "3", "host": "localhost", "port": "80",
+        data = {"clientId": "1", "commands": "commands", "gatewayId": "3", "host": "localhost", "port": "80",
                 "measures": "test_measures"}
 
         test_object.json_deserialize(data)
@@ -32,7 +32,7 @@ class TestConnectionCriteria:
         test_object = ConnectionCriteria()
 
         with pytest.raises(WrongFieldError):
-            test_object.json_deserialize({"client_id": "1", "commands": "commands", "wrong_key": "localhost"})
+            test_object.json_deserialize({"clientId": "1", "commands": "commands", "wrong_key": "localhost"})
 
     def test_json_deserialize_from_valid_json(self):
         client_id = "1"
@@ -42,7 +42,7 @@ class TestConnectionCriteria:
         measures = "test_measures"
         port = "80"
 
-        json_data = '{"client_id": "1", "commands": "commands", "gateway_id": "3", "host": "localhost", "port": "80",' \
+        json_data = '{"clientId": "1", "commands": "commands", "gatewayId": "3", "host": "localhost", "port": "80",' \
                     '"measures": "test_measures"}'
 
         test_object = ConnectionCriteria()
@@ -80,8 +80,8 @@ class TestConnectionCriteria:
         )
 
         serialized_data = test_object.json_serialize()
-        assert serialized_data["gateway_id"] == gateway_id
-        assert serialized_data["client_id"] == client_id
+        assert serialized_data["gatewayId"] == gateway_id
+        assert serialized_data["clientId"] == client_id
         assert serialized_data["commands"] == commands
         assert serialized_data["host"] == host
         assert serialized_data["measures"] == measures

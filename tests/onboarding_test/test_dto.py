@@ -276,6 +276,6 @@ class TestErrorResponse:
 
         serialized_data = test_object.json_serialize()
         assert serialized_data["code"] == code
-        assert serialized_data["client_id"] == message
+        assert serialized_data["message"] == message
         assert serialized_data["target"] == target
         assert serialized_data["details"] == details

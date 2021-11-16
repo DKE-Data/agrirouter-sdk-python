@@ -159,10 +159,10 @@ class Authentication:
 
 
 class ErrorResponse:
-    CODE = ""
-    MESSAGE = ""
-    TARGET = ""
-    DETAILS = ""
+    CODE = "code"
+    MESSAGE = "message"
+    TARGET = "target"
+    DETAILS = "details"
 
     def __init__(self,
                  *,

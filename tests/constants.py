@@ -111,10 +111,17 @@ wrong_public_key = (
     "-----END PUBLIC KEY-----"
 )
 
-valid_response_signature = "Sp5VyQpD%2FJUEEzi%2Bjc%2BUwGrfWcKiWsbPke8281oadqJ1HlzfPjZNXNeLZxgrPrnmlQoI%2FGkgaYHgjeX3OFneZKhKgDnb80mTUkidFyx%2F72V3mxfvlmOFrZmDYSOhtNg1LsAv%2BP%2FZRMkDCjfSx99vaiYyXc%2FAl8zFSgH0eBphrY2Vh4Rle5O4bOQYSjOdLXY%2FWVjv68R7KH3cdX%2FnC9PbYrT92VY5Nzl7gdeX%2FcXSULGrh7pGOZj6cFJMtl6R%2BqwMIitVaumNqrSktv3Xmv6DKTUbcMbHEJNlexi98RXJMci8O7bdNH7dumoHdOyjlIFlt4SPIahHmPnu4lIYd5grbw%3D%3D"
+# taken from auth_result_url
+valid_response_signature = (
+    "SUL9SQMWAfG4%2FEyT0rejkRfAyioxJIOs4sxI5wxeB8TkIiv0MR6YFKw1tPIkM4ll"
+    "uZKHEIgr5WvM3b3SvII9TtEbzZf995R8GIlNP6yyP51TF%2F4vZMbkMjq%2B2g1o0qw%2FyuDQcGz1RpOJWCuBOjMXu9quzGO"
+    "8xvDW7LjrN%2BMA9rzJZYb1toNf51O0eO4BDWL5L1oLvrKrqvaErKcIoRJtTVJ51awOWMARDkGZahcRdWrZbdGUbQwIyKJQu4"
+    "vH8%2B4ytlyXPSWEYwKE2VFoAjhzWsKODdRRxDbNNLWsW8sxKamdXjSOC8inHUFsFNoxLbwZEnKROm2s3OfKGYuibXOpXw%3D%3D"
+)
+
+# taken from auth_result_url
 valid_response_token = (
         "eyJhY2NvdW50IjoiMGJhMjRlZWUtYzMwYi00N2U1LWJkYzktNzcwM"
         "2NmYjEzNmEwIiwicmVnY29kZSI6IjhlYWNiMTk4ZmMiLCJleHBpcm"
         "VzIjoiMjAyMS0wOS0yM1QxNjowODo0My44ODhaIn0="
     )
-# http://fuf.me/?state=1f9eebe5-7085-4d46-b911-0701a62a371e&token=eyJhY2NvdW50IjoiZmIyOTIxZGUtNTkyYS00OWJhLWJlNWUtOTQwNDQ0MzBiYzk2IiwicmVnY29kZSI6Ijk3ZjQzOTQ2NDUiLCJleHBpcmVzIjoiMjAyMS0xMS0xNlQxOTowOTo0MC4xMzNaIn0%3D&signature=

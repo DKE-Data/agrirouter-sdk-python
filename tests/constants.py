@@ -110,3 +110,11 @@ wrong_public_key = (
     "mwIDAQAB\n"
     "-----END PUBLIC KEY-----"
 )
+
+valid_response_signature = "Sp5VyQpD%2FJUEEzi%2Bjc%2BUwGrfWcKiWsbPke8281oadqJ1HlzfPjZNXNeLZxgrPrnmlQoI%2FGkgaYHgjeX3OFneZKhKgDnb80mTUkidFyx%2F72V3mxfvlmOFrZmDYSOhtNg1LsAv%2BP%2FZRMkDCjfSx99vaiYyXc%2FAl8zFSgH0eBphrY2Vh4Rle5O4bOQYSjOdLXY%2FWVjv68R7KH3cdX%2FnC9PbYrT92VY5Nzl7gdeX%2FcXSULGrh7pGOZj6cFJMtl6R%2BqwMIitVaumNqrSktv3Xmv6DKTUbcMbHEJNlexi98RXJMci8O7bdNH7dumoHdOyjlIFlt4SPIahHmPnu4lIYd5grbw%3D%3D"
+valid_response_token = (
+        "eyJhY2NvdW50IjoiMGJhMjRlZWUtYzMwYi00N2U1LWJkYzktNzcwM"
+        "2NmYjEzNmEwIiwicmVnY29kZSI6IjhlYWNiMTk4ZmMiLCJleHBpcm"
+        "VzIjoiMjAyMS0wOS0yM1QxNjowODo0My44ODhaIn0="
+    )
+# http://fuf.me/?state=1f9eebe5-7085-4d46-b911-0701a62a371e&token=eyJhY2NvdW50IjoiZmIyOTIxZGUtNTkyYS00OWJhLWJlNWUtOTQwNDQ0MzBiYzk2IiwicmVnY29kZSI6Ijk3ZjQzOTQ2NDUiLCJleHBpcmVzIjoiMjAyMS0xMS0xNlQxOTowOTo0MC4xMzNaIn0%3D&signature=

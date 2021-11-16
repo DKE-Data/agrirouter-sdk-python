@@ -1,15 +1,11 @@
 """Tests agrirouter/auth/dto.py"""
-from agrirouter.onboarding.dto import (
-    AuthorizationToken,
-    ConnectionCriteria,
-    Authentication,
-)
+from agrirouter.auth.dto import AuthorizationToken
 from agrirouter.messaging.exceptions import WrongFieldError
 import pytest
 
 
 class TestAuthorizationToken:
-    def test_json_deserialize(self):
+    def test_json_deserialize_from_valid_dict(self):
         account = "account"
         regcode = "regcode"
         expires = "01-01-2021"
@@ -48,90 +44,33 @@ class TestAuthorizationToken:
         assert test_object_3.account is None
         assert test_object_3.regcode == regcode
         assert test_object_3.expires == expires
+
+    def test_json_deserialize_from_invalid_dict(self):
+        account = "account"
+        regcode = "regcode"
+        expires = "01-01-2021"
+        test_object = AuthorizationToken()
+
         with pytest.raises(WrongFieldError):
-            assert test_object_3.json_deserialize({"wrong_key": regcode})
+            test_object.json_deserialize({"regcode": regcode, "expires": expires, "wrong_key": account})
 
+    def test_json_deserialize_from_valid_json(self):
+        account = "account"
+        regcode = "regcode"
+        expires = "01-01-2021"
 
-class TestConnectionCriteria:
-    def test_json_deserialize(self):
-        client_id = "1"
-        commands = "commands"
-        gateway_id = "3"
-        host = "localhost"
-        measures = "test_measures"
-        port = "80"
-        test_object = ConnectionCriteria(
-            gateway_id=gateway_id,
-            client_id=client_id,
-            host=host,
-            measures=measures,
-            port=port,
-        )
-        test_object.json_deserialize({"commands": commands})
+        json_data = '{"account": "account", "regcode": "regcode", "expires": "01-01-2021"}'
+
+        test_object = AuthorizationToken()
+        test_object.json_deserialize(json_data)
         assert test_object
-        assert test_object.gateway_id == gateway_id
-        assert test_object.client_id == client_id
-        assert test_object.commands == commands
-        assert test_object.host == host
-        assert test_object.measures == measures
-        assert test_object.port == port
+        assert test_object.account == account
+        assert test_object.regcode == regcode
+        assert test_object.expires == expires
 
-        test_object_1 = ConnectionCriteria(
-            gateway_id=gateway_id,
-            client_id=client_id,
-            commands=commands,
-            measures=measures,
-            port=port,
-        )
+    def test_json_deserialize_from_invalid_json(self):
+        json_data = '{"account": "account", "regcode": "regcode", "wrong_key": "01-01-2021"}'
+        test_object = AuthorizationToken()
 
-        test_object_1.json_deserialize({"host": host})
-        assert test_object_1
-        assert test_object_1.gateway_id == gateway_id
-        assert test_object_1.client_id == client_id
-        assert test_object_1.commands == commands
-        assert test_object_1.host == host
-        assert test_object_1.measures == measures
-        assert test_object_1.port == port
         with pytest.raises(WrongFieldError):
-            assert test_object_1.json_deserialize({"wrong_key": measures})
-
-
-class TestAuthentication:
-    def test_json_deserialize(self):
-        type = "type"
-        secret = "secret"
-        certificate = "certificate"
-        test_object = Authentication(
-            type=type,
-            secret=secret,
-        )
-        test_object.json_deserialize({"certificate": certificate})
-        assert test_object
-        assert test_object.type == type
-        assert test_object.secret == secret
-        assert test_object.certificate == certificate
-
-        test_object_1 = Authentication(type=type, certificate=certificate)
-        test_object_1.json_deserialize({"secret": secret})
-        assert test_object_1
-        assert test_object_1.type == type
-        assert test_object_1.secret == secret
-        assert test_object_1.certificate == certificate
-
-        test_object_2 = Authentication(secret=secret, certificate=certificate)
-        test_object_2.json_deserialize({"type": type})
-        assert test_object_2
-        assert test_object_2.type == type
-        assert test_object_2.secret == secret
-        assert test_object_2.certificate == certificate
-
-        test_object_2 = Authentication(
-            secret=secret,
-        )
-        test_object_2.json_deserialize({"type": type})
-        assert test_object_2
-        assert test_object_2.type == type
-        assert test_object_2.secret == secret
-        assert test_object_2.certificate is None
-        with pytest.raises(WrongFieldError):
-            assert test_object_2.json_deserialize({"wrong_key": certificate})
+            assert test_object.json_deserialize(json_data)

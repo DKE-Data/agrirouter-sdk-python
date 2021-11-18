@@ -39,14 +39,14 @@ def test_decode_details():
 
     assert decoded_details.endpoints
     assert len(decoded_details.endpoints) == 2
-    assert decoded_details[0].endpoint_id == "d704a443-99f7-47b4-be55-e2fa09689ebe"
-    assert decoded_details[0].endpoint_name == "PythonSDK_dev - 2021-10-25, 10:51:18"
-    assert decoded_details[0].endpoint_type == "application"
-    assert decoded_details[0].status == "active"
-    assert decoded_details[0].external_id == "urn:myapp:snr00003234"
+    assert decoded_details.endpoints[0].endpoint_id == "d704a443-99f7-47b4-be55-e2fa09689ebe"
+    assert decoded_details.endpoints[0].endpoint_name == "PythonSDK_dev - 2021-10-25, 10:51:18"
+    assert decoded_details.endpoints[0].endpoint_type == "application"
+    assert decoded_details.endpoints[0].status == "active"
+    assert decoded_details.endpoints[0].external_id == "urn:myapp:snr00003234"
 
-    assert decoded_details[1].endpoint_id == "185cd97b-ed0b-4e75-a6e2-6be1cdd38a06"
-    assert decoded_details[1].endpoint_name == "PythonSDK_dev - 2021-10-21, 21:41:24"
-    assert decoded_details[1].endpoint_type == "application"
-    assert decoded_details[1].status == "active"
-    assert decoded_details[1].external_id == "urn:myapp:snr00003234sdf"
+    assert decoded_details.endpoints[1].endpoint_id == "185cd97b-ed0b-4e75-a6e2-6be1cdd38a06"
+    assert decoded_details.endpoints[1].endpoint_name == "PythonSDK_dev - 2021-10-21, 21:41:24"
+    assert decoded_details.endpoints[1].endpoint_type == "application"
+    assert decoded_details.endpoints[1].status == "active"
+    assert decoded_details.endpoints[1].external_id == "urn:myapp:snr00003234sdf"

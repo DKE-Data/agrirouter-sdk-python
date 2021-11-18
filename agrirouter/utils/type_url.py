@@ -14,32 +14,27 @@ from agrirouter.messaging.exceptions import TypeUrlNotFoundError
 
 class TypeUrl:
     prefix = "types.agrirouter.com/"
+    commands = (
+        Messages,
+        ListEndpointsResponse,
+        HeaderQueryResponse,
+        MessageQueryResponse,
+        MessageDelete,
+        MessageConfirm,
+        OnboardingResponse,
+        OnboardingRequest,
+        CapabilitySpecification,
+        Subscription,
+        MessageQuery,
+        ListEndpointsQuery,
+    )
 
     @classmethod
     def get_type_url(cls, class_):
-        if class_ == Messages:
-            return cls.prefix + Messages.DESCRIPTOR.full_name
-        elif class_ == ListEndpointsResponse:
-            return cls.prefix + ListEndpointsResponse.DESCRIPTOR.full_name
-        elif class_ == HeaderQueryResponse:
-            return cls.prefix + HeaderQueryResponse.DESCRIPTOR.full_name
-        elif class_ == MessageQueryResponse:
-            return cls.prefix + MessageQueryResponse.DESCRIPTOR.full_name
-        elif class_ == MessageDelete:
-            return cls.prefix + MessageDelete.DESCRIPTOR.full_name
-        elif class_ == MessageConfirm:
-            return cls.prefix + MessageConfirm.DESCRIPTOR.full_name
-        elif class_ == OnboardingResponse:
-            return cls.prefix + OnboardingResponse.DESCRIPTOR.full_name
-        elif class_ == OnboardingRequest:
-            return cls.prefix + OnboardingRequest.DESCRIPTOR.full_name
-        elif class_ == CapabilitySpecification:
-            return cls.prefix + CapabilitySpecification.DESCRIPTOR.full_name
-        elif class_ == Subscription:
-            return cls.prefix + Subscription.DESCRIPTOR.full_name
-        elif class_ == MessageQuery:
-            return cls.prefix + MessageQuery.DESCRIPTOR.full_name
-        elif class_ == ListEndpointsQuery:
-            return cls.prefix + ListEndpointsQuery.DESCRIPTOR.full_name
-        else:
+        return TypeUrl.get_command(class_)
+
+    @classmethod
+    def get_command(cls, class_) -> str:
+        if class_ not in cls.commands:
             raise TypeUrlNotFoundError(f"The {class_} type url not found")
+        return cls.prefix + class_.DESCRIPTOR.full_name

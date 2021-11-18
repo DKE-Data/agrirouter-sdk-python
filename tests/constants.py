@@ -121,7 +121,7 @@ valid_response_signature = (
 
 # taken from auth_result_url
 valid_response_token = (
-        "eyJhY2NvdW50IjoiMGJhMjRlZWUtYzMwYi00N2U1LWJkYzktNzcwM"
-        "2NmYjEzNmEwIiwicmVnY29kZSI6IjhlYWNiMTk4ZmMiLCJleHBpcm"
-        "VzIjoiMjAyMS0wOS0yM1QxNjowODo0My44ODhaIn0="
-    )
+    "eyJhY2NvdW50IjoiMGJhMjRlZWUtYzMwYi00N2U1LWJkYzktNzcwM"
+    "2NmYjEzNmEwIiwicmVnY29kZSI6IjhlYWNiMTk4ZmMiLCJleHBpcm"
+    "VzIjoiMjAyMS0wOS0yM1QxNjowODo0My44ODhaIn0="
+)

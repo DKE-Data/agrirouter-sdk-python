@@ -1,12 +1,11 @@
 """Test agrirouter/onboarding/signature.py"""
 
 import pytest
-import re
 
 from cryptography.exceptions import InvalidSignature
 
 from agrirouter.onboarding.signature import create_signature, verify_signature
-from tests.constants import private_key, wrong_private_key, public_key, valid_response_signature
+from tests.constants import private_key, public_key
 
 
 def test_create_signature_ok():

@@ -15,8 +15,7 @@ class TestSoftwareOnboardingHeader:
             self.test_object.get_header()["Authorization"] == "Bearer " + self.reg_code
         )
         assert (
-            self.test_object.get_header()["Content-Type"]
-            == ContentTypes.APPLICATION_JSON.value
+            self.test_object.get_header()["Content-Type"] == ContentTypes.APPLICATION_JSON.value
         )
 
         assert self.test_object_1.get_header()["Content-Type"] == "json"

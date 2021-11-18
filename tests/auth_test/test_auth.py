@@ -6,10 +6,8 @@ from tests.constants import (
     public_key,
     private_key,
     auth_result_url,
-    ENV,
-    application_id,
+    ENV
 )
-import re
 
 
 class TestAuthorization:

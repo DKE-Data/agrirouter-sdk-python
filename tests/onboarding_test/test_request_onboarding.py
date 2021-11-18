@@ -46,6 +46,5 @@ class TestBaseOnboardingRequest:
         )
         assert self.test_object.get_header()["Content-Type"] == self.content_type
         assert (
-            self.test_object.get_header()["X-Agrirouter-ApplicationId"]
-            == application_id
+            self.test_object.get_header()["X-Agrirouter-ApplicationId"] == application_id
         )

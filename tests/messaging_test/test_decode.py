@@ -1,5 +1,4 @@
 import json
-
 import pytest
 
 from agrirouter.generated.messaging.response.response_pb2 import ResponseEnvelope

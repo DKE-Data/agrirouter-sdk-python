@@ -110,3 +110,18 @@ wrong_public_key = (
     "mwIDAQAB\n"
     "-----END PUBLIC KEY-----"
 )
+
+# taken from auth_result_url
+valid_response_signature = (
+    "SUL9SQMWAfG4%2FEyT0rejkRfAyioxJIOs4sxI5wxeB8TkIiv0MR6YFKw1tPIkM4ll"
+    "uZKHEIgr5WvM3b3SvII9TtEbzZf995R8GIlNP6yyP51TF%2F4vZMbkMjq%2B2g1o0qw%2FyuDQcGz1RpOJWCuBOjMXu9quzGO"
+    "8xvDW7LjrN%2BMA9rzJZYb1toNf51O0eO4BDWL5L1oLvrKrqvaErKcIoRJtTVJ51awOWMARDkGZahcRdWrZbdGUbQwIyKJQu4"
+    "vH8%2B4ytlyXPSWEYwKE2VFoAjhzWsKODdRRxDbNNLWsW8sxKamdXjSOC8inHUFsFNoxLbwZEnKROm2s3OfKGYuibXOpXw%3D%3D"
+)
+
+# taken from auth_result_url
+valid_response_token = (
+        "eyJhY2NvdW50IjoiMGJhMjRlZWUtYzMwYi00N2U1LWJkYzktNzcwM"
+        "2NmYjEzNmEwIiwicmVnY29kZSI6IjhlYWNiMTk4ZmMiLCJleHBpcm"
+        "VzIjoiMjAyMS0wOS0yM1QxNjowODo0My44ODhaIn0="
+    )

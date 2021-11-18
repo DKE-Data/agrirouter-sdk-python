@@ -63,6 +63,7 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
     SENSOR_ALTERNATE_ID = "sensorAlternateId"
     CONNECTION_CRITERIA = "connectionCriteria"
     AUTHENTICATION = "authentication"
+    ERROR = "error"
 
     def __init__(self, http_response: Response = None):
         if http_response:
@@ -130,6 +131,10 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
         self.capability_alternate_id = capability_alternate_id
 
     def json_serialize(self):
+        if self.error:
+            return {
+                self.ERROR: self.error
+            }
         return {
             self.DEVICE_ALTERNATE_ID: self.device_alternate_id,
             self.CAPABILITY_ALTERNATE_ID: self.capability_alternate_id,
@@ -155,6 +160,10 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
                 authentication = Authentication()
                 authentication.json_deserialize(value)
                 self.authentication = authentication
+            elif key == self.ERROR:
+                error_response = ErrorResponse()
+                error_response.json_deserialize(value)
+                self.error = error_response
             else:
                 raise WrongFieldError(f"Unknown field `{key}` for {self.__class__}")
 

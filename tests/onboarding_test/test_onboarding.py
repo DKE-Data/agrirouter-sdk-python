@@ -1,7 +1,7 @@
 """Test agrirouter/onboarding/onboarding.py"""
 
 from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWay
-from agrirouter.onboarding.onboarding import SoftwareOnboarding, CUOnboarding
+from agrirouter.onboarding.onboarding import SoftwareOnboarding
 from agrirouter.onboarding.parameters import SoftwareOnboardingParameter
 from agrirouter.onboarding.enums import GateWays, CertificateTypes
 from tests.constants import public_key, private_key, ENV, application_id

@@ -2,11 +2,26 @@
 
 import pytest
 import re
-from agrirouter.onboarding.signature import create_signature
-from tests.constants import private_key, wrong_private_key
+
+from cryptography.exceptions import InvalidSignature
+
+from agrirouter.onboarding.signature import create_signature, verify_signature
+from tests.constants import private_key, wrong_private_key, public_key, valid_response_signature
 
 
-def test_create_signature():
-    assert re.search(r"[\w]", create_signature("127.0.0.1", private_key))
-    with pytest.raises(ValueError):
-        assert re.search(r"[\w]", create_signature("127.0.0.1", wrong_private_key))
+def test_create_signature_ok():
+    signature = create_signature(
+        "REQUEST CONTENT", private_key)
+    raised = False
+    try:
+        verify_signature(
+            "REQUEST CONTENT", bytes.fromhex(signature), public_key)
+    except InvalidSignature:
+        raised = True
+    assert not raised
+
+
+def test_verify_signature_fail():
+    with pytest.raises(InvalidSignature):
+        verify_signature(
+            "REQUEST CONTENT", b"wrong_signature", public_key)

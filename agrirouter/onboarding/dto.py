@@ -159,17 +159,44 @@ class Authentication:
 
 
 class ErrorResponse:
+    CODE = "code"
+    MESSAGE = "message"
+    TARGET = "target"
+    DETAILS = "details"
+
     def __init__(self,
                  *,
-                 code,
-                 message,
-                 target,
-                 details
+                 code: str = None,
+                 message: str = None,
+                 target: str = None,
+                 details: str = None
                  ):
         self.code = code
         self.message = message
         self.target = target
         self.details = details
+
+    def json_serialize(self) -> dict:
+        return {
+            self.CODE: self.code,
+            self.MESSAGE: self.message,
+            self.TARGET: self.target,
+            self.DETAILS: self.details
+        }
+
+    def json_deserialize(self, data: Union[str, dict]) -> None:
+        data = data if type(data) == dict else json.loads(data)
+        for key, value in data.items():
+            if key == self.CODE:
+                self.code = value
+            elif key == self.MESSAGE:
+                self.message = value
+            elif key == self.TARGET:
+                self.target = value
+            elif key == self.DETAILS:
+                self.details = value
+            else:
+                raise WrongFieldError(f"Unknown field {key} for ErrorResponse class")
 
     def get_code(self) -> str:
         return self.code

@@ -64,32 +64,14 @@ class TestProductionEnvironment:
         )
 
     def test_get_secured_onboarding_authorization_url(self):
+        redirect_uri = "www.my_redirect.com"
+        response_type = "response_type"
         assert ProductionEnvironment().get_secured_onboarding_authorization_url(
-            application_id, str, "state", auth_result_url
-        ) == ProductionEnvironment._ENV_BASE_URL + ProductionEnvironment._SECURED_ONBOARDING_AUTHORIZATION_LINK_TEMPLATE.format(
+            application_id, response_type, "state", redirect_uri
+        ) == "https://goto.my-agrirouter.com/application/{application_id}/authorize?response_type={response_type}&state={state}".format(
             application_id=application_id,
-            response_type=str,
-            state="state",
-            redirect_uri=auth_result_url,
-        )
-        with pytest.raises(AssertionError):
-            assert ProductionEnvironment().get_secured_onboarding_authorization_url(
-                application_id, str, "state", auth_result_url
-            ) == ProductionEnvironment._ENV_BASE_URL + ProductionEnvironment._SECURED_ONBOARDING_AUTHORIZATION_LINK_TEMPLATE.format(
-                application_id=application_id,
-                response_type=str,
-                state="123",
-                redirect_uri=auth_result_url,
-            )
-        with pytest.raises(AssertionError):
-            assert ProductionEnvironment().get_secured_onboarding_authorization_url(
-                application_id, dict, "state", auth_result_url
-            ) == ProductionEnvironment._ENV_BASE_URL + ProductionEnvironment._SECURED_ONBOARDING_AUTHORIZATION_LINK_TEMPLATE.format(
-                application_id=application_id,
-                response_type=str,
-                state="state",
-                redirect_uri=auth_result_url,
-            )
+            response_type=response_type,
+            state="state") + f"&redirect_uri={redirect_uri}"
 
     def test_get_mqtt_server_url(self):
         assert ProductionEnvironment().get_mqtt_server_url(
@@ -97,18 +79,6 @@ class TestProductionEnvironment:
         ) == ProductionEnvironment._MQTT_URL_TEMPLATE.format(
             host="localhost", port="5000"
         )
-        with pytest.raises(AssertionError):
-            assert ProductionEnvironment().get_mqtt_server_url(
-                "localhost", "5000"
-            ) == ProductionEnvironment._MQTT_URL_TEMPLATE.format(
-                host="127.0.0.1", port="5000"
-            )
-        with pytest.raises(AssertionError):
-            assert ProductionEnvironment().get_mqtt_server_url(
-                "localhost", "5000"
-            ) == ProductionEnvironment._MQTT_URL_TEMPLATE.format(
-                host="localhost", port="80"
-            )
 
     def test_get_env_public_key(self):
         assert (
@@ -169,45 +139,19 @@ class TestQAEnvironment:
         )
 
     def test_get_secured_onboarding_authorization_url(self):
+        redirect_uri = "www.my_redirect.com"
+        response_type = "response_type"
         assert QAEnvironment().get_secured_onboarding_authorization_url(
-            application_id, str, "state", auth_result_url
+            application_id, response_type, "state", redirect_uri
         ) == QAEnvironment._ENV_BASE_URL + QAEnvironment._SECURED_ONBOARDING_AUTHORIZATION_LINK_TEMPLATE.format(
             application_id=application_id,
-            response_type=str,
-            state="state",
-            redirect_uri=auth_result_url,
-        )
-        with pytest.raises(AssertionError):
-            assert QAEnvironment().get_secured_onboarding_authorization_url(
-                application_id, str, "state", auth_result_url
-            ) == QAEnvironment._ENV_BASE_URL + QAEnvironment._SECURED_ONBOARDING_AUTHORIZATION_LINK_TEMPLATE.format(
-                application_id=application_id,
-                response_type=str,
-                state="123",
-                redirect_uri=auth_result_url,
-            )
-        with pytest.raises(AssertionError):
-            assert QAEnvironment().get_secured_onboarding_authorization_url(
-                application_id, dict, "state", auth_result_url
-            ) == QAEnvironment._ENV_BASE_URL + QAEnvironment._SECURED_ONBOARDING_AUTHORIZATION_LINK_TEMPLATE.format(
-                application_id=application_id,
-                response_type=str,
-                state="state",
-                redirect_uri=auth_result_url,
-            )
+            response_type=response_type,
+            state="state") + f"&redirect_uri={redirect_uri}"
 
     def test_get_mqtt_server_url(self):
         assert QAEnvironment().get_mqtt_server_url(
             "localhost", "5000"
         ) == QAEnvironment._MQTT_URL_TEMPLATE.format(host="localhost", port="5000")
-        with pytest.raises(AssertionError):
-            assert QAEnvironment().get_mqtt_server_url(
-                "localhost", "5000"
-            ) == QAEnvironment._MQTT_URL_TEMPLATE.format(host="127.0.0.1", port="5000")
-        with pytest.raises(AssertionError):
-            assert QAEnvironment().get_mqtt_server_url(
-                "localhost", "5000"
-            ) == QAEnvironment._MQTT_URL_TEMPLATE.format(host="localhost", port="80")
 
     def test_get_env_public_key(self):
         assert QAEnvironment().get_env_public_key() == QAEnvironment.AR_PUBLIC_KEY

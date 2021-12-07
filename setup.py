@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='agrirouter-sdk-python',
+    name='agrirouter',
     version='1.0.0',
     packages=['agrirouter'],
     python_requires=">= 3.6",

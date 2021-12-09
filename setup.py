@@ -31,7 +31,9 @@ setup(
         'idna~=3.2',
         'pycparser~=2.20',
         'requests~=2.26.0',
-        'urllib3~=1.26.7'
+        'urllib3~=1.26.7',
+        'paho-mqtt~=1.5.1',
+        'protobuf~=3.18.0'
     ],
     project_urls={
         'Documentation': 'https://github.com/DKE-Data/agrirouter-sdk-python',

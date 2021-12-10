@@ -1,9 +1,10 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='agrirouter',
     version='1.0.0',
-    packages=['agrirouter'],
+    packages=find_packages(),
+    include_package_data=True,
     python_requires=">= 3.6",
     url='https://github.com/DKE-Data/agrirouter-sdk-python',
     license='Apache-2.0',

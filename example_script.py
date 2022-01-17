@@ -73,14 +73,15 @@ import agrirouter as ar
 from agrirouter.onboarding.enums import GateWays
 from agrirouter.messaging.enums import CapabilityType
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
+from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.services.commons import HttpMessagingService, MqttMessagingService
 from agrirouter import ListEndpointsParameters, ListEndpointsService, SubscriptionService, SubscriptionParameters, \
-    QueryHeaderService, QueryHeaderParameters
+    QueryHeaderService, QueryHeaderParameters, CapabilityService, CapabilityParameters
 from agrirouter.utils.uuid_util import new_uuid
 
 
 application_id = "8c947a45-c57d-42d2-affc-206e21d63a50"		# # store here your application id. You can find it in AR UI
-
+certification_version_id = "edd5d6b7-45bb-4471-898e-ff9c2a7bf56f" # # store here your certification version id. You can find it in AR UI
 
 def example_auth():
     print("Authorization...\n")
@@ -120,7 +121,6 @@ def example_onboarding(gateway_id):
     print("Onboarding...\n")
 
     id_ = "urn:myapp:snr00003234"  # just unique
-    certification_version_id = "edd5d6b7-45bb-4471-898e-ff9c2a7bf56f"  # get from AR UI
     time_zone = "+03:00"
 
     onboarding_client = ar.SoftwareOnboarding("QA", public_key=public_key, private_key=private_key)
@@ -163,6 +163,27 @@ def example_list_endpoints_mqtt(onboarding_response_data, foo):
     # Is needed for waiting of messaging responses from outbox
     while True:
         time.sleep(1)
+
+def example_set_capabilities(onboarding_response_data, mqtt_message_callback):
+    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response.json_deserialize(onboarding_response_data)
+    messaging_service = MqttMessagingService(
+        onboarding_response=onboarding_response,
+        on_message_callback=mqtt_message_callback
+    )
+    capabilities_parameters = CapabilityParameters(
+        onboarding_response=onboarding_response,
+        application_message_id=new_uuid(),
+        application_message_seq_no=1,
+        application_id=application_id,
+        certification_version_id=certification_version_id,
+        capability_parameters=[
+            CapabilitySpecification.Capability(technical_message_type = CapabilityType.ISO_11783_TASKDATA_ZIP.value, direction = "SEND_RECEIVE")
+        ],
+        enable_push_notification=True,
+    )
+    capabilities_service = CapabilityService(messaging_service)
+    capabilities_service.send(capabilities_parameters)
 
 
 def example_list_endpoints_http(onboarding_response_data):
@@ -303,6 +324,7 @@ def on_message_callback(client, userdata, msg):
 
 if __name__ == "__main__":
     onboarding_response_mqtt = example_onboarding(GateWays.MQTT.value)
+    example_set_capabilities(onboarding_response_mqtt.json_serialize(), on_message_callback)
     example_list_endpoints_mqtt(onboarding_response_mqtt.json_serialize(), on_message_callback)
 
     # or for http

@@ -37,6 +37,8 @@ def encode_header(header_parameters: MessageHeaderParameters) -> RequestEnvelope
     if header_parameters.get_team_set_context_id() is not None:
         request_envelope.team_set_context_id = header_parameters.get_team_set_context_id()
     request_envelope.timestamp.FromDatetime(now_as_utc_timestamp())
+    if header_parameters.get_recipients() is not None:
+        request_envelope.recipients.MergeFrom(header_parameters.get_recipients())
 
     return request_envelope
 

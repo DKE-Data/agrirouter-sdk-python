@@ -48,6 +48,7 @@ class AuthResponse:
         unquoted_signature = unquote(self.signature)
         encoded_signature = base64.b64decode(unquoted_signature.encode("utf-8"))
 
+        self._is_valid = True
         try:
             verify_signature(encoded_data, encoded_signature, public_key)
         except InvalidSignature:
@@ -56,7 +57,6 @@ class AuthResponse:
         finally:
             self._was_verified = True
 
-        self._is_valid = True
 
     @staticmethod
     def decode_token(token: Union[str, bytes]) -> AuthorizationToken:

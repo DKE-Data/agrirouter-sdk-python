@@ -57,7 +57,6 @@ class AuthResponse:
         finally:
             self._was_verified = True
 
-
     @staticmethod
     def decode_token(token: Union[str, bytes]) -> AuthorizationToken:
         if type(token) == str:

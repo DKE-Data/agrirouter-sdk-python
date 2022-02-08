@@ -1,7 +1,8 @@
 from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageDelete, MessageQuery
+from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageDelete, \
+    MessageQuery
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.encode import encode_message
 from agrirouter.messaging.enums import TechnicalMessageType

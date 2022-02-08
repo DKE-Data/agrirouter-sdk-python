@@ -5,7 +5,7 @@ import re
 import pytest
 
 from agrirouter.auth.response import AuthResponse
-from tests.constants import valid_response_signature, valid_response_token, public_key
+from tests.constants import valid_response_signature, valid_response_token, public_key, AR_PUBLIC_KEY
 
 
 def test_decode_token():
@@ -31,7 +31,7 @@ def test_verify(authorization):
 
     with pytest.raises(PermissionError):
         auth_response.is_valid
-    auth_response.verify(public_key)
+    auth_response.verify(AR_PUBLIC_KEY)
     assert auth_response.is_valid
 
 

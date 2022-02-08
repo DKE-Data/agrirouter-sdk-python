@@ -1,7 +1,8 @@
 from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageQuery
+from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageDelete, \
+    MessageQuery
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.encode import encode_message
 from agrirouter.messaging.enums import TechnicalMessageType
@@ -107,16 +108,18 @@ class FeedDeleteService(AbstractService):
             application_message_seq_no=parameters.get_application_message_seq_no(),
             team_set_context_id=parameters.get_team_set_context_id(),
             mode=RequestEnvelope.Mode.Value("DIRECT"),
-            technical_message_type=TechnicalMessageType.FEED_CONFIRM.value
+            technical_message_type=TechnicalMessageType.FEED_DELETE.value
         )
 
-        message_confirm = MessageConfirm(
-            message_ids=parameters.get_message_ids()
+        message_delete = MessageDelete(
+            message_ids=parameters.get_message_ids(),
+            senders=parameters.get_senders(),
+            validity_period=parameters.get_validity_period()
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=TypeUrl.get_type_url(MessageConfirm),
-            value=message_confirm.SerializeToString()
+            type_url=TypeUrl.get_type_url(MessageDelete),
+            value=message_delete.SerializeToString()
         )
 
         message_content = encode_message(message_header_parameters, message_payload_parameters)

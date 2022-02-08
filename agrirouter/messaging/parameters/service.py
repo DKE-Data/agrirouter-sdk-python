@@ -214,7 +214,7 @@ class FeedDeleteParameters(MessageParameters):
     def __init__(self,
                  *,
                  message_ids: list = None,
-                 receivers: list = None,
+                 senders: list = None,
                  validity_period: ValidityPeriod = None,
                  application_message_seq_no: int,
                  application_message_id: str,
@@ -222,7 +222,7 @@ class FeedDeleteParameters(MessageParameters):
                  onboarding_response: BaseOnboardingResonse,
                  ):
         self.message_ids = message_ids if message_ids else []
-        self.receivers = receivers if receivers else []
+        self.senders = senders if senders else []
         self.validity_period = validity_period
         super(FeedDeleteParameters, self).__init__(
             application_message_seq_no=application_message_seq_no,
@@ -243,17 +243,17 @@ class FeedDeleteParameters(MessageParameters):
     def extend_message_ids(self, message_ids):
         self.message_ids.extend(message_ids)
 
-    def get_receivers(self):
-        return deepcopy(self.receivers)
+    def get_senders(self):
+        return deepcopy(self.senders)
 
-    def set_receivers(self, receivers: list):
-        self.receivers = receivers
+    def set_senders(self, senders: list):
+        self.senders = senders
 
-    def add_receivers(self, receiver):
-        self.receivers.append(receiver)
+    def add_senders(self, receiver):
+        self.senders.append(receiver)
 
-    def extend_receivers(self, receivers):
-        self.receivers.extend(receivers)
+    def extend_senders(self, senders):
+        self.senders.extend(senders)
 
     def get_validity_period(self):
         return self.validity_period

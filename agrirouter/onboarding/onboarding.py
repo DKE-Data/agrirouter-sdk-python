@@ -12,8 +12,8 @@ from agrirouter.onboarding.response import SoftwareVerifyOnboardingResponse, Sof
 class SoftwareOnboarding(EnvironmentalService):
 
     def __init__(self, *args, **kwargs):
-        self._public_key = kwargs.pop("public_key")
-        self._private_key = kwargs.pop("private_key")
+        #self._public_key = kwargs.pop("public_key")
+        #self._private_key = kwargs.pop("private_key")
         super(SoftwareOnboarding, self).__init__(*args, **kwargs)
 
     def _create_request(self, params: SoftwareOnboardingParameter, url: str) -> SoftwareOnboardingRequest:
@@ -27,14 +27,15 @@ class SoftwareOnboarding(EnvironmentalService):
 
     def _perform_request(self, params: SoftwareOnboardingParameter, url: str) -> requests.Response:
         request = self._create_request(params, url)
-        request.sign(self._private_key, self._public_key)
-        if request.is_signed:
-            return requests.post(
-                url=request.get_url(),
-                data=request.get_body_content(),
-                headers=request.get_header()
-            )
-        raise RequestNotSigned
+        #request.sign(self._private_key, self._public_key)
+        #if request.is_signed:
+        #    return requests.post(
+        #        url=request.get_url(),
+        #        data=request.get_body_content(),
+        #        headers=request.get_header()
+        #    )
+        #raise RequestNotSigned
+        return requests.post(url=request.get_url(), data=request.get_body_content(), headers=request.get_header())
 
     def verify(self, params: SoftwareOnboardingParameter) -> SoftwareVerifyOnboardingResponse:
         url = self._environment.get_verify_onboard_request_url()
@@ -43,7 +44,7 @@ class SoftwareOnboarding(EnvironmentalService):
         return SoftwareVerifyOnboardingResponse(http_response)
 
     def onboard(self, params: SoftwareOnboardingParameter) -> SoftwareOnboardingResponse:
-        url = self._environment.get_secured_onboard_url()
+        url = self._environment.get_onboard_url()
         http_response = self._perform_request(params=params, url=url)
 
         return SoftwareOnboardingResponse(http_response)

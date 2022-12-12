@@ -55,7 +55,7 @@ class SoftwareVerifyOnboardingResponse(BaseOnboardingResonse):
 
 class SoftwareOnboardingResponse(BaseOnboardingResonse):
     """
-    Response from onboarding request used for Farming Software or Telemetry Platform
+    Response from onboarding request used for CU
     """
 
     DEVICE_ALTERNATE_ID = "deviceAlternateId"

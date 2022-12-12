@@ -13,14 +13,14 @@ class SoftwareOnboardingBody:
                  certification_version_id,
                  gateway_id,
                  certificate_type,
-                 time_zone,
+                 time_zone=None,
                  utc_timestamp=None
                  ):
 
         self._validate_certificate_type(certificate_type)
         self._validate_gateway_id(gateway_id)
 
-        utc_timestamp = utc_timestamp if utc_timestamp else datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        #utc_timestamp = utc_timestamp if utc_timestamp else datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
         self._set_params(
             id_,
@@ -28,8 +28,8 @@ class SoftwareOnboardingBody:
             certification_version_id,
             gateway_id,
             certificate_type,
-            utc_timestamp,
-            time_zone
+            #utc_timestamp,
+            #time_zone
         )
 
     def get_parameters(self) -> dict:
@@ -41,8 +41,8 @@ class SoftwareOnboardingBody:
                     certification_version_id,
                     gateway_id,
                     certificate_type,
-                    utc_timestamp,
-                    time_zone
+                    utc_timestamp=None,
+                    time_zone=None
                     ):
 
         self.params = {
@@ -51,8 +51,8 @@ class SoftwareOnboardingBody:
             "certificationVersionId": certification_version_id,
             "gatewayId": gateway_id,
             "certificateType": certificate_type,
-            "UTCTimestamp": utc_timestamp,
-            "timeZone": time_zone,
+            #"UTCTimestamp": utc_timestamp,
+            #"timeZone": time_zone,
         }
 
     def json(self) -> str:

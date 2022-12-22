@@ -434,3 +434,43 @@ class SubscriptionParameters(MessageParameters):
 
     def extend_direction(self, subscription_items: List[Subscription.MessageTypeSubscriptionItem]) -> None:
         self.subscription_items.extend(subscription_items)
+
+
+class ImageParameters(MessageParameters):
+    def __init__(self,
+                 *,
+                 image_encoded: bytes,
+                 image_filename: str,
+                 application_message_seq_no: int,
+                 recipients: list,
+                 application_message_id: str,
+                 team_set_context_id: str = None,
+                 onboarding_response: BaseOnboardingResonse
+                 ):
+        self.image_encoded = image_encoded
+        self.image_filename = image_filename
+        self.recipients = recipients
+        super(ImageParameters, self).__init__(
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
+            onboarding_response=onboarding_response
+        )
+
+    def get_image_encoded(self):
+        return self.image_encoded
+
+    def get_image_filename(self):
+        return self.image_filename
+
+    def get_recipients(self):
+        return self.recipients
+
+    def set_image_encoded(self, image_encoded):
+        self.image_encoded = image_encoded
+
+    def set_image_filename(self, image_filename):
+        self.image_filename = image_filename
+
+    def set_recipients(self, recipients):
+        self.recipients = recipients

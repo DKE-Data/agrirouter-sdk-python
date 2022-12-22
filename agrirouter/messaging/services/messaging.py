@@ -5,12 +5,12 @@ from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 impor
     MessageQuery
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.encode import encode_message
-from agrirouter.messaging.enums import TechnicalMessageType
+from agrirouter.messaging.enums import TechnicalMessageType, CapabilityType
 from agrirouter.messaging.messages import EncodedMessage
 from agrirouter.messaging.parameters.dto import MessagingParameters
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
     CapabilityParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
-    SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters
+    SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters, ImageParameters
 from agrirouter.utils.type_url import TypeUrl
 from agrirouter.utils.uuid_util import new_uuid
 
@@ -255,3 +255,29 @@ class SubscriptionService(AbstractService):
         )
 
         return encoded_message
+
+
+class ImageService(AbstractService):
+    @staticmethod
+    def encode(parameters: ImageParameters) -> EncodedMessage:
+        message_header_parameters = MessageHeaderParameters(
+            application_message_id=parameters.get_application_message_id(),
+            application_message_seq_no=parameters.get_application_message_seq_no(),
+            recipients=parameters.get_recipients(),
+            team_set_context_id=parameters.get_team_set_context_id(),
+            mode=RequestEnvelope.Mode.Value("DIRECT"),
+            technical_message_type=CapabilityType.IMG_JPEG.value            
+        )
+
+        message_payload_parameters = MessagePayloadParameters(
+            type_url=TechnicalMessageType.EMPTY.value,
+            value=parameters.get_image_encoded()
+        )
+
+        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        encoded_message = EncodedMessage(
+            id_=new_uuid(),
+            content=message_content
+        )
+
+        return encoded_message  

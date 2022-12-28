@@ -2,6 +2,7 @@ from copy import deepcopy
 from typing import List
 
 from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
+from agrirouter.generated.commons.message_pb2 import Metadata
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
@@ -20,6 +21,7 @@ class MessageHeaderParameters(Parameters):
                  recipients: list = None,
                  chunk_component: ChunkComponent = None,
                  application_message_id: str = None,
+                 metadata: Metadata = None
                  ):
         super(MessageHeaderParameters, self).__init__(
             application_message_seq_no=application_message_seq_no,
@@ -31,6 +33,7 @@ class MessageHeaderParameters(Parameters):
         self.mode = mode
         self.recipients = recipients
         self.chunk_component = chunk_component
+        self.metadata = metadata
 
     def get_technical_message_type(self) -> str:
         return self.technical_message_type
@@ -43,6 +46,9 @@ class MessageHeaderParameters(Parameters):
 
     def get_chunk_component(self) -> ChunkComponent:
         return self.chunk_component
+
+    def get_metadata(self) -> Metadata:
+        return self.metadata
 
 
 class MessagePayloadParameters:

@@ -4,6 +4,8 @@ from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 im
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageDelete, \
     MessageQuery
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
+from agrirouter.generated.commons.message_pb2 import Metadata
+
 from agrirouter.messaging.encode import encode_message
 from agrirouter.messaging.enums import TechnicalMessageType, CapabilityType
 from agrirouter.messaging.messages import EncodedMessage
@@ -11,6 +13,7 @@ from agrirouter.messaging.parameters.dto import MessagingParameters
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
     CapabilityParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
     SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters, ImageParameters
+
 from agrirouter.utils.type_url import TypeUrl
 from agrirouter.utils.uuid_util import new_uuid
 
@@ -260,13 +263,18 @@ class SubscriptionService(AbstractService):
 class ImageService(AbstractService):
     @staticmethod
     def encode(parameters: ImageParameters) -> EncodedMessage:
+
+        metadata = Metadata()
+        metadata.file_name = parameters.get_image_filename()
+
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),
             recipients=parameters.get_recipients(),
             team_set_context_id=parameters.get_team_set_context_id(),
             mode=RequestEnvelope.Mode.Value("DIRECT"),
-            technical_message_type=CapabilityType.IMG_JPEG.value            
+            technical_message_type=CapabilityType.IMG_JPEG.value,
+            metadata=metadata     
         )
 
         message_payload_parameters = MessagePayloadParameters(

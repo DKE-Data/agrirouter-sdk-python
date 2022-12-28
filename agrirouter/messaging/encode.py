@@ -4,6 +4,7 @@ from google.protobuf.any_pb2 import Any
 from google.protobuf.internal.encoder import _VarintBytes
 
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope, RequestPayloadWrapper
+
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters
 from agrirouter.utils.utc_time_util import now_as_utc_timestamp
 from agrirouter.utils.uuid_util import new_uuid
@@ -39,6 +40,8 @@ def encode_header(header_parameters: MessageHeaderParameters) -> RequestEnvelope
     request_envelope.timestamp.FromDatetime(now_as_utc_timestamp())
     if header_parameters.get_recipients() is not None:
         request_envelope.recipients.MergeFrom(header_parameters.get_recipients())
+    if header_parameters.get_metadata() is not None:
+        request_envelope.metadata.MergeFrom(header_parameters.get_metadata())
 
     return request_envelope
 

@@ -11,6 +11,8 @@ from agrirouter.generated.messaging.response.payload.feed.feed_response_pb2 impo
     MessageQueryResponse
 from agrirouter.generated.messaging.response.payload.feed.push_notification_pb2 import PushNotification
 
+from AgrirouterTMTProtobufDefinitions.Efdi.efdi_pb2 import TimeLog, ISO11783_TaskData
+
 from agrirouter.messaging.exceptions import TypeUrlNotFoundError
 
 
@@ -30,6 +32,8 @@ class TypeUrl:
         MessageQuery,
         ListEndpointsQuery,
         PushNotification,
+        TimeLog,
+        ISO11783_TaskData
     )
 
     @classmethod

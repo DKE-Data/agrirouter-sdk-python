@@ -10,8 +10,8 @@ from agrirouter.revoking.parameters import RevokingParameter
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
     QueryMessageParameters, QueryHeaderParameters, CloudOffboardParameters, CloudOnboardParameters, \
     CapabilityParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, MessageParameters, \
-    SubscriptionParameters, ImageParameters
+    SubscriptionParameters, ImageParameters, EfdiParameters
 from agrirouter.messaging.services.cloud import CloudOnboardService, CloudOffboardService
 from agrirouter.messaging.services.messaging import SubscriptionService, CapabilityService, FeedConfirmService,\
-    FeedDeleteService, QueryHeaderService, QueryMessagesService, ListEndpointsService, ImageService
+    FeedDeleteService, QueryHeaderService, QueryMessagesService, ListEndpointsService, ImageService, EfdiTimelogService, EfdiDeviceDscService
 

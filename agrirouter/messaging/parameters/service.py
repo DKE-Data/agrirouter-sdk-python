@@ -480,3 +480,43 @@ class ImageParameters(MessageParameters):
 
     def set_recipients(self, recipients):
         self.recipients = recipients
+
+
+class EfdiParameters(MessageParameters):
+    def __init__(self,
+                 *,
+                 efdi: str,
+                 efdi_filename: str,
+                 application_message_seq_no: int,
+                 recipients: list = None,
+                 application_message_id: str,
+                 team_set_context_id: str = None,
+                 onboarding_response: BaseOnboardingResonse
+                 ):
+        self.recipients = recipients
+        self.efdi = efdi
+        self.efdi_filename = efdi_filename
+        super(EfdiParameters, self).__init__(
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
+            onboarding_response=onboarding_response
+        )
+
+    def get_efdi(self):
+        return self.efdi
+
+    def get_recipients(self):
+        return self.recipients
+
+    def get_efdi_filename(self):
+        return self.efdi_filename
+
+    def set_efdi(self, efdi):
+        self.efdi = efdi
+
+    def set_recipients(self, recipients):
+        self.recipients = recipients
+
+    def set_efdi_filename(self, efdi_filename):
+        self.efdi_filename = efdi_filename

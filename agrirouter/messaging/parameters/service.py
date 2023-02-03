@@ -486,7 +486,7 @@ class EfdiParameters(MessageParameters):
     def __init__(self,
                  *,
                  efdi: str,
-                 efdi_filename: str,
+                 efdi_filename: str = None,
                  application_message_seq_no: int,
                  recipients: list = None,
                  application_message_id: str,

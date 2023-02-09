@@ -307,7 +307,7 @@ class EfdiTimelogService(AbstractService):
             team_set_context_id=parameters.get_team_set_context_id(),
             mode=RequestEnvelope.Mode.Value("DIRECT"),
             technical_message_type=CapabilityType.ISO_11783_TIMELOG_PROTOBUF.value,
-            metadata=metadata     
+            metadata = metadata
         )
 
         message_payload_parameters = MessagePayloadParameters(
@@ -337,7 +337,7 @@ class EfdiDeviceDscService(AbstractService):
             team_set_context_id=parameters.get_team_set_context_id(),
             mode=RequestEnvelope.Mode.Value("PUBLISH"),
             technical_message_type=CapabilityType.ISO_11783_DEVICE_DESCRIPTION_PROTOBUF.value,
-            metadata=metadata     
+            metadata=metadata 
         )
 
         message_payload_parameters = MessagePayloadParameters(

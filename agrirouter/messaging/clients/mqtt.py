@@ -127,7 +127,7 @@ class MqttClient:
 
         def on_connect(client: mqtt_client.Client, userdata, flags, rc, properties=None):
             if rc == 0:
-                client.subscribe(topic=onboard_response.connection_criteria.commands)
+                client.subscribe(topic=onboard_response.connection_criteria.commands,qos=2)
                 time.sleep(3)
 
         return on_connect

@@ -297,8 +297,11 @@ class EfdiTimelogService(AbstractService):
     @staticmethod
     def encode(parameters: EfdiParameters) -> EncodedMessage:
 
-        metadata = Metadata()
-        metadata.file_name = parameters.get_efdi_filename()
+        if parameters.get_efdi_filename() != None:
+            metadata = Metadata()
+            metadata.file_name = parameters.get_efdi_filename()
+        else:
+            metadata = None
 
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
@@ -328,8 +331,11 @@ class EfdiDeviceDscService(AbstractService):
     @staticmethod
     def encode(parameters: EfdiParameters) -> EncodedMessage:
 
-        metadata = Metadata()
-        metadata.file_name = parameters.get_efdi_filename()
+        if parameters.get_efdi_filename() != None:
+            metadata = Metadata()
+            metadata.file_name = parameters.get_efdi_filename()
+        else:
+            metadata = None   
 
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),

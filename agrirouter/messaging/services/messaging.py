@@ -9,7 +9,7 @@ from agrirouter.messaging.enums import TechnicalMessageType
 from agrirouter.messaging.messages import EncodedMessage
 from agrirouter.messaging.parameters.dto import MessagingParameters
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
-    CapabilityParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
+    CapabilitiesParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
     SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters
 from agrirouter.utils.type_url import TypeUrl
 from agrirouter.utils.uuid_util import new_uuid
@@ -35,10 +35,10 @@ class AbstractService:
         ...
 
 
-class CapabilityService(AbstractService):
+class CapabilitiesService(AbstractService):
 
     @staticmethod
-    def encode(parameters: CapabilityParameters) -> EncodedMessage:
+    def encode(parameters: CapabilitiesParameters) -> EncodedMessage:
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),

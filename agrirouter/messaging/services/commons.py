@@ -1,19 +1,20 @@
 import json
 from abc import ABC, abstractmethod
 
+from agrirouter.messaging.parameters.service import MessageParameters
 from agrirouter.messaging.clients.http import HttpClient
 from agrirouter.messaging.clients.mqtt import MqttClient
 from agrirouter.messaging.messages import Message
 from agrirouter.messaging.request import MessageRequest
 from agrirouter.messaging.result import MessagingResult
 from agrirouter.onboarding.exceptions import BadMessagingResult
-from agrirouter.onboarding.response import SoftwareOnboardingResponse
+from agrirouter.onboarding.response import OnboardResponse
 
 
 class AbstractMessagingClient(ABC):
 
     @staticmethod
-    def create_message_request(parameters) -> MessageRequest:
+    def create_message_request(parameters: MessageParameters) -> MessageRequest:
         messages = []
         for encoded_message in parameters.get_encoded_messages():
             message = Message(encoded_message)
@@ -35,7 +36,7 @@ class HttpMessagingService(AbstractMessagingClient):
     def __init__(self):
         self.client = HttpClient()
 
-    def send(self, parameters) -> MessagingResult:
+    def send(self, parameters: MessageParameters) -> MessagingResult:
         request = self.create_message_request(parameters)
         response = self.client.send_measure(parameters.get_onboarding_response(), request)
         if response.status != 200:
@@ -47,7 +48,7 @@ class HttpMessagingService(AbstractMessagingClient):
 class MqttMessagingService(AbstractMessagingClient):
 
     def __init__(self,
-                 onboarding_response: SoftwareOnboardingResponse,
+                 onboarding_response: OnboardResponse,
                  on_message_callback: callable = None,
                  client_async: bool = True
                  ):

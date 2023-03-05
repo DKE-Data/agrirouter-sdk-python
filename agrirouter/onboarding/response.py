@@ -7,7 +7,7 @@ from agrirouter.messaging.exceptions import WrongFieldError
 from agrirouter.onboarding.dto import ErrorResponse, ConnectionCriteria, Authentication
 
 
-class BaseOnboardingResonse:
+class BaseOnboardingResponse:
 
     def __init__(self, http_response: Response):
 
@@ -23,14 +23,14 @@ class BaseOnboardingResonse:
         return self._text
 
 
-class SoftwareVerifyOnboardingResponse(BaseOnboardingResonse):
+class VerificationResponse(BaseOnboardingResponse):
     """
     Response from verify request used for Farming Software or Telemetry Platform before onboarding
     """
 
     def __init__(self, http_response: Response = None):
         if http_response:
-            super(SoftwareVerifyOnboardingResponse, self).__init__(http_response)
+            super(VerificationResponse, self).__init__(http_response)
             response_body = http_response.json()
         else:
             self._text = None
@@ -53,7 +53,7 @@ class SoftwareVerifyOnboardingResponse(BaseOnboardingResonse):
         self.account_id = account_id
 
 
-class SoftwareOnboardingResponse(BaseOnboardingResonse):
+class OnboardResponse(BaseOnboardingResponse):
     """
     Response from onboarding request used for Farming Software or Telemetry Platform
     """
@@ -67,7 +67,7 @@ class SoftwareOnboardingResponse(BaseOnboardingResonse):
 
     def __init__(self, http_response: Response = None):
         if http_response:
-            super(SoftwareOnboardingResponse, self).__init__(http_response)
+            super(OnboardResponse, self).__init__(http_response)
             response_body = http_response.json()
         else:
             self._text = None

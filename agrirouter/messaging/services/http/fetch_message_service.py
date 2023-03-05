@@ -3,7 +3,7 @@ from agrirouter.messaging.exceptions import OutboxException
 from agrirouter.messaging.result import OutboxResponse
 
 
-class OutboxService:
+class FetchMessageService:
 
     def __init__(self):
         self.client = HttpClient()

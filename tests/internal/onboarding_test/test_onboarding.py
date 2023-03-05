@@ -1,8 +1,8 @@
 """Test agrirouter/onboarding/onboarding.py"""
 
 from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWay
-from agrirouter.onboarding.onboarding import SoftwareOnboarding
-from agrirouter.onboarding.parameters import SoftwareOnboardingParameter
+from agrirouter.onboarding.onboarding import SecuredOnboardingService
+from agrirouter.onboarding.parameters import OnboardParameters
 from agrirouter.onboarding.enums import GateWays, CertificateTypes
 from tests.constants import public_key, private_key, ENV, application_id
 import pytest
@@ -10,7 +10,7 @@ import pytest
 
 class TestSoftwareOnboarding:
     def test__create_request(self):
-        params = SoftwareOnboardingParameter(
+        params = OnboardParameters(
             id_=1,
             application_id=application_id,
             content_type="json",
@@ -21,12 +21,12 @@ class TestSoftwareOnboarding:
             time_zone="01-01-2021",
             reg_code="8eloz190fd",
         )
-        onboarding = SoftwareOnboarding(
+        onboarding = SecuredOnboardingService(
             public_key=public_key, private_key=private_key, env=ENV
         )
         assert onboarding._create_request(params, "localhost")
 
-        params = SoftwareOnboardingParameter(
+        params = OnboardParameters(
             id_=2,
             application_id=application_id,
             content_type="json",
@@ -37,13 +37,13 @@ class TestSoftwareOnboarding:
             time_zone="01-01-2021",
             reg_code="8eloz190fd",
         )
-        onboarding = SoftwareOnboarding(
+        onboarding = SecuredOnboardingService(
             public_key=public_key, private_key=private_key, env=ENV
         )
         with pytest.raises(WrongCertificationType):
             assert onboarding._create_request(params, "localhost")
 
-        params = SoftwareOnboardingParameter(
+        params = OnboardParameters(
             id_=3,
             application_id=application_id,
             content_type="content_type",
@@ -54,7 +54,7 @@ class TestSoftwareOnboarding:
             time_zone="01-01-2021",
             reg_code="8eloz190fd",
         )
-        onboarding = SoftwareOnboarding(
+        onboarding = SecuredOnboardingService(
             public_key=public_key, private_key=private_key, env=ENV
         )
         with pytest.raises(WrongGateWay):

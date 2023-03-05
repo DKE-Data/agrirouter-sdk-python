@@ -1,6 +1,6 @@
 """Test agrirouter/onboarding/request.py"""
 
-from agrirouter import SoftwareOnboardingParameter, SoftwareOnboarding
+from agrirouter import OnboardParameters, SecuredOnboardingService
 from agrirouter.onboarding.enums import GateWays, CertificateTypes
 from tests.constants import application_id, public_key, private_key, ENV
 
@@ -12,7 +12,7 @@ class TestBaseOnboardingRequest:
     utc_timestamp = "+03:00"
     time_zone = "01-01-2021"
     url = "localhost"
-    params = SoftwareOnboardingParameter(
+    params = OnboardParameters(
         id_=1,
         application_id=application_id,
         content_type=content_type,
@@ -23,13 +23,10 @@ class TestBaseOnboardingRequest:
         time_zone=time_zone,
         reg_code=reg_code,
     )
-    onboarding = SoftwareOnboarding(
+    onboarding = SecuredOnboardingService(
         public_key=public_key, private_key=private_key, env=ENV
     )
-    test_object = onboarding._create_request(params, url)
-
-    def test_get_url(self):
-        assert self.test_object.get_url() == self.url
+    test_object = onboarding._create_request(params)
 
     def test_get_data(self):
         assert self.test_object.get_data()["applicationId"] == application_id

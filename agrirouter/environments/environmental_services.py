@@ -4,7 +4,10 @@ from agrirouter.environments.environments import ProductionEnvironment, QAEnviro
 
 class EnvironmentalService:
     def __init__(self, env):
-        self._set_env(env)
+        if type(env) is str:
+            self._set_env(env)
+        else:
+            self._environment = env
 
     def _set_env(self, env) -> None:
         if env == "QA":

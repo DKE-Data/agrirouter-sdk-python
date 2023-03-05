@@ -2,7 +2,7 @@ from copy import deepcopy
 from typing import List
 
 from agrirouter.messaging.messages import EncodedMessage
-from agrirouter.onboarding.response import BaseOnboardingResonse
+from agrirouter.onboarding.response import BaseOnboardingResponse
 
 
 class Parameters:
@@ -44,7 +44,7 @@ class MessageParameters(Parameters):
                  application_message_seq_no: int,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse
+                 onboarding_response: BaseOnboardingResponse
                  ):
         super(MessageParameters, self).__init__(
             application_message_seq_no=application_message_seq_no,
@@ -54,7 +54,7 @@ class MessageParameters(Parameters):
 
         self.onboarding_response = onboarding_response
 
-    def get_onboarding_response(self) -> BaseOnboardingResonse:
+    def get_onboarding_response(self) -> BaseOnboardingResponse:
         return self.onboarding_response
 
 
@@ -65,7 +65,7 @@ class MessagingParameters(MessageParameters):
                  application_message_seq_no: str = None,
                  application_message_id: str = None,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse,
+                 onboarding_response: BaseOnboardingResponse,
                  encoded_messages=None
                  ):
 

@@ -4,7 +4,7 @@ from google.protobuf.timestamp_pb2 import Timestamp
 
 from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
-from agrirouter.onboarding.response import SoftwareOnboardingResponse
+from agrirouter.onboarding.response import OnboardResponse
 import time
 
 public_key = """-----BEGIN PUBLIC KEY-----
@@ -76,7 +76,7 @@ from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 im
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.services.commons import HttpMessagingService, MqttMessagingService
 from agrirouter import ListEndpointsParameters, ListEndpointsService, SubscriptionService, SubscriptionParameters, \
-    QueryHeaderService, QueryHeaderParameters, CapabilityService, CapabilityParameters
+    QueryHeaderService, QueryHeaderParameters, CapabilitiesService, CapabilitiesParameters
 from agrirouter.utils.uuid_util import new_uuid
 
 
@@ -123,11 +123,11 @@ def example_onboarding(gateway_id):
     id_ = "urn:myapp:snr00003234"  # just unique
     time_zone = "+03:00"
 
-    onboarding_client = ar.SoftwareOnboarding("QA", public_key=public_key, private_key=private_key)
-    onboarding_parameters = ar.SoftwareOnboardingParameter(id_=id_, application_id=application_id,
-                                                           certification_version_id=certification_version_id,
-                                                           gateway_id=gateway_id, time_zone=time_zone,
-                                                           reg_code=auth_data.get_decoded_token().regcode)
+    onboarding_client = ar.SecuredOnboardingService("QA", public_key=public_key, private_key=private_key)
+    onboarding_parameters = ar.OnboardParameters(id_=id_, application_id=application_id,
+                                                 certification_version_id=certification_version_id,
+                                                 gateway_id=gateway_id, time_zone=time_zone,
+                                                 reg_code=auth_data.get_decoded_token().regcode)
     onboarding_verifying_response = onboarding_client.verify(onboarding_parameters)
     print(f"onboarding_verifying_response.status_code: {onboarding_verifying_response.status_code}")
     print(f"onboarding_verifying_response.text: {onboarding_verifying_response.text}")
@@ -139,7 +139,7 @@ def example_onboarding(gateway_id):
 
 
 def example_list_endpoints_mqtt(onboarding_response_data, foo):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
 
     messaging_service = MqttMessagingService(
@@ -165,13 +165,13 @@ def example_list_endpoints_mqtt(onboarding_response_data, foo):
         time.sleep(1)
 
 def example_set_capabilities(onboarding_response_data, mqtt_message_callback):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
     messaging_service = MqttMessagingService(
         onboarding_response=onboarding_response,
         on_message_callback=mqtt_message_callback
     )
-    capabilities_parameters = CapabilityParameters(
+    capabilities_parameters = CapabilitiesParameters(
         onboarding_response=onboarding_response,
         application_message_id=new_uuid(),
         application_message_seq_no=1,
@@ -182,12 +182,12 @@ def example_set_capabilities(onboarding_response_data, mqtt_message_callback):
         ],
         enable_push_notification=True,
     )
-    capabilities_service = CapabilityService(messaging_service)
+    capabilities_service = CapabilitiesService(messaging_service)
     capabilities_service.send(capabilities_parameters)
 
 
 def example_list_endpoints_http(onboarding_response_data):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
 
     messaging_service = HttpMessagingService()
@@ -208,7 +208,7 @@ def example_list_endpoints_http(onboarding_response_data):
 
 
 def example_subscription_http(onboarding_response_data):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
 
     messaging_service = HttpMessagingService()
@@ -229,7 +229,7 @@ def example_subscription_http(onboarding_response_data):
 
 
 def example_subscription_mqtt(onboarding_response_data, on_msg_callback):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
 
     messaging_service = MqttMessagingService(onboarding_response, on_message_callback=on_msg_callback)
@@ -252,7 +252,7 @@ def example_subscription_mqtt(onboarding_response_data, on_msg_callback):
 
 
 def example_query_header_message_http(onboarding_response_data):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
 
     messaging_service = HttpMessagingService()
@@ -275,7 +275,7 @@ def example_query_header_message_http(onboarding_response_data):
 
 
 def example_query_header_message_mqtt(onboarding_response_data, on_msg_callback):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
 
     messaging_service = MqttMessagingService(onboarding_response, on_message_callback=on_msg_callback)

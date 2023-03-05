@@ -1,4 +1,4 @@
-class AgriRouuterBaseException(Exception):
+class AgrirouterBaseException(Exception):
     _message = ...
 
     def __init__(self, message=None):
@@ -7,15 +7,15 @@ class AgriRouuterBaseException(Exception):
         self.message = message
 
 
-class WrongCertificationType(AgriRouuterBaseException):
+class WrongCertificationType(AgrirouterBaseException):
     _message = "Wrong Certification type. Use onboarding.enums.CertificationTypes values instead."
 
 
-class WrongGateWay(AgriRouuterBaseException):
+class WrongGateWay(AgrirouterBaseException):
     _message = "Wrong Gate Way Id. Use onboarding.enums.GateWays values instead."
 
 
-class RequestNotSigned(AgriRouuterBaseException):
+class RequestNotSigned(AgrirouterBaseException):
     _message = """
     Request does not contain signature header. Please sign the request with request.sign() method.\n
     Details on: https://docs.my-agrirouter.com/agrirouter-interface-documentation/latest/
@@ -23,5 +23,5 @@ class RequestNotSigned(AgriRouuterBaseException):
     """
 
 
-class BadMessagingResult(AgriRouuterBaseException):
+class BadMessagingResult(AgrirouterBaseException):
     _message = "Messaging Request failed"

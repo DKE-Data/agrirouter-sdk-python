@@ -3,7 +3,7 @@ import pytest
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.onboarding.onboarding import SecuredOnboardingService, OnboardingService
 from agrirouter.onboarding.parameters import OnboardParameters
-from agrirouter.messaging.services.messaging import SubscriptionService, CapabilitiesService, FeedConfirmService,\
+from agrirouter.messaging.services.messaging import SubscriptionService, CapabilitiesService, FeedConfirmService, \
     FeedDeleteService, QueryHeaderService, QueryMessagesService, ListEndpointsService
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
     QueryMessageParameters, QueryHeaderParameters, CloudOffboardParameters, CloudOnboardParameters, \
@@ -23,23 +23,24 @@ from tests.data.onboard_response_integration_service import OnboardResponseInteg
 class TestUpdateOnboardResponses:
     _environment = QAEnvironment()
 
-    #@pytest.mark.skip(reason="Will fail unless the token is changed.")
+    # @pytest.mark.skip(reason="Will fail unless the token is changed.")
     def test_update_recipient(self):
-        onboard_response = self._onboard("192d2cbf-75f2-40af-bf48-a54a6f35e692", "436d167df8")
+        onboard_response = self._onboard("1f200eea-bcdf-11ed-afa1-0242ac120002", "699878cc2d")
         self._validate_connection(onboard_response)
         self._enable_all_capabilities_via_http(onboard_response)
         OnboardResponseIntegrationService.save(identifier.SENDER, onboard_response)
 
-    def _onboard(self, uuid: str, registration_code:str, certification_type_definition: str = "PEM", gateway_id : str = "3") -> OnboardResponse:
+    def _onboard(self, uuid: str, registration_code: str, certification_type_definition: str = "PEM",
+                 gateway_id: str = "3") -> OnboardResponse:
         onboarding_service = OnboardingService(env=self._environment)
         onboarding_parameters = OnboardParameters(
-            id_ = uuid,
-            reg_code = registration_code,
-            certificate_type = certification_type_definition,
-            gateway_id = gateway_id,
-            application_id = CommunicationUnit.application_id,
-            certification_version_id = CommunicationUnit.certification_version_id,
-            time_zone = "+01:00"
+            id_=uuid,
+            reg_code=registration_code,
+            certificate_type=certification_type_definition,
+            gateway_id=gateway_id,
+            application_id=CommunicationUnit.application_id,
+            certification_version_id=CommunicationUnit.certification_version_id,
+            time_zone="+01:00"
         )
 
         onboard_response = onboarding_service.onboard(onboarding_parameters)
@@ -69,7 +70,7 @@ class TestUpdateOnboardResponses:
             application_id=CommunicationUnit.application_id,
             certification_version_id=CommunicationUnit.certification_version_id,
             enable_push_notification=CapabilitySpecification.PushNotification.DISABLED,
-            capabilities_parameters=[]
+            capability_parameters=[]
         )
         # TODO: continue here, capability helper with All Capabilities should be implemented next
-        capabilities_parameters.capability_parameters.append()
+        # capabilities_parameters.capability_parameters.append()

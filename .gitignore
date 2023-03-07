@@ -8,3 +8,5 @@ venv
 *.log.*
 .env
 .pytest_cache
+/paho/
+/paho_mqtt-1.6.1.dist-info/

@@ -24,10 +24,12 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from tests import sleeper
 from tests.data import applications
 from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
+import os
 
 
 class TestSendDirectMessageService:
-    sender = OnboardResponseIntegrationService.read("sender")
+    sender = os.path.join(os.path.dirname(__file__), 'data/onboarding_responses/Http/CommunicationUnit', 'Sender.json')
+
 
     def set_capabilities_for_sender(self):
         capabilities_service = CapabilitiesService(messaging_service=HttpMessagingService())

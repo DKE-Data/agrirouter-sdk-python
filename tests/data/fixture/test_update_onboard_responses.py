@@ -18,14 +18,14 @@ from agrirouter.utils.uuid_util import new_uuid
 from tests.data import identifier
 from tests.data.applications import CommunicationUnit
 from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
-from tests.constants import uuid
+from tests.constants import cu_recipient_endpoint_id
 
 
 class TestUpdateOnboardResponses:
     _environment = QAEnvironment()
 
     def test_update_recipient(self):
-        onboard_response = self._onboard(uuid, "b425768a3f")
+        onboard_response = self._onboard(cu_recipient_endpoint_id, "1dbf04311d")
         self._validate_connection(onboard_response)
         self._enable_all_capabilities_via_http(onboard_response)
         OnboardResponseIntegrationService.save(identifier.RECIPIENT, onboard_response)

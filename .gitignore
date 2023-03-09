@@ -10,3 +10,5 @@ venv
 .pytest_cache
 /paho/
 /paho_mqtt-1.6.1.dist-info/
+/paho/
+/paho_mqtt-1.6.1.dist-info/

@@ -18,17 +18,17 @@ from agrirouter.utils.uuid_util import new_uuid
 from tests.data import identifier
 from tests.data.applications import CommunicationUnit
 from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
+from tests.constants import uuid
 
 
 class TestUpdateOnboardResponses:
     _environment = QAEnvironment()
 
-    # @pytest.mark.skip(reason="Will fail unless the token is changed.")
     def test_update_recipient(self):
-        onboard_response = self._onboard("1f200eea-bcdf-11ed-afa1-0242ac120002", "699878cc2d")
+        onboard_response = self._onboard(uuid, "b425768a3f")
         self._validate_connection(onboard_response)
         self._enable_all_capabilities_via_http(onboard_response)
-        OnboardResponseIntegrationService.save(identifier.SENDER, onboard_response)
+        OnboardResponseIntegrationService.save(identifier.RECIPIENT, onboard_response)
 
     def _onboard(self, uuid: str, registration_code: str, certification_type_definition: str = "PEM",
                  gateway_id: str = "3") -> OnboardResponse:

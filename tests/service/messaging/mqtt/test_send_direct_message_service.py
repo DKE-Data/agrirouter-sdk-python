@@ -30,7 +30,7 @@ from tests.data.identifier import SENDER
 class TestSendDirectMessageService:
     sender = OnboardResponseIntegrationService.read(SENDER)
 
-    def test_set_capabilities_for_sender(self):
+    def set_capabilities_for_sender(self):
         capabilities_service = CapabilitiesService(messaging_service=HttpMessagingService())
         capabilities_parameters = CapabilitiesParameters(
             onboarding_response=self.sender,

@@ -24,7 +24,7 @@ class TestSoftwareOnboarding:
         onboarding = SecuredOnboardingService(
             public_key=public_key, private_key=private_key, env=ENV
         )
-        assert onboarding._create_request(params, "localhost")
+        assert onboarding._create_request(params)
 
         params = OnboardParameters(
             id_=2,
@@ -41,7 +41,7 @@ class TestSoftwareOnboarding:
             public_key=public_key, private_key=private_key, env=ENV
         )
         with pytest.raises(WrongCertificationType):
-            assert onboarding._create_request(params, "localhost")
+            assert onboarding._create_request(params)
 
         params = OnboardParameters(
             id_=3,
@@ -58,4 +58,4 @@ class TestSoftwareOnboarding:
             public_key=public_key, private_key=private_key, env=ENV
         )
         with pytest.raises(WrongGateWay):
-            assert onboarding._create_request(params, "localhost")
+            assert onboarding._create_request(params)

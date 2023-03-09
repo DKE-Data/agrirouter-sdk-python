@@ -24,10 +24,11 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from tests import sleeper
 from tests.data import applications
 from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
+from tests.data.identifier import SENDER
 
 
 class TestSendDirectMessageService:
-    sender = OnboardResponseIntegrationService.read("sender")
+    sender = OnboardResponseIntegrationService.read(SENDER)
 
     def set_capabilities_for_sender(self):
         capabilities_service = CapabilitiesService(messaging_service=HttpMessagingService())
@@ -43,7 +44,7 @@ class TestSendDirectMessageService:
                 )
             ]
         )
-        capabilities_service.send(capabilities_parameters)
+        new = capabilities_service.send(capabilities_parameters)
 
         sleeper.let_agrirouter_process_the_message()
 

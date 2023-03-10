@@ -25,7 +25,7 @@ class TestUpdateOnboardResponses:
     _environment = QAEnvironment()
 
     def test_update_recipient(self):
-        onboard_response = self._onboard(cu_recipient_endpoint_id, "1dbf04311d")
+        onboard_response = self._onboard(cu_recipient_endpoint_id, "ed1e44c97c")
         self._validate_connection(onboard_response)
         self._enable_all_capabilities_via_http(onboard_response)
         OnboardResponseIntegrationService.save(identifier.RECIPIENT, onboard_response)

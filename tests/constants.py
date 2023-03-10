@@ -1,4 +1,4 @@
-cu_recipient_endpoint_id = "e8953ff6-be52-11ed-afa1-0242ac120002"
+cu_recipient_endpoint_id = "07ee1496-bf24-11ed-afa1-0242ac120002"
 application_id = "8c947a45-c57d-42d2-affc-206e21d63a50"
 ENV = "QA"
 auth_result_url = (

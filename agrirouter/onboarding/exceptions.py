@@ -25,3 +25,7 @@ class RequestNotSigned(AgrirouterBaseException):
 
 class BadMessagingResult(AgrirouterBaseException):
     _message = "Messaging Request failed"
+
+class OnboardException(AgrirouterBaseException):
+    _message = "Unexpected error during onboarding."
+

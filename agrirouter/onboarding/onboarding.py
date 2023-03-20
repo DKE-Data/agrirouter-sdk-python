@@ -45,23 +45,6 @@ class SecuredOnboardingService(EnvironmentalService):
     def onboard(self, params: OnboardParameters) -> OnboardResponse:
         url = self._environment.get_secured_onboard_url()
         http_response = self._perform_request(params=params, url=url)
-
-        return OnboardResponse(http_response)
-
-class OnboardingService(EnvironmentalService):
-    def __init__(self, *args, **kwargs):
-        super(OnboardingService, self).__init__(*args, **kwargs)
-
-    def _perform_request(self, params: OnboardParameters, url: str) -> requests.Response:
-        request = OnboardRequest.from_onboardparameters(params)
-
-        return requests.post(
-            url=url,
-            data=request.get_body_content(),
-            headers=request.get_header()
-        )
-
-    def onboard(self, params: OnboardParameters) -> OnboardResponse:
-        url = self._environment.get_onboard_url()
-        http_response = self._perform_request(params=params, url=url)
-        return OnboardResponse(http_response)
+        if not http_response.ok:
+            raise OnboardException(f"Onboarding returned HTTP status {http_response.status_code}. Message: {http_response.text}")
+        return SoftwareOnboardingResponse(http_response)

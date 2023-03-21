@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 
 from agrirouter.onboarding.enums import CertificateTypes, GateWays
-from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWay
+from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWayType
 
 
 class SoftwareOnboardingBody:
@@ -66,4 +66,4 @@ class SoftwareOnboardingBody:
     @staticmethod
     def _validate_gateway_id(gateway_id: str) -> None:
         if gateway_id not in GateWays.values_list():
-            raise WrongGateWay
+            raise WrongGateWayType

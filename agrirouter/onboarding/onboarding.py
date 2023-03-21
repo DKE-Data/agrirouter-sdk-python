@@ -1,7 +1,7 @@
 import requests
 
 from agrirouter.environments.environmental_services import EnvironmentalService
-from agrirouter.onboarding.exceptions import RequestNotSigned
+from agrirouter.onboarding.exceptions import RequestNotSigned, OnboardException
 from agrirouter.onboarding.headers import SoftwareOnboardingHeader
 from agrirouter.onboarding.parameters import OnboardParameters
 from agrirouter.onboarding.request import OnboardRequest
@@ -45,8 +45,11 @@ class SecuredOnboardingService(EnvironmentalService):
     def onboard(self, params: OnboardParameters) -> OnboardResponse:
         url = self._environment.get_secured_onboard_url()
         http_response = self._perform_request(params=params, url=url)
-
+        if not http_response.ok:
+            raise OnboardException(
+                f"Onboarding returned HTTP status {http_response.status_code}. Message: {http_response.text}")
         return OnboardResponse(http_response)
+
 
 class OnboardingService(EnvironmentalService):
     def __init__(self, *args, **kwargs):

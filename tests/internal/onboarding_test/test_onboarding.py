@@ -1,6 +1,6 @@
 """Test agrirouter/onboarding/onboarding.py"""
 
-from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWay
+from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWayType
 from agrirouter.onboarding.onboarding import SecuredOnboardingService
 from agrirouter.onboarding.parameters import OnboardParameters
 from agrirouter.onboarding.enums import GateWays, CertificateTypes
@@ -57,5 +57,5 @@ class TestSoftwareOnboarding:
         onboarding = SecuredOnboardingService(
             public_key=public_key, private_key=private_key, env=ENV
         )
-        with pytest.raises(WrongGateWay):
+        with pytest.raises(WrongGateWayType):
             assert onboarding._create_request(params)

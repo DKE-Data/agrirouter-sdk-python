@@ -59,13 +59,13 @@ class TestSingleMqttEndpointWithPEMCertificate:
 
 
 class TestSingleMqttEndpointWithP12Certificate:
-    _environment = QAEnvironment()
+    """ Test the onboarding process for a single MQTT endpoint with a P12 certificate. """
 
     @pytest.mark.skip(reason="Will fail unless registration code is changed")
-    def test_update_recipient_with_P12(self, onboarding_process_fixture):
+    def test_update_recipient_with_p12(self, onboarding_process_fixture):
         onboard_response = onboarding_process_fixture(
             uuid=Identifier.MQTT_RECIPIENT_P12['id'],
-            _environment=self._environment,
+            _environment=QAEnvironment(),
             registration_code="d8d256c752",
             certification_type_definition=str(CertificateTypes.P12.value),
             gateway_id=str(GateWays.MQTT.value)

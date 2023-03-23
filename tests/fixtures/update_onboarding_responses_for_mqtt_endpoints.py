@@ -45,62 +45,62 @@ def onboarding_process_fixture():
 class TestSingleMqttEndpointWithPEMCertificate:
     """ Test the onboarding process for a single MQTT endpoint with a PEM certificate. """
 
-    @pytest.mark.skip(reason="Will fail unless registration code is changed")
+    @pytest.mark.skip(reason="Will fail unless the registration code is changed")
     def test_update_recipient_with_pem(self, onboarding_process_fixture):
         onboard_response = onboarding_process_fixture(
-            uuid=Identifier.MQTT_RECIPIENT_PEM['id'],
+            uuid=Identifier.MQTT_RECIPIENT_PEM[Identifier.ID],
             _environment=QAEnvironment(),
             registration_code="efd9b2fbaa",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(GateWays.MQTT.value)
         )
 
-        OnboardResponseIntegrationService.save(Identifier.MQTT_RECIPIENT_PEM['Path'], onboard_response)
+        OnboardResponseIntegrationService.save(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH], onboard_response)
 
 
 class TestSingleMqttEndpointWithP12Certificate:
     """ Test the onboarding process for a single MQTT endpoint with a P12 certificate. """
 
-    @pytest.mark.skip(reason="Will fail unless registration code is changed")
+    @pytest.mark.skip(reason="Will fail unless the registration code is changed")
     def test_update_recipient_with_p12(self, onboarding_process_fixture):
         onboard_response = onboarding_process_fixture(
-            uuid=Identifier.MQTT_RECIPIENT_P12['id'],
+            uuid=Identifier.MQTT_RECIPIENT_P12[Identifier.ID],
             _environment=QAEnvironment(),
             registration_code="d8d256c752",
             certification_type_definition=str(CertificateTypes.P12.value),
             gateway_id=str(GateWays.MQTT.value)
         )
 
-        OnboardResponseIntegrationService.save(Identifier.MQTT_RECIPIENT_P12['Path'], onboard_response)
+        OnboardResponseIntegrationService.save(Identifier.MQTT_RECIPIENT_P12[Identifier.PATH], onboard_response)
 
 
 class TestSenderSingleMqttEndpointWithPEMCertificate:
-    _environment = QAEnvironment()
+    """ Test the onboarding process for a single MQTT endpoint with a PEM certificate. """
 
-    @pytest.mark.skip(reason="Will fail unless registration code is changed")
-    def test_update_sender_with_PEM(self, onboarding_process_fixture):
+    @pytest.mark.skip(reason="Will fail unless the registration code is changed")
+    def test_update_sender_with_pem(self, onboarding_process_fixture):
         onboard_response = onboarding_process_fixture(
-            uuid=Identifier.MQTT_SENDER_PEM['id'],
-            _environment=self._environment,
+            uuid=Identifier.MQTT_SENDER_PEM[Identifier.ID],
+            _environment=QAEnvironment(),
             registration_code="ef0f89246d",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(GateWays.MQTT.value)
         )
 
-        OnboardResponseIntegrationService.save(Identifier.MQTT_SENDER_PEM['Path'], onboard_response)
+        OnboardResponseIntegrationService.save(Identifier.MQTT_SENDER_PEM[Identifier.PATH], onboard_response)
 
 
 class TestSenderSingleMqttEndpointWithP12Certificate:
-    _environment = QAEnvironment()
+    """ Test the onboarding process for a single MQTT endpoint with a P12 certificate. """
 
-    @pytest.mark.skip(reason="Will fail unless registration code is changed")
-    def test_update_sender_with_P12(self, onboarding_process_fixture):
+    @pytest.mark.skip(reason="Will fail unless the registration code is changed")
+    def test_update_sender_with_p12(self, onboarding_process_fixture):
         onboard_response = onboarding_process_fixture(
-            uuid=Identifier.MQTT_SENDER_P12['id'],
-            _environment=self._environment,
+            uuid=Identifier.MQTT_SENDER_P12[Identifier.ID],
+            _environment=QAEnvironment(),
             registration_code="61124dd64b",
             certification_type_definition=str(CertificateTypes.P12.value),
             gateway_id=str(GateWays.MQTT.value)
         )
 
-        OnboardResponseIntegrationService.save(Identifier.MQTT_SENDER_P12['Path'], onboard_response)
+        OnboardResponseIntegrationService.save(Identifier.MQTT_SENDER_P12[Identifier.PATH], onboard_response)

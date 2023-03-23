@@ -1,4 +1,7 @@
 class Identifier:
+    PATH = "path"
+    ID = "id"
+
     """ Identifier for the endpoints, used for the test cases. """
 
     HTTP_RECIPIENT_P12 = {

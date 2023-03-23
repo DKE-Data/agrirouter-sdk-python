@@ -12,6 +12,8 @@ from tests.data.identifier import Identifier
 
 @pytest.fixture(scope='module')
 def onboarding_process_fixture():
+    """ Fixture for the onboarding process. """
+
     def __onboard(uuid: str, _environment, registration_code: str, certification_type_definition: str = "PEM",
                   gateway_id: str = "2") -> OnboardResponse:
         onboarding_service = OnboardingService(env=_environment)
@@ -41,13 +43,13 @@ def onboarding_process_fixture():
 
 
 class TestSingleMqttEndpointWithPEMCertificate:
-    _environment = QAEnvironment()
+    """ Test the onboarding process for a single MQTT endpoint with a PEM certificate. """
 
     @pytest.mark.skip(reason="Will fail unless registration code is changed")
-    def test_update_recipient_with_PEM(self, onboarding_process_fixture):
+    def test_update_recipient_with_pem(self, onboarding_process_fixture):
         onboard_response = onboarding_process_fixture(
             uuid=Identifier.MQTT_RECIPIENT_PEM['id'],
-            _environment=self._environment,
+            _environment=QAEnvironment(),
             registration_code="efd9b2fbaa",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(GateWays.MQTT.value)

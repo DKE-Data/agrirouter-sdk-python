@@ -16,12 +16,32 @@ from agrirouter.messaging.services.sequence_number_service import SequenceNumber
 
 class TestMqttCapabilitiesService:
 
-    def test_update_recipient(self):
+    def test_update_recipient_with_direction_send_receive(self):
         """
-            Load Onboard Response from 'Mqtt/CommunicationUnit/PEM/Recipient'
+            Load Onboard Response from 'Mqtt/CommunicationUnit/PEM/Recipient' and test with 'SEND_RECEIVE' direction
         """
         self._onboard_response = TestMqttCapabilitiesService.load_onboard_response(r'Mqtt/CommunicationUnit/PEM/Recipient')
-        self._enable_all_capabilities_via_mqtt(self._onboard_response, self._on_message_callback)
+        TestMqttCapabilitiesService._enable_all_capabilities_via_mqtt(onboard_response=self._onboard_response,
+                                                                      mqtt_message_callback=self._on_message_callback,
+                                                                      direction=CapabilityDirectionType.SEND_RECEIVE.value)
+
+    def test_update_recipient_with_direction_receive(self):
+        """
+            Load Onboard Response from 'Mqtt/CommunicationUnit/PEM/Recipient' and test with 'RECEIVE' direction
+        """
+        self._onboard_response = TestMqttCapabilitiesService.load_onboard_response(r'Mqtt/CommunicationUnit/PEM/Recipient')
+        TestMqttCapabilitiesService._enable_all_capabilities_via_mqtt(onboard_response=self._onboard_response,
+                                                                      mqtt_message_callback=self._on_message_callback,
+                                                                      direction=CapabilityDirectionType.RECEIVE.value)
+
+    def test_update_recipient_with_direction_send(self):
+        """
+            Load Onboard Response from 'Mqtt/CommunicationUnit/PEM/Recipient' and test with 'SEND' direction
+        """
+        self._onboard_response = TestMqttCapabilitiesService.load_onboard_response(r'Mqtt/CommunicationUnit/PEM/Recipient')
+        TestMqttCapabilitiesService._enable_all_capabilities_via_mqtt(onboard_response=self._onboard_response,
+                                                                      mqtt_message_callback=self._on_message_callback,
+                                                                      direction=CapabilityDirectionType.SEND.value)
 
     @staticmethod
     def load_onboard_response(path):
@@ -42,7 +62,8 @@ class TestMqttCapabilitiesService:
             time.sleep(5)
         assert decoded_message.response_envelope.response_code == 201
 
-    def _enable_all_capabilities_via_mqtt(onboard_response, mqtt_message_callback):
+    @staticmethod
+    def _enable_all_capabilities_via_mqtt(onboard_response, mqtt_message_callback, direction):
         messaging_service = MqttMessagingService(onboarding_response=onboard_response,
                                                  on_message_callback=mqtt_message_callback)
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(onboard_response)
@@ -55,10 +76,9 @@ class TestMqttCapabilitiesService:
             enable_push_notification=CapabilitySpecification.PushNotification.DISABLED,
             capability_parameters=[]
         )
-
         capabilities_parameters.capability_parameters.append(
-            CapabilitySpecification.Capability(technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
-                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
+            CapabilitySpecification.Capability(technical_message_type=CapabilityType.ISO_11783_TIMELOG_PROTOBUF.value,
+                                               direction=direction))
         capabilities_service = CapabilitiesService(messaging_service)
         capabilities_service.send(capabilities_parameters)
         time.sleep(5)

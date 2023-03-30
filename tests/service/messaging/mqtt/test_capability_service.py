@@ -3,6 +3,7 @@ import time
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.decode import decode_response
 from agrirouter.messaging.enums import CapabilityType
+from agrirouter.messaging.enums import CapabilityDirectionType
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.service import CapabilitiesParameters
 from agrirouter.messaging.services.commons import MqttMessagingService
@@ -25,14 +26,14 @@ class TestMqttCapabilitiesService:
     @staticmethod
     def load_onboard_response(path):
         """
-        Static Method to load the Onboard Response
+        Static method to load the onboard response
         """
         recorded_onboard_response = OnboardResponseIntegrationService.read(path)
         return recorded_onboard_response
 
     def _on_message_callback(self, client, userdata, msg):
         """
-        Callback for MQTTMessagingService
+        Callback to handle the incoming messages from the MQTT broker
         """
         outbox_message = OutboxMessage()
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
@@ -41,7 +42,7 @@ class TestMqttCapabilitiesService:
             time.sleep(5)
         assert decoded_message.response_envelope.response_code == 201
 
-    def _enable_all_capabilities_via_mqtt(self, onboard_response, mqtt_message_callback):
+    def _enable_all_capabilities_via_mqtt(onboard_response, mqtt_message_callback):
         messaging_service = MqttMessagingService(onboarding_response=onboard_response,
                                                  on_message_callback=mqtt_message_callback)
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(onboard_response)
@@ -56,8 +57,8 @@ class TestMqttCapabilitiesService:
         )
 
         capabilities_parameters.capability_parameters.append(
-            CapabilitySpecification.Capability(technical_message_type=CapabilityType.ISO_11783_TASKDATA_ZIP.value,
-                                               direction="SEND_RECEIVE"))
+            CapabilitySpecification.Capability(technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
+                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
         capabilities_service = CapabilitiesService(messaging_service)
         capabilities_service.send(capabilities_parameters)
         time.sleep(5)

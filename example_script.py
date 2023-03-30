@@ -148,7 +148,7 @@ def example_list_endpoints_mqtt(onboarding_response_data, foo):
 
     )
     list_endpoint_parameters = ListEndpointsParameters(
-        technical_message_type=CapabilityType.ISO_11783_TASKDATA_ZIP.value,
+        technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
         direction=ListEndpointsQuery.Direction.Value("SEND_RECEIVE"),
         filtered=False,
         onboarding_response=onboarding_response,
@@ -178,7 +178,7 @@ def example_set_capabilities(onboarding_response_data, mqtt_message_callback):
         application_id=application_id,
         certification_version_id=certification_version_id,
         capability_parameters=[
-            CapabilitySpecification.Capability(technical_message_type = CapabilityType.ISO_11783_TASKDATA_ZIP.value, direction = "SEND_RECEIVE")
+            CapabilitySpecification.Capability(technical_message_type = CapabilityType.ISO_11783_TASK_DATA_ZIP.value, direction ="SEND_RECEIVE")
         ],
         enable_push_notification=True,
     )
@@ -192,7 +192,7 @@ def example_list_endpoints_http(onboarding_response_data):
 
     messaging_service = HttpMessagingService()
     list_endpoint_parameters = ListEndpointsParameters(
-        technical_message_type=CapabilityType.ISO_11783_TASKDATA_ZIP.value,
+        technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
         direction=2,
         filtered=False,
         onboarding_response=onboarding_response,
@@ -213,7 +213,7 @@ def example_subscription_http(onboarding_response_data):
 
     messaging_service = HttpMessagingService()
     subscription_service = SubscriptionService(messaging_service)
-    tmt = CapabilityType.ISO_11783_TASKDATA_ZIP.value
+    tmt = CapabilityType.ISO_11783_TASK_DATA_ZIP.value
     subscription_item = Subscription.MessageTypeSubscriptionItem(technical_message_type=tmt)
     subscription_parameters = SubscriptionParameters(
         subscription_items=[subscription_item],
@@ -234,7 +234,7 @@ def example_subscription_mqtt(onboarding_response_data, on_msg_callback):
 
     messaging_service = MqttMessagingService(onboarding_response, on_message_callback=on_msg_callback)
     subscription_service = SubscriptionService(messaging_service)
-    tmt = CapabilityType.ISO_11783_TASKDATA_ZIP.value
+    tmt = CapabilityType.ISO_11783_TASK_DATA_ZIP.value
     subscription_item = Subscription.MessageTypeSubscriptionItem(technical_message_type=tmt)
     subscription_parameters = SubscriptionParameters(
         subscription_items=[subscription_item],

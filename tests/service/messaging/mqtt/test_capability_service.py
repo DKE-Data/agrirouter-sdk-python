@@ -17,7 +17,7 @@ from tests.data.identifier import Identifier
 
 class TestMqttCapabilitiesService:
 
-    def test_update_recipient_with_direction_send_receive(self):
+    def test_when_sending_capabilities_for_recipient_with_direction_send_receive_then_the_server_should_accept_them(self):
         """
             Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'SEND_RECEIVE' direction
         """
@@ -27,7 +27,7 @@ class TestMqttCapabilitiesService:
                                                                       mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
                                                                       direction=CapabilityDirectionType.SEND_RECEIVE.value)
 
-    def test_update_recipient_with_direction_receive(self):
+    def test_when_sending_capabilities_for_recipient_with_direction_receive_then_the_server_should_accept_them(self):
         """
             Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'RECEIVE' direction
         """
@@ -37,7 +37,7 @@ class TestMqttCapabilitiesService:
                                                                       mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
                                                                       direction=CapabilityDirectionType.RECEIVE.value)
 
-    def test_update_recipient_with_direction_send(self):
+    def test_when_sending_capabilities_for_recipient_with_direction_send_then_the_server_should_accept_them(self):
         """
             Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'SEND' direction
         """

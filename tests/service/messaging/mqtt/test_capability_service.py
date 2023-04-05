@@ -19,7 +19,7 @@ class TestMqttCapabilitiesService:
 
     def test_update_recipient_with_direction_send_receive(self):
         """
-            Load Onboard Response from 'Mqtt/CommunicationUnit/PEM/Recipient' and test with 'SEND_RECEIVE' direction
+            Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'SEND_RECEIVE' direction
         """
         _onboard_response = TestMqttCapabilitiesService.load_onboard_response(
             Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
@@ -29,7 +29,7 @@ class TestMqttCapabilitiesService:
 
     def test_update_recipient_with_direction_receive(self):
         """
-            Load Onboard Response from 'Mqtt/CommunicationUnit/PEM/Recipient' and test with 'RECEIVE' direction
+            Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'RECEIVE' direction
         """
         _onboard_response = TestMqttCapabilitiesService.load_onboard_response(
             Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
@@ -39,7 +39,7 @@ class TestMqttCapabilitiesService:
 
     def test_update_recipient_with_direction_send(self):
         """
-            Load Onboard Response from 'Mqtt/CommunicationUnit/PEM/Recipient' and test with 'SEND' direction
+            Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'SEND' direction
         """
         _onboard_response = TestMqttCapabilitiesService.load_onboard_response(
             Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])

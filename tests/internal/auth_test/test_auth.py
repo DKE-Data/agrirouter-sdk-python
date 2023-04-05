@@ -6,13 +6,13 @@ from tests.constants import (
     public_key,
     private_key,
     auth_result_url,
-    ENV
+    env
 )
 
 
 class TestAuthorization:
     def test_extract_query_params(self):
-        auth_client = Authorization(ENV, public_key=public_key, private_key=private_key)
+        auth_client = Authorization(env, public_key=public_key, private_key=private_key)
         test_uri = "key1=val1&key2=val2&key3=val3"
         params = auth_client._extract_query_params(test_uri)
         assert params == {"key1": "val1", "key2": "val2", "key3": "val3"}
@@ -33,7 +33,7 @@ class TestAuthorization:
         assert check_url == result_url.split("state")[0]
 
     def test_extract_auth_response(self):
-        auth_client = Authorization(ENV, public_key=public_key, private_key=private_key)
+        auth_client = Authorization(env, public_key=public_key, private_key=private_key)
         state = "3770a15d-adf3-4900-a435-464978fe8054"
         token = "token"
         signature = "signature"

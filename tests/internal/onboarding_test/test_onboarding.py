@@ -4,7 +4,7 @@ from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWa
 from agrirouter.onboarding.onboarding import SecuredOnboardingService
 from agrirouter.onboarding.parameters import OnboardParameters
 from agrirouter.onboarding.enums import GateWays, CertificateTypes
-from tests.constants import public_key, private_key, ENV, application_id
+from tests.constants import public_key, private_key, env, application_id
 import pytest
 
 
@@ -22,7 +22,7 @@ class TestSoftwareOnboarding:
             reg_code="8eloz190fd",
         )
         onboarding = SecuredOnboardingService(
-            public_key=public_key, private_key=private_key, env=ENV
+            public_key=public_key, private_key=private_key, env=env
         )
         assert onboarding._create_request(params)
 
@@ -38,7 +38,7 @@ class TestSoftwareOnboarding:
             reg_code="8eloz190fd",
         )
         onboarding = SecuredOnboardingService(
-            public_key=public_key, private_key=private_key, env=ENV
+            public_key=public_key, private_key=private_key, env=env
         )
         with pytest.raises(WrongCertificationType):
             assert onboarding._create_request(params)
@@ -55,7 +55,7 @@ class TestSoftwareOnboarding:
             reg_code="8eloz190fd",
         )
         onboarding = SecuredOnboardingService(
-            public_key=public_key, private_key=private_key, env=ENV
+            public_key=public_key, private_key=private_key, env=env
         )
         with pytest.raises(WrongGateWayType):
             assert onboarding._create_request(params)

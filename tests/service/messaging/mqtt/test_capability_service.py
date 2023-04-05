@@ -13,11 +13,13 @@ from tests.data.onboard_response_integration_service import OnboardResponseInteg
 from agrirouter.utils.uuid_util import new_uuid
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from tests.data.identifier import Identifier
+from tests.sleeper import Sleeper
 
 
 class TestMqttCapabilitiesService:
 
-    def test_when_sending_capabilities_for_recipient_with_direction_send_receive_then_the_server_should_accept_them(self):
+    def test_when_sending_capabilities_for_recipient_with_direction_send_receive_then_the_server_should_accept_them(
+            self):
         """
             Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'SEND_RECEIVE' direction
         """
@@ -64,7 +66,7 @@ class TestMqttCapabilitiesService:
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
         decoded_message = decode_response(outbox_message.command.message.encode())
         while not decoded_message:
-            time.sleep(5)
+            Sleeper.let_agrirouter_process_the_message()
         assert decoded_message.response_envelope.response_code == 201
 
     @staticmethod
@@ -87,4 +89,4 @@ class TestMqttCapabilitiesService:
                                                direction=direction))
         capabilities_service = CapabilitiesService(messaging_service)
         capabilities_service.send(capabilities_parameters)
-        time.sleep(5)
+        Sleeper.let_agrirouter_process_the_message()

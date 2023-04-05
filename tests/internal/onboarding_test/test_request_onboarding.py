@@ -2,7 +2,7 @@
 
 from agrirouter import OnboardParameters, SecuredOnboardingService
 from agrirouter.onboarding.enums import GateWays, CertificateTypes
-from tests.constants import application_id, public_key, private_key, ENV
+from tests.constants import application_id, public_key, private_key, env
 
 
 class TestBaseOnboardingRequest:
@@ -24,7 +24,7 @@ class TestBaseOnboardingRequest:
         reg_code=reg_code,
     )
     onboarding = SecuredOnboardingService(
-        public_key=public_key, private_key=private_key, env=ENV
+        public_key=public_key, private_key=private_key, env=env
     )
     test_object = onboarding._create_request(params)
 

@@ -1,5 +1,5 @@
 application_id = "8c947a45-c57d-42d2-affc-206e21d63a50"
-ENV = "QA"
+env = "QA"
 auth_result_url = (
     "http://fuf.me/?state=46c81f94-d117-4658-9a38-a85692448219&token=eyJhY2NvdW50IjoiMGJhMjRlZWUtYzMwY"
     "i00N2U1LWJkYzktNzcwM2NmYjEzNmEwIiwicmVnY29kZSI6IjhlYWNiMTk4ZmMiLCJleHBpcmVzIjoiMjAyMS0wOS0yM1QxNj"
@@ -51,7 +51,7 @@ public_key = (
     "-----END PUBLIC KEY-----"
 )
 
-AR_PUBLIC_KEY = (
+ar_public_key = (
     "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy8xF9661acn+iS+QS+9Y\n3HvTfUV"
     "cismzbuvxHgHA7YeoOUFxyj3lkaTnXm7hzQe4wDEDgwpJSGAzxIIYSUXe\n8EsWLorg5O0tRexx5SP3+kj1i83DATBJCXP7k+bAF4"
     "u2FVJphC1m2BfLxelGLjzx\nVAS/v6+EwvYaT1AI9FFqW/a2o92IsVPOh9oM9eds3lBOAbH/8XrmVIeHofw+XbTH\n1/7MLD6IE2+"

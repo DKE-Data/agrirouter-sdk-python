@@ -21,7 +21,8 @@ class TestMqttCapabilitiesService:
         """
             Load Onboard Response from 'Mqtt/CommunicationUnit/PEM/Recipient' and test with 'SEND_RECEIVE' direction
         """
-        _onboard_response = TestMqttCapabilitiesService.load_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
+        _onboard_response = TestMqttCapabilitiesService.load_onboard_response(
+            Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
         TestMqttCapabilitiesService._enable_all_capabilities_via_mqtt(onboard_response=_onboard_response,
                                                                       mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
                                                                       direction=CapabilityDirectionType.SEND_RECEIVE.value)
@@ -30,7 +31,8 @@ class TestMqttCapabilitiesService:
         """
             Load Onboard Response from 'Mqtt/CommunicationUnit/PEM/Recipient' and test with 'RECEIVE' direction
         """
-        _onboard_response = TestMqttCapabilitiesService.load_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
+        _onboard_response = TestMqttCapabilitiesService.load_onboard_response(
+            Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
         TestMqttCapabilitiesService._enable_all_capabilities_via_mqtt(onboard_response=_onboard_response,
                                                                       mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
                                                                       direction=CapabilityDirectionType.RECEIVE.value)
@@ -39,7 +41,8 @@ class TestMqttCapabilitiesService:
         """
             Load Onboard Response from 'Mqtt/CommunicationUnit/PEM/Recipient' and test with 'SEND' direction
         """
-        _onboard_response = TestMqttCapabilitiesService.load_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
+        _onboard_response = TestMqttCapabilitiesService.load_onboard_response(
+            Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
         TestMqttCapabilitiesService._enable_all_capabilities_via_mqtt(onboard_response=_onboard_response,
                                                                       mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
                                                                       direction=CapabilityDirectionType.SEND.value)
@@ -68,7 +71,8 @@ class TestMqttCapabilitiesService:
     def _enable_all_capabilities_via_mqtt(onboard_response, mqtt_message_callback, direction):
         messaging_service = MqttMessagingService(onboarding_response=onboard_response,
                                                  on_message_callback=mqtt_message_callback)
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(onboard_response.get_sensor_alternate_id())
+        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+            onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
             onboarding_response=onboard_response,
             application_message_id=new_uuid(),

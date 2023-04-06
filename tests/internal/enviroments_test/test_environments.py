@@ -2,7 +2,7 @@
 
 from agrirouter.environments.environments import ProductionEnvironment as PE
 from agrirouter.environments.environments import QAEnvironment as QAE
-from tests.constants import application_id
+from tests.constants import APPLICATION_ID
 
 
 class TestPE:
@@ -39,9 +39,9 @@ class TestPE:
         redirect_uri = "www.my_redirect.com"
         response_type = "response_type"
         assert PE().get_secured_onboarding_authorization_url(
-            application_id, response_type, "state", redirect_uri
+            APPLICATION_ID, response_type, "state", redirect_uri
         ) == "https://goto.my-agrirouter.com/application/{application_id}/authorize?response_type={response_type}&state={state}".format( # noqa
-            application_id=application_id,
+            application_id=APPLICATION_ID,
             response_type=response_type,
             state="state") + f"&redirect_uri={redirect_uri}"
 
@@ -90,9 +90,9 @@ class TestQAE:
         redirect_uri = "www.my_redirect.com"
         response_type = "response_type"
         assert QAE().get_secured_onboarding_authorization_url(
-            application_id, response_type, "state", redirect_uri
+            APPLICATION_ID, response_type, "state", redirect_uri
         ) == QAE._ENV_BASE_URL + QAE._SECURED_ONBOARDING_AUTHORIZATION_LINK_TEMPLATE.format(
-            application_id=application_id,
+            application_id=APPLICATION_ID,
             response_type=response_type,
             state="state") + f"&redirect_uri={redirect_uri}"
 

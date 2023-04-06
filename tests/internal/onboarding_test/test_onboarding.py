@@ -4,7 +4,7 @@ from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWa
 from agrirouter.onboarding.onboarding import SecuredOnboardingService
 from agrirouter.onboarding.parameters import OnboardParameters
 from agrirouter.onboarding.enums import GateWays, CertificateTypes
-from tests.constants import public_key, private_key, env, application_id
+from tests.constants import PUBLIC_KEY, PRIVATE_KEY, ENV, APPLICATION_ID
 import pytest
 
 
@@ -12,7 +12,7 @@ class TestSoftwareOnboarding:
     def test__create_request(self):
         params = OnboardParameters(
             id_=1,
-            application_id=application_id,
+            application_id=APPLICATION_ID,
             content_type="json",
             certification_version_id="13",
             gateway_id=GateWays.MQTT.value,
@@ -22,13 +22,13 @@ class TestSoftwareOnboarding:
             reg_code="8eloz190fd",
         )
         onboarding = SecuredOnboardingService(
-            public_key=public_key, private_key=private_key, env=env
+            public_key=PUBLIC_KEY, private_key=PRIVATE_KEY, env=ENV
         )
         assert onboarding._create_request(params)
 
         params = OnboardParameters(
             id_=2,
-            application_id=application_id,
+            application_id=APPLICATION_ID,
             content_type="json",
             certification_version_id="13",
             gateway_id=GateWays.MQTT.value,
@@ -38,14 +38,14 @@ class TestSoftwareOnboarding:
             reg_code="8eloz190fd",
         )
         onboarding = SecuredOnboardingService(
-            public_key=public_key, private_key=private_key, env=env
+            public_key=PUBLIC_KEY, private_key=PRIVATE_KEY, env=ENV
         )
         with pytest.raises(WrongCertificationType):
             assert onboarding._create_request(params)
 
         params = OnboardParameters(
             id_=3,
-            application_id=application_id,
+            application_id=APPLICATION_ID,
             content_type="content_type",
             certification_version_id="13",
             gateway_id="wrong_gateway_id",
@@ -55,7 +55,7 @@ class TestSoftwareOnboarding:
             reg_code="8eloz190fd",
         )
         onboarding = SecuredOnboardingService(
-            public_key=public_key, private_key=private_key, env=env
+            public_key=PUBLIC_KEY, private_key=PRIVATE_KEY, env=ENV
         )
         with pytest.raises(WrongGateWayType):
             assert onboarding._create_request(params)

@@ -3,16 +3,16 @@
 from agrirouter import AuthUrlParameter
 from agrirouter.auth.auth import Authorization
 from tests.constants import (
-    public_key,
-    private_key,
-    auth_result_url,
-    env
+    PUBLIC_KEY,
+    PRIVATE_KEY,
+    AUTH_RESULT_URL,
+    ENV
 )
 
 
 class TestAuthorization:
     def test_extract_query_params(self):
-        auth_client = Authorization(env, public_key=public_key, private_key=private_key)
+        auth_client = Authorization(ENV, public_key=PUBLIC_KEY, private_key=PRIVATE_KEY)
         test_uri = "key1=val1&key2=val2&key3=val3"
         params = auth_client._extract_query_params(test_uri)
         assert params == {"key1": "val1", "key2": "val2", "key3": "val3"}
@@ -24,7 +24,7 @@ class TestAuthorization:
         assert auth_params.state
 
         auth_client = Authorization(
-            "QA", public_key=public_key, private_key=private_key
+            "QA", public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
         )
 
         check_url = "https://agrirouter-qa.cfapps.eu10.hana.ondemand.com/application/" \
@@ -33,7 +33,7 @@ class TestAuthorization:
         assert check_url == result_url.split("state")[0]
 
     def test_extract_auth_response(self):
-        auth_client = Authorization(env, public_key=public_key, private_key=private_key)
+        auth_client = Authorization(ENV, public_key=PUBLIC_KEY, private_key=PRIVATE_KEY)
         state = "3770a15d-adf3-4900-a435-464978fe8054"
         token = "token"
         signature = "signature"
@@ -49,8 +49,8 @@ class TestAuthorization:
 
     def test_get_auth_result(self):
         auth_client = Authorization(
-            "QA", public_key=public_key, private_key=private_key
+            "QA", public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
         )
-        auth_response = auth_client.extract_auth_response(auth_result_url)
+        auth_response = auth_client.extract_auth_response(AUTH_RESULT_URL)
         auth_client.verify_auth_response(auth_response)
         assert auth_response.get_auth_result().get_decoded_token()

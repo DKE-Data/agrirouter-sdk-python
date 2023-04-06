@@ -2,7 +2,7 @@
 
 from agrirouter import OnboardParameters, SecuredOnboardingService
 from agrirouter.onboarding.enums import GateWays, CertificateTypes
-from tests.constants import application_id, public_key, private_key, env
+from tests.constants import APPLICATION_ID, PUBLIC_KEY, PRIVATE_KEY, ENV
 
 
 class TestBaseOnboardingRequest:
@@ -14,7 +14,7 @@ class TestBaseOnboardingRequest:
     url = "localhost"
     params = OnboardParameters(
         id_=1,
-        application_id=application_id,
+        application_id=APPLICATION_ID,
         content_type=content_type,
         certification_version_id=certification_version_id,
         gateway_id=GateWays.MQTT.value,
@@ -24,12 +24,12 @@ class TestBaseOnboardingRequest:
         reg_code=reg_code,
     )
     onboarding = SecuredOnboardingService(
-        public_key=public_key, private_key=private_key, env=env
+        public_key=PUBLIC_KEY, private_key=PRIVATE_KEY, env=ENV
     )
     test_object = onboarding._create_request(params)
 
     def test_get_data(self):
-        assert self.test_object.get_data()["applicationId"] == application_id
+        assert self.test_object.get_data()["applicationId"] == APPLICATION_ID
         assert (
             self.test_object.get_data()["certificateType"] == CertificateTypes.PEM.value
         )
@@ -43,5 +43,5 @@ class TestBaseOnboardingRequest:
         )
         assert self.test_object.get_header()["Content-Type"] == self.content_type
         assert (
-            self.test_object.get_header()["X-Agrirouter-ApplicationId"] == application_id
+                self.test_object.get_header()["X-Agrirouter-ApplicationId"] == APPLICATION_ID
         )

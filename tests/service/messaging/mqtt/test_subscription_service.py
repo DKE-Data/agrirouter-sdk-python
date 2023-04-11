@@ -15,22 +15,13 @@ from tests.sleeper import Sleeper
 
 class TestMqttSubscriptionService:
 
-    def test_when_sending_subscriptions_for_pem_recipient_then_the_sender_should_accept_them(self):
+    def test_when_sending_subscriptions_for_pem_recipient_then_the_server_should_accept_them(self):
         """
         Load the existing onboard response and send the subscriptions via mqtt
         """
-        _onboard_response = TestMqttSubscriptionService.load_onboard_response(
-            Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
+        _onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
         TestMqttSubscriptionService._send_subscriptions_via_mqtt(onboard_response=_onboard_response,
                                                                  mqtt_message_callback=TestMqttSubscriptionService._on_message_callback)
-
-    @staticmethod
-    def load_onboard_response(path):
-        """
-        Static method to load the onboard response
-        """
-        recorded_onboard_response = OnboardResponseIntegrationService.read(path)
-        return recorded_onboard_response
 
     @staticmethod
     def _on_message_callback(client, userdata, msg):

@@ -16,11 +16,18 @@ from agrirouter.utils.uuid_util import new_uuid
 
 
 class AbstractService:
+    """
+    Abstract service class for all services.
+    """
 
     def __init__(self, messaging_service):
         self.messaging_service = messaging_service
 
     def send(self, parameters):
+        """
+        Send a message to the agrirouter.
+        :param parameters: Parameters for the message.
+        """
         messaging_parameters = MessagingParameters(
             onboarding_response=parameters.get_onboarding_response(),
             application_message_id=parameters.get_application_message_id(),
@@ -36,9 +43,16 @@ class AbstractService:
 
 
 class CapabilitiesService(AbstractService):
+    """
+    Service for sending capabilities to the agrirouter.
+    """
 
     @staticmethod
     def encode(parameters: CapabilitiesParameters) -> EncodedMessage:
+        """
+        Encode the parameters to a message.
+        :param parameters: Parameters for the message.
+        """
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),
@@ -228,9 +242,16 @@ class QueryHeaderService(AbstractService):
 
 
 class SubscriptionService(AbstractService):
+    """
+    Service for sending subscription messages to the agrirouter.
+    """
 
     @staticmethod
     def encode(parameters: SubscriptionParameters) -> EncodedMessage:
+        """
+        Encode the parameters into a subscription message.
+        parameters: Parameters for the subscription message.
+        """
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),

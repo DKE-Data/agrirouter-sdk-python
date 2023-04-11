@@ -5,12 +5,12 @@ import re
 import pytest
 
 from agrirouter.auth.response import AuthResponse
-from tests.constants import valid_response_signature, valid_response_token, AR_PUBLIC_KEY
+from tests.constants import VALID_RESPONSE_SIGNATURE, VALID_RESPONSE_TOKEN, AR_PUBLIC_KEY
 
 
 def test_decode_token():
 
-    decoded_token = AuthResponse.decode_token(valid_response_token)
+    decoded_token = AuthResponse.decode_token(VALID_RESPONSE_TOKEN)
     assert re.search(r"[\w]", decoded_token.regcode)
     assert re.search(r"[\w]", decoded_token.account)
     assert decoded_token.expires
@@ -18,8 +18,8 @@ def test_decode_token():
 
 def test_verify(authorization):
     state = "46c81f94-d117-4658-9a38-a85692448219"
-    token = valid_response_token
-    signature = valid_response_signature
+    token = VALID_RESPONSE_TOKEN
+    signature = VALID_RESPONSE_SIGNATURE
 
     auth_response = AuthResponse({"state": state,
                                   "signature": signature,
@@ -37,8 +37,8 @@ def test_verify(authorization):
 
 def test_get_auth_result(authorization):
     state = "46c81f94-d117-4658-9a38-a85692448219"
-    token = valid_response_token
-    signature = valid_response_signature
+    token = VALID_RESPONSE_TOKEN
+    signature = VALID_RESPONSE_SIGNATURE
 
     auth_response = AuthResponse({"state": state,
                                   "signature": signature,

@@ -1,6 +1,8 @@
-application_id = "8c947a45-c57d-42d2-affc-206e21d63a50"
+APPLICATION_ID = "8c947a45-c57d-42d2-affc-206e21d63a50"
+
 ENV = "QA"
-auth_result_url = (
+
+AUTH_RESULT_URL = (
     "http://fuf.me/?state=46c81f94-d117-4658-9a38-a85692448219&token=eyJhY2NvdW50IjoiMGJhMjRlZWUtYzMwY"
     "i00N2U1LWJkYzktNzcwM2NmYjEzNmEwIiwicmVnY29kZSI6IjhlYWNiMTk4ZmMiLCJleHBpcmVzIjoiMjAyMS0wOS0yM1QxNj"
     "owODo0My44ODhaIn0%3D&signature=SUL9SQMWAfG4%2FEyT0rejkRfAyioxJIOs4sxI5wxeB8TkIiv0MR6YFKw1tPIkM4ll"
@@ -8,7 +10,8 @@ auth_result_url = (
     "8xvDW7LjrN%2BMA9rzJZYb1toNf51O0eO4BDWL5L1oLvrKrqvaErKcIoRJtTVJ51awOWMARDkGZahcRdWrZbdGUbQwIyKJQu4"
     "vH8%2B4ytlyXPSWEYwKE2VFoAjhzWsKODdRRxDbNNLWsW8sxKamdXjSOC8inHUFsFNoxLbwZEnKROm2s3OfKGYuibXOpXw%3D%3D"
 )
-private_key = (
+
+PRIVATE_KEY = (
     "-----BEGIN PRIVATE KEY-----\n"
     "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC8WVUWBhEiQYvo\n"
     "DL9q/Z5LbIhqDtcdFYWBUV7A96AXJaNRA9J7m3a6es05S7pRynv9yT8i+bhz/qDf\n"
@@ -39,7 +42,7 @@ private_key = (
     "-----END PRIVATE KEY-----"
 )
 
-public_key = (
+PUBLIC_KEY = (
     "-----BEGIN PUBLIC KEY-----\n"
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvFlVFgYRIkGL6Ay/av2e\n"
     "S2yIag7XHRWFgVFewPegFyWjUQPSe5t2unrNOUu6Ucp7/ck/Ivm4c/6g39fDDzmq\n"
@@ -59,7 +62,7 @@ AR_PUBLIC_KEY = (
     "vxXWtkng3yh+7WiZ/Y\nqwIDAQAB\n-----END PUBLIC KEY-----"
 )
 
-wrong_auth_result_url = (
+WRONG_AUTH_RESULT_URL = (
     "http://fuf.me/?state=46c81f94-d117-4658-9a38-a85692448219&token=eyJhY2NvdW50IjoiMGJhMjRlZWUtYzMwY"
     "i00N2U1LWJkYzktNzcwM2NmYjEzNmEwIiwicmVnY29kZSI6IjhlYWNiMTk4ZmMiLCJleHBpcmVzIjoiMjAyMS0wOS0yM1QxNj"
     "owODo0My44ODhaIn0%3D&signature=SUL9SQMWAfG4%2FEyT0rejkRfAyioxJIOs4sxI5wxeB8TkIiv0MR6YFKw1tPIkM4ll"
@@ -68,7 +71,7 @@ wrong_auth_result_url = (
     "vH8%2B4ytlyXPSWEYwKE2VFoAjhzWsKODdRRxDbNNLWsW8sxKamdXjSOC8inHUFsFNoxLbwZEnKROm2s3OfKGYuibXOpXw%3D%3C"
 )
 
-wrong_private_key = (
+WRONG_PRIVATE_KEY = (
     "-----BEGIN PRIVATE KEY-----\n"
     "BIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC8WVUWBhEiQYvo\n"
     "DL9q/Z5LbIhqDtcdFYWBUV7A96AXJaNRA9J7m3a6es05S7pRynv9yT8i+bhz/qDf\n"
@@ -99,7 +102,7 @@ wrong_private_key = (
     "-----END PRIVATE KEY-----"
 )
 
-wrong_public_key = (
+WRONG_PUBLIC_KEY = (
     "-----BEGIN PUBLIC KEY-----\n"
     "BIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvFlVFgYRIkGL6Ay/av2e\n"
     "S2yIag7XHRWFgVFewPegFyWjUQPSe5t2unrNOUu6Ucp7/ck/Ivm4c/6g39fDDzmq\n"
@@ -112,7 +115,7 @@ wrong_public_key = (
 )
 
 # taken from auth_result_url
-valid_response_signature = (
+VALID_RESPONSE_SIGNATURE = (
     "SUL9SQMWAfG4%2FEyT0rejkRfAyioxJIOs4sxI5wxeB8TkIiv0MR6YFKw1tPIkM4ll"
     "uZKHEIgr5WvM3b3SvII9TtEbzZf995R8GIlNP6yyP51TF%2F4vZMbkMjq%2B2g1o0qw%2FyuDQcGz1RpOJWCuBOjMXu9quzGO"
     "8xvDW7LjrN%2BMA9rzJZYb1toNf51O0eO4BDWL5L1oLvrKrqvaErKcIoRJtTVJ51awOWMARDkGZahcRdWrZbdGUbQwIyKJQu4"
@@ -120,7 +123,7 @@ valid_response_signature = (
 )
 
 # taken from auth_result_url
-valid_response_token = (
+VALID_RESPONSE_TOKEN = (
     "eyJhY2NvdW50IjoiMGJhMjRlZWUtYzMwYi00N2U1LWJkYzktNzcwM"
     "2NmYjEzNmEwIiwicmVnY29kZSI6IjhlYWNiMTk4ZmMiLCJleHBpcm"
     "VzIjoiMjAyMS0wOS0yM1QxNjowODo0My44ODhaIn0="

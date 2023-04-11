@@ -18,7 +18,7 @@ class SubscriptionItemBuilder:
 
     def with_task_data(self):
         subscription_item = Subscription.MessageTypeSubscriptionItem(
-            technical_message_type=CapabilityType.ISO_11783_TASKDATA_ZIP.value
+            technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value
         )
         self._subscription_items.append(subscription_item)
         return self
@@ -119,7 +119,7 @@ class CapabilityBuilder:
     def with_task_data(self, direction: int):
         capability = CapabilitySpecification.Capability()
         capability.direction = direction
-        capability.technical_message_type = CapabilityType.ISO_11783_TASKDATA_ZIP.value
+        capability.technical_message_type = CapabilityType.ISO_11783_TASK_DATA_ZIP.value
         self._capabilities.append(capability)
         return self
 

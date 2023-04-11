@@ -1,7 +1,7 @@
 """Test agrirouter/revoking/parameters.py"""
 
 from agrirouter import RevokingParameter
-from tests.constants import application_id
+from tests.constants import APPLICATION_ID
 
 
 class TestRevokingParameter:
@@ -11,7 +11,7 @@ class TestRevokingParameter:
     time_zone = "+03:00"
     utc_timestamp = "01-01-2021"
     test_object = RevokingParameter(
-        application_id=application_id,
+        application_id=APPLICATION_ID,
         content_type=content_type,
         account_id=account_id,
         endpoint_ids=endpoint_ids,
@@ -20,7 +20,7 @@ class TestRevokingParameter:
     )
 
     def test_get_header_params(self):
-        assert self.test_object.get_header_params()["application_id"] == application_id
+        assert self.test_object.get_header_params()["application_id"] == APPLICATION_ID
         assert self.test_object.get_header_params()["content_type"] == self.content_type
 
     def test_get_body_params(self):

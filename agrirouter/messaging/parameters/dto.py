@@ -63,7 +63,7 @@ class MessagingParameters(MessageParameters):
 
     def __init__(self,
                  *,
-                 application_message_seq_no: str = None,
+                 application_message_seq_no: int = None,
                  application_message_id: str = None,
                  team_set_context_id: str = None,
                  onboarding_response: BaseOnboardingResponse,
@@ -93,6 +93,10 @@ class MessagingParameters(MessageParameters):
 
 
 class SendMessageParameters(MessageParameters):
+    """
+        Parameters to send messages to the agrirouter
+        The class inherits from MessageParameters class
+    """
 
     def __init__(self,
                  *,
@@ -100,22 +104,37 @@ class SendMessageParameters(MessageParameters):
                  technical_message_type: str = None,
                  recipients: list = None,
                  chunk_components: ChunkComponent = None,
-                 base64_message_content: str = None,
+                 base64_message_content: bytes = None,
                  type_url: str = None,
                  chunk_size: int = None,
                  application_message_id: str = None,
-                 application_message_seq_no: int = None
+                 application_message_seq_no: int = None,
+                 mode = None
                  ):
+        """
+        onboarding_response: Onboarding response of the sender
+        technical_message_type: TechnicalMessageType class to be sent
+        recipients: List of recipients
+        chunk_components: Chunk Information
+        base64_message_content: Message content that is sent
+        type_url: Url needed for MessagePayloadParameters
+        chunk_size: Define the size of the chunks
+        application_message_id: The application message ID
+        application_message_seq_no: Sequence number while sending the messages to the agrirouter with SequenceNumberService
+        """
+
         super(SendMessageParameters, self).__init__(application_message_id=application_message_id,
                                                     application_message_seq_no=application_message_seq_no,
                                                     onboarding_response=onboarding_response)
 
+        # Initialise the instance variables with the provided values. If not provided, they can be set using the respective SET methods.
         self._technical_message_type = technical_message_type
         self._recipients = recipients
         self._chunk_components = chunk_components,
-        self._base64_message_content = base64_message_content,
+        self._base64_message_content = base64_message_content
         self._type_url = type_url
         self._chunk_size = chunk_size
+        self._mode = mode
 
     def get_technical_message_type(self):
         return self._technical_message_type
@@ -152,3 +171,9 @@ class SendMessageParameters(MessageParameters):
 
     def set_chunk_size(self, chunk_size):
         self._chunk_size = chunk_size
+
+    def get_mode(self):
+        return self._mode
+
+    def set_mode(self, mode):
+        self._mode = mode

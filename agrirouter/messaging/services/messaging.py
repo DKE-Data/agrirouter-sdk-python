@@ -291,7 +291,7 @@ class SendMessageService(AbstractService):
         """
         message_header_parameters = MessageHeaderParameters(
             technical_message_type=parameters.get_technical_message_type(),
-            mode=RequestEnvelope.Mode.Value("DIRECT"),
+            mode=parameters.get_mode(),
             team_set_context_id=parameters.get_team_set_context_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),
             recipients=parameters.get_recipients(),
@@ -300,7 +300,7 @@ class SendMessageService(AbstractService):
         )
 
         message_payload_parameters = MessagePayloadParameters(
-            type_url=parameters.get_type_url(),
+            type_url=parameters.get_type_url() or TechnicalMessageType.EMPTY.value,
             value=parameters.get_base64_message_content()
         )
 

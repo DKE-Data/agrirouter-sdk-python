@@ -17,11 +17,10 @@ from tests.data_provider import DataProvider
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 
 
-
 class TestSendDirectMessageService:
     """
-    Test to send the message to the recipients
-    Existing sender and recipient PEM onboard responses are read using OnboardIntegrationService
+    Test to send the message to a recipient
+    The existing sender and recipient PEM onboard responses are read using OnboardIntegrationService
     """
     _recipient_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
     _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_SENDER_PEM[Identifier.PATH])
@@ -29,18 +28,13 @@ class TestSendDirectMessageService:
     @staticmethod
     def test_given_valid_message_content_when_sending_message_to_single_recipient_then_the_message_should_be_delivered():
         """
-        Test for sending the valid message content to a single recipient
+        Test for sending the valid message content to a single recipient after enabling IMG_PNG capability with sender and recipient
+        Open Connection between Recipient and Agrirouter is required. The setup between the sender and the recipient is done before
+        running the test. If
         """
-        TestSendDirectMessageService._enable_all_capabilities_via_mqtt(onboard_response=TestSendDirectMessageService._sender_onboard_response,
-                                                                       mqtt_message_callback=TestSendDirectMessageService._on_message_callback,
-                                                                       direction=CapabilityDirectionType.SEND_RECEIVE.value)
+        TestSendDirectMessageService._enable_recipient_capabilities_via_mqtt()
 
-        TestSendDirectMessageService._enable_all_capabilities_via_mqtt(onboard_response=TestSendDirectMessageService._recipient_onboard_response,
-                                                                       mqtt_message_callback=TestSendDirectMessageService._on_message_callback,
-                                                                       direction=CapabilityDirectionType.SEND_RECEIVE.value)
-
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
-            TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id())
+        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id())
 
         send_message_parameters = SendMessageParameters(
             onboarding_response=TestSendDirectMessageService._sender_onboard_response,
@@ -69,32 +63,66 @@ class TestSendDirectMessageService:
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
         decoded_message = decode_response(outbox_message.command.message.encode())
         while not decoded_message:
-            Sleeper.let_agrirouter_process_the_message()
-        assert decoded_message.response_envelope.response_code == 201
+            Sleeper.let_agrirouter_process_the_message(seconds=5)
+
+        assert type(decoded_message.response_payload.details.value) == bytes
+        assert decoded_message.response_payload.details.value is not None
         assert decoded_message.response_payload is not None
 
+
     @staticmethod
-    def _enable_all_capabilities_via_mqtt(onboard_response, mqtt_message_callback, direction):
+    def _enable_sender_capabilities_via_mqtt():
         """
-        Method to enable capabilities via mqtt
+        Method to enable sender capabilities via mqtt
         """
-        messaging_service = MqttMessagingService(onboarding_response=onboard_response,
-                                                 on_message_callback=mqtt_message_callback)
+
+        messaging_service = MqttMessagingService(onboarding_response=TestSendDirectMessageService._sender_onboard_response,
+                                                 on_message_callback=TestSendDirectMessageService._on_message_callback)
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
-            onboard_response.get_sensor_alternate_id())
+            TestSendDirectMessageService._sender_onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
-            onboarding_response=onboard_response,
+            onboarding_response=TestSendDirectMessageService._sender_onboard_response,
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
             application_id=CommunicationUnit.application_id,
             certification_version_id=CommunicationUnit.certification_version_id,
-            enable_push_notification=CapabilitySpecification.PushNotification.DISABLED,
+            enable_push_notification=CapabilitySpecification.PushNotification.ENABLED,
             capability_parameters=[]
         )
+
         capabilities_parameters.capability_parameters.append(
             CapabilitySpecification.Capability(technical_message_type=CapabilityType.IMG_PNG.value,
-                                               direction=direction))
+                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
+
         capabilities_service = CapabilitiesService(messaging_service)
         capabilities_service.send(capabilities_parameters)
         Sleeper.let_agrirouter_process_the_message(seconds=5)
 
+
+    @staticmethod
+    def _enable_recipient_capabilities_via_mqtt():
+        """
+        Method to enable recipient capabilities via mqtt
+        """
+
+        messaging_service = MqttMessagingService(onboarding_response=TestSendDirectMessageService._recipient_onboard_response,
+                                                 on_message_callback=TestSendDirectMessageService._on_message_callback)
+        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+            TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id())
+        capabilities_parameters = CapabilitiesParameters(
+            onboarding_response=TestSendDirectMessageService._recipient_onboard_response,
+            application_message_id=new_uuid(),
+            application_message_seq_no=current_sequence_number,
+            application_id=CommunicationUnit.application_id,
+            certification_version_id=CommunicationUnit.certification_version_id,
+            enable_push_notification=CapabilitySpecification.PushNotification.ENABLED,
+            capability_parameters=[]
+        )
+
+        capabilities_parameters.capability_parameters.append(
+            CapabilitySpecification.Capability(technical_message_type=CapabilityType.IMG_PNG.value,
+                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
+
+        capabilities_service = CapabilitiesService(messaging_service)
+        capabilities_service.send(capabilities_parameters)
+        Sleeper.let_agrirouter_process_the_message(seconds=5)

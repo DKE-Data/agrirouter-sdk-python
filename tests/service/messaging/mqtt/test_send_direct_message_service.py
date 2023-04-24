@@ -29,12 +29,13 @@ class TestSendDirectMessageService:
     def test_given_valid_message_content_when_sending_message_to_single_recipient_then_the_message_should_be_delivered():
         """
         Test for sending the valid message content to a single recipient after enabling IMG_PNG capability with sender and recipient
-        Open Connection between Recipient and Agrirouter is required. The setup between the sender and the recipient is done before
+        Open Connection between Recipient and agrirouter is required. The setup between the sender and the recipient is done before
         running the test. If
         """
         TestSendDirectMessageService._enable_recipient_capabilities_via_mqtt()
 
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id())
+        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+            TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id())
 
         send_message_parameters = SendMessageParameters(
             onboarding_response=TestSendDirectMessageService._sender_onboard_response,
@@ -53,7 +54,6 @@ class TestSendDirectMessageService:
         send_message_service.send(send_message_parameters)
         Sleeper.let_agrirouter_process_the_message(seconds=5)
 
-
     @staticmethod
     def _on_message_callback(client, userdata, msg):
         """
@@ -69,15 +69,15 @@ class TestSendDirectMessageService:
         assert decoded_message.response_payload.details.value is not None
         assert decoded_message.response_payload is not None
 
-
     @staticmethod
     def _enable_sender_capabilities_via_mqtt():
         """
         Method to enable sender capabilities via mqtt
         """
 
-        messaging_service = MqttMessagingService(onboarding_response=TestSendDirectMessageService._sender_onboard_response,
-                                                 on_message_callback=TestSendDirectMessageService._on_message_callback)
+        messaging_service = MqttMessagingService(
+            onboarding_response=TestSendDirectMessageService._sender_onboard_response,
+            on_message_callback=TestSendDirectMessageService._on_message_callback)
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
             TestSendDirectMessageService._sender_onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
@@ -98,15 +98,15 @@ class TestSendDirectMessageService:
         capabilities_service.send(capabilities_parameters)
         Sleeper.let_agrirouter_process_the_message(seconds=5)
 
-
     @staticmethod
     def _enable_recipient_capabilities_via_mqtt():
         """
         Method to enable recipient capabilities via mqtt
         """
 
-        messaging_service = MqttMessagingService(onboarding_response=TestSendDirectMessageService._recipient_onboard_response,
-                                                 on_message_callback=TestSendDirectMessageService._on_message_callback)
+        messaging_service = MqttMessagingService(
+            onboarding_response=TestSendDirectMessageService._recipient_onboard_response,
+            on_message_callback=TestSendDirectMessageService._on_message_callback)
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
             TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(

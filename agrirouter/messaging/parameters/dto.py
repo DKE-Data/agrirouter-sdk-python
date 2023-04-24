@@ -69,7 +69,6 @@ class MessagingParameters(MessageParameters):
                  onboarding_response: BaseOnboardingResponse,
                  encoded_messages=None
                  ):
-
         super(MessagingParameters, self).__init__(
             application_message_seq_no=application_message_seq_no,
             application_message_id=application_message_id,
@@ -109,7 +108,7 @@ class SendMessageParameters(MessageParameters):
                  chunk_size: int = None,
                  application_message_id: str = None,
                  application_message_seq_no: int = None,
-                 mode = None
+                 mode=None
                  ):
         """
         onboarding_response: Onboarding response of the sender
@@ -127,7 +126,8 @@ class SendMessageParameters(MessageParameters):
                                                     application_message_seq_no=application_message_seq_no,
                                                     onboarding_response=onboarding_response)
 
-        # Initialise the instance variables with the provided values. If not provided, they can be set using the respective SET methods.
+        # Initialise the instance variables with the provided values. If not provided, they can be set using the
+        # respective SET methods.
         self._technical_message_type = technical_message_type
         self._recipients = recipients
         self._chunk_components = chunk_components,

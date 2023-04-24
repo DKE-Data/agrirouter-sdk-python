@@ -28,9 +28,9 @@ class TestSendDirectMessageService:
     @staticmethod
     def test_given_valid_message_content_when_sending_message_to_single_recipient_then_the_message_should_be_delivered():
         """
-        Test for sending the valid message content to a single recipient after enabling IMG_PNG capability with sender and recipient
-        Open Connection between Recipient and agrirouter is required. The setup between the sender and the recipient is done before
-        running the test. If
+        Test for sending the valid message content to a single recipient after enabling IMG_PNG capability with
+        sender and recipient Open Connection between Recipient and agrirouter is required. The setup between the
+        sender and the recipient is done before running the test. If
         """
         TestSendDirectMessageService._enable_recipient_capabilities_via_mqtt()
 

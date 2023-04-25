@@ -1,21 +1,19 @@
-import pytest
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
+from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.decode import decode_response, decode_details
-from agrirouter.messaging.enums import CapabilityType
 from agrirouter.messaging.enums import CapabilityDirectionType
+from agrirouter.messaging.enums import CapabilityType
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.service import CapabilitiesParameters
 from agrirouter.messaging.services.commons import MqttMessagingService
 from agrirouter.messaging.services.messaging import CapabilitiesService, SendMessageService, SendMessageParameters
-from tests.data.applications import CommunicationUnit
-from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
-from agrirouter.utils.uuid_util import new_uuid
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
+from agrirouter.utils.uuid_util import new_uuid
+from tests.data.applications import CommunicationUnit
 from tests.data.identifier import Identifier
-from tests.sleeper import Sleeper
+from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
 from tests.data_provider import DataProvider
-from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-import hashlib
+from tests.sleeper import Sleeper
 
 
 class TestSendDirectMessageService:
@@ -71,8 +69,8 @@ class TestSendDirectMessageService:
         if decoded_message.response_envelope.type == 12:
             push_notification = decode_details(decoded_message.response_payload.details)
             assert decoded_message.response_envelope.response_code == 200
-            assert TestSendDirectMessageService.get_hash(
-                push_notification.messages[0].content.value) == TestSendDirectMessageService.get_hash(
+            assert DataProvider.get_hash(
+                push_notification.messages[0].content.value) == DataProvider.get_hash(
                 DataProvider.read_base64_encoded_image())
         assert decoded_message.response_envelope.response_code == 200 or 201
 

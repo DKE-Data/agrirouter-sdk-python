@@ -210,9 +210,16 @@ class QueryMessagesService(AbstractService):
 
 
 class QueryHeaderService(AbstractService):
+    """
+    Service to receive the headers of the messages
+    """
 
     @staticmethod
     def encode(parameters: QueryHeaderParameters) -> EncodedMessage:
+        """
+        Encode the parameters into a message
+        parameters: QueryHeaderParameters for the service
+        """
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),

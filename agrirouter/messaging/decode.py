@@ -43,6 +43,9 @@ def decode_response(message: bytes) -> DecodedMessage:
 
 
 def decode_details(details: Any):
+    """
+    Decode the details of a response.
+    """
     if details.type_url == TypeUrl.get_type_url(Messages):
         messages = Messages()
         messages.MergeFromString(details.value)

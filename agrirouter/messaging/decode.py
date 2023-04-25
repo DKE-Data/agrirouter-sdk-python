@@ -8,6 +8,7 @@ from agrirouter.generated.messaging.response.payload.account.endpoints_pb2 impor
 from agrirouter.generated.messaging.response.payload.feed.feed_response_pb2 import HeaderQueryResponse, \
     MessageQueryResponse
 from agrirouter.generated.messaging.response.response_pb2 import ResponseEnvelope, ResponsePayloadWrapper
+from agrirouter.generated.messaging.response.payload.feed.push_notification_pb2 import PushNotification
 from agrirouter.messaging.exceptions import DecodeMessageException
 from agrirouter.messaging.messages import DecodedMessage
 from agrirouter.utils.type_url import TypeUrl
@@ -58,5 +59,9 @@ def decode_details(details: Any):
         message_query_response = MessageQueryResponse()
         message_query_response.MergeFromString(details.value)
         return message_query_response
+    elif details.type_url == TypeUrl.get_type_url(PushNotification):
+        push_notification = PushNotification()
+        push_notification.MergeFromString(details.value)
+        return push_notification
     else:
         raise DecodeMessageException(f"Could not handle type {details.type_url} while decoding details.")

@@ -27,11 +27,6 @@ class TestSendDirectMessageService:
     _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_SENDER_PEM[Identifier.PATH])
 
     @staticmethod
-    def get_hash(_text):
-        _encoded_text = str(_text).encode('utf-8')
-        return int(hashlib.sha512(_encoded_text).hexdigest(), 16)
-
-    @staticmethod
     def test_given_valid_message_content_when_sending_message_to_single_recipient_then_the_message_should_be_delivered():
         """
         Test for sending the valid message content to a single recipient after enabling IMG_PNG capability with

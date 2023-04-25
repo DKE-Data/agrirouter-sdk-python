@@ -86,7 +86,6 @@ class TestSendDirectMessageService:
         """
         Method to enable capabilities via mqtt
         """
-
         messaging_service = MqttMessagingService(
             onboarding_response=onboard_response,
             on_message_callback=callback)

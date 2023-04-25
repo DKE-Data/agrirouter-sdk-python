@@ -38,8 +38,9 @@ class TestSendDirectMessageService:
         sender and recipient Open Connection between Recipient and agrirouter is required. The setup between the
         sender and the recipient is done before running the test. If
         """
-        TestSendDirectMessageService._enable_capabilities_via_mqtt(onboard_response=TestSendDirectMessageService._recipient_onboard_response,
-                                                                   callback=TestSendDirectMessageService._on_message_callback)
+        TestSendDirectMessageService._enable_capabilities_via_mqtt(
+            onboard_response=TestSendDirectMessageService._recipient_onboard_response,
+            callback=TestSendDirectMessageService._on_message_callback)
 
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
             TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id())
@@ -61,7 +62,6 @@ class TestSendDirectMessageService:
         send_message_service.send(send_message_parameters)
         Sleeper.let_agrirouter_process_the_message(seconds=5)
 
-
     @staticmethod
     def _on_message_callback(client, userdata, msg):
         """
@@ -76,9 +76,10 @@ class TestSendDirectMessageService:
         if decoded_message.response_envelope.type == 12:
             push_notification = decode_details(decoded_message.response_payload.details)
             assert decoded_message.response_envelope.response_code == 200
-            assert TestSendDirectMessageService.get_hash(push_notification.messages[0].content.value) == TestSendDirectMessageService.get_hash(DataProvider.read_base64_encoded_image())
+            assert TestSendDirectMessageService.get_hash(
+                push_notification.messages[0].content.value) == TestSendDirectMessageService.get_hash(
+                DataProvider.read_base64_encoded_image())
         assert decoded_message.response_envelope.response_code == 200 or 201
-
 
     @staticmethod
     def _enable_capabilities_via_mqtt(onboard_response, callback):
@@ -89,7 +90,8 @@ class TestSendDirectMessageService:
         messaging_service = MqttMessagingService(
             onboarding_response=onboard_response,
             on_message_callback=callback)
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(onboard_response.get_sensor_alternate_id())
+        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+            onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
             onboarding_response=onboard_response,
             application_message_id=new_uuid(),

@@ -9,6 +9,8 @@ from agrirouter.messaging.services.sequence_number_service import SequenceNumber
 from tests.data.identifier import Identifier
 from tests.sleeper import Sleeper
 from agrirouter.messaging.enums import CapabilityType
+from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
+from agrirouter.utils.utc_time_util import now_as_timestamp_protobuf, protobuf_timestamp_before_number_of_weeks
 
 
 class TestQueryHeaderService:
@@ -16,32 +18,70 @@ class TestQueryHeaderService:
     _recipient_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
     _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_SENDER_PEM[Identifier.PATH])
 
-
     @staticmethod
-    def test_query_message_headers_for_the_existing_message_within_the_feed_of_an_endpoint():
+    def test_header_query_service_when_senders_is_specified():
         """
-        Testing Message Headers of the existing messages within the feed of an endpoint
-        """
-        TestQueryHeaderService._header_query_service(callback=TestQueryHeaderService._on_query_header_service_callback)
-
-
-    @staticmethod
-    def _header_query_service(callback):
-        """
-        Query header Service Function with the callback as an argument
+        Testing Query Header Service when the sender endpoint id is specified
         """
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
-                                                 on_message_callback=callback)
+                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback)
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=TestQueryHeaderService._recipient_onboard_response,
                                                         senders=[
-                                                            TestQueryHeaderService._sender_onboard_response.get_sensor_alternate_id()]
+                                                            TestQueryHeaderService._sender_onboard_response.get_sensor_alternate_id()],
                                                         )
+
+        query_header_service = QueryHeaderService(messaging_service)
+        query_header_service.send(query_header_parameters)
+        Sleeper.let_agrirouter_process_the_message(seconds=5)
+
+    @staticmethod
+    def test_header_query_service_when_validity_period_is_specified():
+        """
+        Testing Query Header Service when the validity period is specified
+        """
+        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+            TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
+
+        messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
+                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback)
+
+        sent_from = protobuf_timestamp_before_number_of_weeks(4)
+        sent_to = now_as_timestamp_protobuf()
+        validity_period = ValidityPeriod(sent_from=sent_from, sent_to=sent_to)
+
+        query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
+                                                        application_message_seq_no=current_sequence_number,
+                                                        onboarding_response=TestQueryHeaderService._recipient_onboard_response,
+                                                        validity_period=validity_period,
+                                                        )
+
+        query_header_service = QueryHeaderService(messaging_service)
+        query_header_service.send(query_header_parameters)
+        Sleeper.let_agrirouter_process_the_message(seconds=5)
+
+    @staticmethod
+    def test_header_query_service_for_specific_message_ids():
+        """
+        Testing Query Header Service when specific message ids are specified
+        """
+        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+            TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
+
+        messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
+                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback)
+
+        query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
+                                                        application_message_seq_no=current_sequence_number,
+                                                        onboarding_response=TestQueryHeaderService._recipient_onboard_response,
+                                                        message_ids=['c74a6a99-3389-42f6-96ba-1a597c5b26f3', 'bb966c18-bfcf-417a-8cd0-2eca6d7b096a'],
+                                                        )
+
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
         Sleeper.let_agrirouter_process_the_message(seconds=5)
@@ -59,6 +99,7 @@ class TestQueryHeaderService:
             Sleeper.let_agrirouter_process_the_message(seconds=5)
 
         details = decode_details(decoded_message.response_payload.details)
+
         assert decoded_message.response_envelope.type == 6
         assert len(details.feed[0].headers) > 0
         assert details.feed[0].headers[0].technical_message_type == CapabilityType.IMG_PNG.value

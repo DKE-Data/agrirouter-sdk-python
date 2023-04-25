@@ -15,6 +15,9 @@ from agrirouter.utils.type_url import TypeUrl
 
 
 def read_properties_buffers_from_input_stream(input_stream) -> tuple:
+    """
+    Read the properties from the input stream.
+    """
     result = []
     pos = 0
     while pos < len(input_stream):
@@ -29,16 +32,16 @@ def read_properties_buffers_from_input_stream(input_stream) -> tuple:
 
 
 def decode_response(message: bytes) -> DecodedMessage:
+    """
+    Decode the response itself.
+    """
     input_stream = base64.b64decode(message)
     response_envelope_buffer, response_payload_buffer = read_properties_buffers_from_input_stream(input_stream)
-
     envelope = ResponseEnvelope()
     envelope.ParseFromString(response_envelope_buffer)
     payload = ResponsePayloadWrapper()
     payload.ParseFromString(response_payload_buffer)
-
     message = DecodedMessage(envelope, payload)
-
     return message
 
 

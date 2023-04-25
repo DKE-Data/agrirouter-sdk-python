@@ -49,5 +49,5 @@ class Identifier:
     """ Identifier for the MQTT sender endpoint with a P12 certificate. """
     MQTT_SENDER_PEM = {
         'path': "Mqtt/CommunicationUnit/PEM/Sender",
-        'id': "083d2374-c889-11ed-afa1-0242ac120002"
+        'id': "fe3ab36a-ddc7-11ed-b5ea-0242ac120002"
     }

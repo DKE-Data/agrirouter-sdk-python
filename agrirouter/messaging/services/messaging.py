@@ -7,7 +7,7 @@ from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.encode import encode_message
 from agrirouter.messaging.enums import TechnicalMessageType
 from agrirouter.messaging.messages import EncodedMessage
-from agrirouter.messaging.parameters.dto import MessagingParameters
+from agrirouter.messaging.parameters.dto import MessagingParameters, SendMessageParameters
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
     CapabilitiesParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
     SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters
@@ -270,6 +270,42 @@ class SubscriptionService(AbstractService):
         )
 
         message_content = encode_message(message_header_parameters, message_payload_parameters)
+        encoded_message = EncodedMessage(
+            id_=new_uuid(),
+            content=message_content
+        )
+
+        return encoded_message
+
+
+class SendMessageService(AbstractService):
+    """
+    Service for sending messages to the agrirouter
+    """
+
+    @staticmethod
+    def encode(parameters: SendMessageParameters) -> EncodedMessage:
+        """
+        Encode the parameters into a message.
+        parameters: Parameters for the message service.
+        """
+        message_header_parameters = MessageHeaderParameters(
+            technical_message_type=parameters.get_technical_message_type(),
+            mode=parameters.get_mode(),
+            team_set_context_id=parameters.get_team_set_context_id(),
+            application_message_seq_no=parameters.get_application_message_seq_no(),
+            recipients=parameters.get_recipients(),
+            chunk_component=parameters.get_chunk_components(),
+            application_message_id=parameters.get_application_message_id()
+        )
+
+        message_payload_parameters = MessagePayloadParameters(
+            type_url=parameters.get_type_url() or TechnicalMessageType.EMPTY.value,
+            value=parameters.get_base64_message_content()
+        )
+
+        message_content = encode_message(message_header_parameters, message_payload_parameters)
+
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content

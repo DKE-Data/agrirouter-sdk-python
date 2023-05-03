@@ -22,74 +22,10 @@ from typing import Optional
 
 
 class TestQueryHeaderService:
-    _recipient_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
-    _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_SENDER_PEM[Identifier.PATH])
+    _recipient_onboard_response = OnboardResponseIntegrationService.read(
+        Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
+    _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
     _message_ids_to_clean_up = None
-
-    @staticmethod
-    def _enable_capabilities_via_mqtt(onboard_response, callback):
-        """
-        Method to enable capabilities via mqtt
-        """
-        messaging_service = MqttMessagingService(
-            onboarding_response=onboard_response,
-            on_message_callback=callback)
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
-            onboard_response.get_sensor_alternate_id())
-        capabilities_parameters = CapabilitiesParameters(
-            onboarding_response=onboard_response,
-            application_message_id=new_uuid(),
-            application_message_seq_no=current_sequence_number,
-            application_id=CommunicationUnit.application_id,
-            certification_version_id=CommunicationUnit.certification_version_id,
-            enable_push_notification=CapabilitySpecification.PushNotification.ENABLED,
-            capability_parameters=[]
-        )
-
-        capabilities_parameters.capability_parameters.append(
-            CapabilitySpecification.Capability(technical_message_type=CapabilityType.IMG_PNG.value,
-                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
-
-        capabilities_service = CapabilitiesService(messaging_service)
-        capabilities_service.send(capabilities_parameters)
-        Sleeper.let_agrirouter_process_the_message(seconds=5)
-
-    @staticmethod
-    @pytest.mark.skip('The setup for the sender and recipient was already done')
-    def test_clean_setup_for_recipient_and_sender():
-        """
-        The sender and recipient capabilities to be set via mqtt and the message is sent and received by the recipient using
-        SendMessageService
-        This is ignored for this test scenario since the routing between the current recipient and sender has been done
-        before running the tests
-        """
-        TestQueryHeaderService._enable_capabilities_via_mqtt(
-            onboard_response=TestQueryHeaderService._recipient_onboard_response,
-            callback=TestQueryHeaderService._on_message_capabilities_callback)
-
-        TestQueryHeaderService._enable_capabilities_via_mqtt(
-            onboard_response=TestQueryHeaderService._sender_onboard_response,
-            callback=TestQueryHeaderService._on_message_capabilities_callback)
-
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
-            TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
-
-        send_message_parameters = SendMessageParameters(
-            onboarding_response=TestQueryHeaderService._sender_onboard_response,
-            technical_message_type=CapabilityType.IMG_PNG.value,
-            application_message_id=new_uuid(),
-            application_message_seq_no=current_sequence_number,
-            recipients=[TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id()],
-            base64_message_content=DataProvider.read_base64_encoded_image(),
-            mode=RequestEnvelope.Mode.Value("DIRECT"))
-
-        messaging_service = MqttMessagingService(
-            onboarding_response=TestQueryHeaderService._sender_onboard_response,
-            on_message_callback=TestQueryHeaderService._on_message_capabilities_callback)
-
-        send_message_service = SendMessageService(messaging_service=messaging_service)
-        send_message_service.send(send_message_parameters)
-        Sleeper.let_agrirouter_process_the_message(seconds=5)
 
     @staticmethod
     def test_header_query_service_when_validity_period_is_specified_should_return_messages_within_the_validity_period():

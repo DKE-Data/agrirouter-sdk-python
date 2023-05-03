@@ -6,6 +6,6 @@ class CertificateTypes(BaseEnum):
     P12 = "P12"
 
 
-class GateWays(BaseEnum):
+class Gateways(BaseEnum):
     MQTT = "2"
     REST = "3"

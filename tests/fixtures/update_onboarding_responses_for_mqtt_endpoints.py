@@ -2,7 +2,7 @@ import pytest
 
 from agrirouter.onboarding.onboarding import OnboardingService
 from agrirouter.environments.environments import QAEnvironment
-from agrirouter.onboarding.enums import CertificateTypes, GateWays
+from agrirouter.onboarding.enums import CertificateTypes, Gateways
 from agrirouter.onboarding.parameters import OnboardParameters
 from agrirouter.onboarding.response import OnboardResponse
 from tests.data.applications import CommunicationUnit
@@ -52,7 +52,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
             _environment=QAEnvironment(),
             registration_code="efd9b2fbaa",
             certification_type_definition=str(CertificateTypes.PEM.value),
-            gateway_id=str(GateWays.MQTT.value)
+            gateway_id=str(Gateways.MQTT.value)
         )
 
         OnboardResponseIntegrationService.save(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH], onboard_response)
@@ -68,7 +68,7 @@ class TestSingleMqttEndpointWithP12Certificate:
             _environment=QAEnvironment(),
             registration_code="d8d256c752",
             certification_type_definition=str(CertificateTypes.P12.value),
-            gateway_id=str(GateWays.MQTT.value)
+            gateway_id=str(Gateways.MQTT.value)
         )
 
         OnboardResponseIntegrationService.save(Identifier.MQTT_RECIPIENT_P12[Identifier.PATH], onboard_response)
@@ -84,7 +84,7 @@ class TestSenderSingleMqttEndpointWithPEMCertificate:
             _environment=QAEnvironment(),
             registration_code="ef0f89246d",
             certification_type_definition=str(CertificateTypes.PEM.value),
-            gateway_id=str(GateWays.MQTT.value)
+            gateway_id=str(Gateways.MQTT.value)
         )
 
         OnboardResponseIntegrationService.save(Identifier.MQTT_SENDER_PEM[Identifier.PATH], onboard_response)
@@ -100,7 +100,7 @@ class TestSenderSingleMqttEndpointWithP12Certificate:
             _environment=QAEnvironment(),
             registration_code="61124dd64b",
             certification_type_definition=str(CertificateTypes.P12.value),
-            gateway_id=str(GateWays.MQTT.value)
+            gateway_id=str(Gateways.MQTT.value)
         )
 
         OnboardResponseIntegrationService.save(Identifier.MQTT_SENDER_P12[Identifier.PATH], onboard_response)

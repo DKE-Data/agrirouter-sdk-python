@@ -110,7 +110,8 @@ class TestQueryHeaderService:
                                                         )
 
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
-                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(None))
+                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(
+                                                     None))
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
@@ -125,7 +126,8 @@ class TestQueryHeaderService:
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
-                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(None))
+                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(
+                                                     None))
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
@@ -150,7 +152,8 @@ class TestQueryHeaderService:
 
         message_for_message_ids = ['fea31c5c-f5c7-4bf9-b8cc-c183c3248ecf', 'b04cf2bd-b7bb-48ce-9a2b-4a2056521c38']
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
-                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(message_for_message_ids))
+                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(
+                                                     message_for_message_ids))
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
@@ -283,7 +286,8 @@ class TestQueryHeaderService:
                 Sleeper.let_agrirouter_process_the_message(seconds=5)
 
             details = decode_details(decoded_message.response_payload.details)
-            details_message_ids = [details.feed[0].headers[idx].message_id for idx in range(len(details.feed[0].headers))]
+            details_message_ids = [details.feed[0].headers[idx].message_id for idx in
+                                   range(len(details.feed[0].headers))]
 
             if message_ids:
                 assert sorted(details_message_ids) == sorted(message_ids)
@@ -292,11 +296,13 @@ class TestQueryHeaderService:
             assert details.feed[0].headers[0].technical_message_type == CapabilityType.IMG_PNG.value
 
             if details.query_metrics.total_messages_in_query > 0:
-                messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
-                                                         on_message_callback=TestQueryHeaderService._on_feed_delete_service_callback)
+                messaging_service = MqttMessagingService(
+                    onboarding_response=TestQueryHeaderService._recipient_onboard_response,
+                    on_message_callback=TestQueryHeaderService._on_feed_delete_service_callback)
                 TestQueryHeaderService._feed_delete_service(details=details,
                                                             onboard_response=TestQueryHeaderService._recipient_onboard_response,
                                                             messaging_service=messaging_service)
+
         return _inner_function
 
     @staticmethod
@@ -362,4 +368,5 @@ class TestQueryHeaderService:
         assert decoded_message.response_envelope.response_code == 400
         assert decoded_message.response_envelope.type == 3
         assert details.messages[0].message_code == "VAL_000017"
-        assert details.messages[0].message == "Query does not contain any filtering criteria: messageIds, senders or validityPeriod. Information required to process message is missing or malformed."
+        assert details.messages[
+                   0].message == "Query does not contain any filtering criteria: messageIds, senders or validityPeriod. Information required to process message is missing or malformed."

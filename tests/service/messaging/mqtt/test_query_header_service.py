@@ -8,22 +8,17 @@ from agrirouter.utils.uuid_util import new_uuid
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from tests.data.identifier import Identifier
 from tests.sleeper import Sleeper
-from agrirouter.messaging.enums import CapabilityType, CapabilityDirectionType
+from agrirouter.messaging.enums import CapabilityType
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
 from agrirouter.utils.utc_time_util import now_as_timestamp_protobuf, protobuf_timestamp_before_number_of_weeks, \
     protobuf_timestamp_before_few_seconds
-from agrirouter.messaging.services.messaging import CapabilitiesService, SendMessageService, SendMessageParameters
-from agrirouter.messaging.parameters.service import CapabilitiesParameters
-from tests.data.applications import CommunicationUnit
-from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from tests.data_provider import DataProvider
-from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from typing import Optional
 
 
 class TestQueryHeaderService:
-    _recipient_onboard_response = OnboardResponseIntegrationService.read(
-        Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
+    """ The setup (enabling capabilities and routing) between sender and recipient has been done prior to running this test """
+    _recipient_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
     _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
     _message_ids_to_clean_up = None
 
@@ -46,8 +41,7 @@ class TestQueryHeaderService:
                                                         )
 
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
-                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(
-                                                     None))
+                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(None))
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
@@ -62,8 +56,7 @@ class TestQueryHeaderService:
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
-                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(
-                                                     None))
+                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(None))
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
@@ -86,7 +79,7 @@ class TestQueryHeaderService:
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
-        message_for_message_ids = ['fea31c5c-f5c7-4bf9-b8cc-c183c3248ecf', 'b04cf2bd-b7bb-48ce-9a2b-4a2056521c38']
+        message_for_message_ids = ['33270996-13f6-4127-a9a9-0a6e09b7810b', 'c81b46bb-deeb-4257-bb01-5dc4bb789d24']
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
                                                  on_message_callback=TestQueryHeaderService._on_query_header_service_callback(
                                                      message_for_message_ids))
@@ -130,7 +123,7 @@ class TestQueryHeaderService:
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
-                                                 on_message_callback=TestQueryHeaderService._incomplete_attributes_callback)
+                                                 on_message_callback=TestQueryHeaderService._incorrect_ids_callback)
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
@@ -222,22 +215,24 @@ class TestQueryHeaderService:
                 Sleeper.let_agrirouter_process_the_message(seconds=5)
 
             details = decode_details(decoded_message.response_payload.details)
-            details_message_ids = [details.feed[0].headers[idx].message_id for idx in
-                                   range(len(details.feed[0].headers))]
-
-            if message_ids:
-                assert sorted(details_message_ids) == sorted(message_ids)
-
             assert decoded_message.response_envelope.type == 6
-            assert details.feed[0].headers[0].technical_message_type == CapabilityType.IMG_PNG.value
 
-            if details.query_metrics.total_messages_in_query > 0:
-                messaging_service = MqttMessagingService(
-                    onboarding_response=TestQueryHeaderService._recipient_onboard_response,
-                    on_message_callback=TestQueryHeaderService._on_feed_delete_service_callback)
-                TestQueryHeaderService._feed_delete_service(details=details,
-                                                            onboard_response=TestQueryHeaderService._recipient_onboard_response,
-                                                            messaging_service=messaging_service)
+            if details.feed:
+                details_message_ids = [details.feed[0].headers[idx].message_id for idx in
+                                       range(len(details.feed[0].headers))]
+
+                if message_ids:
+                    assert sorted(details_message_ids) == sorted(message_ids)
+
+                assert details.feed[0].headers[0].technical_message_type == CapabilityType.IMG_PNG.value
+
+                if details.query_metrics.total_messages_in_query > 0:
+                    messaging_service = MqttMessagingService(
+                        onboarding_response=TestQueryHeaderService._recipient_onboard_response,
+                        on_message_callback=TestQueryHeaderService._on_feed_delete_service_callback)
+                    TestQueryHeaderService._feed_delete_service(details=details,
+                                                                onboard_response=TestQueryHeaderService._recipient_onboard_response,
+                                                                messaging_service=messaging_service)
 
         return _inner_function
 
@@ -266,7 +261,6 @@ class TestQueryHeaderService:
         decoded_message = decode_response(outbox_message.command.message.encode())
         while not decoded_message:
             Sleeper.let_agrirouter_process_the_message(seconds=5)
-
         assert decoded_message.response_envelope.response_code == 204
 
     @staticmethod

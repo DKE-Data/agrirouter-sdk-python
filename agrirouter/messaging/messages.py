@@ -112,3 +112,13 @@ class OutboxMessage:
 
     def set_command(self, command: Command) -> None:
         self.command = command
+
+
+class MessageParameterTuple:
+    """
+    Class used to form a tuple of header and payload parameters
+    """
+
+    def __init__(self, message_header_parameters, message_payload_parameters):
+        self.message_header_parameters = message_header_parameters
+        self.message_payload_parameters = message_payload_parameters

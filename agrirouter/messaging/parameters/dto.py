@@ -177,3 +177,54 @@ class SendMessageParameters(MessageParameters):
 
     def set_mode(self, mode):
         self._mode = mode
+
+
+class ChunkedMessageParameters(MessageParameters):
+    """
+        Parameters to send chunked messages to the agrirouter
+        The class inherits from MessageParameters class
+    """
+
+    def __init__(self,
+                 *,
+                 onboarding_response: BaseOnboardingResponse,
+                 technical_message_type: str = None,
+                 recipients: List = None,
+                 application_message_id: str = None,
+                 application_message_seq_no: int = None,
+                 encoded_chunked_messages: List[str] = None,
+                 ):
+        """
+        onboarding_response: Onboarding response of the sender
+        technical_message_type: TechnicalMessageType class to be sent
+        recipients: List of recipients
+        application_message_id: The application message ID
+        application_message_seq_no: Sequence number while sending the messages to the agrirouter with SequenceNumberService
+        encoded_chunked_messages: List of encoded chunked messages
+        """
+
+        super(ChunkedMessageParameters, self).__init__(application_message_id=application_message_id,
+                                                       application_message_seq_no=application_message_seq_no,
+                                                       onboarding_response=onboarding_response)
+
+        self._technical_message_type = technical_message_type
+        self._recipients = recipients
+        self._encoded_chunked_messages = encoded_chunked_messages
+
+    def get_technical_message_type(self):
+        return self._technical_message_type
+
+    def set_technical_message_type(self, technical_message_type: str):
+        self._technical_message_type = technical_message_type
+
+    def get_recipients(self) -> list:
+        return self._recipients
+
+    def set_recipients(self, recipients: list):
+        self._recipients = recipients
+
+    def get_encoded_chunked_messages(self) -> List[str]:
+        return self._encoded_chunked_messages
+
+    def set_encoded_chunked_messages(self, encoded_chunked_messages: List[str]):
+        self._encoded_chunked_messages = encoded_chunked_messages

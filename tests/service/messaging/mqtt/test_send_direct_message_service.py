@@ -30,7 +30,7 @@ class TestSendDirectMessageService:
         """
         Test for sending the valid message content to a single recipient after enabling IMG_PNG capability with
         sender and recipient Open Connection between Recipient and agrirouter is required. The setup between the
-        sender and the recipient is done before running the test. If
+        sender and the recipient is done before running the test.
         """
         TestSendDirectMessageService._enable_capabilities_via_mqtt(
             onboard_response=TestSendDirectMessageService._recipient_onboard_response,

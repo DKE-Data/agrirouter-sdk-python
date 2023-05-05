@@ -7,7 +7,7 @@ def onboard_communication_unit(uuid: str, _environment, registration_code: str,
                                certification_type_definition: str = "PEM",
                                gateway_id: str = "2") -> OnboardResponse:
     """
-    Onboard a single endpoint and return the onboard response.
+    Onboard a single endpoint (Communication Unit) and return the onboard response.
      """
     onboarding_service = OnboardingService(env=_environment)
     onboarding_parameters = OnboardParameters(

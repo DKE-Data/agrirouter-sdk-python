@@ -17,8 +17,11 @@ from typing import Optional
 
 
 class TestQueryHeaderService:
-    """ The setup (enabling capabilities and routing) between sender and recipient has been done prior to running this test """
-    _recipient_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
+    """
+    The setup (enabling capabilities and routing) between sender and recipient has been done prior to running this test
+    """
+    _recipient_onboard_response = OnboardResponseIntegrationService.read(
+        Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
     _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
     _message_ids_to_clean_up = None
 
@@ -41,7 +44,8 @@ class TestQueryHeaderService:
                                                         )
 
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
-                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(None))
+                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(
+                                                     None))
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
@@ -56,7 +60,8 @@ class TestQueryHeaderService:
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
-                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(None))
+                                                 on_message_callback=TestQueryHeaderService._on_query_header_service_callback(
+                                                     None))
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,

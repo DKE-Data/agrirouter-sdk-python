@@ -57,7 +57,7 @@ class TestSendDirectMessageService:
         Sleeper.let_agrirouter_process_the_message(seconds=5)
 
     @staticmethod
-    def _on_message_callback(client, userdata, msg):
+    def _on_message_callback( msg):
         """
         Callback to handle the incoming messages from the MQTT broker
         """

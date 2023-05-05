@@ -73,7 +73,7 @@ class TestMqttCapabilitiesService:
     def _send_capabilities(onboard_response, mqtt_message_callback, direction):
         messaging_service = MqttMessagingService(onboarding_response=onboard_response,
                                                  on_message_callback=mqtt_message_callback)
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
             onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
             onboarding_response=onboard_response,

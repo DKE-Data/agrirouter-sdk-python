@@ -30,7 +30,7 @@ class TestQueryHeaderService:
         """
         Testing query header service when the validity period is specified
         """
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
         sent_from = timestamp_before_number_of_weeks(4)
@@ -56,7 +56,7 @@ class TestQueryHeaderService:
         """
         Testing query header service when the sender endpoint id is specified
         """
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
@@ -81,7 +81,7 @@ class TestQueryHeaderService:
         """
         Testing query header service when specific message ids are specified
         """
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
         message_for_message_ids = ['33270996-13f6-4127-a9a9-0a6e09b7810b', 'c81b46bb-deeb-4257-bb01-5dc4bb789d24']
@@ -104,7 +104,7 @@ class TestQueryHeaderService:
         """
         Testing query header service when incomplete attributes are passed
         """
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
@@ -124,7 +124,7 @@ class TestQueryHeaderService:
         """
         Testing query header service when incorrect message ids are specified
         """
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
@@ -145,7 +145,7 @@ class TestQueryHeaderService:
         """
         Testing query header service when incorrect sender id is specified
         """
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
@@ -166,7 +166,7 @@ class TestQueryHeaderService:
         """
         Testing query header service when incorrect validity period is specified
         """
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
@@ -194,7 +194,7 @@ class TestQueryHeaderService:
         TestQueryHeaderService._message_ids_to_clean_up = [header.message_id for header in
                                                            list(details.feed[0].headers)]
 
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=onboard_response,

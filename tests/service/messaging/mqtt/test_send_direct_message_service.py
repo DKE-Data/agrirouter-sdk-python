@@ -35,7 +35,7 @@ class TestSendDirectMessageService:
             onboard_response=TestSendDirectMessageService._recipient_onboard_response,
             callback=TestSendDirectMessageService._on_message_callback)
 
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
             TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id())
 
         send_message_parameters = SendMessageParameters(
@@ -82,7 +82,7 @@ class TestSendDirectMessageService:
         messaging_service = MqttMessagingService(
             onboarding_response=onboard_response,
             on_message_callback=callback)
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
+        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
             onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
             onboarding_response=onboard_response,

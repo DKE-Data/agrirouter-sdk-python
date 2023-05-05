@@ -209,7 +209,7 @@ class TestQueryHeaderService:
 
     @staticmethod
     def _on_query_header_service_callback(message_ids: Optional[list]):
-        def _inner_function(client, userdata, msg):
+        def _inner_function(msg):
             """
             Callback to decode query header service response
             """

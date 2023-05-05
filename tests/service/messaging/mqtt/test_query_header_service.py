@@ -205,7 +205,7 @@ class TestQueryHeaderService:
         delete_message_service = FeedDeleteService(messaging_service)
         delete_message_service.send(delete_message_parameters)
 
-        Sleeper.let_agrirouter_process_the_message(seconds=15)
+        Sleeper.let_agrirouter_process_the_message(seconds=5)
 
     @staticmethod
     def _on_query_header_service_callback(message_ids: Optional[list]):

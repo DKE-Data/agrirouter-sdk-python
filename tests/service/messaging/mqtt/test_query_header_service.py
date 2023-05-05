@@ -49,7 +49,7 @@ class TestQueryHeaderService:
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message(seconds=15)
+        Sleeper.let_agrirouter_process_the_message(seconds=5)
 
     @staticmethod
     def test_header_query_service_when_senders_is_specified_should_return_the_header_for_this_sender_id():

@@ -56,7 +56,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message(seconds=5)
+        Sleeper.let_agrirouter_process_the_message()
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -82,7 +82,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message(seconds=5)
+        Sleeper.let_agrirouter_process_the_message()
 
         assert self._callback_processed is True, "Callback was not processed"
         self._callback_processed = False
@@ -109,7 +109,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message(seconds=5)
+        Sleeper.let_agrirouter_process_the_message()
 
         assert self._callback_processed is True, "Callback was not processed"
         self._callback_processed = False
@@ -131,7 +131,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message(seconds=5)
+        Sleeper.let_agrirouter_process_the_message()
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -154,7 +154,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message(seconds=5)
+        Sleeper.let_agrirouter_process_the_message()
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -177,7 +177,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message(seconds=5)
+        Sleeper.let_agrirouter_process_the_message()
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -204,7 +204,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message(seconds=5)
+        Sleeper.let_agrirouter_process_the_message()
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -227,7 +227,7 @@ class TestQueryHeaderService(unittest.TestCase):
         delete_message_service = FeedDeleteService(messaging_service)
         delete_message_service.send(delete_message_parameters)
 
-        Sleeper.let_agrirouter_process_the_message(seconds=5)
+        Sleeper.let_agrirouter_process_the_message()
 
         assert self._callback_processed is True, "Callback was not processed"
         self._callback_processed = False

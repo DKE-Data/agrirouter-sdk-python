@@ -54,7 +54,7 @@ class TestSendDirectMessageService:
 
         send_message_service = SendMessageService(messaging_service=messaging_service)
         send_message_service.send(send_message_parameters)
-        Sleeper.let_agrirouter_process_the_message(seconds=5)
+        Sleeper.let_agrirouter_process_the_message()
 
     @staticmethod
     def _on_message_callback(msg):
@@ -98,4 +98,4 @@ class TestSendDirectMessageService:
 
         capabilities_service = CapabilitiesService(messaging_service)
         capabilities_service.send(capabilities_parameters)
-        Sleeper.let_agrirouter_process_the_message(seconds=5)
+        Sleeper.let_agrirouter_process_the_message()

@@ -65,6 +65,12 @@ class OnboardingService(EnvironmentalService):
         )
 
     def onboard(self, params: OnboardParameters) -> OnboardResponse:
+        """
+        Onboard a device to the agrirouter.
+        """
         url = self._environment.get_onboard_url()
         http_response = self._perform_request(params=params, url=url)
+        if not http_response.ok:
+            raise OnboardException(
+                f"Onboarding returned HTTP status {http_response.status_code}. Message: {http_response.text}")
         return OnboardResponse(http_response)

@@ -10,8 +10,8 @@ from tests.data.identifier import Identifier
 from tests.sleeper import Sleeper
 from agrirouter.messaging.enums import CapabilityType
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
-from agrirouter.utils.utc_time_util import now_as_timestamp_protobuf, protobuf_timestamp_before_number_of_weeks, \
-    protobuf_timestamp_before_few_seconds
+from agrirouter.utils.utc_time_util import now_as_timestamp, timestamp_before_number_of_weeks, \
+    timestamp_before_number_of_seconds
 from tests.data_provider import DataProvider
 from typing import Optional
 
@@ -30,8 +30,8 @@ class TestQueryHeaderService:
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
 
-        sent_from = protobuf_timestamp_before_number_of_weeks(4)
-        sent_to = now_as_timestamp_protobuf()
+        sent_from = timestamp_before_number_of_weeks(4)
+        sent_to = now_as_timestamp()
         validity_period = ValidityPeriod(sent_from=sent_from, sent_to=sent_to)
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
@@ -167,8 +167,8 @@ class TestQueryHeaderService:
         messaging_service = MqttMessagingService(onboarding_response=TestQueryHeaderService._recipient_onboard_response,
                                                  on_message_callback=TestQueryHeaderService._incorrect_ids_callback)
 
-        sent_from = protobuf_timestamp_before_few_seconds(5)
-        sent_to = now_as_timestamp_protobuf()
+        sent_from = timestamp_before_number_of_seconds(5)
+        sent_to = now_as_timestamp()
         validity_period = ValidityPeriod(sent_from=sent_from, sent_to=sent_to)
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),

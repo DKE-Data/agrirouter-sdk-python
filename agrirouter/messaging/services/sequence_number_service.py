@@ -10,7 +10,7 @@ class SequenceNumberService:
     sequence_numbers_for_endpoints: Dict[str, int] = {}
 
     @staticmethod
-    def sequence_number_for_endpoint(endpoint_id: str) -> int:
+    def next_seq_nr(endpoint_id: str) -> int:
         """
         Generate sequence number for the endpoint_id
         params: endpoint_id

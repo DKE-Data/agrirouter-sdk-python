@@ -15,7 +15,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
         onboard_response = onboard_communication_unit(
             uuid=Identifier.MQTT_RECIPIENT_PEM[Identifier.ID],
             _environment=QAEnvironment(),
-            registration_code="efd9b2fbaa",
+            registration_code="71db5c1b35",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.MQTT.value)
         )

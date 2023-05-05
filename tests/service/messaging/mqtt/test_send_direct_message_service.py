@@ -1,3 +1,4 @@
+import logging
 import unittest
 
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
@@ -18,7 +19,7 @@ from tests.data_provider import DataProvider
 from tests.sleeper import Sleeper
 
 
-class SendDirectMessageServiceTest(unittest.TestCase):
+class TestSendDirectMessageService(unittest.TestCase):
     """
     Test to send the message to a recipient
     The existing sender and recipient PEM onboard responses are read using OnboardIntegrationService
@@ -27,6 +28,7 @@ class SendDirectMessageServiceTest(unittest.TestCase):
         Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
     _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
     _callback_processed = False
+    _log = logging.getLogger(__name__)
 
     def test_given_valid_message_content_when_sending_message_to_single_recipient_then_the_message_should_be_delivered(
             self):
@@ -35,29 +37,32 @@ class SendDirectMessageServiceTest(unittest.TestCase):
         sender and recipient Open Connection between Recipient and agrirouter is required. The setup between the
         sender and the recipient are done before running the test.
         """
-        SendDirectMessageServiceTest._send_capabilities(
-            onboard_response=SendDirectMessageServiceTest._recipient_onboard_response,
-            callback=SendDirectMessageServiceTest._on_message_callback)
+        TestSendDirectMessageService._send_capabilities(
+            onboard_response=TestSendDirectMessageService._recipient_onboard_response,
+            callback=TestSendDirectMessageService._on_message_callback)
 
-        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
-            SendDirectMessageServiceTest._recipient_onboard_response.get_sensor_alternate_id())
+        current_sequence_number = SequenceNumberService.next_seq_nr(
+            TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id())
 
         send_message_parameters = SendMessageParameters(
-            onboarding_response=SendDirectMessageServiceTest._sender_onboard_response,
+            onboarding_response=TestSendDirectMessageService._sender_onboard_response,
             technical_message_type=CapabilityType.IMG_PNG.value,
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
-            recipients=[SendDirectMessageServiceTest._recipient_onboard_response.get_sensor_alternate_id()],
+            recipients=[TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id()],
             base64_message_content=DataProvider.read_base64_encoded_image(),
             mode=RequestEnvelope.Mode.Value("DIRECT"))
 
         messaging_service = MqttMessagingService(
-            onboarding_response=SendDirectMessageServiceTest._sender_onboard_response,
-            on_message_callback=SendDirectMessageServiceTest._on_message_callback)
+            onboarding_response=TestSendDirectMessageService._sender_onboard_response,
+            on_message_callback=TestSendDirectMessageService._on_message_callback)
 
         send_message_service = SendMessageService(messaging_service=messaging_service)
         send_message_service.send(send_message_parameters)
         Sleeper.let_agrirouter_process_the_message()
+
+        if not self._callback_processed:
+            self._log.error("There was no answer from the agrirouter, the test will fail.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -77,7 +82,7 @@ class SendDirectMessageServiceTest(unittest.TestCase):
                 push_notification.messages[0].content.value) == DataProvider.get_hash(
                 DataProvider.read_base64_encoded_image())
         assert decoded_message.response_envelope.response_code == 200 or 201
-        SendDirectMessageServiceTest._callback_processed = True
+        TestSendDirectMessageService._callback_processed = True
 
     @staticmethod
     def _send_capabilities(onboard_response, callback):
@@ -87,7 +92,7 @@ class SendDirectMessageServiceTest(unittest.TestCase):
         messaging_service = MqttMessagingService(
             onboarding_response=onboard_response,
             on_message_callback=callback)
-        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
+        current_sequence_number = SequenceNumberService.next_seq_nr(
             onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
             onboarding_response=onboard_response,

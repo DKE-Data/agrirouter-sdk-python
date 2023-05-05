@@ -1,5 +1,8 @@
+import logging
+import unittest
+
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.messaging.decode import decode_response
+from agrirouter.messaging.decode import decode_response, decode_details
 from agrirouter.messaging.enums import CapabilityDirectionType
 from agrirouter.messaging.enums import CapabilityType
 from agrirouter.messaging.messages import OutboxMessage
@@ -14,7 +17,9 @@ from tests.data.onboard_response_integration_service import OnboardResponseInteg
 from tests.sleeper import Sleeper
 
 
-class TestMqttCapabilitiesService:
+class TestMqttCapabilitiesService(unittest.TestCase):
+    _log = logging.getLogger(__name__)
+    _callback_processed = False
 
     def test_when_sending_capabilities_for_recipient_with_direction_send_receive_then_the_server_should_accept_them(
             self):
@@ -27,6 +32,12 @@ class TestMqttCapabilitiesService:
                                                        mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
                                                        direction=CapabilityDirectionType.SEND_RECEIVE.value)
 
+        if not self._callback_processed:
+            self._log.error("There was no answer from the agrirouter, the test will fail.")
+
+        self.assertTrue(self._callback_processed)
+        self._callback_processed = False
+
     def test_when_sending_capabilities_for_recipient_with_direction_receive_then_the_server_should_accept_them(self):
         """
             Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'RECEIVE' direction
@@ -37,6 +48,12 @@ class TestMqttCapabilitiesService:
                                                        mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
                                                        direction=CapabilityDirectionType.RECEIVE.value)
 
+        if not self._callback_processed:
+            self._log.error("There was no answer from the agrirouter, the test will fail.")
+
+        self.assertTrue(self._callback_processed)
+        self._callback_processed = False
+
     def test_when_sending_capabilities_for_recipient_with_direction_send_then_the_server_should_accept_them(self):
         """
             Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'SEND' direction
@@ -46,6 +63,12 @@ class TestMqttCapabilitiesService:
         TestMqttCapabilitiesService._send_capabilities(onboard_response=_onboard_response,
                                                        mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
                                                        direction=CapabilityDirectionType.SEND.value)
+
+        if not self._callback_processed:
+            self._log.error("There was no answer from the agrirouter, the test will fail.")
+
+        self.assertTrue(self._callback_processed)
+        self._callback_processed = False
 
     @staticmethod
     def load_onboard_response(path):
@@ -63,15 +86,19 @@ class TestMqttCapabilitiesService:
         outbox_message = OutboxMessage()
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
         decoded_message = decode_response(outbox_message.command.message.encode())
-        while not decoded_message:
-            Sleeper.let_agrirouter_process_the_message()
+        if decoded_message.response_envelope.response_code != 201:
+            decoded_details = decode_details(decoded_message.response_payload.details)
+            TestMqttCapabilitiesService._log.error("Message could not be processed. Response code: " + str(
+                decoded_message.response_envelope.response_code))
+            TestMqttCapabilitiesService._log.error("Message details: " + str(decoded_details))
         assert decoded_message.response_envelope.response_code == 201
+        TestMqttCapabilitiesService._callback_processed = True
 
     @staticmethod
     def _send_capabilities(onboard_response, mqtt_message_callback, direction):
         messaging_service = MqttMessagingService(onboarding_response=onboard_response,
                                                  on_message_callback=mqtt_message_callback)
-        current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
+        current_sequence_number = SequenceNumberService.next_seq_nr(
             onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
             onboarding_response=onboard_response,

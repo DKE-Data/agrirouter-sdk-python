@@ -64,9 +64,6 @@ class TestSendDirectMessageService:
         outbox_message = OutboxMessage()
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
         decoded_message = decode_response(outbox_message.command.message.encode())
-        while not decoded_message:
-            Sleeper.let_agrirouter_process_the_message(seconds=5)
-
         if decoded_message.response_envelope.type == 12:
             push_notification = decode_details(decoded_message.response_payload.details)
             assert decoded_message.response_envelope.response_code == 200

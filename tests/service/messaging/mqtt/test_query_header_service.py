@@ -247,9 +247,6 @@ class TestQueryHeaderService:
         outbox_message = OutboxMessage()
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
         decoded_message = decode_response(outbox_message.command.message.encode())
-        while not decoded_message:
-            Sleeper.let_agrirouter_process_the_message(seconds=5)
-
         delete_details = decode_details(decoded_message.response_payload.details)
         deleted_message_ids = [idx.args['messageId'] for idx in delete_details.messages]
         assert sorted(TestQueryHeaderService._message_ids_to_clean_up) == sorted(deleted_message_ids)
@@ -262,8 +259,6 @@ class TestQueryHeaderService:
         outbox_message = OutboxMessage()
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
         decoded_message = decode_response(outbox_message.command.message.encode())
-        while not decoded_message:
-            Sleeper.let_agrirouter_process_the_message(seconds=5)
         assert decoded_message.response_envelope.response_code == 204
 
     @staticmethod
@@ -294,12 +289,11 @@ class TestQueryHeaderService:
         outbox_message = OutboxMessage()
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
         decoded_message = decode_response(outbox_message.command.message.encode())
-        while not decoded_message:
-            Sleeper.let_agrirouter_process_the_message(seconds=5)
         details = decode_details(decoded_message.response_payload.details)
 
         assert decoded_message.response_envelope.response_code == 400
         assert decoded_message.response_envelope.type == 3
         assert details.messages[0].message_code == "VAL_000017"
         assert details.messages[
-                   0].message == "Query does not contain any filtering criteria: messageIds, senders or validityPeriod. Information required to process message is missing or malformed."
+                   0].message == "Query does not contain any filtering criteria: messageIds, senders or " \
+                                 "validityPeriod. Information required to process message is missing or malformed."

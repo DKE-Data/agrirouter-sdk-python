@@ -216,8 +216,6 @@ class TestQueryHeaderService:
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = decode_response(outbox_message.command.message.encode())
-            while not decoded_message:
-                Sleeper.let_agrirouter_process_the_message(seconds=5)
 
             details = decode_details(decoded_message.response_payload.details)
             assert decoded_message.response_envelope.type == 6

@@ -21,8 +21,9 @@ class TestSendDirectMessageService:
     Test to send the message to a recipient
     The existing sender and recipient PEM onboard responses are read using OnboardIntegrationService
     """
-    _recipient_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
-    _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_SENDER_PEM[Identifier.PATH])
+    _recipient_onboard_response = OnboardResponseIntegrationService.read(
+        Identifier.MQTT_MESSAGE_RECIPIENT > [Identifier.PATH])
+    _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
 
     @staticmethod
     def test_given_valid_message_content_when_sending_message_to_single_recipient_then_the_message_should_be_delivered():

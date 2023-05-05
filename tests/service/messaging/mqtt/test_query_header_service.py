@@ -216,16 +216,16 @@ class TestQueryHeaderService:
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = decode_response(outbox_message.command.message.encode())
-
             details = decode_details(decoded_message.response_payload.details)
+
             assert decoded_message.response_envelope.type == 6
 
             if details.feed:
-                details_message_ids = [details.feed[0].headers[idx].message_id for idx in
-                                       range(len(details.feed[0].headers))]
+                header_query_message_ids = [details.feed[0].headers[idx].message_id for idx in
+                                            range(len(details.feed[0].headers))]
 
                 if message_ids:
-                    assert sorted(details_message_ids) == sorted(message_ids)
+                    assert sorted(header_query_message_ids) == sorted(message_ids)
 
                 assert details.feed[0].headers[0].technical_message_type == CapabilityType.IMG_PNG.value
 
@@ -240,7 +240,7 @@ class TestQueryHeaderService:
         return _inner_function
 
     @staticmethod
-    def _on_feed_delete_service_callback(client, userdata, msg):
+    def _on_feed_delete_service_callback(msg):
         """
         Callback to decode Feed Delete Service
         """
@@ -255,7 +255,7 @@ class TestQueryHeaderService:
         assert sorted(TestQueryHeaderService._message_ids_to_clean_up) == sorted(deleted_message_ids)
 
     @staticmethod
-    def _incorrect_ids_callback(client, userdata, msg):
+    def _incorrect_ids_callback(msg):
         """
         Callback to decode query header service response when incorrect ids are passed as arguments
         """
@@ -267,7 +267,7 @@ class TestQueryHeaderService:
         assert decoded_message.response_envelope.response_code == 204
 
     @staticmethod
-    def _on_message_capabilities_callback(client, userdata, msg):
+    def _on_message_capabilities_callback(msg):
         """
         Callback to handle the sender and recipient capabilities
         """
@@ -287,7 +287,7 @@ class TestQueryHeaderService:
         assert decoded_message.response_envelope.response_code == 201
 
     @staticmethod
-    def _incomplete_attributes_callback(client, userdata, msg):
+    def _incomplete_attributes_callback(msg):
         """
         Callback to decode query header service response when the attributes are incomplete
         """

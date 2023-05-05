@@ -28,7 +28,7 @@ class TestQueryHeaderService:
     @staticmethod
     def test_header_query_service_when_validity_period_is_specified_should_return_messages_within_the_validity_period():
         """
-        Testing Query Header Service when the validity period is specified
+        Testing query header service when the validity period is specified
         """
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
@@ -54,7 +54,7 @@ class TestQueryHeaderService:
     @staticmethod
     def test_header_query_service_when_senders_is_specified_should_return_the_header_for_this_sender_id():
         """
-        Testing Query Header Service when the sender endpoint id is specified
+        Testing query header service when the sender endpoint id is specified
         """
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
@@ -79,7 +79,7 @@ class TestQueryHeaderService:
     @staticmethod
     def test_header_query_service_for_specific_message_ids_should_return_the_messages_for_this_specific_message_ids():
         """
-        Testing Query Header Service when specific message ids are specified
+        Testing query header service when specific message ids are specified
         """
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
@@ -102,7 +102,7 @@ class TestQueryHeaderService:
     @staticmethod
     def test_header_query_service_for_incomplete_attributes_should_return_in_an_error():
         """
-        Testing Query Header Service when incomplete attributes are passed
+        Testing query header service when incomplete attributes are passed
         """
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
@@ -122,7 +122,7 @@ class TestQueryHeaderService:
     @staticmethod
     def test_header_query_service_for_incorrect_message_ids_should_return_empty_message():
         """
-        Testing Query Header Service when incorrect message ids are specified
+        Testing query header service when incorrect message ids are specified
         """
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
@@ -143,7 +143,7 @@ class TestQueryHeaderService:
     @staticmethod
     def test_header_query_service_for_incorrect_sender_id_should_return_empty_message():
         """
-        Testing Query Header Service when incorrect sender id is specified
+        Testing query header service when incorrect sender id is specified
         """
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
@@ -164,7 +164,7 @@ class TestQueryHeaderService:
     @staticmethod
     def test_header_query_service_for_incorrect_validity_period_should_return_empty_message():
         """
-        Testing Query Header Service when incorrect validity period is specified
+        Testing query header service when incorrect validity period is specified
         """
         current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
             TestQueryHeaderService._recipient_onboard_response.get_sensor_alternate_id())
@@ -211,7 +211,7 @@ class TestQueryHeaderService:
     def _on_query_header_service_callback(message_ids: Optional[list]):
         def _inner_function(client, userdata, msg):
             """
-            Callback to decode Query Header Service response
+            Callback to decode query header service response
             """
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
@@ -259,7 +259,7 @@ class TestQueryHeaderService:
     @staticmethod
     def _incorrect_ids_callback(client, userdata, msg):
         """
-        Callback to decode Query Header Service response when incorrect ids are passed as arguments
+        Callback to decode query header service response when incorrect ids are passed as arguments
         """
         outbox_message = OutboxMessage()
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
@@ -291,7 +291,7 @@ class TestQueryHeaderService:
     @staticmethod
     def _incomplete_attributes_callback(client, userdata, msg):
         """
-        Callback to decode Query Header Service response when the attributes are incomplete
+        Callback to decode query header service response when the attributes are incomplete
         """
         outbox_message = OutboxMessage()
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))

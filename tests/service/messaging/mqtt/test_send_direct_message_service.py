@@ -1,3 +1,5 @@
+import unittest
+
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.decode import decode_response, decode_details
@@ -16,7 +18,7 @@ from tests.data_provider import DataProvider
 from tests.sleeper import Sleeper
 
 
-class TestSendDirectMessageService:
+class SendDirectMessageServiceTest(unittest.TestCase):
     """
     Test to send the message to a recipient
     The existing sender and recipient PEM onboard responses are read using OnboardIntegrationService
@@ -24,40 +26,44 @@ class TestSendDirectMessageService:
     _recipient_onboard_response = OnboardResponseIntegrationService.read(
         Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
     _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
+    _callback_processed = False
 
-    @staticmethod
-    def test_given_valid_message_content_when_sending_message_to_single_recipient_then_the_message_should_be_delivered():
+    def test_given_valid_message_content_when_sending_message_to_single_recipient_then_the_message_should_be_delivered(
+            self):
         """
         Test for sending the valid message content to a single recipient after enabling IMG_PNG capability with
         sender and recipient Open Connection between Recipient and agrirouter is required. The setup between the
         sender and the recipient are done before running the test.
         """
-        TestSendDirectMessageService._enable_capabilities_via_mqtt(
-            onboard_response=TestSendDirectMessageService._recipient_onboard_response,
-            callback=TestSendDirectMessageService._on_message_callback)
+        SendDirectMessageServiceTest._send_capabilities(
+            onboard_response=SendDirectMessageServiceTest._recipient_onboard_response,
+            callback=SendDirectMessageServiceTest._on_message_callback)
 
         current_sequence_number = SequenceNumberService.sequence_number_for_endpoint(
-            TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id())
+            SendDirectMessageServiceTest._recipient_onboard_response.get_sensor_alternate_id())
 
         send_message_parameters = SendMessageParameters(
-            onboarding_response=TestSendDirectMessageService._sender_onboard_response,
+            onboarding_response=SendDirectMessageServiceTest._sender_onboard_response,
             technical_message_type=CapabilityType.IMG_PNG.value,
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
-            recipients=[TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id()],
+            recipients=[SendDirectMessageServiceTest._recipient_onboard_response.get_sensor_alternate_id()],
             base64_message_content=DataProvider.read_base64_encoded_image(),
             mode=RequestEnvelope.Mode.Value("DIRECT"))
 
         messaging_service = MqttMessagingService(
-            onboarding_response=TestSendDirectMessageService._sender_onboard_response,
-            on_message_callback=TestSendDirectMessageService._on_message_callback)
+            onboarding_response=SendDirectMessageServiceTest._sender_onboard_response,
+            on_message_callback=SendDirectMessageServiceTest._on_message_callback)
 
         send_message_service = SendMessageService(messaging_service=messaging_service)
         send_message_service.send(send_message_parameters)
         Sleeper.let_agrirouter_process_the_message()
 
+        self.assertTrue(self._callback_processed)
+        self._callback_processed = False
+
     @staticmethod
-    def _on_message_callback(msg):
+    def _on_message_callback(client, userdata, msg):
         """
         Callback to handle the incoming messages from the MQTT broker
         """
@@ -71,9 +77,10 @@ class TestSendDirectMessageService:
                 push_notification.messages[0].content.value) == DataProvider.get_hash(
                 DataProvider.read_base64_encoded_image())
         assert decoded_message.response_envelope.response_code == 200 or 201
+        SendDirectMessageServiceTest._callback_processed = True
 
     @staticmethod
-    def _enable_capabilities_via_mqtt(onboard_response, callback):
+    def _send_capabilities(onboard_response, callback):
         """
         Method to enable capabilities via mqtt
         """

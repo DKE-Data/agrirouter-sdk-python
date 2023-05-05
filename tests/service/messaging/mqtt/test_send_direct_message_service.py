@@ -1,6 +1,8 @@
 import logging
 import unittest
 
+import pytest
+
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.decode import decode_response, decode_details
 from agrirouter.messaging.enums import CapabilityType
@@ -10,7 +12,7 @@ from agrirouter.messaging.services.messaging import SendMessageService, SendMess
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.utils.uuid_util import new_uuid
 from tests.data.identifier import Identifier
-from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
+from tests.data.onboard_response_integration_service import read_onboard_response
 from tests.data_provider import DataProvider
 from tests.sleeper import Sleeper
 
@@ -20,11 +22,21 @@ class TestSendDirectMessageService(unittest.TestCase):
     Test to send the message to a recipient
     The existing sender and recipient PEM onboard responses are read using OnboardIntegrationService
     """
-    _recipient_onboard_response = OnboardResponseIntegrationService.read(
-        Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
-    _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
+    _recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
+    _sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
     _callback_processed = False
     _log = logging.getLogger(__name__)
+    _received_messages = None
+
+    @pytest.fixture(autouse=True)
+    def fixture(self):
+        # Run the test
+        yield
+
+        # Tear down
+        if self._received_messages is not None:
+            self._log.info("Deleting received messages from the feed to have a clean state: %s",
+                           self._received_messages)
 
     def test_given_valid_message_content_when_sending_message_to_single_recipient_then_the_message_should_be_delivered(
             self):

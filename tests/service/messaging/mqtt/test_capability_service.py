@@ -13,7 +13,7 @@ from agrirouter.messaging.services.sequence_number_service import SequenceNumber
 from agrirouter.utils.uuid_util import new_uuid
 from tests.data.applications import CommunicationUnit
 from tests.data.identifier import Identifier
-from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
+from tests.data.onboard_response_integration_service import read_onboard_response
 from tests.sleeper import Sleeper
 
 
@@ -26,8 +26,7 @@ class TestMqttCapabilitiesService(unittest.TestCase):
         """
             Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'SEND_RECEIVE' direction
         """
-        _onboard_response = TestMqttCapabilitiesService.load_onboard_response(
-            Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
+        _onboard_response = read_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
         TestMqttCapabilitiesService._send_capabilities(onboard_response=_onboard_response,
                                                        mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
                                                        direction=CapabilityDirectionType.SEND_RECEIVE.value)
@@ -42,8 +41,7 @@ class TestMqttCapabilitiesService(unittest.TestCase):
         """
             Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'RECEIVE' direction
         """
-        _onboard_response = TestMqttCapabilitiesService.load_onboard_response(
-            Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
+        _onboard_response = read_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
         TestMqttCapabilitiesService._send_capabilities(onboard_response=_onboard_response,
                                                        mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
                                                        direction=CapabilityDirectionType.RECEIVE.value)
@@ -58,8 +56,7 @@ class TestMqttCapabilitiesService(unittest.TestCase):
         """
             Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'SEND' direction
         """
-        _onboard_response = TestMqttCapabilitiesService.load_onboard_response(
-            Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
+        _onboard_response = read_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
         TestMqttCapabilitiesService._send_capabilities(onboard_response=_onboard_response,
                                                        mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
                                                        direction=CapabilityDirectionType.SEND.value)
@@ -69,14 +66,6 @@ class TestMqttCapabilitiesService(unittest.TestCase):
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
-
-    @staticmethod
-    def load_onboard_response(path):
-        """
-        Static method to load the onboard response
-        """
-        recorded_onboard_response = OnboardResponseIntegrationService.read(path)
-        return recorded_onboard_response
 
     @staticmethod
     def _on_message_callback(msg):

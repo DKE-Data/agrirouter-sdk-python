@@ -11,16 +11,16 @@ from agrirouter.messaging.services.commons import MqttMessagingService
 from agrirouter.messaging.decode import decode_response, decode_details
 from agrirouter.messaging.messages import OutboxMessage
 from tests.data.applications import CommunicationUnit
-from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
 from agrirouter.utils.uuid_util import new_uuid
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from tests.data.identifier import Identifier
 from agrirouter.messaging.enums import CapabilityType, CapabilityDirectionType
+from tests.data.onboard_response_integration_service import read_onboard_response
 from tests.sleeper import Sleeper
 
 
 class TestSubscriptionService(unittest.TestCase):
-    _onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
+    _onboard_response = read_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
     _log = logging.getLogger(__name__)
     _callback_processed = False
 

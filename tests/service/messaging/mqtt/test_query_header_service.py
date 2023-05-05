@@ -15,7 +15,7 @@ from agrirouter.utils.utc_time_util import now_as_timestamp, timestamp_before_nu
     timestamp_before_number_of_seconds
 from agrirouter.utils.uuid_util import new_uuid
 from tests.data.identifier import Identifier
-from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
+from tests.data.onboard_response_integration_service import read_onboard_response
 from tests.data_provider import DataProvider
 from tests.sleeper import Sleeper
 
@@ -24,9 +24,8 @@ class TestQueryHeaderService(unittest.TestCase):
     """
     The setup (enabling capabilities and routing) between sender and recipient has been done prior to running this test
     """
-    _recipient_onboard_response = OnboardResponseIntegrationService.read(
-        Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
-    _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
+    _recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
+    _sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
     _message_ids_to_clean_up = None
     _log = logging.getLogger(__name__)
     _callback_processed = False

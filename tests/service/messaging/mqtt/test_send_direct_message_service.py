@@ -98,7 +98,6 @@ class TestSendDirectMessageService(unittest.TestCase):
             TestSendDirectMessageService._log.error(
                 f"Received wrong message from the agrirouter: {str(decoded_details)}")
         assert decoded_message.response_envelope.response_code == 201
-
         TestSendDirectMessageService._callback_for_sender_processed = True
 
     @staticmethod
@@ -120,5 +119,4 @@ class TestSendDirectMessageService(unittest.TestCase):
         assert DataProvider.get_hash(
             push_notification.messages[0].content.value) == DataProvider.get_hash(
             DataProvider.read_base64_encoded_image())
-
         TestSendDirectMessageService._callback_for_recipient_processed = True

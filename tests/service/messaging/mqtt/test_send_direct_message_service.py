@@ -148,7 +148,7 @@ class TestSendDirectMessageService(unittest.TestCase):
         )
 
         feed_delete_service = FeedDeleteService(messaging_service)
-        feed_delete_service.send(delete_message_parameters)
+        feed_delete_service.send(delete_message_parameters) # Looks like the message is not send to the endpoint
 
         Sleeper.process_the_command()
 

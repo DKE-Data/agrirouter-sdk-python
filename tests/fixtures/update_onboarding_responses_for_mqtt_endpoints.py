@@ -4,23 +4,22 @@ from agrirouter.environments.environments import QAEnvironment
 from agrirouter.onboarding.enums import CertificateTypes, Gateways
 from tests.common.onboarding import onboard_communication_unit
 from tests.data.identifier import Identifier
-from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
+from tests.data.onboard_response_integration_service import save_onboard_response
 
 
 class TestSingleMqttEndpointWithPEMCertificate:
 
-    @pytest.mark.skip(reason="Will fail unless the registration code is changed")
     def test_update_recipient_with_pem(self):
         """ Test the onboarding process for a single MQTT endpoint with a PEM certificate. """
         onboard_response = onboard_communication_unit(
             uuid=Identifier.MQTT_RECIPIENT_PEM[Identifier.ID],
             _environment=QAEnvironment(),
-            registration_code="71db5c1b35",
+            registration_code="7b9cad99f9",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.MQTT.value)
         )
 
-        OnboardResponseIntegrationService.save(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH], onboard_response)
+        save_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH], onboard_response)
 
     @pytest.mark.skip(reason="Will fail unless the registration code is changed")
     def test_update_recipient_with_p12(self):
@@ -33,7 +32,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
             gateway_id=str(Gateways.MQTT.value)
         )
 
-        OnboardResponseIntegrationService.save(Identifier.MQTT_RECIPIENT_P12[Identifier.PATH], onboard_response)
+        save_onboard_response(Identifier.MQTT_RECIPIENT_P12[Identifier.PATH], onboard_response)
 
     @pytest.mark.skip(reason="Will fail unless the registration code is changed")
     def test_update_sender_with_pem(self):
@@ -46,7 +45,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
             gateway_id=str(Gateways.MQTT.value)
         )
 
-        OnboardResponseIntegrationService.save(Identifier.MQTT_SENDER_PEM[Identifier.PATH], onboard_response)
+        save_onboard_response(Identifier.MQTT_SENDER_PEM[Identifier.PATH], onboard_response)
 
     @pytest.mark.skip(reason="Will fail unless the registration code is changed")
     def test_update_sender_with_p12(self):
@@ -59,4 +58,4 @@ class TestSingleMqttEndpointWithPEMCertificate:
             gateway_id=str(Gateways.MQTT.value)
         )
 
-        OnboardResponseIntegrationService.save(Identifier.MQTT_SENDER_P12[Identifier.PATH], onboard_response)
+        save_onboard_response(Identifier.MQTT_SENDER_P12[Identifier.PATH], onboard_response)

@@ -22,14 +22,29 @@ class TestSendDirectMessageService(unittest.TestCase):
     Test to send the message to a recipient
     The existing sender and recipient PEM onboard responses are read using OnboardIntegrationService
     """
-    _recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
     _sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
-    _callback_processed = False
+    _recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
+
+    _messaging_service_for_sender = None
+    _messaging_service_for_recipient = None
+
+    _callback_for_sender_processed = False
+    _callback_for_recipient_processed = False
+
     _log = logging.getLogger(__name__)
     _received_messages = None
 
     @pytest.fixture(autouse=True)
     def fixture(self):
+        # Setup
+        self._messaging_service_for_sender = MqttMessagingService(
+            onboarding_response=self._sender_onboard_response,
+            on_message_callback=self._callback_for_sender)
+
+        self._messaging_service_for_recipient = MqttMessagingService(
+            onboarding_response=self._recipient_onboard_response,
+            on_message_callback=self._callback_for_recipient)
+
         # Run the test
         yield
 
@@ -47,10 +62,10 @@ class TestSendDirectMessageService(unittest.TestCase):
         """
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
-            TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id())
+            self._sender_onboard_response.get_sensor_alternate_id())
 
         send_message_parameters = SendMessageParameters(
-            onboarding_response=TestSendDirectMessageService._sender_onboard_response,
+            onboarding_response=self._sender_onboard_response,
             technical_message_type=CapabilityType.IMG_PNG.value,
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
@@ -58,33 +73,52 @@ class TestSendDirectMessageService(unittest.TestCase):
             base64_message_content=DataProvider.read_base64_encoded_image(),
             mode=RequestEnvelope.Mode.Value("DIRECT"))
 
-        messaging_service = MqttMessagingService(
-            onboarding_response=TestSendDirectMessageService._sender_onboard_response,
-            on_message_callback=TestSendDirectMessageService._on_message_callback)
-
-        send_message_service = SendMessageService(messaging_service=messaging_service)
+        send_message_service = SendMessageService(messaging_service=self._messaging_service_for_sender)
         send_message_service.send(send_message_parameters)
         Sleeper.let_agrirouter_process_the_message()
 
-        if not self._callback_processed:
-            self._log.error("There was no answer from the agrirouter, the test will fail.")
+        if not self._callback_for_sender_processed:
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
-        self.assertTrue(self._callback_processed)
-        self._callback_processed = False
+        self.assertTrue(self._callback_for_sender_processed)
+        self.assertTrue(self._callback_for_recipient_processed)
 
     @staticmethod
-    def _on_message_callback(client, userdata, msg):
+    def _callback_for_sender(client, userdata, msg):
         """
         Callback to handle the incoming messages from the MQTT broker
         """
+        TestSendDirectMessageService._log.info("Received message for sender from the agrirouter: %s",
+                                               msg.payload.decode())
         outbox_message = OutboxMessage()
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
         decoded_message = decode_response(outbox_message.command.message.encode())
-        assert decoded_message.response_envelope.type == 12
+        if decoded_message.response_envelope.type != 1:
+            decoded_details = decode_details(decoded_message.response_payload.details)
+            TestSendDirectMessageService._log.error(
+                f"Received wrong message from the agrirouter: {str(decoded_details)}")
+        assert decoded_message.response_envelope.response_code == 201
+
+        TestSendDirectMessageService._callback_for_sender_processed = True
+
+    @staticmethod
+    def _callback_for_recipient(client, userdata, msg):
+        """
+        Callback to handle the incoming messages from the MQTT broker
+        """
+        TestSendDirectMessageService._log.info("Received message for recipient from the agrirouter: %s",
+                                               msg.payload.decode())
+        outbox_message = OutboxMessage()
+        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+        decoded_message = decode_response(outbox_message.command.message.encode())
+        if decoded_message.response_envelope.type != 1:
+            decoded_details = decode_details(decoded_message.response_payload.details)
+            TestSendDirectMessageService._log.error(
+                f"Received wrong message from the agrirouter: {str(decoded_details)}")
         push_notification = decode_details(decoded_message.response_payload.details)
         assert decoded_message.response_envelope.response_code == 200
         assert DataProvider.get_hash(
             push_notification.messages[0].content.value) == DataProvider.get_hash(
             DataProvider.read_base64_encoded_image())
 
-        TestSendDirectMessageService._callback_processed = True
+        TestSendDirectMessageService._callback_for_recipient_processed = True

@@ -58,7 +58,7 @@ class TestQueryHeaderService(unittest.TestCase):
         Sleeper.let_agrirouter_process_the_message()
 
         if not self._callback_processed:
-            self._log.error("There was no answer from the agrirouter, the test will fail.")
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -87,7 +87,7 @@ class TestQueryHeaderService(unittest.TestCase):
         Sleeper.let_agrirouter_process_the_message()
 
         if not self._callback_processed:
-            self._log.error("There was no answer from the agrirouter, the test will fail.")
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -117,7 +117,7 @@ class TestQueryHeaderService(unittest.TestCase):
         Sleeper.let_agrirouter_process_the_message()
 
         if not self._callback_processed:
-            self._log.error("There was no answer from the agrirouter, the test will fail.")
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -142,7 +142,7 @@ class TestQueryHeaderService(unittest.TestCase):
         Sleeper.let_agrirouter_process_the_message()
 
         if not self._callback_processed:
-            self._log.error("There was no answer from the agrirouter, the test will fail.")
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -168,7 +168,7 @@ class TestQueryHeaderService(unittest.TestCase):
         Sleeper.let_agrirouter_process_the_message()
 
         if not self._callback_processed:
-            self._log.error("There was no answer from the agrirouter, the test will fail.")
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -194,7 +194,7 @@ class TestQueryHeaderService(unittest.TestCase):
         Sleeper.let_agrirouter_process_the_message()
 
         if not self._callback_processed:
-            self._log.error("There was no answer from the agrirouter, the test will fail.")
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -224,7 +224,7 @@ class TestQueryHeaderService(unittest.TestCase):
         Sleeper.let_agrirouter_process_the_message()
 
         if not self._callback_processed:
-            self._log.error("There was no answer from the agrirouter, the test will fail.")
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -250,7 +250,7 @@ class TestQueryHeaderService(unittest.TestCase):
         Sleeper.let_agrirouter_process_the_message()
 
         if not self._callback_processed:
-            self._log.error("There was no answer from the agrirouter, the test will fail.")
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False

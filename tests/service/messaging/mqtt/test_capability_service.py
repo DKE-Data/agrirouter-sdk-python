@@ -32,7 +32,7 @@ class TestMqttCapabilitiesService(unittest.TestCase):
                                                        direction=CapabilityDirectionType.SEND_RECEIVE.value)
 
         if not self._callback_processed:
-            self._log.error("There was no answer from the agrirouter, the test will fail.")
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -47,7 +47,7 @@ class TestMqttCapabilitiesService(unittest.TestCase):
                                                        direction=CapabilityDirectionType.RECEIVE.value)
 
         if not self._callback_processed:
-            self._log.error("There was no answer from the agrirouter, the test will fail.")
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -62,7 +62,7 @@ class TestMqttCapabilitiesService(unittest.TestCase):
                                                        direction=CapabilityDirectionType.SEND.value)
 
         if not self._callback_processed:
-            self._log.error("There was no answer from the agrirouter, the test will fail.")
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -77,8 +77,6 @@ class TestMqttCapabilitiesService(unittest.TestCase):
         decoded_message = decode_response(outbox_message.command.message.encode())
         if decoded_message.response_envelope.response_code != 201:
             decoded_details = decode_details(decoded_message.response_payload.details)
-            TestMqttCapabilitiesService._log.error("Message could not be processed. Response code: " + str(
-                decoded_message.response_envelope.response_code))
             TestMqttCapabilitiesService._log.error("Message details: " + str(decoded_details))
         assert decoded_message.response_envelope.response_code == 201
         TestMqttCapabilitiesService._callback_processed = True

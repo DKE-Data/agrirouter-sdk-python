@@ -42,16 +42,19 @@ class TestSendDirectMessageService(unittest.TestCase):
         # Setup
         self._messaging_service_for_sender = MqttMessagingService(
             onboarding_response=self._sender_onboard_response,
-            on_message_callback=self._callback_for_sender)
+            on_message_callback=self._callback_for_sender())
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._callback_for_recipient)
+            on_message_callback=self._callback_for_recipient())
 
         # Run the test
         yield
 
         # Tear down
+        self._messaging_service_for_sender.client.disconnect()
+        self._messaging_service_for_recipient.client.disconnect()
+
         self._log.info("Deleting received messages from the feed to have a clean state: %s",
                        self._received_messages)
         self.delete_all_messages_within_the_feed(onboard_response=self._recipient_onboard_response)
@@ -72,7 +75,7 @@ class TestSendDirectMessageService(unittest.TestCase):
             technical_message_type=CapabilityType.IMG_PNG.value,
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
-            recipients=[TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id()],
+            recipients=[self._recipient_onboard_response.get_sensor_alternate_id()],
             base64_message_content=DataProvider.read_base64_encoded_image(),
             mode=RequestEnvelope.Mode.Value("DIRECT"))
 
@@ -81,63 +84,68 @@ class TestSendDirectMessageService(unittest.TestCase):
         Sleeper.process_the_message()
 
         if not self._callback_for_sender_processed:
-            self._log.error("Either the callback for the sender was not processed in time or there was an error during the checks.")
+            self._log.error(
+                "Either the callback for the sender was not processed in time or there was an error during the checks.")
 
         if not self._callback_for_recipient_processed:
-            self._log.error("Either the callback for the recipient was not processed in time or there was an error during the checks.")
+            self._log.error(
+                "Either the callback for the recipient was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_for_sender_processed)
         self.assertTrue(self._callback_for_recipient_processed)
 
-    @staticmethod
-    def _callback_for_sender(client, userdata, msg):
-        """
-        Callback to handle the incoming messages from the MQTT broker
-        """
-        TestSendDirectMessageService._log.info("Received message for sender from the agrirouter: %s",
-                                               msg.payload.decode())
-        outbox_message = OutboxMessage()
-        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-        decoded_message = decode_response(outbox_message.command.message.encode())
-        if decoded_message.response_envelope.type != 1:
-            decoded_details = decode_details(decoded_message.response_payload.details)
-            TestSendDirectMessageService._log.error(
-                f"Received wrong message from the agrirouter: {str(decoded_details)}")
-        assert decoded_message.response_envelope.response_code == 201
-        TestSendDirectMessageService._callback_for_sender_processed = True
+    def _callback_for_sender(self):
+        def _inner_function(client, userdata, msg):
+            """
+            Callback to handle the incoming messages from the MQTT broker
+            """
+            self._log.info("Received message for sender from the agrirouter: %s",
+                           msg.payload.decode())
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+            decoded_message = decode_response(outbox_message.command.message.encode())
+            if decoded_message.response_envelope.type != 1:
+                decoded_details = decode_details(decoded_message.response_payload.details)
+                self._log.error(
+                    f"Received wrong message from the agrirouter: {str(decoded_details)}")
+            assert decoded_message.response_envelope.response_code == 201
+            self._callback_for_sender_processed = True
 
-    @staticmethod
-    def _callback_for_recipient(client, userdata, msg):
-        """
-        Callback to handle the incoming messages from the MQTT broker
-        """
-        TestSendDirectMessageService._log.info("Received message for recipient from the agrirouter: %s",
-                                               msg.payload.decode())
-        outbox_message = OutboxMessage()
-        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-        decoded_message = decode_response(outbox_message.command.message.encode())
-        if decoded_message.response_envelope.type != 12:
-            decoded_details = decode_details(decoded_message.response_payload.details)
-            TestSendDirectMessageService._log.error(
-                f"Received wrong message from the agrirouter: {str(decoded_details)}")
-        push_notification = decode_details(decoded_message.response_payload.details)
-        assert decoded_message.response_envelope.response_code == 200
-        assert DataProvider.get_hash(
-            push_notification.messages[0].content.value) == DataProvider.get_hash(
-            DataProvider.read_base64_encoded_image())
+        return _inner_function
 
-        TestSendDirectMessageService._callback_for_recipient_processed = True
+    def _callback_for_recipient(self):
+        def _inner_function(client, userdata, msg):
+            """
+            Callback to handle the incoming messages from the MQTT broker
+            """
+            self._log.info("Received message for recipient from the agrirouter: %s",
+                           msg.payload.decode())
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+            decoded_message = decode_response(outbox_message.command.message.encode())
+            if decoded_message.response_envelope.type != 12:
+                decoded_details = decode_details(decoded_message.response_payload.details)
+                self._log.error(
+                    f"Received wrong message from the agrirouter: {str(decoded_details)}")
+            push_notification = decode_details(decoded_message.response_payload.details)
+            assert decoded_message.response_envelope.response_code == 200
+            assert DataProvider.get_hash(
+                push_notification.messages[0].content.value) == DataProvider.get_hash(
+                DataProvider.read_base64_encoded_image())
 
-    @staticmethod
-    def delete_all_messages_within_the_feed(onboard_response: OnboardResponse):
+            self._callback_for_recipient_processed = True
+
+        return _inner_function
+
+    def delete_all_messages_within_the_feed(self, onboard_response: OnboardResponse):
         """
         Delete all messages within the feed.
         """
         logging.getLogger(__name__).info(
-            f"Delete all messages within the feed for endpoint '{TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id()}'.")
+            f"Delete all messages within the feed for endpoint '{self._recipient_onboard_response.get_sensor_alternate_id()}'.")
         messaging_service = MqttMessagingService(
             onboarding_response=onboard_response,
-            on_message_callback=TestSendDirectMessageService._internal_callback)
+            on_message_callback=self._internal_callback)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             onboard_response.get_sensor_alternate_id())
@@ -147,7 +155,7 @@ class TestSendDirectMessageService(unittest.TestCase):
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
             validity_period=max_validity_period(),
-            senders=[TestSendDirectMessageService._sender_onboard_response.get_sensor_alternate_id()]
+            senders=[self._sender_onboard_response.get_sensor_alternate_id()]
         )
 
         feed_delete_service = FeedDeleteService(messaging_service)
@@ -155,16 +163,17 @@ class TestSendDirectMessageService(unittest.TestCase):
 
         Sleeper.process_the_command()
 
-    @staticmethod
-    def _internal_callback(client, userdata, msg):
-        """
-        Callback to decode Feed Delete Service
-        """
-        logger = logging.getLogger(__name__)
-        logger.info("Received message after deleting messages: " + str(msg.payload))
-        outbox_message = OutboxMessage()
-        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-        decoded_message = decode_response(outbox_message.command.message.encode())
-        delete_details = decode_details(decoded_message.response_payload.details)
-        logger.info("Details for the message removal: " + str(delete_details))
-        assert decoded_message.response_envelope.response_code == 201
+    def _internal_callback(self):
+        def _inner_function(client, userdata, msg):
+            """
+            Callback to decode Feed Delete Service
+            """
+            self._log.info("Received message after deleting messages: " + str(msg.payload))
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+            decoded_message = decode_response(outbox_message.command.message.encode())
+            delete_details = decode_details(decoded_message.response_payload.details)
+            self._log.info("Details for the message removal: " + str(delete_details))
+            assert decoded_message.response_envelope.response_code == 201
+
+        return _inner_function

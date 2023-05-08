@@ -87,7 +87,7 @@ class TestCreateMessageSenderAndRecipient:
 
         capabilities_service = CapabilitiesService(messaging_service)
         capabilities_service.send(capabilities_parameters)
-        Sleeper.let_agrirouter_process_the_message()
+        Sleeper.process_the_command()
 
     @staticmethod
     def _on_message_callback(msg):
@@ -98,5 +98,5 @@ class TestCreateMessageSenderAndRecipient:
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
         decoded_message = decode_response(outbox_message.command.message.encode())
         while not decoded_message:
-            Sleeper.let_agrirouter_process_the_message()
+            Sleeper.process_the_command()
         assert decoded_message.response_envelope.response_code == 201

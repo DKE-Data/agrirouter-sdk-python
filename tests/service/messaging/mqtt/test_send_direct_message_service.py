@@ -3,13 +3,16 @@ import unittest
 
 import pytest
 
+from agrirouter import FeedDeleteParameters
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.decode import decode_response, decode_details
 from agrirouter.messaging.enums import CapabilityType
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.services.commons import MqttMessagingService
-from agrirouter.messaging.services.messaging import SendMessageService, SendMessageParameters
+from agrirouter.messaging.services.messaging import SendMessageService, SendMessageParameters, FeedDeleteService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
+from agrirouter.onboarding.response import OnboardResponse
+from agrirouter.utils.utc_time_util import max_validity_period
 from agrirouter.utils.uuid_util import new_uuid
 from tests.data.identifier import Identifier
 from tests.data.onboard_response_integration_service import read_onboard_response
@@ -49,9 +52,9 @@ class TestSendDirectMessageService(unittest.TestCase):
         yield
 
         # Tear down
-        if self._received_messages is not None:
-            self._log.info("Deleting received messages from the feed to have a clean state: %s",
-                           self._received_messages)
+        self._log.info("Deleting received messages from the feed to have a clean state: %s",
+                       self._received_messages)
+        self.delete_all_messages_within_the_feed(onboard_response=self._recipient_onboard_response)
 
     def test_given_valid_message_content_when_sending_message_to_single_recipient_then_the_message_should_be_delivered(
             self):
@@ -75,7 +78,7 @@ class TestSendDirectMessageService(unittest.TestCase):
 
         send_message_service = SendMessageService(messaging_service=self._messaging_service_for_sender)
         send_message_service.send(send_message_parameters)
-        Sleeper.let_agrirouter_process_the_message()
+        Sleeper.process_the_message()
 
         if not self._callback_for_sender_processed:
             self._log.error("Either the callback was not processed in time or there was an error during the checks.")
@@ -110,7 +113,7 @@ class TestSendDirectMessageService(unittest.TestCase):
         outbox_message = OutboxMessage()
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
         decoded_message = decode_response(outbox_message.command.message.encode())
-        if decoded_message.response_envelope.type != 1:
+        if decoded_message.response_envelope.type != 12:
             decoded_details = decode_details(decoded_message.response_payload.details)
             TestSendDirectMessageService._log.error(
                 f"Received wrong message from the agrirouter: {str(decoded_details)}")
@@ -120,3 +123,45 @@ class TestSendDirectMessageService(unittest.TestCase):
             push_notification.messages[0].content.value) == DataProvider.get_hash(
             DataProvider.read_base64_encoded_image())
         TestSendDirectMessageService._callback_for_recipient_processed = True
+
+    @staticmethod
+    def delete_all_messages_within_the_feed(onboard_response: OnboardResponse):
+        """
+        Delete all messages within the feed.
+        """
+        logging.getLogger(__name__).info(
+            f"Delete all messages within the feed for endpoint '{TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id()}'.")
+        messaging_service = MqttMessagingService(
+            onboarding_response=onboard_response,
+            on_message_callback=TestSendDirectMessageService._internal_callback())
+
+        current_sequence_number = SequenceNumberService.next_seq_nr(
+            onboard_response.get_sensor_alternate_id())
+        delete_message_parameters = FeedDeleteParameters(
+            onboarding_response=onboard_response,
+            application_message_id=new_uuid(),
+            application_message_seq_no=current_sequence_number,
+            validity_period=max_validity_period()
+        )
+
+        feed_delete_service = FeedDeleteService(messaging_service)
+        feed_delete_service.send(delete_message_parameters)
+
+        Sleeper.process_the_command()
+
+    @staticmethod
+    def _internal_callback():
+        def _inner_function(client, userdata, msg):
+            """
+            Callback to decode Feed Delete Service
+            """
+            logger = logging.getLogger(__name__)
+            logger.info("Received message after deleting messages: " + str(msg.payload))
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+            decoded_message = decode_response(outbox_message.command.message.encode())
+            delete_details = decode_details(decoded_message.response_payload.details)
+            logger.info("Details for the message removal: " + str(delete_details))
+            assert decoded_message.response_envelope.response_code == 201
+
+        return _inner_function

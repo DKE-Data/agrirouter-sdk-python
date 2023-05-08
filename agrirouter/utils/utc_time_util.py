@@ -1,15 +1,17 @@
 from datetime import datetime, timedelta
 from google.protobuf.timestamp_pb2 import Timestamp
 
+from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
 
-def now_as_utc_timestamp():
+
+def now_as_utc_timestamp() -> datetime:
     """
     Returns current utc timestamp
     """
     return datetime.utcnow()
 
 
-def now_as_utc_str():
+def now_as_utc_str() -> str:
     """
     Returns current utc timestamp as a string
     """
@@ -17,7 +19,14 @@ def now_as_utc_str():
     return timestamp.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
 
-def timestamp_before_number_of_weeks(weeks):
+def max_validity_period() -> ValidityPeriod:
+    """
+    Returns time stamp from weeks before according to the Timestamp protobuf format
+    """
+    return ValidityPeriod(sent_from=timestamp_before_number_of_weeks(4), sent_to=now_as_timestamp())
+
+
+def timestamp_before_number_of_weeks(weeks) -> Timestamp:
     """
     Returns time stamp from weeks before according to the Timestamp protobuf format
     """
@@ -28,7 +37,7 @@ def timestamp_before_number_of_weeks(weeks):
     return sent_from
 
 
-def timestamp_before_number_of_seconds(seconds):
+def timestamp_before_number_of_seconds(seconds) -> Timestamp:
     """
     Returns time stamp from seconds before according to the Timestamp protobuf format.
     This is used to test the invalid validity period and is only used for testing purposes

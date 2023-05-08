@@ -55,7 +55,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message()
+        Sleeper.process_the_command()
 
         if not self._callback_processed:
             self._log.error("Either the callback was not processed in time or there was an error during the checks.")
@@ -84,7 +84,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message()
+        Sleeper.process_the_command()
 
         if not self._callback_processed:
             self._log.error("Either the callback was not processed in time or there was an error during the checks.")
@@ -114,7 +114,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message()
+        Sleeper.process_the_command()
 
         if not self._callback_processed:
             self._log.error("Either the callback was not processed in time or there was an error during the checks.")
@@ -139,7 +139,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message()
+        Sleeper.process_the_command()
 
         if not self._callback_processed:
             self._log.error("Either the callback was not processed in time or there was an error during the checks.")
@@ -165,7 +165,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message()
+        Sleeper.process_the_command()
 
         if not self._callback_processed:
             self._log.error("Either the callback was not processed in time or there was an error during the checks.")
@@ -191,7 +191,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message()
+        Sleeper.process_the_command()
 
         if not self._callback_processed:
             self._log.error("Either the callback was not processed in time or there was an error during the checks.")
@@ -221,7 +221,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         query_header_service = QueryHeaderService(messaging_service)
         query_header_service.send(query_header_parameters)
-        Sleeper.let_agrirouter_process_the_message()
+        Sleeper.process_the_command()
 
         if not self._callback_processed:
             self._log.error("Either the callback was not processed in time or there was an error during the checks.")
@@ -247,7 +247,7 @@ class TestQueryHeaderService(unittest.TestCase):
         delete_message_service = FeedDeleteService(messaging_service)
         delete_message_service.send(delete_message_parameters)
 
-        Sleeper.let_agrirouter_process_the_message()
+        Sleeper.process_the_command()
 
         if not self._callback_processed:
             self._log.error("Either the callback was not processed in time or there was an error during the checks.")
@@ -320,7 +320,7 @@ class TestQueryHeaderService(unittest.TestCase):
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
         decoded_message = decode_response(outbox_message.command.message.encode())
         while not decoded_message:
-            Sleeper.let_agrirouter_process_the_message()
+            Sleeper.process_the_command()
 
         if decoded_message.response_envelope.type == 12:
             push_notification = decode_details(decoded_message.response_payload.details)

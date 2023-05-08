@@ -46,7 +46,7 @@ class TestSubscriptionService(unittest.TestCase):
                                                direction=CapabilityDirectionType.SEND_RECEIVE.value))
         capabilities_service = CapabilitiesService(messaging_service)
         capabilities_service.send(capabilities_parameters)
-        Sleeper.let_agrirouter_process_the_message()
+        Sleeper.process_the_command()
 
     @staticmethod
     def _send_capabilities_callback(client, userdata, msg):
@@ -84,7 +84,7 @@ class TestSubscriptionService(unittest.TestCase):
             application_message_seq_no=current_sequence_number,
         )
         subscription_service.send(subscription_parameters)
-        Sleeper.let_agrirouter_process_the_message()
+        Sleeper.process_the_command()
 
         if not self._callback_processed:
             self._log.error("Either the callback was not processed in time or there was an error during the checks.")

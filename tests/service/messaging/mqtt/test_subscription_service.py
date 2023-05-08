@@ -24,7 +24,7 @@ class TestSubscriptionService(unittest.TestCase):
     _log = logging.getLogger(__name__)
     _callback_processed = False
 
-    @pytest.fixture(autouse=True)
+    @pytest.fixture
     def fixture(self):
         # Before each test
         TestSubscriptionService._log.info("Updating capabilities for the test case to ensure a clean state.")
@@ -44,9 +44,25 @@ class TestSubscriptionService(unittest.TestCase):
         capabilities_parameters.capability_parameters.append(
             CapabilitySpecification.Capability(technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
                                                direction=CapabilityDirectionType.SEND_RECEIVE.value))
+
+        capabilities_parameters.capability_parameters.append(
+            CapabilitySpecification.Capability(technical_message_type=CapabilityType.IMG_PNG.value,
+                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
+
+        capabilities_parameters.capability_parameters.append(
+            CapabilitySpecification.Capability(technical_message_type=CapabilityType.IMG_BMP.value,
+                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
+
+        capabilities_parameters.capability_parameters.append(
+            CapabilitySpecification.Capability(technical_message_type=CapabilityType.IMG_JPEG.value,
+                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
+
         capabilities_service = CapabilitiesService(messaging_service)
         capabilities_service.send(capabilities_parameters)
         Sleeper.process_the_command()
+
+        self.assertTrue(self._callback_processed)
+        self._callback_processed = False
 
     @staticmethod
     def _send_capabilities_callback(client, userdata, msg):
@@ -64,6 +80,7 @@ class TestSubscriptionService(unittest.TestCase):
                 decoded_message.response_envelope.response_code))
             TestSubscriptionService._log.error("Message details: " + str(decoded_details))
         assert decoded_message.response_envelope.response_code == 201
+        TestSubscriptionService._callback_processed = True
 
     def test_when_sending_subscriptions_for_pem_recipient_then_the_server_should_accept_them(self):
         """
@@ -75,7 +92,7 @@ class TestSubscriptionService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._onboard_response.get_sensor_alternate_id())
         subscription_service = SubscriptionService(messaging_service)
-        technical_msg_type = CapabilityType.ISO_11783_TASK_DATA_ZIP.value
+        technical_msg_type = CapabilityType.IMG_PNG.value
         subscription_item = Subscription.MessageTypeSubscriptionItem(technical_message_type=technical_msg_type)
         subscription_parameters = SubscriptionParameters(
             subscription_items=[subscription_item],
@@ -84,10 +101,10 @@ class TestSubscriptionService(unittest.TestCase):
             application_message_seq_no=current_sequence_number,
         )
         subscription_service.send(subscription_parameters)
-        Sleeper.process_the_command()
+        Sleeper.process_the_message()
 
         if not self._callback_processed:
-            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
+            self._log.error("Either the subscription callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
@@ -109,3 +126,7 @@ class TestSubscriptionService(unittest.TestCase):
             TestSubscriptionService._log.error("Message details: " + str(decoded_details))
         assert decoded_message.response_envelope.response_code == 201
         TestSubscriptionService._callback_processed = True
+
+
+if __name__ == '__main__':
+    unittest.main()

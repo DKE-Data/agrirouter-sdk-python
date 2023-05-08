@@ -28,10 +28,10 @@ class TestSubscriptionService(unittest.TestCase):
     def fixture(self):
         # Before each test
         TestSubscriptionService._log.info("Updating capabilities for the test case to ensure a clean state.")
-        messaging_service = MqttMessagingService(onboarding_response=TestSubscriptionService._onboard_response,
-                                                 on_message_callback=TestSubscriptionService._send_capabilities_callback)
+        messaging_service = MqttMessagingService(onboarding_response=self._onboard_response,
+                                                 on_message_callback=self._send_capabilities_callback)
         current_sequence_number = SequenceNumberService.next_seq_nr(
-            TestSubscriptionService._onboard_response.get_sensor_alternate_id())
+            self._onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
             onboarding_response=TestSubscriptionService._onboard_response,
             application_message_id=new_uuid(),
@@ -88,7 +88,7 @@ class TestSubscriptionService(unittest.TestCase):
         """
         self._log.info("Sending subscriptions via mqtt with the existing onboard response and callback as arguments.")
         messaging_service = MqttMessagingService(onboarding_response=self._onboard_response,
-                                                 on_message_callback=TestSubscriptionService._send_subscription_callback)
+                                                 on_message_callback=self._send_subscription_callback)
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._onboard_response.get_sensor_alternate_id())
         subscription_service = SubscriptionService(messaging_service)
@@ -121,8 +121,6 @@ class TestSubscriptionService(unittest.TestCase):
         decoded_message = decode_response(outbox_message.command.message.encode())
         if decoded_message.response_envelope.response_code != 201:
             decoded_details = decode_details(decoded_message.response_payload.details)
-            TestSubscriptionService._log.error("Message could not be processed. Response code: " + str(
-                decoded_message.response_envelope.response_code))
             TestSubscriptionService._log.error("Message details: " + str(decoded_details))
         assert decoded_message.response_envelope.response_code == 201
         TestSubscriptionService._callback_processed = True

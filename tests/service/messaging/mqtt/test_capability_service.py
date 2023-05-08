@@ -60,7 +60,7 @@ class TestMqttCapabilitiesService(unittest.TestCase):
         decoded_message = decode_response(outbox_message.command.message.encode())
         if decoded_message.response_envelope.response_code != 201:
             decoded_details = decode_details(decoded_message.response_payload.details)
-        TestMqttCapabilitiesService._log.error("Message details: " + str(decoded_details))
+            TestMqttCapabilitiesService._log.error("Message details: " + str(decoded_details))
         assert decoded_message.response_envelope.response_code == 201
         TestMqttCapabilitiesService._callback_processed = True
 

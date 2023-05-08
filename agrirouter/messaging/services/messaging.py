@@ -32,7 +32,6 @@ class AbstractService:
         :param parameters: Parameters for the message.
         """
         self._log.debug("Sending message to the agrirouter.")
-        self._log.debug("Parameters: %s", parameters)
         messaging_parameters = MessagingParameters(
             onboarding_response=parameters.get_onboarding_response(),
             application_message_id=parameters.get_application_message_id(),

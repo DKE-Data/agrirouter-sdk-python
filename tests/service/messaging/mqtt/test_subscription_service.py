@@ -24,16 +24,16 @@ class TestSubscriptionService(unittest.TestCase):
     _log = logging.getLogger(__name__)
     _callback_processed = False
 
-    @pytest.fixture
+    @pytest.fixture(autouse=True)
     def fixture(self):
         # Before each test
-        TestSubscriptionService._log.info("Updating capabilities for the test case to ensure a clean state.")
+        self._log.info("Updating capabilities for the test case to ensure a clean state.")
         messaging_service = MqttMessagingService(onboarding_response=self._onboard_response,
-                                                 on_message_callback=self._send_capabilities_callback)
+                                                 on_message_callback=self._send_capabilities_callback())
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
-            onboarding_response=TestSubscriptionService._onboard_response,
+            onboarding_response=self._onboard_response,
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
             application_id=CommunicationUnit.application_id,
@@ -64,23 +64,27 @@ class TestSubscriptionService(unittest.TestCase):
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
 
-    @staticmethod
-    def _send_capabilities_callback(client, userdata, msg):
-        """
-        Callback to handle the incoming messages from the MQTT broker
-        """
-        TestSubscriptionService._log.info(
-            "Received message from MQTT broker after sending the capabilities, checking the result.")
-        outbox_message = OutboxMessage()
-        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-        decoded_message = decode_response(outbox_message.command.message.encode())
-        if decoded_message.response_envelope.response_code != 201:
-            decoded_details = decode_details(decoded_message.response_payload.details)
-            TestSubscriptionService._log.error("Message could not be processed. Response code: " + str(
-                decoded_message.response_envelope.response_code))
-            TestSubscriptionService._log.error("Message details: " + str(decoded_details))
-        assert decoded_message.response_envelope.response_code == 201
-        TestSubscriptionService._callback_processed = True
+        messaging_service.client.disconnect()
+
+    def _send_capabilities_callback(self):
+        def _inner_function(client, userdata, msg):
+            """
+            Callback to handle the incoming messages from the MQTT broker
+            """
+            self._log.info(
+                "Received message from MQTT broker after sending the capabilities, checking the result.")
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+            decoded_message = decode_response(outbox_message.command.message.encode())
+            if decoded_message.response_envelope.response_code != 201:
+                decoded_details = decode_details(decoded_message.response_payload.details)
+                self._log.error("Message could not be processed. Response code: " + str(
+                    decoded_message.response_envelope.response_code))
+                self._log.error("Message details: " + str(decoded_details))
+            assert decoded_message.response_envelope.response_code == 201
+            self._callback_processed = True
+
+        return _inner_function
 
     def test_when_sending_subscriptions_for_pem_recipient_then_the_server_should_accept_them(self):
         """
@@ -88,7 +92,7 @@ class TestSubscriptionService(unittest.TestCase):
         """
         self._log.info("Sending subscriptions via mqtt with the existing onboard response and callback as arguments.")
         messaging_service = MqttMessagingService(onboarding_response=self._onboard_response,
-                                                 on_message_callback=self._send_subscription_callback)
+                                                 on_message_callback=self._send_subscription_callback())
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._onboard_response.get_sensor_alternate_id())
         subscription_service = SubscriptionService(messaging_service)
@@ -101,30 +105,29 @@ class TestSubscriptionService(unittest.TestCase):
             application_message_seq_no=current_sequence_number,
         )
         subscription_service.send(subscription_parameters)
-        Sleeper.process_the_message()
+        Sleeper.process_the_command()
 
         if not self._callback_processed:
-            self._log.error("Either the subscription callback was not processed in time or there was an error during the checks.")
+            self._log.error(
+                "Either the subscription callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
 
-    @staticmethod
-    def _send_subscription_callback(client, userdata, msg):
-        """
-        Callback to handle the incoming messages from the MQTT broker
-        """
-        TestSubscriptionService._log.info(
-            "Received message from MQTT broker after sending the subscriptions, checking the result.")
-        outbox_message = OutboxMessage()
-        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-        decoded_message = decode_response(outbox_message.command.message.encode())
-        if decoded_message.response_envelope.response_code != 201:
-            decoded_details = decode_details(decoded_message.response_payload.details)
-            TestSubscriptionService._log.error("Message details: " + str(decoded_details))
-        assert decoded_message.response_envelope.response_code == 201
-        TestSubscriptionService._callback_processed = True
+    def _send_subscription_callback(self):
+        def _inner_function(client, userdata, msg):
+            """
+            Callback to handle the incoming messages from the MQTT broker
+            """
+            self._log.info(
+                "Received message from MQTT broker after sending the subscriptions, checking the result.")
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+            decoded_message = decode_response(outbox_message.command.message.encode())
+            if decoded_message.response_envelope.response_code != 201:
+                decoded_details = decode_details(decoded_message.response_payload.details)
+                self._log.error("Message details: " + str(decoded_details))
+            assert decoded_message.response_envelope.response_code == 201
+            self._callback_processed = True
 
-
-if __name__ == '__main__':
-    unittest.main()
+        return _inner_function

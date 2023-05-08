@@ -153,7 +153,7 @@ class TestSendDirectMessageService(unittest.TestCase):
         feed_delete_service = FeedDeleteService(messaging_service)
         feed_delete_service.send(delete_message_parameters)
 
-        Sleeper.process_the_message()
+        Sleeper.process_the_command()
 
     @staticmethod
     def _internal_callback(client, userdata, msg):

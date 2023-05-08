@@ -1,6 +1,8 @@
 import logging
 import unittest
 
+import pytest
+
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.decode import decode_response, decode_details
 from agrirouter.messaging.enums import CapabilityDirectionType
@@ -18,55 +20,61 @@ from tests.sleeper import Sleeper
 
 
 class TestMqttCapabilitiesService(unittest.TestCase):
+    _onboard_response = None
+    _messaging_service = None
     _log = logging.getLogger(__name__)
     _callback_processed = False
+
+    @pytest.fixture(autouse=True)
+    def fixture(self):
+        self._onboard_response = read_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
+        self._messaging_service = MqttMessagingService(onboarding_response=self._onboard_response,
+                                                       on_message_callback=self._message_callback())
+
+        yield
+
+        self._messaging_service.client.disconnect()
 
     def test_when_sending_capabilities_for_recipient_with_direction_send_receive_then_the_server_should_accept_them(
             self):
         """
             Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'SEND_RECEIVE' direction
         """
-        _onboard_response = read_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
-        self._send_capabilities(onboard_response=_onboard_response,
-                                mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
+        self._send_capabilities(onboard_response=self._onboard_response,
                                 direction=CapabilityDirectionType.SEND_RECEIVE.value)
 
     def test_when_sending_capabilities_for_recipient_with_direction_receive_then_the_server_should_accept_them(self):
         """
             Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'RECEIVE' direction
         """
-        _onboard_response = read_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
-        self._send_capabilities(onboard_response=_onboard_response,
-                                mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
+        self._send_capabilities(onboard_response=self._onboard_response,
                                 direction=CapabilityDirectionType.RECEIVE.value)
 
     def test_when_sending_capabilities_for_recipient_with_direction_send_then_the_server_should_accept_them(self):
         """
             Load onboard response from 'Mqtt/CommunicationUnit/PEM/Recipient' and send with 'SEND' direction
         """
-        _onboard_response = read_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
-        self._send_capabilities(onboard_response=_onboard_response,
-                                mqtt_message_callback=TestMqttCapabilitiesService._on_message_callback,
+        self._send_capabilities(onboard_response=self._onboard_response,
                                 direction=CapabilityDirectionType.SEND.value)
 
-    @staticmethod
-    def _on_message_callback(client, userdata, msg):
-        """
-        Callback to handle the incoming messages from the MQTT broker
-        """
-        TestMqttCapabilitiesService._log.info("Received message after sending capabilities: " + str(msg.payload))
-        outbox_message = OutboxMessage()
-        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-        decoded_message = decode_response(outbox_message.command.message.encode())
-        if decoded_message.response_envelope.response_code != 201:
-            decoded_details = decode_details(decoded_message.response_payload.details)
-            TestMqttCapabilitiesService._log.error("Message details: " + str(decoded_details))
-        assert decoded_message.response_envelope.response_code == 201
-        TestMqttCapabilitiesService._callback_processed = True
+    def _message_callback(self):
+        def _inner_function(client, userdata, msg):
+            """
+            Callback to handle the incoming messages from the MQTT broker
+            """
+            self._log.info("Received message after sending capabilities: " + str(msg.payload))
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+            decoded_message = decode_response(outbox_message.command.message.encode())
+            if decoded_message.response_envelope.response_code != 201:
+                decoded_details = decode_details(decoded_message.response_payload.details)
+                self._log.error("Message details: " + str(decoded_details))
+            assert decoded_message.response_envelope.response_code == 201
+            self._callback_processed = True
 
-    def _send_capabilities(self, onboard_response, mqtt_message_callback, direction):
-        messaging_service = MqttMessagingService(onboarding_response=onboard_response,
-                                                 on_message_callback=mqtt_message_callback)
+        return _inner_function
+
+    def _send_capabilities(self, onboard_response, direction):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
@@ -81,7 +89,7 @@ class TestMqttCapabilitiesService(unittest.TestCase):
         capabilities_parameters.capability_parameters.append(
             CapabilitySpecification.Capability(technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
                                                direction=direction))
-        capabilities_service = CapabilitiesService(messaging_service)
+        capabilities_service = CapabilitiesService(self._messaging_service)
         capabilities_service.send(capabilities_parameters)
         Sleeper.process_the_command()
 

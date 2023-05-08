@@ -81,7 +81,10 @@ class TestSendDirectMessageService(unittest.TestCase):
         Sleeper.process_the_message()
 
         if not self._callback_for_sender_processed:
-            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
+            self._log.error("Either the callback for the sender was not processed in time or there was an error during the checks.")
+
+        if not self._callback_for_recipient_processed:
+            self._log.error("Either the callback for the recipient was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_for_sender_processed)
         self.assertTrue(self._callback_for_recipient_processed)

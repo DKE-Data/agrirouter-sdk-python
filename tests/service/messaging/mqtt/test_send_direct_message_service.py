@@ -125,6 +125,7 @@ class TestSendDirectMessageService(unittest.TestCase):
         assert DataProvider.get_hash(
             push_notification.messages[0].content.value) == DataProvider.get_hash(
             DataProvider.read_base64_encoded_image())
+
         TestSendDirectMessageService._callback_for_recipient_processed = True
 
     @staticmethod
@@ -136,35 +137,34 @@ class TestSendDirectMessageService(unittest.TestCase):
             f"Delete all messages within the feed for endpoint '{TestSendDirectMessageService._recipient_onboard_response.get_sensor_alternate_id()}'.")
         messaging_service = MqttMessagingService(
             onboarding_response=onboard_response,
-            on_message_callback=TestSendDirectMessageService._internal_callback())
+            on_message_callback=TestSendDirectMessageService._internal_callback)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             onboard_response.get_sensor_alternate_id())
+
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=onboard_response,
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
-            validity_period=max_validity_period()
+            validity_period=max_validity_period(),
+            senders=[TestSendDirectMessageService._sender_onboard_response.get_sensor_alternate_id()]
         )
 
         feed_delete_service = FeedDeleteService(messaging_service)
-        feed_delete_service.send(delete_message_parameters) # Looks like the message is not send to the endpoint
+        feed_delete_service.send(delete_message_parameters)
 
-        Sleeper.process_the_command()
+        Sleeper.process_the_message()
 
     @staticmethod
-    def _internal_callback():
-        def _inner_function(client, userdata, msg):
-            """
-            Callback to decode Feed Delete Service
-            """
-            logger = logging.getLogger(__name__)
-            logger.info("Received message after deleting messages: " + str(msg.payload))
-            outbox_message = OutboxMessage()
-            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
-            delete_details = decode_details(decoded_message.response_payload.details)
-            logger.info("Details for the message removal: " + str(delete_details))
-            assert decoded_message.response_envelope.response_code == 201
-
-        return _inner_function
+    def _internal_callback(client, userdata, msg):
+        """
+        Callback to decode Feed Delete Service
+        """
+        logger = logging.getLogger(__name__)
+        logger.info("Received message after deleting messages: " + str(msg.payload))
+        outbox_message = OutboxMessage()
+        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+        decoded_message = decode_response(outbox_message.command.message.encode())
+        delete_details = decode_details(decoded_message.response_payload.details)
+        logger.info("Details for the message removal: " + str(delete_details))
+        assert decoded_message.response_envelope.response_code == 201

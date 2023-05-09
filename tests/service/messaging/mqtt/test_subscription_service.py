@@ -20,13 +20,23 @@ from tests.sleeper import Sleeper
 
 
 class TestSubscriptionService(unittest.TestCase):
-    _onboard_response = read_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
+    _messaging_service = None
+    _onboard_response = None
     _log = logging.getLogger(__name__)
     _callback_processed = False
 
     @pytest.fixture(autouse=True)
     def fixture(self):
         # Before each test
+        self._onboard_response = read_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
+        self._send_capabilities()
+        self._messaging_service = MqttMessagingService(onboarding_response=self._onboard_response,
+                                                       on_message_callback=self._send_subscription_callback())
+
+    def _send_capabilities(self):
+        """
+            Send capabilities to the AR with the given messaging service.
+        """
         self._log.info("Updating capabilities for the test case to ensure a clean state.")
         messaging_service = MqttMessagingService(onboarding_response=self._onboard_response,
                                                  on_message_callback=self._send_capabilities_callback())
@@ -44,26 +54,20 @@ class TestSubscriptionService(unittest.TestCase):
         capabilities_parameters.capability_parameters.append(
             CapabilitySpecification.Capability(technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
                                                direction=CapabilityDirectionType.SEND_RECEIVE.value))
-
         capabilities_parameters.capability_parameters.append(
             CapabilitySpecification.Capability(technical_message_type=CapabilityType.IMG_PNG.value,
                                                direction=CapabilityDirectionType.SEND_RECEIVE.value))
-
         capabilities_parameters.capability_parameters.append(
             CapabilitySpecification.Capability(technical_message_type=CapabilityType.IMG_BMP.value,
                                                direction=CapabilityDirectionType.SEND_RECEIVE.value))
-
         capabilities_parameters.capability_parameters.append(
             CapabilitySpecification.Capability(technical_message_type=CapabilityType.IMG_JPEG.value,
                                                direction=CapabilityDirectionType.SEND_RECEIVE.value))
-
         capabilities_service = CapabilitiesService(messaging_service)
         capabilities_service.send(capabilities_parameters)
         Sleeper.process_the_command()
-
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
-
         messaging_service.client.disconnect()
 
     def _send_capabilities_callback(self):
@@ -91,11 +95,9 @@ class TestSubscriptionService(unittest.TestCase):
         Sending subscriptions via mqtt with the existing onboard response and callback as arguments
         """
         self._log.info("Sending subscriptions via mqtt with the existing onboard response and callback as arguments.")
-        messaging_service = MqttMessagingService(onboarding_response=self._onboard_response,
-                                                 on_message_callback=self._send_subscription_callback())
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._onboard_response.get_sensor_alternate_id())
-        subscription_service = SubscriptionService(messaging_service)
+        subscription_service = SubscriptionService(self._messaging_service)
         technical_msg_type = CapabilityType.IMG_PNG.value
         subscription_item = Subscription.MessageTypeSubscriptionItem(technical_message_type=technical_msg_type)
         subscription_parameters = SubscriptionParameters(

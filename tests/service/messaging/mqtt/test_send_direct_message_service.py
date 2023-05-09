@@ -145,7 +145,7 @@ class TestSendDirectMessageService(unittest.TestCase):
             f"Delete all messages within the feed for endpoint '{self._recipient_onboard_response.get_sensor_alternate_id()}'.")
         messaging_service = MqttMessagingService(
             onboarding_response=onboard_response,
-            on_message_callback=self._internal_callback())
+            on_message_callback=self._callback_for_feed_delete())
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             onboard_response.get_sensor_alternate_id())
@@ -162,7 +162,7 @@ class TestSendDirectMessageService(unittest.TestCase):
 
         Sleeper.process_the_command()
 
-    def _internal_callback(self):
+    def _callback_for_feed_delete(self):
         def _inner_function(client, userdata, msg):
             """
             Callback to decode Feed Delete Service

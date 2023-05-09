@@ -4,7 +4,7 @@ import base64
 
 
 class DataProvider:
-    _CONTENT_DIR = r'data/content'
+    _CONTENT_DIR = r'../data/content'
 
     @staticmethod
     def read_base64_encoded_image():

@@ -16,7 +16,7 @@ from agrirouter.messaging.services.sequence_number_service import SequenceNumber
 from tests.data.identifier import Identifier
 from agrirouter.messaging.enums import CapabilityType, CapabilityDirectionType
 from tests.data.onboard_response_integration_service import read_onboard_response
-from tests.sleeper import Sleeper
+from tests.common.sleeper import Sleeper
 
 
 class TestSubscriptionService(unittest.TestCase):

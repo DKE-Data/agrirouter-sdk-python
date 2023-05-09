@@ -2,7 +2,7 @@
 
 from agrirouter import AuthUrlParameter
 from agrirouter.auth.auth import Authorization
-from tests.constants import (
+from tests.common.constants import (
     PUBLIC_KEY,
     PRIVATE_KEY,
     AUTH_RESULT_URL,

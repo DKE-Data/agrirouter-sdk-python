@@ -16,8 +16,8 @@ from agrirouter.utils.utc_time_util import max_validity_period
 from agrirouter.utils.uuid_util import new_uuid
 from tests.data.identifier import Identifier
 from tests.data.onboard_response_integration_service import read_onboard_response
-from tests.data_provider import DataProvider
-from tests.sleeper import Sleeper
+from tests.common.data_provider import DataProvider
+from tests.common.sleeper import Sleeper
 
 
 class TestSendDirectMessageService(unittest.TestCase):

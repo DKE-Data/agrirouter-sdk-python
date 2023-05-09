@@ -15,7 +15,7 @@ from tests.common.onboarding import onboard_communication_unit
 from tests.data.applications import CommunicationUnit
 from tests.data.identifier import Identifier
 from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
-from tests.sleeper import Sleeper
+from tests.common.sleeper import Sleeper
 
 
 class TestCreateMessageSenderAndRecipient:

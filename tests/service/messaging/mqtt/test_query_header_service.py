@@ -16,7 +16,7 @@ from agrirouter.utils.utc_time_util import now_as_timestamp, timestamp_before_nu
 from agrirouter.utils.uuid_util import new_uuid
 from tests.data.identifier import Identifier
 from tests.data.onboard_response_integration_service import read_onboard_response
-from tests.sleeper import Sleeper
+from tests.common.sleeper import Sleeper
 
 
 class TestQueryHeaderService(unittest.TestCase):

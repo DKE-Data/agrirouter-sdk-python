@@ -55,9 +55,10 @@ class TestQueryHeaderService(unittest.TestCase):
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
             application_message_id=new_uuid(),
-            application_message_seq_no=current_sequence_number)
+            application_message_seq_no=current_sequence_number,
+            validity_period=max_validity_period()
+        )
 
-        delete_message_parameters.set_validity_period(max_validity_period())
         delete_message_service = FeedDeleteService(self._messaging_service)
         delete_message_service.send(delete_message_parameters)
 

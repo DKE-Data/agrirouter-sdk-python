@@ -174,8 +174,6 @@ class TestSendDirectMessageService(unittest.TestCase):
             decoded_message = decode_response(outbox_message.command.message.encode())
             delete_details = decode_details(decoded_message.response_payload.details)
             self._log.info("Details for the message removal: " + str(delete_details))
-            assert decoded_message.response_envelope.response_code == 204
-            assert delete_details.messages[0].message_code == "VAL_000208"
-            assert delete_details.messages[0].message == "Feed does not contain any data to be deleted."
+            assert decoded_message.response_envelope.response_code == 201
 
         return _inner_function

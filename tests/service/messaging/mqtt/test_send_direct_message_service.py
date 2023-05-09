@@ -154,7 +154,6 @@ class TestSendDirectMessageService(unittest.TestCase):
             onboarding_response=onboard_response,
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
-            validity_period=max_validity_period(),
             senders=[self._sender_onboard_response.get_sensor_alternate_id()]
         )
 

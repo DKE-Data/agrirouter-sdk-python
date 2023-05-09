@@ -12,11 +12,10 @@ from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.services.commons import MqttMessagingService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.utils.utc_time_util import now_as_timestamp, timestamp_before_number_of_weeks, \
-    timestamp_before_number_of_seconds
+    timestamp_before_number_of_seconds, max_validity_period
 from agrirouter.utils.uuid_util import new_uuid
 from tests.data.identifier import Identifier
 from tests.data.onboard_response_integration_service import read_onboard_response
-from tests.data_provider import DataProvider
 from tests.sleeper import Sleeper
 
 
@@ -24,11 +23,68 @@ class TestQueryHeaderService(unittest.TestCase):
     """
     The setup (enabling capabilities and routing) between sender and recipient has been done prior to running this test
     """
-    _recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
-    _sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
-    _message_ids_to_clean_up = None
-    _log = logging.getLogger(__name__)
+    _recipient_onboard_response = None
+    _sender_onboard_response = None
+    _messaging_service = None
     _callback_processed = False
+    _log = logging.getLogger(__name__)
+
+    @pytest.fixture(autouse=True)
+    def fixture(self):
+        self._recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
+        self._sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
+
+        yield
+
+        if self._messaging_service is not None:
+            self._messaging_service.client.disconnect()
+        self._delete_messages_after_test_run()
+
+    def _delete_messages_after_test_run(self):
+        """
+        Delete the messages after the test run.
+        """
+        self._log.info("Deleting all existing messages after the test run.")
+
+        self._messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
+                                                       on_message_callback=self._delete_messages_callback())
+
+        current_sequence_number = SequenceNumberService.next_seq_nr(
+            self._recipient_onboard_response.get_sensor_alternate_id())
+
+        delete_message_parameters = FeedDeleteParameters(
+            onboarding_response=self._recipient_onboard_response,
+            application_message_id=new_uuid(),
+            application_message_seq_no=current_sequence_number)
+
+        delete_message_parameters.set_validity_period(max_validity_period())
+        delete_message_service = FeedDeleteService(self._messaging_service)
+        delete_message_service.send(delete_message_parameters)
+
+        Sleeper.process_the_command()
+
+        if not self._callback_processed:
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
+
+        self.assertTrue(self._callback_processed)
+        self._callback_processed = False
+
+        self._messaging_service.client.disconnect()
+
+    def _delete_messages_callback(self):
+        def _inner_function(client, userdata, msg):
+            """
+            Callback to check if the messages were deleted.
+            """
+            self._log.info("Callback for checking if the messages were deleted.")
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+            decoded_message = decode_response(outbox_message.command.message.encode())
+            details = decode_details(decoded_message.response_payload.details)
+            self._log.info("Delete details: %s", details)
+            self._callback_processed = True
+
+        return _inner_function
 
     @pytest.mark.skip("No valid fixture for this test")
     def test_header_query_service_when_validity_period_is_specified_should_return_messages_within_the_validity_period(
@@ -49,11 +105,10 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         validity_period=validity_period,
                                                         )
 
-        messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
-                                                 on_message_callback=self._on_query_header_service_callback(
-                                                     None))
+        self._messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
+                                                       on_message_callback=self._on_query_header_service_callback(None))
 
-        query_header_service = QueryHeaderService(messaging_service)
+        query_header_service = QueryHeaderService(self._messaging_service)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -71,9 +126,9 @@ class TestQueryHeaderService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
-        messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
-                                                 on_message_callback=self._on_query_header_service_callback(
-                                                     None))
+        self._messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
+                                                       on_message_callback=self._on_query_header_service_callback(
+                                                           None))
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
@@ -82,7 +137,7 @@ class TestQueryHeaderService(unittest.TestCase):
                                                             self._sender_onboard_response.get_sensor_alternate_id()],
                                                         )
 
-        query_header_service = QueryHeaderService(messaging_service)
+        query_header_service = QueryHeaderService(self._messaging_service)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -102,9 +157,9 @@ class TestQueryHeaderService(unittest.TestCase):
             self._recipient_onboard_response.get_sensor_alternate_id())
 
         message_for_message_ids = ['33270996-13f6-4127-a9a9-0a6e09b7810b', 'c81b46bb-deeb-4257-bb01-5dc4bb789d24']
-        messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
-                                                 on_message_callback=self._on_query_header_service_callback(
-                                                     message_for_message_ids))
+        self._messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
+                                                       on_message_callback=self._on_query_header_service_callback(
+                                                           message_for_message_ids))
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
@@ -112,7 +167,7 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         message_ids=message_for_message_ids,
                                                         )
 
-        query_header_service = QueryHeaderService(messaging_service)
+        query_header_service = QueryHeaderService(self._messaging_service)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -129,15 +184,15 @@ class TestQueryHeaderService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
-        messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
-                                                 on_message_callback=self._incomplete_attributes_callback)
+        self._messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
+                                                       on_message_callback=self._incomplete_attributes_callback())
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=self._recipient_onboard_response,
                                                         )
 
-        query_header_service = QueryHeaderService(messaging_service)
+        query_header_service = QueryHeaderService(self._messaging_service)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -147,6 +202,26 @@ class TestQueryHeaderService(unittest.TestCase):
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
 
+    def _incomplete_attributes_callback(self):
+        def _inner_function(client, userdata, msg):
+            """
+            Callback to decode query header service response when the attributes are incomplete
+            """
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+            decoded_message = decode_response(outbox_message.command.message.encode())
+            details = decode_details(decoded_message.response_payload.details)
+
+            assert decoded_message.response_envelope.response_code == 400
+            assert decoded_message.response_envelope.type == 3
+            assert details.messages[0].message_code == "VAL_000017"
+            assert details.messages[
+                       0].message == "Query does not contain any filtering criteria: messageIds, senders or " \
+                                     "validityPeriod. Information required to process message is missing or malformed."
+            self._callback_processed = True
+
+        return _inner_function
+
     def test_header_query_service_for_incorrect_message_ids_should_return_empty_message(self):
         """
         Testing query header service when incorrect message ids are specified
@@ -154,8 +229,8 @@ class TestQueryHeaderService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
-        messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
-                                                 on_message_callback=self._incorrect_ids_callback)
+        self._messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
+                                                       on_message_callback=self._empty_result_in_response_callback())
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
@@ -163,7 +238,7 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         message_ids=[new_uuid()],
                                                         )
 
-        query_header_service = QueryHeaderService(messaging_service)
+        query_header_service = QueryHeaderService(self._messaging_service)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -180,8 +255,8 @@ class TestQueryHeaderService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
-        messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
-                                                 on_message_callback=self._incorrect_ids_callback)
+        self._messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
+                                                       on_message_callback=self._empty_result_in_response_callback())
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
@@ -189,7 +264,7 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         senders=[new_uuid()],
                                                         )
 
-        query_header_service = QueryHeaderService(messaging_service)
+        query_header_service = QueryHeaderService(self._messaging_service)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -206,8 +281,8 @@ class TestQueryHeaderService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
-        messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
-                                                 on_message_callback=self._incorrect_ids_callback)
+        self._messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
+                                                       on_message_callback=self._empty_result_in_response_callback())
 
         sent_from = timestamp_before_number_of_seconds(5)
         sent_to = now_as_timestamp()
@@ -219,7 +294,7 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         validity_period=validity_period,
                                                         )
 
-        query_header_service = QueryHeaderService(messaging_service)
+        query_header_service = QueryHeaderService(self._messaging_service)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -229,36 +304,24 @@ class TestQueryHeaderService(unittest.TestCase):
         self.assertTrue(self._callback_processed)
         self._callback_processed = False
 
-    def _feed_delete_service(self, details, onboard_response, messaging_service):
-        """
-        Feed Delete Service function to delete messages of specific ids
-        """
-        self._message_ids_to_clean_up = [header.message_id for header in
-                                         list(details.feed[0].headers)]
-
-        current_sequence_number = SequenceNumberService.next_seq_nr(
-            self._recipient_onboard_response.get_sensor_alternate_id())
-        delete_message_parameters = FeedDeleteParameters(
-            onboarding_response=onboard_response,
-            application_message_id=new_uuid(),
-            application_message_seq_no=current_sequence_number)
-
-        delete_message_parameters.set_message_ids(self._message_ids_to_clean_up)
-        delete_message_service = FeedDeleteService(messaging_service)
-        delete_message_service.send(delete_message_parameters)
-
-        Sleeper.process_the_command()
-
-        if not self._callback_processed:
-            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
-
-        self.assertTrue(self._callback_processed)
-        self._callback_processed = False
-
-    @staticmethod
-    def _on_query_header_service_callback(message_ids: Optional[list]):
+    def _empty_result_in_response_callback(self):
         def _inner_function(client, userdata, msg):
+            """
+            Callback to decode query header service response when incorrect ids are passed as arguments
+            """
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+            decoded_message = decode_response(outbox_message.command.message.encode())
+            assert decoded_message.response_envelope.response_code == 204
+            self._callback_processed = True
 
+        return _inner_function
+
+    def _on_query_header_service_callback(self, message_ids: Optional[list]):
+        def _inner_function(client, userdata, msg):
+            """
+            Callback function for query header service
+            """
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = decode_response(outbox_message.command.message.encode())
@@ -275,77 +338,6 @@ class TestQueryHeaderService(unittest.TestCase):
 
                 assert details.feed[0].headers[0].technical_message_type == CapabilityType.IMG_PNG.value
 
-                if details.query_metrics.total_messages_in_query > 0:
-                    messaging_service = MqttMessagingService(
-                        onboarding_response=TestQueryHeaderService._recipient_onboard_response,
-                        on_message_callback=TestQueryHeaderService._on_feed_delete_service_callback)
-                    TestQueryHeaderService._feed_delete_service(details=details,
-                                                                onboard_response=TestQueryHeaderService._recipient_onboard_response,
-                                                                messaging_service=messaging_service)
-
-            TestQueryHeaderService._callback_processed = True
+            self._callback_processed = True
 
         return _inner_function
-
-    @staticmethod
-    def _on_feed_delete_service_callback(client, userdata, msg):
-        """
-        Callback to decode Feed Delete Service
-        """
-        outbox_message = OutboxMessage()
-        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-        decoded_message = decode_response(outbox_message.command.message.encode())
-        delete_details = decode_details(decoded_message.response_payload.details)
-        deleted_message_ids = [idx.args['messageId'] for idx in delete_details.messages]
-        assert sorted(TestQueryHeaderService._message_ids_to_clean_up) == sorted(deleted_message_ids)
-        TestQueryHeaderService._callback_processed = True
-
-    @staticmethod
-    def _incorrect_ids_callback(client, userdata, msg):
-        """
-        Callback to decode query header service response when incorrect ids are passed as arguments
-        """
-        outbox_message = OutboxMessage()
-        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-        decoded_message = decode_response(outbox_message.command.message.encode())
-        assert decoded_message.response_envelope.response_code == 204
-        TestQueryHeaderService._callback_processed = True
-
-    @staticmethod
-    def _on_message_capabilities_callback(client, userdata, msg):
-        """
-        Callback to handle the sender and recipient capabilities
-        """
-        outbox_message = OutboxMessage()
-        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-        decoded_message = decode_response(outbox_message.command.message.encode())
-        while not decoded_message:
-            Sleeper.process_the_command()
-
-        if decoded_message.response_envelope.type == 12:
-            push_notification = decode_details(decoded_message.response_payload.details)
-            assert decoded_message.response_envelope.response_code == 200
-            assert DataProvider.get_hash(
-                push_notification.messages[0].content.value) == DataProvider.get_hash(
-                DataProvider.read_base64_encoded_image())
-
-        assert decoded_message.response_envelope.response_code == 201
-        TestQueryHeaderService._callback_processed = True
-
-    @staticmethod
-    def _incomplete_attributes_callback(client, userdata, msg):
-        """
-        Callback to decode query header service response when the attributes are incomplete
-        """
-        outbox_message = OutboxMessage()
-        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-        decoded_message = decode_response(outbox_message.command.message.encode())
-        details = decode_details(decoded_message.response_payload.details)
-
-        assert decoded_message.response_envelope.response_code == 400
-        assert decoded_message.response_envelope.type == 3
-        assert details.messages[0].message_code == "VAL_000017"
-        assert details.messages[
-                   0].message == "Query does not contain any filtering criteria: messageIds, senders or " \
-                                 "validityPeriod. Information required to process message is missing or malformed."
-        TestQueryHeaderService._callback_processed = True

@@ -37,7 +37,7 @@ def timestamp_before_number_of_weeks(weeks) -> Timestamp:
     """
     Returns time stamp from weeks before according to the Timestamp protobuf format
     """
-    utc_timestamp_weeks_ago = datetime.utcnow() - timedelta(weeks=weeks)
+    utc_timestamp_weeks_ago = datetime.now() - timedelta(weeks=weeks)
     sent_from = Timestamp()
     sent_from.seconds = int(utc_timestamp_weeks_ago.timestamp())
     sent_from.nanos = utc_timestamp_weeks_ago.microsecond * 1000
@@ -49,7 +49,7 @@ def timestamp_before_number_of_seconds(seconds) -> Timestamp:
     Returns time stamp from seconds before according to the Timestamp protobuf format.
     This is used to test the invalid validity period and is only used for testing purposes
     """
-    utc_timestamp_seconds_ago = datetime.utcnow() - timedelta(seconds=seconds)
+    utc_timestamp_seconds_ago = datetime.now() - timedelta(seconds=seconds)
     sent_from = Timestamp()
     sent_from.seconds = int(utc_timestamp_seconds_ago.timestamp())
     sent_from.nanos = utc_timestamp_seconds_ago.microsecond * 1000
@@ -61,6 +61,6 @@ def now_as_timestamp():
     Returns current time stamp in google protobuf format
     """
     sent_to = Timestamp()
-    sent_to.seconds = int(datetime.utcnow().timestamp())
-    sent_to.nanos = datetime.utcnow().microsecond * 1000
+    sent_to.seconds = int(datetime.now().timestamp())
+    sent_to.nanos = datetime.now().microsecond * 1000
     return sent_to

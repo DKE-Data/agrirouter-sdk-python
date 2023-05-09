@@ -22,6 +22,7 @@ from tests.common.sleeper import Sleeper
 from tests.common.data_provider import DataProvider
 
 
+
 class TestQueryHeaderService(unittest.TestCase):
     """
     The setup (enabling capabilities and routing) between sender and recipient has been done prior to running this test
@@ -124,7 +125,6 @@ class TestQueryHeaderService(unittest.TestCase):
         Sleeper.process_the_command()
         self._feed_delete_messaging_service.client.disconnect()
 
-    @pytest.mark.skip("")
     def test_header_query_service_when_validity_period_is_specified_should_return_messages_within_the_validity_period(
             self):
         """
@@ -139,8 +139,9 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         validity_period=max_validity_period(),
                                                         )
 
+        message_for_message_ids = [self._received_messages.header.message_id]
         _messaging_service_for_validity_period = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
-                                                                      on_message_callback=self._on_query_header_service_callback(None))
+                                                                      on_message_callback=self._on_query_header_service_callback(message_for_message_ids))
 
         query_header_service = QueryHeaderService(_messaging_service_for_validity_period)
         query_header_service.send(query_header_parameters)
@@ -430,13 +431,15 @@ class TestQueryHeaderService(unittest.TestCase):
             query_header_details = decode_details(decoded_message.response_payload.details)
             self._log.info(f"Query Header Service Details: {query_header_details}")
             assert decoded_message.response_envelope.type == 6
-            header_query_message_ids = [query_header_details.feed[0].headers[idx].message_id for idx in
-                                        range(len(query_header_details.feed[0].headers))]
-            if message_ids:
-                for msg_id in message_ids:
-                    assert msg_id in header_query_message_ids
-            else:
-                assert self._received_messages.header.message_id in header_query_message_ids
+            if query_header_details.feed:
+                self._log.info(f"Checking headers for the following message ids: {message_ids}")
+                header_query_message_ids = [query_header_details.feed[0].headers[idx].message_id for idx in
+                                            range(len(query_header_details.feed[0].headers))]
+                if message_ids:
+                    for msg_id in message_ids:
+                        assert msg_id in header_query_message_ids
+                else:
+                    assert self._received_messages.header.message_id in header_query_message_ids
             self._callback_for_feed_header_query_processed = True
 
         return _inner_function

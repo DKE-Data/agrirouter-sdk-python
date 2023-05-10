@@ -45,14 +45,6 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         self._recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
         self._sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
 
-        self._messaging_service_for_sender = MqttMessagingService(
-            onboarding_response=self._sender_onboard_response,
-            on_message_callback=self._callback_for_sender())
-
-        self._messaging_service_for_recipient = MqttMessagingService(
-            onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._callback_for_recipient())
-
         # Run the test
         yield
 
@@ -98,6 +90,15 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         this test
         """
         self._log.info("Testing send message service with the specified recipient")
+
+        self._messaging_service_for_sender = MqttMessagingService(
+            onboarding_response=self._sender_onboard_response,
+            on_message_callback=self._callback_for_sender())
+
+        self._messaging_service_for_recipient = MqttMessagingService(
+            onboarding_response=self._recipient_onboard_response,
+            on_message_callback=self._callback_for_recipient())
+
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 

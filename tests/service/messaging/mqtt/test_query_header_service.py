@@ -140,10 +140,10 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         validity_period=max_validity_period(),
                                                         )
 
-        message_for_message_ids = [self._received_messages.header.message_id]
+        received_message_ids = [self._received_messages.header.message_id]
         _messaging_service_for_validity_period = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._on_query_header_service_callback(message_for_message_ids))
+            on_message_callback=self._on_query_header_service_callback(received_message_ids))
 
         query_header_service = QueryHeaderService(_messaging_service_for_validity_period)
         query_header_service.send(query_header_parameters)
@@ -164,7 +164,7 @@ class TestQueryHeaderService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
-        _messaging_service_for_feed_header_query_service_with_specified_sender_id = MqttMessagingService(
+        _messaging_service_for_specified_sender_id = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._on_query_header_service_callback(None))
 
@@ -176,7 +176,7 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         )
 
         query_header_service = QueryHeaderService(
-            _messaging_service_for_feed_header_query_service_with_specified_sender_id)
+            _messaging_service_for_specified_sender_id)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -185,7 +185,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         self.assertTrue(self._callback_for_feed_header_query_processed)
         self._callback_for_feed_header_query_processed = False
-        _messaging_service_for_feed_header_query_service_with_specified_sender_id.client.disconnect()
+        _messaging_service_for_specified_sender_id.client.disconnect()
 
     def test_header_query_service_for_specific_message_ids_should_return_the_messages_for_this_specific_message_ids(
             self):
@@ -196,19 +196,19 @@ class TestQueryHeaderService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
-        message_for_message_ids = [self._received_messages.header.message_id]
-        _messaging_service_for_feed_header_query_service_with_specific_message_id = MqttMessagingService(
+        received_message_ids = [self._received_messages.header.message_id]
+        _messaging_service_for_with_specific_message_id = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._on_query_header_service_callback(message_for_message_ids))
+            on_message_callback=self._on_query_header_service_callback(received_message_ids))
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=self._recipient_onboard_response,
-                                                        message_ids=message_for_message_ids,
+                                                        message_ids=received_message_ids,
                                                         )
 
         query_header_service = QueryHeaderService(
-            _messaging_service_for_feed_header_query_service_with_specific_message_id)
+            _messaging_service_for_with_specific_message_id)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -217,7 +217,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         self.assertTrue(self._callback_for_feed_header_query_processed)
         self._callback_for_feed_header_query_processed = False
-        _messaging_service_for_feed_header_query_service_with_specific_message_id.client.disconnect()
+        _messaging_service_for_with_specific_message_id.client.disconnect()
 
     def test_header_query_service_for_incomplete_attributes_should_return_in_an_error(self):
         """
@@ -227,15 +227,15 @@ class TestQueryHeaderService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
-        _messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
-                                                  on_message_callback=self._incomplete_attributes_callback())
+        _messaging_service_for_incomplete_attributes = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
+                                                                            on_message_callback=self._incomplete_attributes_callback())
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=self._recipient_onboard_response,
                                                         )
 
-        query_header_service = QueryHeaderService(_messaging_service)
+        query_header_service = QueryHeaderService(_messaging_service_for_incomplete_attributes)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -244,7 +244,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         self.assertTrue(self._callback_for_feed_header_query_processed)
         self._callback_for_feed_header_query_processed = False
-        _messaging_service.client.disconnect()
+        _messaging_service_for_incomplete_attributes.client.disconnect()
 
     def test_header_query_service_for_incorrect_message_ids_should_return_empty_message(self):
         """
@@ -254,8 +254,8 @@ class TestQueryHeaderService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
-        _messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
-                                                  on_message_callback=self._empty_result_in_response_callback())
+        _messaging_service_for_incorrect_message_ids = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
+                                                                            on_message_callback=self._empty_result_in_response_callback())
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
@@ -263,7 +263,7 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         message_ids=[new_uuid()],
                                                         )
 
-        query_header_service = QueryHeaderService(_messaging_service)
+        query_header_service = QueryHeaderService(_messaging_service_for_incorrect_message_ids)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -272,7 +272,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         self.assertTrue(self._callback_for_feed_header_query_processed)
         self._callback_for_feed_header_query_processed = False
-        _messaging_service.client.disconnect()
+        _messaging_service_for_incorrect_message_ids.client.disconnect()
 
     def test_header_query_service_for_incorrect_sender_id_should_return_empty_message(self):
         """
@@ -282,8 +282,8 @@ class TestQueryHeaderService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
-        _messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
-                                                  on_message_callback=self._empty_result_in_response_callback())
+        _messaging_service_for_incorrect_sender_id = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
+                                                                          on_message_callback=self._empty_result_in_response_callback())
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
@@ -291,7 +291,7 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         senders=[new_uuid()],
                                                         )
 
-        query_header_service = QueryHeaderService(_messaging_service)
+        query_header_service = QueryHeaderService(_messaging_service_for_incorrect_sender_id)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command(60)
 
@@ -300,7 +300,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         self.assertTrue(self._callback_for_feed_header_query_processed)
         self._callback_for_feed_header_query_processed = False
-        _messaging_service.client.disconnect()
+        _messaging_service_for_incorrect_sender_id.client.disconnect()
 
     def test_header_query_service_for_incorrect_validity_period_should_return_empty_message(self):
         """
@@ -310,8 +310,8 @@ class TestQueryHeaderService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
-        _messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
-                                                  on_message_callback=self._empty_result_in_response_callback())
+        _messaging_service_for_incorrect_validity_period = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
+                                                                                on_message_callback=self._empty_result_in_response_callback())
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
@@ -319,7 +319,7 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         validity_period=validity_period_for_seconds(5),
                                                         )
 
-        query_header_service = QueryHeaderService(_messaging_service)
+        query_header_service = QueryHeaderService(_messaging_service_for_incorrect_validity_period)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -328,7 +328,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         self.assertTrue(self._callback_for_feed_header_query_processed)
         self._callback_for_feed_header_query_processed = False
-        _messaging_service.client.disconnect()
+        _messaging_service_for_incorrect_validity_period.client.disconnect()
 
     def _callback_for_feed_delete(self):
         def _inner_function(client, userdata, msg):

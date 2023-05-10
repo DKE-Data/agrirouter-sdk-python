@@ -98,7 +98,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._callback_for_recipient())
+            on_message_callback=self._callback_to_set_the_received_message_ids())
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
@@ -181,7 +181,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
 
         return _inner_function
 
-    def _callback_for_recipient(self):
+    def _callback_to_set_the_received_message_ids(self):
         def _inner_function(client, userdata, msg):
             """
             Callback to handle the incoming messages from the MQTT broker

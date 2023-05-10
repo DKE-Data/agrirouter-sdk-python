@@ -132,7 +132,7 @@ def chunk_and_base64encode_each_chunk(header_parameters: MessageHeaderParameters
 
     for chunk in message_chunks:
         chunk_message_id = new_uuid()
-        sequence_number_for_chunk = SequenceNumberService.generate_sequence_number_for_endpoint(
+        sequence_number_for_chunk = SequenceNumberService.next_seq_nr(
             onboarding_response.get_sensor_alternate_id())
 
         header_parameters_copy = MessageHeaderParameters()

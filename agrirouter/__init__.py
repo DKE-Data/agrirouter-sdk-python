@@ -13,5 +13,5 @@ from agrirouter.messaging.parameters.service import MessageHeaderParameters, Mes
     SubscriptionParameters
 from agrirouter.messaging.services.cloud import CloudOnboardService, CloudOffboardService
 from agrirouter.messaging.services.messaging import SubscriptionService, CapabilitiesService, FeedConfirmService,\
-    FeedDeleteService, QueryHeaderService, QueryMessagesService, ListEndpointsService
+    FeedDeleteService, QueryHeaderService, QueryMessagesService, ListEndpointsService, SendChunkedMessageService
 

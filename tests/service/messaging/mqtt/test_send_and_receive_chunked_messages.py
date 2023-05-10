@@ -1,52 +1,110 @@
 import pytest
+import logging
+import unittest
+
 from agrirouter.messaging.decode import decode_response, decode_details
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.services.commons import MqttMessagingService
-from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
-from agrirouter.utils.uuid_util import new_uuid
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from tests.data.identifier import Identifier
-from tests.sleeper import Sleeper
-from agrirouter.messaging.enums import CapabilityType, CapabilityDirectionType, TechnicalMessageType
-from agrirouter.messaging.services.messaging import CapabilitiesService, SendChunkedMessageService
-from agrirouter.messaging.parameters.dto import ChunkedMessageParameters
-from agrirouter.messaging.parameters.service import CapabilitiesParameters
-from tests.data.applications import CommunicationUnit
-from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from tests.data_provider import DataProvider
+from agrirouter import FeedDeleteService, FeedDeleteParameters, MessageHeaderParameters, MessagePayloadParameters, \
+    SendChunkedMessageService
+from agrirouter.onboarding.response import OnboardResponse
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters
 from agrirouter.messaging.encode import chunk_and_base64encode_each_chunk, encode_chunks_message
+from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
+from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.messaging.enums import CapabilityType, TechnicalMessageType
+from agrirouter.messaging.parameters.dto import ChunkedMessageParameters
+
+from tests.data.onboard_response_integration_service import read_onboard_response
+from tests.data.identifier import Identifier
+from tests.common.sleeper import Sleeper
+from tests.common.data_provider import DataProvider
 
 
-class TestSendAndReceiveChunkedMessages:
-    _recipient_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
-    _sender_onboard_response = OnboardResponseIntegrationService.read(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
+class TestSendAndReceiveChunkedMessages(unittest.TestCase):
+
+    _recipient_onboard_response = None
+    _sender_onboard_response = None
+
+    _messaging_service_for_sender = None
+    _messaging_service_for_recipient = None
+
+    _callback_for_sender_processed = False
+    _callback_for_recipient_processed = False
+
+    _received_messages = None
+
     _chunked_message_to_verify = []
     _MAX_CHUNK_SIZE = 1024000
 
-    @staticmethod
-    def test_send_direct_chunked_message():
+    _log = logging.getLogger(__name__)
+
+    @pytest.fixture(autouse=True)
+    def fixture(self):
+        # Setup
+        self._recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
+        self._sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
+
+        self._messaging_service_for_sender = MqttMessagingService(
+            onboarding_response=self._sender_onboard_response,
+            on_message_callback=self._callback_for_sender())
+
+        self._messaging_service_for_recipient = MqttMessagingService(
+            onboarding_response=self._recipient_onboard_response,
+            on_message_callback=self._callback_for_recipient())
+
+        # Run the test
+        yield
+
+        # Tear down
+        if self._messaging_service_for_sender is not None:
+            self._messaging_service_for_sender.client.disconnect()
+        if self._messaging_service_for_recipient is not None:
+            self._messaging_service_for_recipient.client.disconnect()
+
+        self._log.info("Deleting received messages from the feed to have a clean state: %s",
+                       self._received_messages)
+        self._delete_messages_after_test_run(onboard_response=self._recipient_onboard_response)
+
+    def _delete_messages_after_test_run(self, onboard_response: OnboardResponse):
+        """
+        Delete the messages after the test run.
+        """
+        self._log.info("Deleting all existing messages after the test run.")
+
+        self._feed_delete_messaging_service = MqttMessagingService(onboarding_response=onboard_response,
+                                                                   on_message_callback=self._callback_for_feed_delete())
+
+        current_sequence_number = SequenceNumberService.next_seq_nr(
+            onboard_response.get_sensor_alternate_id())
+
+        delete_message_parameters = FeedDeleteParameters(
+            onboarding_response=onboard_response,
+            application_message_id=new_uuid(),
+            application_message_seq_no=current_sequence_number,
+            senders=[self._sender_onboard_response.get_sensor_alternate_id()]
+        )
+
+        delete_message_service = FeedDeleteService(self._feed_delete_messaging_service)
+        delete_message_service.send(delete_message_parameters)
+
+        Sleeper.process_the_command()
+        self._feed_delete_messaging_service.client.disconnect()
+
+    def test_send_direct_chunked_message_with_valid_recipient_should_return_the_valid_chunked_message_content(self):
         """
         Test sending direct chunked messages with the push notifications enabled.
         The setup between recipient and sender, like, enabling capabilities and routing has been done prior to running
         this test
         """
-
-        TestSendAndReceiveChunkedMessages._enable_capabilities_via_mqtt(onboard_response=TestSendAndReceiveChunkedMessages._recipient_onboard_response,
-                                                                        callback=TestSendAndReceiveChunkedMessages._on_message_capabilities_callback)
-
-
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
-            TestSendAndReceiveChunkedMessages._recipient_onboard_response.get_sensor_alternate_id())
-
-        messaging_service = MqttMessagingService(onboarding_response=TestSendAndReceiveChunkedMessages._sender_onboard_response,
-                                                 on_message_callback=TestSendAndReceiveChunkedMessages._on_message_capabilities_callback)
+        self._log.info("Testing send message service with the specified recipient")
+        current_sequence_number = SequenceNumberService.next_seq_nr(
+            self._recipient_onboard_response.get_sensor_alternate_id())
 
         message_header_parameters = MessageHeaderParameters(application_message_id=new_uuid(),
                                                             application_message_seq_no=current_sequence_number,
                                                             technical_message_type=CapabilityType.IMG_BMP.value,
-                                                            recipients=[TestSendAndReceiveChunkedMessages._recipient_onboard_response.get_sensor_alternate_id()],
+                                                            recipients=[self._recipient_onboard_response.get_sensor_alternate_id()],
                                                             mode=RequestEnvelope.Mode.Value("DIRECT"))
 
         message_payload_parameters = MessagePayloadParameters(type_url=TechnicalMessageType.EMPTY.value,
@@ -54,83 +112,92 @@ class TestSendAndReceiveChunkedMessages:
 
         message_parameter_tuples = chunk_and_base64encode_each_chunk(header_parameters=message_header_parameters,
                                                                      payload_parameters=message_payload_parameters,
-                                                                     onboarding_response=TestSendAndReceiveChunkedMessages._sender_onboard_response)
+                                                                     onboarding_response=self._sender_onboard_response)
 
         for _tuple in message_parameter_tuples:
-            TestSendAndReceiveChunkedMessages._chunked_message_to_verify.append(_tuple.message_payload_parameters.get_value())
-            assert len(_tuple.message_payload_parameters.get_value()) <= TestSendAndReceiveChunkedMessages._MAX_CHUNK_SIZE
+            self._chunked_message_to_verify.append(_tuple.message_payload_parameters.get_value())
+            assert len(_tuple.message_payload_parameters.get_value()) <= self._MAX_CHUNK_SIZE
 
         encoded_chunked_messages = encode_chunks_message(message_parameter_tuple=message_parameter_tuples)
 
         chunk_message_parameters = ChunkedMessageParameters(
-            onboarding_response=TestSendAndReceiveChunkedMessages._sender_onboard_response,
+            onboarding_response=self._sender_onboard_response,
             technical_message_type=CapabilityType.IMG_BMP.value,
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
-            recipients=[TestSendAndReceiveChunkedMessages._recipient_onboard_response.get_sensor_alternate_id()],
+            recipients=[self._recipient_onboard_response.get_sensor_alternate_id()],
             encoded_chunked_messages=encoded_chunked_messages)
 
-        send_chunked_message_service = SendChunkedMessageService(messaging_service=messaging_service)
+        send_chunked_message_service = SendChunkedMessageService(messaging_service=self._messaging_service_for_sender)
         send_chunked_message_service.send(chunk_message_parameters)
-        Sleeper.let_agrirouter_process_the_message(seconds=10)
+        Sleeper.process_the_command()
 
+        if not self._callback_for_sender_processed:
+            self._log.error(
+                "Either the callback for the sender was not processed in time or there was an error during the checks.")
 
-    @staticmethod
-    def _enable_capabilities_via_mqtt(onboard_response, callback):
-        """
-        Method to enable capabilities via mqtt
-        """
-        messaging_service = MqttMessagingService(
-            onboarding_response=onboard_response,
-            on_message_callback=callback)
-        current_sequence_number = SequenceNumberService.generate_sequence_number_for_endpoint(
-            onboard_response.get_sensor_alternate_id())
-        capabilities_parameters = CapabilitiesParameters(
-            onboarding_response=onboard_response,
-            application_message_id=new_uuid(),
-            application_message_seq_no=current_sequence_number,
-            application_id=CommunicationUnit.application_id,
-            certification_version_id=CommunicationUnit.certification_version_id,
-            enable_push_notification=CapabilitySpecification.PushNotification.ENABLED,
-            capability_parameters=[]
-        )
+        if not self._callback_for_recipient_processed:
+            self._log.error(
+                "Either the callback for the recipient was not processed in time or there was an error during the checks.")
 
-        capabilities_parameters.capability_parameters.append(
-            CapabilitySpecification.Capability(technical_message_type=CapabilityType.IMG_BMP.value,
-                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
+        self.assertTrue(self._callback_for_sender_processed)
+        self.assertTrue(self._callback_for_recipient_processed)
+        self._callback_for_sender_processed = False
+        self._callback_for_recipient_processed = False
 
-        capabilities_parameters.capability_parameters.append(
-            CapabilitySpecification.Capability(technical_message_type=CapabilityType.IMG_PNG.value,
-                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
+    def _callback_for_sender(self):
+        def _inner_function(client, userdata, msg):
+            """
+            Callback to handle the incoming messages from the MQTT broker
+            """
+            self._log.info("Received message for sender from the agrirouter: %s",
+                           msg.payload.decode())
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+            decoded_message = decode_response(outbox_message.command.message.encode())
+            if decoded_message.response_envelope.type != 1:
+                decoded_details = decode_details(decoded_message.response_payload.details)
+                self._log.error(
+                    f"Received wrong message from the agrirouter: {str(decoded_details)}")
+            assert decoded_message.response_envelope.response_code == 201
+            self._callback_for_sender_processed = True
 
-        capabilities_parameters.capability_parameters.append(
-            CapabilitySpecification.Capability(technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
-                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
+        return _inner_function
 
-        capabilities_parameters.capability_parameters.append(
-            CapabilitySpecification.Capability(technical_message_type=CapabilityType.IMG_JPEG.value,
-                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
-
-        capabilities_service = CapabilitiesService(messaging_service)
-        capabilities_service.send(capabilities_parameters)
-
-        Sleeper.let_agrirouter_process_the_message(seconds=5)
-
-
-    @staticmethod
-    def _on_message_capabilities_callback(client, userdata, msg):
-        """
-        Callback to handle the sender and recipient capabilities
-        """
-        outbox_message = OutboxMessage()
-        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-        decoded_message = decode_response(outbox_message.command.message.encode())
-        while not decoded_message:
-            Sleeper.let_agrirouter_process_the_message()
-        assert decoded_message.response_envelope.response_code == 200 or 201
-        if decoded_message.response_envelope.type == 12:
+    def _callback_for_recipient(self):
+        def _inner_function(client, userdata, msg):
+            """
+            Callback to handle the incoming messages from the MQTT broker
+            """
+            self._log.info("Received message for recipient from the agrirouter: %s",
+                           msg.payload.decode())
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+            decoded_message = decode_response(outbox_message.command.message.encode())
+            if decoded_message.response_envelope.type != 12:
+                decoded_details = decode_details(decoded_message.response_payload.details)
+                self._log.error(
+                    f"Received wrong message from the agrirouter: {str(decoded_details)}")
             push_notification = decode_details(decoded_message.response_payload.details)
             current_chunked_message = push_notification.messages[0].content.value
             assert decoded_message.response_envelope.response_code == 200
-            assert DataProvider.get_hash(current_chunked_message) == DataProvider.get_hash(TestSendAndReceiveChunkedMessages._chunked_message_to_verify[0])
-            TestSendAndReceiveChunkedMessages._chunked_message_to_verify.pop(0)
+            assert DataProvider.get_hash(current_chunked_message) == DataProvider.get_hash(self._chunked_message_to_verify[0])
+            self._chunked_message_to_verify.pop(0)
+            self._callback_for_recipient_processed = True
+
+        return _inner_function
+
+    def _callback_for_feed_delete(self):
+        def _inner_function(client, userdata, msg):
+            """
+            Callback to decode Feed Delete Service
+            """
+            self._log.info("Received message after deleting messages: " + str(msg.payload))
+            outbox_message = OutboxMessage()
+            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+            decoded_message = decode_response(outbox_message.command.message.encode())
+            delete_details = decode_details(decoded_message.response_payload.details)
+            self._log.info("Details for the message removal: " + str(delete_details))
+            assert decoded_message.response_envelope.response_code == 201
+
+        return _inner_function

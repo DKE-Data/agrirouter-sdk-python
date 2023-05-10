@@ -48,19 +48,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         self._recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
         self._sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
 
-        self._messaging_service_for_sender = MqttMessagingService(
-            onboarding_response=self._sender_onboard_response,
-            on_message_callback=self._callback_for_sender())
-
-        self._messaging_service_for_recipient = MqttMessagingService(
-            onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._callback_for_recipient())
-
         self._send_direct_chunked_message()
-        if self._messaging_service_for_sender is not None:
-            self._messaging_service_for_sender.client.disconnect()
-        if self._messaging_service_for_recipient is not None:
-            self._messaging_service_for_recipient.client.disconnect()
 
         # Run the test
         yield
@@ -107,6 +95,15 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         this test
         """
         self._log.info("Testing send message service with the specified recipient")
+
+        self._messaging_service_for_sender = MqttMessagingService(
+            onboarding_response=self._sender_onboard_response,
+            on_message_callback=self._callback_for_sender())
+
+        self._messaging_service_for_recipient = MqttMessagingService(
+            onboarding_response=self._recipient_onboard_response,
+            on_message_callback=self._callback_for_recipient())
+
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
@@ -152,6 +149,9 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         self.assertTrue(self._callback_for_sender_processed)
         self.assertTrue(self._callback_for_recipient_processed)
 
+        self._messaging_service_for_sender.client.disconnect()
+        self._messaging_service_for_recipient.client.disconnect()
+
 
     def test_receive_chunked_messages_from_feed_of_an_endpoint_when_sender_id_is_specified_should_return_the_header_for_this_sender_id(
             self):
@@ -162,7 +162,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
-        _messaging_service_for_specified_sender_id = MqttMessagingService(
+        self._messaging_service_for_specified_sender_id = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._on_query_header_service_callback(self._received_messages))
 
@@ -174,7 +174,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
                                                         )
 
         query_header_service = QueryHeaderService(
-            _messaging_service_for_specified_sender_id)
+            self._messaging_service_for_specified_sender_id)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -183,8 +183,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
 
         self.assertTrue(self._callback_for_feed_header_query_processed)
         self._callback_for_feed_header_query_processed = False
-        _messaging_service_for_specified_sender_id.client.disconnect()
-
+        self._messaging_service_for_specified_sender_id.client.disconnect()
 
     def _callback_for_sender(self):
         def _inner_function(client, userdata, msg):
@@ -260,9 +259,9 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
                 self._log.info(f"Checking headers for the following message ids: {message_ids}")
                 header_query_message_ids = [query_header_details.feed[0].headers[idx].message_id for idx in
                                             range(len(query_header_details.feed[0].headers))]
+                self._log.info(f"Existing Message Ids in the feed: {header_query_message_ids}")
                 if message_ids:
-                    for msg_id in message_ids:
-                        assert msg_id in header_query_message_ids
+                    assert all(msg_id in header_query_message_ids for msg_id in message_ids)
                 else:
                     assert self._received_messages[0].header.message_id in header_query_message_ids
             self._callback_for_feed_header_query_processed = True

@@ -46,7 +46,7 @@ class TestQueryHeaderService(unittest.TestCase):
         if self._messaging_service_for_sender:
             self._messaging_service_for_sender.client.disconnect()
         if self._messaging_service_for_recipient:
-            self._messaging_service_for_sender.client.disconnect()
+            self._messaging_service_for_recipient.client.disconnect()
 
         # Run the test
         yield
@@ -54,7 +54,7 @@ class TestQueryHeaderService(unittest.TestCase):
         if self._messaging_service_for_sender:
             self._messaging_service_for_sender.client.disconnect()
         if self._messaging_service_for_recipient:
-            self._messaging_service_for_sender.client.disconnect()
+            self._messaging_service_for_recipient.client.disconnect()
 
         # Tear down
         self._log.info("Deleting received messages from the feed to have a clean state: %s",
@@ -75,7 +75,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._non_checking_callback())
+            on_message_callback=self._callback_to_set_the_received_message_ids())
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._sender_onboard_response.get_sensor_alternate_id())
@@ -122,6 +122,7 @@ class TestQueryHeaderService(unittest.TestCase):
                 self._log.error(
                     f"Received wrong message from the agrirouter: {str(decoded_details)}")
             push_notification = decode_details(decoded_message.response_payload.details)
+            self._received_messages = push_notification.messages[0].header.message_id
             assert decoded_message.response_envelope.response_code == 200
             self._received_messages = push_notification.messages[0]
 

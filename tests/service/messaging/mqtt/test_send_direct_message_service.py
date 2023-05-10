@@ -12,7 +12,6 @@ from agrirouter.messaging.services.commons import MqttMessagingService
 from agrirouter.messaging.services.messaging import SendMessageService, SendMessageParameters, FeedDeleteService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.onboarding.response import OnboardResponse
-from agrirouter.utils.utc_time_util import max_validity_period
 from agrirouter.utils.uuid_util import new_uuid
 from tests.data.identifier import Identifier
 from tests.data.onboard_response_integration_service import read_onboard_response

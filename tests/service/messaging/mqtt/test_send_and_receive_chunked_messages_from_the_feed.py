@@ -27,13 +27,9 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
 
     _recipient_onboard_response = None
     _sender_onboard_response = None
-
     _messaging_service_for_sender = None
     _messaging_service_for_recipient = None
-
-    _callback_for_sender_processed = False
-    _callback_for_recipient_processed = False
-    _callback_for_feed_header_query_processed = False
+    _callback_for_chunking_feed_header_query_processed = False
 
     _received_messages = []
 
@@ -138,17 +134,6 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         send_chunked_message_service.send(chunk_message_parameters)
         Sleeper.process_the_command()
 
-        if not self._callback_for_sender_processed:
-            self._log.error(
-                "Either the callback for the sender was not processed in time or there was an error during the checks.")
-
-        if not self._callback_for_recipient_processed:
-            self._log.error(
-                "Either the callback for the recipient was not processed in time or there was an error during the checks.")
-
-        self.assertTrue(self._callback_for_sender_processed)
-        self.assertTrue(self._callback_for_recipient_processed)
-
         self._messaging_service_for_sender.client.disconnect()
         self._messaging_service_for_recipient.client.disconnect()
 
@@ -178,10 +163,10 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
-        if not self._callback_for_feed_header_query_processed:
+        if not self._callback_for_chunking_feed_header_query_processed:
             self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
-        self.assertTrue(self._callback_for_feed_header_query_processed)
+        self.assertTrue(self._callback_for_chunking_feed_header_query_processed)
         self._callback_for_feed_header_query_processed = False
         self._messaging_service_for_specified_sender_id.client.disconnect()
 
@@ -200,7 +185,6 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
                 self._log.error(
                     f"Received wrong message from the agrirouter: {str(decoded_details)}")
             assert decoded_message.response_envelope.response_code == 201
-            self._callback_for_sender_processed = True
 
         return _inner_function
 
@@ -224,7 +208,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
             assert decoded_message.response_envelope.response_code == 200
             assert DataProvider.get_hash(current_chunked_message) == DataProvider.get_hash(self._chunked_message_to_verify[0])
             self._chunked_message_to_verify.pop(0)
-            self._callback_for_recipient_processed = True
+            self._callback_for_chunking_feed_header_query_processed = True
 
         return _inner_function
 

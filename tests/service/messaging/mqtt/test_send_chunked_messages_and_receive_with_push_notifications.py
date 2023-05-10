@@ -25,14 +25,10 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
 
     _recipient_onboard_response = None
     _sender_onboard_response = None
-
     _messaging_service_for_sender = None
     _messaging_service_for_recipient = None
-
-    _callback_for_sender_processed = False
-    _callback_for_recipient_processed = False
-
     _received_messages = None
+    _callback_for_chunking_message_processed = False
 
     _chunked_message_to_verify = []
     _MAX_CHUNK_SIZE = 1024000
@@ -133,18 +129,12 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         send_chunked_message_service.send(chunk_message_parameters)
         Sleeper.process_the_command()
 
-        if not self._callback_for_sender_processed:
-            self._log.error(
-                "Either the callback for the sender was not processed in time or there was an error during the checks.")
+        if not self._callback_for_chunking_message_processed:
+            self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
-        if not self._callback_for_recipient_processed:
-            self._log.error(
-                "Either the callback for the recipient was not processed in time or there was an error during the checks.")
+        self.assertTrue(self._callback_for_chunking_message_processed)
+        self._callback_for_chunking_message_processed = False
 
-        self.assertTrue(self._callback_for_sender_processed)
-        self.assertTrue(self._callback_for_recipient_processed)
-        self._callback_for_sender_processed = False
-        self._callback_for_recipient_processed = False
 
     def _non_checking_callback(self):
         def _inner_function(client, userdata, msg):
@@ -154,7 +144,6 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
             self._log.info(
                 "Received message for the non checking callback, skipping message and continue to the tests afterwards: " + str(
                     msg.payload))
-            self._callback_for_sender_processed = True
 
         return _inner_function
 
@@ -177,8 +166,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
             assert decoded_message.response_envelope.response_code == 200
             assert DataProvider.get_hash(current_chunked_message) == DataProvider.get_hash(self._chunked_message_to_verify[0])
             self._chunked_message_to_verify.pop(0)
-            self._callback_for_recipient_processed = True
-
+            self._callback_for_chunking_message_processed = True
         return _inner_function
 
     def _callback_for_feed_delete(self):

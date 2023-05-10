@@ -26,8 +26,8 @@ class TestQueryHeaderService(unittest.TestCase):
     """
     The setup (enabling capabilities and routing) between sender and recipient has been done prior to running this test
     """
-    _recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
-    _sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
+    _recipient_onboard_response = None
+    _sender_onboard_response = None
 
     _messaging_service_for_sender = None
     _messaging_service_for_recipient = None
@@ -43,6 +43,9 @@ class TestQueryHeaderService(unittest.TestCase):
     @pytest.fixture(autouse=True)
     def fixture(self):
         # Setup
+        self._recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
+        self._sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
+
         self._messaging_service_for_sender = MqttMessagingService(
             onboarding_response=self._sender_onboard_response,
             on_message_callback=self._callback_for_sender())

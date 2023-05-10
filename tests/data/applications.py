@@ -1,3 +1,4 @@
 class CommunicationUnit:
-    application_id = "9718f31b-c24c-42a4-a0be-0f08d19af1b0"
-    certification_version_id = "18dca1a5-8e8c-4d9b-8b8b-310d74c7e4cd"
+    """ Identifier for a communication unit, used for the test cases. """
+    application_id = "434989e2-b4be-4cfd-8e40-f5b89d83458d"
+    certification_version_id = "82037ed1-7cac-4aa5-b71e-d7f022628ea6"

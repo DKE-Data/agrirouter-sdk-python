@@ -5,7 +5,7 @@ import pytest
 from cryptography.exceptions import InvalidSignature
 
 from agrirouter.onboarding.signature import create_signature, verify_signature
-from tests.constants import PRIVATE_KEY, PUBLIC_KEY
+from tests.common.constants import PRIVATE_KEY, PUBLIC_KEY
 
 
 def test_create_signature_ok():

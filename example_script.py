@@ -70,7 +70,7 @@ onboarding_response_mqtt_data = {
 
 
 import agrirouter as ar
-from agrirouter.onboarding.enums import GateWays
+from agrirouter.onboarding.enums import Gateways
 from agrirouter.messaging.enums import CapabilityType
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
@@ -323,7 +323,7 @@ def on_message_callback(client, userdata, msg):
 
 
 if __name__ == "__main__":
-    onboarding_response_mqtt = example_onboarding(GateWays.MQTT.value)
+    onboarding_response_mqtt = example_onboarding(Gateways.MQTT.value)
     example_set_capabilities(onboarding_response_mqtt.json_serialize(), on_message_callback)
     example_list_endpoints_mqtt(onboarding_response_mqtt.json_serialize(), on_message_callback)
 

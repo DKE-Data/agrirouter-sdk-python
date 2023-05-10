@@ -2,7 +2,7 @@
 
 from agrirouter.environments.environments import ProductionEnvironment as PE
 from agrirouter.environments.environments import QAEnvironment as QAE
-from tests.constants import APPLICATION_ID
+from tests.common.constants import APPLICATION_ID
 
 
 class TestPE:

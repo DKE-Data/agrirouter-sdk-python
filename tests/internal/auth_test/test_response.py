@@ -5,7 +5,7 @@ import re
 import pytest
 
 from agrirouter.auth.response import AuthResponse
-from tests.constants import VALID_RESPONSE_SIGNATURE, VALID_RESPONSE_TOKEN, AR_PUBLIC_KEY
+from tests.common.constants import VALID_RESPONSE_SIGNATURE, VALID_RESPONSE_TOKEN, AR_PUBLIC_KEY
 
 
 def test_decode_token():

@@ -26,11 +26,18 @@ def max_validity_period() -> ValidityPeriod:
     return ValidityPeriod(sent_from=timestamp_before_number_of_weeks(4), sent_to=now_as_timestamp())
 
 
-def incorrect_validity_period() -> ValidityPeriod:
+def validity_period_for_seconds(seconds) -> ValidityPeriod:
     """
-    Returns time stamp from weeks before according to the Timestamp protobuf format
+    Returns validity period from seconds before according to the ValidityPeriod protobuf format
     """
-    return ValidityPeriod(sent_from=timestamp_before_number_of_seconds(5), sent_to=now_as_timestamp())
+    return ValidityPeriod(sent_from=timestamp_before_number_of_seconds(seconds), sent_to=now_as_timestamp())
+
+
+def validity_period_for_weeks(weeks) -> ValidityPeriod:
+    """
+    Returns validity period from seconds before according to the ValidityPeriod protobuf format
+    """
+    return ValidityPeriod(sent_from=timestamp_before_number_of_weeks(weeks), sent_to=now_as_timestamp())
 
 
 def timestamp_before_number_of_weeks(weeks) -> Timestamp:

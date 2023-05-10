@@ -13,14 +13,13 @@ from agrirouter.messaging.services.commons import MqttMessagingService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.onboarding.response import OnboardResponse
 from agrirouter.utils.uuid_util import new_uuid
-from agrirouter.utils.utc_time_util import max_validity_period, incorrect_validity_period
+from agrirouter.utils.utc_time_util import max_validity_period, validity_period_for_seconds
 from agrirouter.messaging.services.messaging import SendMessageService, SendMessageParameters
 
 from tests.data.identifier import Identifier
 from tests.data.onboard_response_integration_service import read_onboard_response
 from tests.common.sleeper import Sleeper
 from tests.common.data_provider import DataProvider
-
 
 
 class TestQueryHeaderService(unittest.TestCase):
@@ -98,7 +97,6 @@ class TestQueryHeaderService(unittest.TestCase):
         self.assertTrue(self._callback_for_sender_processed)
         self.assertTrue(self._callback_for_recipient_processed)
 
-
     def _delete_messages_after_test_run(self, onboard_response: OnboardResponse):
         """
         Delete the messages after the test run.
@@ -140,8 +138,9 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         )
 
         message_for_message_ids = [self._received_messages.header.message_id]
-        _messaging_service_for_validity_period = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
-                                                                      on_message_callback=self._on_query_header_service_callback(message_for_message_ids))
+        _messaging_service_for_validity_period = MqttMessagingService(
+            onboarding_response=self._recipient_onboard_response,
+            on_message_callback=self._on_query_header_service_callback(message_for_message_ids))
 
         query_header_service = QueryHeaderService(_messaging_service_for_validity_period)
         query_header_service.send(query_header_parameters)
@@ -173,7 +172,8 @@ class TestQueryHeaderService(unittest.TestCase):
                                                             self._sender_onboard_response.get_sensor_alternate_id()],
                                                         )
 
-        query_header_service = QueryHeaderService(_messaging_service_for_feed_header_query_service_with_specified_sender_id)
+        query_header_service = QueryHeaderService(
+            _messaging_service_for_feed_header_query_service_with_specified_sender_id)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -204,7 +204,8 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         message_ids=message_for_message_ids,
                                                         )
 
-        query_header_service = QueryHeaderService(_messaging_service_for_feed_header_query_service_with_specific_message_id)
+        query_header_service = QueryHeaderService(
+            _messaging_service_for_feed_header_query_service_with_specific_message_id)
         query_header_service.send(query_header_parameters)
         Sleeper.process_the_command()
 
@@ -312,7 +313,7 @@ class TestQueryHeaderService(unittest.TestCase):
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=self._recipient_onboard_response,
-                                                        validity_period=incorrect_validity_period(),
+                                                        validity_period=validity_period_for_seconds(5),
                                                         )
 
         query_header_service = QueryHeaderService(_messaging_service)

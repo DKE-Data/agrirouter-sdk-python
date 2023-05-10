@@ -12,9 +12,7 @@ from agrirouter.messaging.services.sequence_number_service import SequenceNumber
 from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
 from typing import List
 from agrirouter.messaging.messages import MessageParameterTuple
-
-
-MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT = 767997//2
+from agrirouter.utils.raw_message_content_length_for_chunking import MaxChunkingContentLength
 
 
 def write_proto_parts_to_buffer(parts: list, buffer: bytes = b""):
@@ -97,10 +95,10 @@ def split_into_chunks(whole_message: str):
     """
     chunks = []
     remaining_bytes = whole_message
-    while len(remaining_bytes) > MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:
-        chunk = remaining_bytes[:MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT]
+    while len(remaining_bytes) > MaxChunkingContentLength.MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:
+        chunk = remaining_bytes[:MaxChunkingContentLength.MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT]
         chunks.append(chunk)
-        remaining_bytes = remaining_bytes[MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:]
+        remaining_bytes = remaining_bytes[MaxChunkingContentLength.MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:]
     if len(remaining_bytes) > 0:
         chunks.append(remaining_bytes)
     return chunks
@@ -126,7 +124,7 @@ def chunk_and_base64encode_each_chunk(header_parameters: MessageHeaderParameters
     if payload_parameters is None or header_parameters is None:
         raise ValueError('The parameters cannot be NULL')
 
-    if len(whole_message) <= MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:
+    if len(whole_message) <= MaxChunkingContentLength.MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:
         return [MessageParameterTuple(message_header_parameters=header_parameters,
                                       message_payload_parameters=payload_parameters)]
 

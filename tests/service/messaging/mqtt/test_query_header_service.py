@@ -180,7 +180,7 @@ class TestQueryHeaderService(unittest.TestCase):
             self._log.error("Either the callback was not processed in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_for_feed_header_query_processed)
-        self._callback_processed = False
+        self._callback_for_feed_header_query_processed = False
 
     def test_header_query_service_when_senders_is_specified_should_return_the_header_for_this_sender_id(self):
         """

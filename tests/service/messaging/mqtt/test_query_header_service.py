@@ -38,6 +38,7 @@ class TestQueryHeaderService(unittest.TestCase):
     @pytest.fixture(autouse=True)
     def fixture(self):
         # Setup
+        self._log.debug("Setup for the test case.")
         self._recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
         self._sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
 
@@ -51,12 +52,13 @@ class TestQueryHeaderService(unittest.TestCase):
         # Run the test
         yield
 
+        # Tear down
+        self._log.debug("Tear down.")
         if self._messaging_service_for_sender:
             self._messaging_service_for_sender.client.disconnect()
         if self._messaging_service_for_recipient:
             self._messaging_service_for_recipient.client.disconnect()
 
-        # Tear down
         self._log.info("Deleting received messages from the feed to have a clean state: %s",
                        self._received_messages)
         self._delete_messages_after_test_run(onboard_response=self._recipient_onboard_response)
@@ -124,6 +126,8 @@ class TestQueryHeaderService(unittest.TestCase):
             push_notification = decode_details(decoded_message.response_payload.details)
             self._received_messages = push_notification.messages[0].header.message_id
             assert decoded_message.response_envelope.response_code == 200
+            assert push_notification.messages[0] is not None
+
             self._received_messages = push_notification.messages[0]
 
         return _inner_function

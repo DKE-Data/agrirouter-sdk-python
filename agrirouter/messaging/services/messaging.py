@@ -1,3 +1,5 @@
+import logging
+
 from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
@@ -19,6 +21,7 @@ class AbstractService:
     """
     Abstract service class for all services.
     """
+    _log = logging.getLogger(__name__)
 
     def __init__(self, messaging_service):
         self.messaging_service = messaging_service
@@ -28,6 +31,7 @@ class AbstractService:
         Send a message to the agrirouter.
         :param parameters: Parameters for the message.
         """
+        self._log.debug("Sending message to the agrirouter.")
         messaging_parameters = MessagingParameters(
             onboarding_response=parameters.get_onboarding_response(),
             application_message_id=parameters.get_application_message_id(),
@@ -210,9 +214,16 @@ class QueryMessagesService(AbstractService):
 
 
 class QueryHeaderService(AbstractService):
+    """
+    Service to receive the headers of the messages
+    """
 
     @staticmethod
     def encode(parameters: QueryHeaderParameters) -> EncodedMessage:
+        """
+        Encode the parameters into a message
+        parameters: QueryHeaderParameters for the service
+        """
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),

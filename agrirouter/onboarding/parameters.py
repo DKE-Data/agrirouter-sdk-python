@@ -5,16 +5,16 @@ from agrirouter.utils.utc_time_util import now_as_utc_str
 class OnboardParameters:
     def __init__(self,
                  *,
-                 id_,
-                 application_id,
-                 certification_version_id,
-                 gateway_id,
-                 time_zone,
-                 reg_code,
-                 utc_timestamp=None,
-                 content_type=ContentTypes.APPLICATION_JSON.value,
-                 certificate_type=CertificateTypes.PEM.value,
-                 ):
+                 id_: object,
+                 application_id: object,
+                 certification_version_id: object,
+                 gateway_id: object,
+                 time_zone: object,
+                 reg_code: object,
+                 utc_timestamp: object = None,
+                 content_type: object = ContentTypes.APPLICATION_JSON.value,
+                 certificate_type: object = CertificateTypes.PEM.value,
+                 ) -> object:
 
         self.id_ = id_
         self.application_id = application_id

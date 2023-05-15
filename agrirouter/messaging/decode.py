@@ -1,4 +1,5 @@
 import base64
+import logging
 
 from google.protobuf.any_pb2 import Any
 from google.protobuf.internal.decoder import _DecodeVarint
@@ -12,7 +13,6 @@ from agrirouter.generated.messaging.response.payload.feed.push_notification_pb2 
 from agrirouter.messaging.exceptions import DecodeMessageException
 from agrirouter.messaging.messages import DecodedMessage
 from agrirouter.utils.type_url import TypeUrl
-
 
 def read_properties_buffers_from_input_stream(input_stream) -> tuple:
     """
@@ -49,6 +49,9 @@ def decode_details(details: Any):
     """
     Decode the details of a response.
     """
+    _log = logging.getLogger(__name__)
+    _log.debug(f"Decoding details of type {details.type_url}.")
+
     if details.type_url == TypeUrl.get_type_url(Messages):
         messages = Messages()
         messages.MergeFromString(details.value)
@@ -70,4 +73,5 @@ def decode_details(details: Any):
         push_notification.MergeFromString(details.value)
         return push_notification
     else:
+
         raise DecodeMessageException(f"Could not handle type {details.type_url} while decoding details.")

@@ -1,8 +1,8 @@
 """Test agrirouter/onboarding/request.py"""
 
 from agrirouter import OnboardParameters, SecuredOnboardingService
-from agrirouter.onboarding.enums import GateWays, CertificateTypes
-from tests.constants import APPLICATION_ID, PUBLIC_KEY, PRIVATE_KEY, ENV
+from agrirouter.onboarding.enums import Gateways, CertificateTypes
+from tests.common.constants import APPLICATION_ID, PUBLIC_KEY, PRIVATE_KEY, ENV
 
 
 class TestBaseOnboardingRequest:
@@ -17,7 +17,7 @@ class TestBaseOnboardingRequest:
         application_id=APPLICATION_ID,
         content_type=content_type,
         certification_version_id=certification_version_id,
-        gateway_id=GateWays.MQTT.value,
+        gateway_id=Gateways.MQTT.value,
         certificate_type=CertificateTypes.PEM.value,
         utc_timestamp=utc_timestamp,
         time_zone=time_zone,

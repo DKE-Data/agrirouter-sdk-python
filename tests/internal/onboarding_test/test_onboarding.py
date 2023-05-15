@@ -3,8 +3,8 @@
 from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWayType
 from agrirouter.onboarding.onboarding import SecuredOnboardingService
 from agrirouter.onboarding.parameters import OnboardParameters
-from agrirouter.onboarding.enums import GateWays, CertificateTypes
-from tests.constants import PUBLIC_KEY, PRIVATE_KEY, ENV, APPLICATION_ID
+from agrirouter.onboarding.enums import Gateways, CertificateTypes
+from tests.common.constants import PUBLIC_KEY, PRIVATE_KEY, ENV, APPLICATION_ID
 import pytest
 
 
@@ -15,7 +15,7 @@ class TestSoftwareOnboarding:
             application_id=APPLICATION_ID,
             content_type="json",
             certification_version_id="13",
-            gateway_id=GateWays.MQTT.value,
+            gateway_id=Gateways.MQTT.value,
             certificate_type=CertificateTypes.PEM.value,
             utc_timestamp="+03:00",
             time_zone="01-01-2021",
@@ -31,7 +31,7 @@ class TestSoftwareOnboarding:
             application_id=APPLICATION_ID,
             content_type="json",
             certification_version_id="13",
-            gateway_id=GateWays.MQTT.value,
+            gateway_id=Gateways.MQTT.value,
             certificate_type="wrong_certificate",
             utc_timestamp="+03:00",
             time_zone="01-01-2021",

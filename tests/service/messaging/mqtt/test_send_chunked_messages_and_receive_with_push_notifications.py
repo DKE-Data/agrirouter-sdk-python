@@ -38,6 +38,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
     @pytest.fixture(autouse=True)
     def fixture(self):
         # Setup
+        self._log.debug("Setup for the test case.")
         self._recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
         self._sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
 
@@ -45,6 +46,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         yield
 
         # Tear down
+        self._log.debug("Tear down.")
         if self._messaging_service_for_sender is not None:
             self._messaging_service_for_sender.client.disconnect()
         if self._messaging_service_for_recipient is not None:

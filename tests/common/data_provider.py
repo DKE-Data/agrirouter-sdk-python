@@ -19,7 +19,7 @@ class DataProvider:
     @staticmethod
     def read_base64_encoded_large_bmp():
         """
-        Read the large bmp from the file system and return it as base64 encoded string.
+        Read the large bmp from the file system and return it as a raw string.
         """
         large_bmp_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), DataProvider._CONTENT_DIR,
                                       'large_bmp.bmp')
@@ -41,7 +41,7 @@ class DataProvider:
     @staticmethod
     def read_base64_encoded_large_shape():
         """
-        Read the large shape from the file system and return it as base64 encoded string.
+        Read the large shape from the file system and return it as a raw string.
         """
         large_shape_zip_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), DataProvider._CONTENT_DIR,
                                             'large_shape.zip')

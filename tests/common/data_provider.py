@@ -25,7 +25,7 @@ class DataProvider:
                                       'large_bmp.bmp')
         with open(large_bmp_path, 'rb') as large_bmp_file:
             large_bmp_data = large_bmp_file.read()
-        return base64.b64encode(large_bmp_data)
+        return large_bmp_data
 
     @staticmethod
     def read_base64_encoded_small_shape():
@@ -47,7 +47,7 @@ class DataProvider:
                                             'large_shape.zip')
         with open(large_shape_zip_path, 'rb') as large_shape_zip_file:
             large_shape_zip_data = large_shape_zip_file.read()
-        return base64.b64encode(large_shape_zip_data)
+        return large_shape_zip_data
 
     @staticmethod
     def read_base64_encoded_small_task_data():

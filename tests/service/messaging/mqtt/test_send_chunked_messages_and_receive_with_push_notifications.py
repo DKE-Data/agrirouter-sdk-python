@@ -119,6 +119,9 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
 
         encoded_chunked_messages = encode_chunks_message(message_parameter_tuple=message_parameter_tuples)
 
+        if not len(encoded_chunked_messages) == 10:
+            self._log.error("Number of chunks not as expected. Check the data being chunked. ")
+
         chunk_message_parameters = ChunkedMessageParameters(
             onboarding_response=self._sender_onboard_response,
             technical_message_type=CapabilityType.IMG_BMP.value,

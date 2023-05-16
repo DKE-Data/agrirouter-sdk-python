@@ -1,4 +1,5 @@
 import base64
+import logging
 
 from google.protobuf.any_pb2 import Any
 from google.protobuf.internal.encoder import _VarintBytes
@@ -12,7 +13,9 @@ from agrirouter.messaging.services.sequence_number_service import SequenceNumber
 from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
 from typing import List
 from agrirouter.messaging.messages import MessageParameterTuple
-from agrirouter.utils.raw_message_content_length_for_chunking import MaxChunkingContentLength
+
+MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT = 767997 // 2
+log = logging.getLogger("com.dke.data.agrirouter.sdk.encode")
 
 
 def write_proto_parts_to_buffer(parts: list, buffer: bytes = b""):
@@ -87,23 +90,6 @@ def encode_chunks_message(message_parameter_tuple: List[MessageParameterTuple]) 
             message_parameter_tuple]
 
 
-def split_into_chunks(whole_message: str):
-    """
-    Split the whole message into chunks
-    :whole_message - Message to split into chunks
-    Returns a list of chunks
-    """
-    chunks = []
-    remaining_bytes = whole_message
-    while len(remaining_bytes) > MaxChunkingContentLength.MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:
-        chunk = remaining_bytes[:MaxChunkingContentLength.MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT]
-        chunks.append(chunk)
-        remaining_bytes = remaining_bytes[MaxChunkingContentLength.MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:]
-    if len(remaining_bytes) > 0:
-        chunks.append(remaining_bytes)
-    return chunks
-
-
 def chunk_and_base64encode_each_chunk(header_parameters: MessageHeaderParameters,
                                       payload_parameters: MessagePayloadParameters,
                                       onboarding_response: OnboardResponse) -> List[MessageParameterTuple]:
@@ -116,17 +102,20 @@ def chunk_and_base64encode_each_chunk(header_parameters: MessageHeaderParameters
     """
 
     whole_message = payload_parameters.get_value()
-    tuples = []
     message_chunks = split_into_chunks(whole_message)
-    chunk_context_id = new_uuid()
-    chunk_number = 1
 
     if payload_parameters is None or header_parameters is None:
         raise ValueError('The parameters cannot be NULL')
 
-    if len(whole_message) <= MaxChunkingContentLength.MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:
+    if len(whole_message) <= MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:
+        log.info("Message is not chunked, because it is smaller than the maximum size of a chunk.")
         return [MessageParameterTuple(message_header_parameters=header_parameters,
                                       message_payload_parameters=payload_parameters)]
+
+    log.info("Message is chunked, because it is bigger than the maximum size of a chunk.")
+    tuples = []
+    chunk_context_id = new_uuid()
+    chunk_number = 1
 
     for chunk in message_chunks:
         chunk_message_id = new_uuid()
@@ -156,4 +145,22 @@ def chunk_and_base64encode_each_chunk(header_parameters: MessageHeaderParameters
                                             message_payload_parameters=payload_parameters_copy))
         chunk_number += 1
 
+    log.info("Message was chunked into %s chunks.", len(tuples))
     return tuples
+
+
+def split_into_chunks(whole_message: str):
+    """
+    Split the whole message into chunks
+    :whole_message - Message to split into chunks
+    Returns a list of chunks
+    """
+    chunks = []
+    remaining_bytes = whole_message
+    while len(remaining_bytes) > MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:
+        chunk = remaining_bytes[:MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT]
+        chunks.append(chunk)
+        remaining_bytes = remaining_bytes[MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:]
+    if len(remaining_bytes) > 0:
+        chunks.append(remaining_bytes)
+    return chunks

@@ -134,7 +134,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
 
         send_chunked_message_service = SendChunkedMessageService(messaging_service=self._messaging_service_for_sender)
         send_chunked_message_service.send(chunk_message_parameters)
-        Sleeper.process_the_command()
+        Sleeper.process_the_message()
 
         self._messaging_service_for_sender.client.disconnect()
         self._messaging_service_for_recipient.client.disconnect()

@@ -1,17 +1,16 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='agrirouter',
-    version='1.0.0',
-    packages=find_packages(),
+    name='roj-agrirouter-sdk-python',
+    version='1.0.1',
+    packages=find_packages(),	
     include_package_data=True,
     python_requires=">= 3.6",
-    url='https://github.com/DKE-Data/agrirouter-sdk-python',
+    url='https://github.com/ROJ-ITALY/agrirouter-sdk-python',
     license='Apache-2.0',
-    author='agrirouter',
-    author_email='info@dke-data.com',
-    description="""This project contains the API for the communication with the agrirouter. Everything you need for the
-                    onboarding process, secure communication and much more.""",
+    author='Stefano Gurrieri',
+    author_email='stefano.gurrieri@vandewiele.com',
+    description="""Agrirouter SDK Python patched by ROJ for experimental test.""",
     classifiers=[
         'Intended Audience :: Developers',
         'Natural Language :: English',
@@ -37,7 +36,7 @@ setup(
         'protobuf~=3.18.0'
     ],
     project_urls={
-        'Documentation': 'https://github.com/DKE-Data/agrirouter-sdk-python',
-        'Source': 'https://github.com/DKE-Data/agrirouter-sdk-python',
+        'Documentation': 'https://github.com/ROJ-ITALY/agrirouter-sdk-python',
+        'Source': 'https://github.com/ROJ-ITALY/agrirouter-sdk-python',
     },
 )

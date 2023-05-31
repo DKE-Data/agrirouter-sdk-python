@@ -6,7 +6,7 @@ from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 impor
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.generated.commons.message_pb2 import Metadata
 
-from AgrirouterTMTProtobufDefinitions.Efdi.efdi_pb2 import TimeLog, ISO11783_TaskData
+from agrirouter.generated.messaging.request.payload.efdi.efdi_pb2 import TimeLog, ISO11783_TaskData
 
 from agrirouter.messaging.encode import encode_message
 from agrirouter.messaging.enums import TechnicalMessageType, CapabilityType

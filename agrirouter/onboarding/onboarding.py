@@ -1,7 +1,7 @@
 import requests
 
 from agrirouter.environments.environmental_services import EnvironmentalService
-from agrirouter.onboarding.exceptions import RequestNotSigned
+#from agrirouter.onboarding.exceptions import RequestNotSigned
 from agrirouter.onboarding.headers import SoftwareOnboardingHeader
 from agrirouter.onboarding.parameters import SoftwareOnboardingParameter
 from agrirouter.onboarding.request import SoftwareOnboardingRequest

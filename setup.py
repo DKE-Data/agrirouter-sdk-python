@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='roj-agrirouter-sdk-python',
-    version='1.0.3',
+    version='1.0.4',
     packages=find_packages(),	
     include_package_data=True,
     python_requires=">= 3.6",
@@ -10,7 +10,7 @@ setup(
     license='Apache-2.0',
     author='Stefano Gurrieri',
     author_email='stefano.gurrieri@vandewiele.com',
-    description="""Agrirouter SDK Python patched by ROJ for experimental test.""",
+    description="""Agrirouter SDK Python patched by ROJ for experimental test to run on App mobile""",
     classifiers=[
         'Intended Audience :: Developers',
         'Natural Language :: English',
@@ -25,11 +25,8 @@ setup(
     ],
     install_requires=[
         'certifi~=2021.5.30',
-        'cffi~=1.14.6',
         'charset-normalizer~=2.0.6',
-        'cryptography~=3.4.8',
         'idna~=3.2',
-        'pycparser~=2.20',
         'requests~=2.26.0',
         'urllib3~=1.26.7',
         'paho-mqtt~=1.5.1',

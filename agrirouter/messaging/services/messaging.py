@@ -324,7 +324,40 @@ class EfdiTimelogService(AbstractService):
             content=message_content
         )
 
-        return encoded_message  
+        return encoded_message
+
+
+class EfdiTimelogPublishService(AbstractService):
+    @staticmethod
+    def encode(parameters: EfdiParameters) -> EncodedMessage:
+
+        if parameters.get_efdi_filename() != None:
+            metadata = Metadata()
+            metadata.file_name = parameters.get_efdi_filename()
+        else:
+            metadata = None
+
+        message_header_parameters = MessageHeaderParameters(
+            application_message_id=parameters.get_application_message_id(),
+            application_message_seq_no=parameters.get_application_message_seq_no(),
+            team_set_context_id=parameters.get_team_set_context_id(),
+            mode=RequestEnvelope.Mode.Value("PUBLISH"),
+            technical_message_type=CapabilityType.ISO_11783_TIMELOG_PROTOBUF.value,
+            metadata = metadata
+        )
+
+        message_payload_parameters = MessagePayloadParameters(
+            type_url=TypeUrl.get_type_url(TimeLog),
+            value=parameters.get_efdi()
+        )
+
+        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        encoded_message = EncodedMessage(
+            id_=new_uuid(),
+            content=message_content
+        )
+
+        return encoded_message
 
 
 class EfdiDeviceDscService(AbstractService):
@@ -357,4 +390,4 @@ class EfdiDeviceDscService(AbstractService):
             content=message_content
         )
 
-        return encoded_message  
+        return encoded_message

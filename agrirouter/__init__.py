@@ -13,5 +13,5 @@ from agrirouter.messaging.parameters.service import MessageHeaderParameters, Mes
     SubscriptionParameters, ImageParameters, EfdiParameters
 from agrirouter.messaging.services.cloud import CloudOnboardService, CloudOffboardService
 from agrirouter.messaging.services.messaging import SubscriptionService, CapabilityService, FeedConfirmService,\
-    FeedDeleteService, QueryHeaderService, QueryMessagesService, ListEndpointsService, ImageService, EfdiTimelogService, EfdiDeviceDscService
+    FeedDeleteService, QueryHeaderService, QueryMessagesService, ListEndpointsService, ImageService, EfdiTimelogService, EfdiTimelogPublishService, EfdiDeviceDscService
 

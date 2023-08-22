@@ -10,7 +10,6 @@ from agrirouter.onboarding.dto import ErrorResponse, ConnectionCriteria, Authent
 class BaseOnboardingResponse:
 
     def __init__(self, http_response: Response):
-
         self._status_code = http_response.status_code
         self._text = http_response.text
 

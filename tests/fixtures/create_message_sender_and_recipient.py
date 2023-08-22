@@ -12,10 +12,10 @@ from agrirouter.messaging.services.sequence_number_service import SequenceNumber
 from agrirouter.onboarding.enums import CertificateTypes, Gateways
 from agrirouter.utils.uuid_util import new_uuid
 from tests.common.onboarding import onboard_communication_unit
+from tests.common.sleeper import Sleeper
 from tests.data.applications import CommunicationUnit
 from tests.data.identifier import Identifier
 from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
-from tests.common.sleeper import Sleeper
 
 
 class TestCreateMessageSenderAndRecipient:

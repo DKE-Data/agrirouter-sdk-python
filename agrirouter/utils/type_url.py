@@ -7,9 +7,9 @@ from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 im
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageDelete, MessageConfirm, \
     MessageQuery
 from agrirouter.generated.messaging.response.payload.account.endpoints_pb2 import ListEndpointsResponse
-from agrirouter.generated.messaging.response.payload.feed.push_notification_pb2 import PushNotification
 from agrirouter.generated.messaging.response.payload.feed.feed_response_pb2 import HeaderQueryResponse, \
     MessageQueryResponse
+from agrirouter.generated.messaging.response.payload.feed.push_notification_pb2 import PushNotification
 from agrirouter.messaging.exceptions import TypeUrlNotFoundError
 
 

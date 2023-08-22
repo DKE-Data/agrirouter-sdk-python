@@ -9,7 +9,6 @@ from agrirouter.onboarding.response import OnboardResponse
 
 
 class HttpClient:
-
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json"

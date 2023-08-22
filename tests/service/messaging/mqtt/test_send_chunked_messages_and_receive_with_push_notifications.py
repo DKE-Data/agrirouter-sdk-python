@@ -1,28 +1,27 @@
-import pytest
 import logging
 import unittest
 
-from agrirouter.messaging.decode import decode_response, decode_details
-from agrirouter.messaging.messages import OutboxMessage
-from agrirouter.messaging.services.commons import MqttMessagingService
+import pytest
+
 from agrirouter import FeedDeleteService, FeedDeleteParameters, MessageHeaderParameters, MessagePayloadParameters, \
     SendChunkedMessageService
-from agrirouter.onboarding.response import OnboardResponse
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
+from agrirouter.messaging.decode import decode_response, decode_details
 from agrirouter.messaging.encode import chunk_and_base64encode_each_chunk, encode_chunks_message
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.utils.uuid_util import new_uuid
 from agrirouter.messaging.enums import CapabilityType, TechnicalMessageType
+from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.dto import ChunkedMessageParameters
-
-from tests.data.onboard_response_integration_service import read_onboard_response
-from tests.data.identifier import Identifier
-from tests.common.sleeper import Sleeper
+from agrirouter.messaging.services.commons import MqttMessagingService
+from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
+from agrirouter.onboarding.response import OnboardResponse
+from agrirouter.utils.uuid_util import new_uuid
 from tests.common.data_provider import DataProvider
+from tests.common.sleeper import Sleeper
+from tests.data.identifier import Identifier
+from tests.data.onboard_response_integration_service import read_onboard_response
 
 
 class TestSendAndReceiveChunkedMessages(unittest.TestCase):
-
     _recipient_onboard_response = None
     _sender_onboard_response = None
     _messaging_service_for_sender = None
@@ -103,7 +102,8 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         message_header_parameters = MessageHeaderParameters(application_message_id=new_uuid(),
                                                             application_message_seq_no=current_sequence_number,
                                                             technical_message_type=CapabilityType.IMG_BMP.value,
-                                                            recipients=[self._recipient_onboard_response.get_sensor_alternate_id()],
+                                                            recipients=[
+                                                                self._recipient_onboard_response.get_sensor_alternate_id()],
                                                             mode=RequestEnvelope.Mode.Value("DIRECT"))
 
         message_payload_parameters = MessagePayloadParameters(type_url=TechnicalMessageType.EMPTY.value,
@@ -137,7 +137,6 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         self.assertTrue(self._callback_for_chunking_message_processed)
         self._callback_for_chunking_message_processed = False
 
-
     def _non_checking_callback(self):
         def _inner_function(client, userdata, msg):
             """
@@ -166,9 +165,11 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
             push_notification = decode_details(decoded_message.response_payload.details)
             current_chunked_message = push_notification.messages[0].content.value
             assert decoded_message.response_envelope.response_code == 200
-            assert DataProvider.get_hash(current_chunked_message) == DataProvider.get_hash(self._chunked_message_to_verify[0])
+            assert DataProvider.get_hash(current_chunked_message) == DataProvider.get_hash(
+                self._chunked_message_to_verify[0])
             self._chunked_message_to_verify.pop(0)
             self._callback_for_chunking_message_processed = True
+
         return _inner_function
 
     def _callback_for_feed_delete(self):

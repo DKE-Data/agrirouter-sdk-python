@@ -6,7 +6,6 @@ from agrirouter.environments.environmental_services import EnvironmentalService
 
 
 class Authorization(EnvironmentalService):
-
     SIGNATURE_KEY = "signature"
     STATE_KEY = "state"
     TOKEN_KEY = "token"

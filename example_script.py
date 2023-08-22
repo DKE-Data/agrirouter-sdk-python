@@ -1,11 +1,10 @@
-from pprint import pprint
+import time
 
 from google.protobuf.timestamp_pb2 import Timestamp
 
 from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
 from agrirouter.onboarding.response import OnboardResponse
-import time
 
 public_key = """-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzGt41/+kSOTlO1sJvLIN
@@ -46,7 +45,6 @@ KFrlBkR/vzKYjCFXB6cmMP61mUrgGQRoYJQBetAyEiXZL3zjt1R/Dndk0kHkVmHr
 HjmgzBRxXFy5uph6Ue6dxyszaA==
 -----END PRIVATE KEY-----"""
 
-
 onboarding_response_mqtt_data = {
     "deviceAlternateId": "2145df0e-3451-46cb-bf23-23191af66fce",
     "capabilityAlternateId": "523e4623-68d2-43d4-a0cc-e2ada2f68b5e",
@@ -66,9 +64,6 @@ onboarding_response_mqtt_data = {
     }
 }
 
-
-
-
 import agrirouter as ar
 from agrirouter.onboarding.enums import Gateways
 from agrirouter.messaging.enums import CapabilityType
@@ -79,9 +74,9 @@ from agrirouter import ListEndpointsParameters, ListEndpointsService, Subscripti
     QueryHeaderService, QueryHeaderParameters, CapabilitiesService, CapabilitiesParameters
 from agrirouter.utils.uuid_util import new_uuid
 
+application_id = "8c947a45-c57d-42d2-affc-206e21d63a50"  # # store here your application id. You can find it in AR UI
+certification_version_id = "edd5d6b7-45bb-4471-898e-ff9c2a7bf56f"  # # store here your certification version id. You can find it in AR UI
 
-application_id = "8c947a45-c57d-42d2-affc-206e21d63a50"		# # store here your application id. You can find it in AR UI
-certification_version_id = "edd5d6b7-45bb-4471-898e-ff9c2a7bf56f" # # store here your certification version id. You can find it in AR UI
 
 def example_auth():
     print("Authorization...\n")
@@ -115,7 +110,6 @@ def example_auth():
 
 
 def example_onboarding(gateway_id):
-
     auth_data = example_auth()
 
     print("Onboarding...\n")
@@ -164,6 +158,7 @@ def example_list_endpoints_mqtt(onboarding_response_data, foo):
     while True:
         time.sleep(1)
 
+
 def example_set_capabilities(onboarding_response_data, mqtt_message_callback):
     onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
@@ -178,7 +173,8 @@ def example_set_capabilities(onboarding_response_data, mqtt_message_callback):
         application_id=application_id,
         certification_version_id=certification_version_id,
         capability_parameters=[
-            CapabilitySpecification.Capability(technical_message_type = CapabilityType.ISO_11783_TASK_DATA_ZIP.value, direction ="SEND_RECEIVE")
+            CapabilitySpecification.Capability(technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
+                                               direction="SEND_RECEIVE")
         ],
         enable_push_notification=True,
     )
@@ -300,7 +296,6 @@ def example_query_header_message_mqtt(onboarding_response_data, on_msg_callback)
 
 
 def on_message_callback(client, userdata, msg):
-
     # Define here the way receiving messages will be processed
 
     from agrirouter.messaging.decode import decode_response

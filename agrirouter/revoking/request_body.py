@@ -7,7 +7,6 @@ class RevokingBody:
                  endpoint_ids,
                  utc_timestamp,
                  time_zone):
-
         self._set_params(
             account_id,
             endpoint_ids,
@@ -24,7 +23,6 @@ class RevokingBody:
                     utc_timestamp,
                     time_zone
                     ) -> None:
-
         self.params = {
             "accountId": account_id,
             "endpointIds": endpoint_ids,

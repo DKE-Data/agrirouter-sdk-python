@@ -1,6 +1,6 @@
 import logging
-import time
 import ssl
+import time
 from typing import Any, List, Tuple
 
 import paho.mqtt.client as mqtt_client

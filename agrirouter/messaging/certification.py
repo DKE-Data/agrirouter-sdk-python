@@ -1,12 +1,10 @@
 import os
 import tempfile
 
-
 from agrirouter.onboarding.response import OnboardResponse
 
 
 def create_certificate_file_from_pen(onboard_response: OnboardResponse):
-
     dir_ = tempfile.mkdtemp()
     prefix = onboard_response.get_sensor_alternate_id()
     data = onboard_response.get_authentication().get_certificate()

@@ -67,7 +67,6 @@ class Command:
 
 
 class OutboxMessage:
-
     CAPABILITY_ALTERNATE_ID = "capabilityAlternateId"
     SENSOR_ALTERNATE_ID = "sensorAlternateId"
     COMMAND = "command"

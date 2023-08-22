@@ -1,4 +1,3 @@
-
 class BadAuthResponse(Exception):
     def __init__(self, message=None):
         if not message:

@@ -1,11 +1,12 @@
 """Test agrirouter/onboarding/onboarding.py"""
 
+import pytest
+
+from agrirouter.onboarding.enums import Gateways, CertificateTypes
 from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWayType
 from agrirouter.onboarding.onboarding import SecuredOnboardingService
 from agrirouter.onboarding.parameters import OnboardParameters
-from agrirouter.onboarding.enums import Gateways, CertificateTypes
 from tests.common.constants import PUBLIC_KEY, PRIVATE_KEY, ENV, APPLICATION_ID
-import pytest
 
 
 class TestSoftwareOnboarding:

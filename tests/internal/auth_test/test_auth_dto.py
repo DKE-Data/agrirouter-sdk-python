@@ -1,7 +1,8 @@
 """Tests agrirouter/auth/dto.py"""
+import pytest
+
 from agrirouter.auth.dto import AuthorizationToken
 from agrirouter.messaging.exceptions import WrongFieldError
-import pytest
 
 
 class TestAuthorizationToken:

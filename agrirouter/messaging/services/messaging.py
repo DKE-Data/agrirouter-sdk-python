@@ -6,7 +6,7 @@ from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 im
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageDelete, \
     MessageQuery
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.encode import encode_message, encode_chunks_message
+from agrirouter.messaging.encode import encode_message
 from agrirouter.messaging.enums import TechnicalMessageType
 from agrirouter.messaging.messages import EncodedMessage
 from agrirouter.messaging.parameters.dto import MessagingParameters, SendMessageParameters, ChunkedMessageParameters
@@ -344,4 +344,3 @@ class SendChunkedMessageService(AbstractService):
             content=parameters.get_encoded_chunked_messages(),
         )
         return encoded_message
-

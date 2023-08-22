@@ -52,7 +52,6 @@ class MessagePayloadParameters:
                  type_url: str,
                  value: str,
                  ):
-
         self.type_url = type_url
         self.value = value
 

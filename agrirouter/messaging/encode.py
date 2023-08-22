@@ -1,18 +1,18 @@
 import base64
 import logging
+from typing import List
 
 from google.protobuf.any_pb2 import Any
 from google.protobuf.internal.encoder import _VarintBytes
 
+from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope, RequestPayloadWrapper
+from agrirouter.messaging.messages import MessageParameterTuple
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters
+from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
+from agrirouter.onboarding.response import OnboardResponse
 from agrirouter.utils.utc_time_util import now_as_utc_timestamp
 from agrirouter.utils.uuid_util import new_uuid
-from agrirouter.onboarding.response import OnboardResponse
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
-from typing import List
-from agrirouter.messaging.messages import MessageParameterTuple
 
 MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT = 767997 // 2
 log = logging.getLogger("com.dke.data.agrirouter.sdk.encode")

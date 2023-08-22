@@ -1,17 +1,17 @@
-from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.onboarding.parameters import OnboardParameters
-from agrirouter.messaging.services.messaging import CapabilitiesService
-from agrirouter.messaging.parameters.service import CapabilitiesParameters
 from agrirouter.environments.environments import QAEnvironment
+from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
+from agrirouter.messaging.parameters.service import CapabilitiesParameters
 from agrirouter.messaging.services.commons import HttpMessagingService
 from agrirouter.messaging.services.http.fetch_message_service import FetchMessageService
+from agrirouter.messaging.services.messaging import CapabilitiesService
 from agrirouter.onboarding.onboarding import OnboardingService
+from agrirouter.onboarding.parameters import OnboardParameters
 from agrirouter.onboarding.response import OnboardResponse
 from agrirouter.utils.uuid_util import new_uuid
+from tests.common.constants import cu_recipient_endpoint_id
 from tests.data import identifier
 from tests.data.applications import CommunicationUnit
 from tests.data.onboard_response_integration_service import OnboardResponseIntegrationService
-from tests.common.constants import cu_recipient_endpoint_id
 
 
 class TestUpdateOnboardResponses:

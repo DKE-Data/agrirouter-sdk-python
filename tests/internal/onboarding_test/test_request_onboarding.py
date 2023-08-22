@@ -31,15 +31,15 @@ class TestBaseOnboardingRequest:
     def test_get_data(self):
         assert self.test_object.get_data()["applicationId"] == APPLICATION_ID
         assert (
-            self.test_object.get_data()["certificateType"] == CertificateTypes.PEM.value
+                self.test_object.get_data()["certificateType"] == CertificateTypes.PEM.value
         )
         assert (
-            self.test_object.get_data()["certificateType"] == CertificateTypes.PEM.value
+                self.test_object.get_data()["certificateType"] == CertificateTypes.PEM.value
         )
 
     def test_get_header(self):
         assert (
-            self.test_object.get_header()["Authorization"] == "Bearer " + self.reg_code
+                self.test_object.get_header()["Authorization"] == "Bearer " + self.reg_code
         )
         assert self.test_object.get_header()["Content-Type"] == self.content_type
         assert (

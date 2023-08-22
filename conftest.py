@@ -1,4 +1,5 @@
 import pytest
+
 from tests.common.constants import PUBLIC_KEY, PRIVATE_KEY, AUTH_RESULT_URL
 
 

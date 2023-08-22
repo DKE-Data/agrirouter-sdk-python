@@ -7,7 +7,6 @@ class RevokingHeader:
                  signature=None,
                  content_type=ContentTypes.APPLICATION_JSON.value
                  ):
-
         self._set_params(application_id, signature, content_type)
 
     def get_header(self) -> dict:

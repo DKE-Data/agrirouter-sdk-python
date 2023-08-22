@@ -1,5 +1,3 @@
-
-
 class InvalidEnvironmentSetup(Exception):
 
     def __init__(self, message=None, env=None):

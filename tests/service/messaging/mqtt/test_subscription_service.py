@@ -4,19 +4,19 @@ import unittest
 import pytest
 
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.messaging.parameters.service import SubscriptionParameters, CapabilitiesParameters
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from agrirouter.messaging.services.messaging import SubscriptionService, CapabilitiesService
-from agrirouter.messaging.services.commons import MqttMessagingService
 from agrirouter.messaging.decode import decode_response, decode_details
-from agrirouter.messaging.messages import OutboxMessage
-from tests.data.applications import CommunicationUnit
-from agrirouter.utils.uuid_util import new_uuid
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from tests.data.identifier import Identifier
 from agrirouter.messaging.enums import CapabilityType, CapabilityDirectionType
-from tests.data.onboard_response_integration_service import read_onboard_response
+from agrirouter.messaging.messages import OutboxMessage
+from agrirouter.messaging.parameters.service import SubscriptionParameters, CapabilitiesParameters
+from agrirouter.messaging.services.commons import MqttMessagingService
+from agrirouter.messaging.services.messaging import SubscriptionService, CapabilitiesService
+from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
+from agrirouter.utils.uuid_util import new_uuid
 from tests.common.sleeper import Sleeper
+from tests.data.applications import CommunicationUnit
+from tests.data.identifier import Identifier
+from tests.data.onboard_response_integration_service import read_onboard_response
 
 
 class TestSubscriptionService(unittest.TestCase):

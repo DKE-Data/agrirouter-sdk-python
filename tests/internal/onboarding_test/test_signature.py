@@ -1,7 +1,6 @@
 """Test agrirouter/onboarding/signature.py"""
 
 import pytest
-
 from cryptography.exceptions import InvalidSignature
 
 from agrirouter.onboarding.signature import create_signature, verify_signature

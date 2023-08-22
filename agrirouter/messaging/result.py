@@ -20,7 +20,6 @@ class OutboxResponse:
                  status_code: int = None,
                  messages: List[OutboxMessage] = None
                  ):
-
         self.status_code = status_code
         self.messages = messages if messages else []
 

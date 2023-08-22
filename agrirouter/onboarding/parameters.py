@@ -2,6 +2,7 @@ from agrirouter.constants.media_types import ContentTypes
 from agrirouter.onboarding.enums import CertificateTypes
 from agrirouter.utils.utc_time_util import now_as_utc_str
 
+
 class OnboardParameters:
     def __init__(self,
                  *,
@@ -15,7 +16,6 @@ class OnboardParameters:
                  content_type: object = ContentTypes.APPLICATION_JSON.value,
                  certificate_type: object = CertificateTypes.PEM.value,
                  ) -> object:
-
         self.id_ = id_
         self.application_id = application_id
         self.content_type = content_type

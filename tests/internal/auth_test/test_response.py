@@ -9,7 +9,6 @@ from tests.common.constants import VALID_RESPONSE_SIGNATURE, VALID_RESPONSE_TOKE
 
 
 def test_decode_token():
-
     decoded_token = AuthResponse.decode_token(VALID_RESPONSE_TOKEN)
     assert re.search(r"[\w]", decoded_token.regcode)
     assert re.search(r"[\w]", decoded_token.account)

@@ -25,8 +25,8 @@ class CapabilityType(BaseEnum):
     """
 
     ISO_11783_TASK_DATA_ZIP = "iso:11783:-10:taskdata:zip"
-    ISO_11783_DEVICE_DESCRIPTION_PROTOBUF = "iso:11783:-10:device_description:protobuf"
-    ISO_11783_TIMELOG_PROTOBUF = "iso:11783:-10:time_log:protobuf"
+    ISO_11783_DEVICE_DESCRIPTION = "iso:11783:-10:device_description:protobuf"
+    ISO_11783_TIMELOG = "iso:11783:-10:time_log:protobuf"
     IMG_BMP = "img:bmp"
     IMG_JPEG = "img:jpeg"
     IMG_PNG = "img:png"

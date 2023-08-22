@@ -4,14 +4,15 @@ class Identifier:
 
     """ Identifier for the endpoints, used for the test cases. """
 
-    """ Identifier for the MQTT recipient endpoint with a P12 certificate. """
-    HTTP_RECIPIENT = {
-        'path': "Mqtt/CommunicationUnit/P12/Recipient",
+    """ Identifier for the Http recipient endpoint with a PEM certificate. """
+    HTTP_RECIPIENT_PEM = {
+        'path': "Http/CommunicationUnit/PEM/Recipient",
         'id': "5c124b14-f309-11ed-a05b-0242ac120003"
     }
 
-    HTTP_SENDER = {
-        'path': "Mqtt/CommunicationUnit/P12/Recipient",
+    """ Identifier for the Http sender endpoint with a PEM certificate. """
+    HTTP_SENDER_PEM = {
+        'path': "Http/CommunicationUnit/PEM/Sender",
         'id': "a3fa610e-f30a-11ed-a05b-0242ac120003"
     }
 

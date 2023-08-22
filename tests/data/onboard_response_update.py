@@ -20,8 +20,14 @@ class OnboardResponseUpdate(unittest.TestCase):
     _environment = QAEnvironment()
 
     def test_update_http_cu_recipient(self):
-        onboard_response = self._onboard(Identifier.HTTP_RECIPIENT['id'], "6939e384a7")
-        save_onboard_response(Identifier.HTTP_RECIPIENT['path'], onboard_response)
+        onboard_response = self._onboard(Identifier.HTTP_RECIPIENT_PEM['id'], "97b9851e9b")
+        save_onboard_response(Identifier.HTTP_RECIPIENT_PEM['path'], onboard_response)
+        self._validate_connection(onboard_response)
+        self._enable_all_capabilities_via_http(onboard_response)
+
+    def test_update_http_cu_sender(self):
+        onboard_response = self._onboard(Identifier.HTTP_SENDER_PEM['id'], "39220f2ce0")
+        save_onboard_response(Identifier.HTTP_SENDER_PEM['path'], onboard_response)
         self._validate_connection(onboard_response)
         self._enable_all_capabilities_via_http(onboard_response)
 

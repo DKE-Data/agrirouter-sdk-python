@@ -8,4 +8,4 @@ class CertificateTypes(BaseEnum):
 
 class Gateways(BaseEnum):
     MQTT = "2"
-    REST = "3"
+    HTTP = "3"

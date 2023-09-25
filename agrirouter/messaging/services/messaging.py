@@ -14,7 +14,7 @@ from agrirouter.messaging.messages import EncodedMessage
 from agrirouter.messaging.parameters.dto import MessagingParameters
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
     CapabilityParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
-    SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters, ImageParameters, EfdiParameters
+    SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters, ImageParameters, TaskParameters, EfdiParameters
 
 from agrirouter.utils.type_url import TypeUrl
 from agrirouter.utils.uuid_util import new_uuid
@@ -282,6 +282,37 @@ class ImageService(AbstractService):
         message_payload_parameters = MessagePayloadParameters(
             type_url=TechnicalMessageType.EMPTY.value,
             value=parameters.get_image_encoded()
+        )
+
+        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        encoded_message = EncodedMessage(
+            id_=new_uuid(),
+            content=message_content
+        )
+
+        return encoded_message  
+
+
+class TaskService(AbstractService):
+    @staticmethod
+    def encode(parameters: TaskParameters) -> EncodedMessage:
+
+        metadata = Metadata()
+        metadata.file_name = parameters.get_task_filename()
+
+        message_header_parameters = MessageHeaderParameters(
+            application_message_id=parameters.get_application_message_id(),
+            application_message_seq_no=parameters.get_application_message_seq_no(),
+            recipients=parameters.get_recipients(),
+            team_set_context_id=parameters.get_team_set_context_id(),
+            mode=RequestEnvelope.Mode.Value("DIRECT"),
+            technical_message_type=CapabilityType.ISO_11783_TASKDATA_ZIP.value,
+            metadata=metadata     
+        )
+
+        message_payload_parameters = MessagePayloadParameters(
+            type_url=TechnicalMessageType.EMPTY.value,
+            value=parameters.get_task_encoded()
         )
 
         message_content = encode_message(message_header_parameters, message_payload_parameters)

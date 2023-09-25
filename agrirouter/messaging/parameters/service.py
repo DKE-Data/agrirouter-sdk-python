@@ -482,6 +482,46 @@ class ImageParameters(MessageParameters):
         self.recipients = recipients
 
 
+class TaskParameters(MessageParameters):
+    def __init__(self,
+                 *,
+                 task_encoded: bytes,
+                 task_filename: str,
+                 application_message_seq_no: int,
+                 recipients: list,
+                 application_message_id: str,
+                 team_set_context_id: str = None,
+                 onboarding_response: BaseOnboardingResonse
+                 ):
+        self.task_encoded = task_encoded
+        self.task_filename = task_filename
+        self.recipients = recipients
+        super(TaskParameters, self).__init__(
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
+            onboarding_response=onboarding_response
+        )
+
+    def get_task_encoded(self):
+        return self.task_encoded
+
+    def get_task_filename(self):
+        return self.task_filename
+
+    def get_recipients(self):
+        return self.recipients
+
+    def set_task_encoded(self, task_encoded):
+        self.task_encoded = task_encoded
+
+    def set_task_filename(self, task_filename):
+        self.task_filename = task_filename
+
+    def set_recipients(self, recipients):
+        self.recipients = recipients
+
+
 class EfdiParameters(MessageParameters):
     def __init__(self,
                  *,

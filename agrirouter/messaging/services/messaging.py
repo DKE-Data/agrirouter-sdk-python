@@ -5,6 +5,7 @@ from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 impor
     MessageQuery
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.generated.commons.message_pb2 import Metadata
+from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
 
 from agrirouter.generated.messaging.request.payload.efdi.efdi_pb2 import TimeLog, ISO11783_TaskData
 
@@ -299,11 +300,20 @@ class TaskService(AbstractService):
 
         metadata = Metadata()
         metadata.file_name = parameters.get_task_filename()
+        # Add ChunkComponent
+        chunkcomponent = ChunkComponent()
+        chunkcomponent.context_id = parameters.get_chunk_context_id()
+        chunkcomponent.current = parameters.get_chunk_current()
+        chunkcomponent.total = parameters.get_chunk_total()
+        chunkcomponent.total_size = parameters.get_chunk_total_size()
+
+        print(chunkcomponent)
 
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),
             recipients=parameters.get_recipients(),
+            chunk_component = chunkcomponent,
             team_set_context_id=parameters.get_team_set_context_id(),
             mode=RequestEnvelope.Mode.Value("DIRECT"),
             technical_message_type=CapabilityType.ISO_11783_TASKDATA_ZIP.value,

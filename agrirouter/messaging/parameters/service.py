@@ -487,6 +487,10 @@ class TaskParameters(MessageParameters):
                  *,
                  task_encoded: bytes,
                  task_filename: str,
+                 chunk_context_id: str,
+                 chunk_current: int,
+                 chunk_total: int,
+                 chunk_total_size: int,
                  application_message_seq_no: int,
                  recipients: list,
                  application_message_id: str,
@@ -496,6 +500,10 @@ class TaskParameters(MessageParameters):
         self.task_encoded = task_encoded
         self.task_filename = task_filename
         self.recipients = recipients
+        self.chunk_context_id = chunk_context_id
+        self.chunk_current = chunk_current
+        self.chunk_total = chunk_total
+        self.chunk_total_size = chunk_total_size
         super(TaskParameters, self).__init__(
             application_message_seq_no=application_message_seq_no,
             application_message_id=application_message_id,
@@ -508,6 +516,18 @@ class TaskParameters(MessageParameters):
 
     def get_task_filename(self):
         return self.task_filename
+    
+    def get_chunk_context_id(self):
+        return self.chunk_context_id
+    
+    def get_chunk_current(self):
+        return self.chunk_current
+    
+    def get_chunk_total(self):
+        return self.chunk_total
+    
+    def get_chunk_total_size(self):
+        return self.chunk_total_size
 
     def get_recipients(self):
         return self.recipients
@@ -517,6 +537,18 @@ class TaskParameters(MessageParameters):
 
     def set_task_filename(self, task_filename):
         self.task_filename = task_filename
+    
+    def set_chunk_context_id(self, chunk_context_id):
+        self.chunk_context_id = chunk_context_id
+    
+    def set_chunk_current(self, chunk_current):
+        self.chunk_current = chunk_current
+    
+    def set_chunk_total(self, chunk_total):
+        self.chunk_total = chunk_total
+    
+    def set_chunk_total_size(self, chunk_total_size):
+        self.chunk_total_size = chunk_total_size
 
     def set_recipients(self, recipients):
         self.recipients = recipients

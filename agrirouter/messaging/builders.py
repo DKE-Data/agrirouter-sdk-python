@@ -25,7 +25,7 @@ class SubscriptionItemBuilder:
 
     def with_device_description(self, ddis: List[int] = None, position: bool = None):
         subscription_item = Subscription.MessageTypeSubscriptionItem(
-            technical_message_type=CapabilityType.ISO_11783_DEVICE_DESCRIPTION_PROTOBUF.value,
+            technical_message_type=CapabilityType.ISO_11783_DEVICE_DESCRIPTION.value,
             ddis=ddis,
             position=position
         )
@@ -34,7 +34,7 @@ class SubscriptionItemBuilder:
 
     def with_time_log(self, ddis: List[int] = None, position: bool = None):
         subscription_item = Subscription.MessageTypeSubscriptionItem(
-            technical_message_type=CapabilityType.ISO_11783_TIMELOG_PROTOBUF.value,
+            technical_message_type=CapabilityType.ISO_11783_TIMELOG.value,
             ddis=ddis,
             position=position
         )
@@ -126,14 +126,14 @@ class CapabilityBuilder:
     def with_device_description(self, direction: int):
         capability = CapabilitySpecification.Capability()
         capability.direction = direction
-        capability.technical_message_type = CapabilityType.ISO_11783_DEVICE_DESCRIPTION_PROTOBUF.value
+        capability.technical_message_type = CapabilityType.ISO_11783_DEVICE_DESCRIPTION.value
         self._capabilities.append(capability)
         return self
 
     def with_time_log(self, direction: int):
         capability = CapabilitySpecification.Capability()
         capability.direction = direction
-        capability.technical_message_type = CapabilityType.ISO_11783_TIMELOG_PROTOBUF.value
+        capability.technical_message_type = CapabilityType.ISO_11783_TIMELOG.value
         self._capabilities.append(capability)
         return self
 

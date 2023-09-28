@@ -18,31 +18,6 @@ This project contains the SDK for the communication with the agrirouter. Everyth
 
 == Installation
 
-The necessary dependencies are installed via `composer`. Just run the following command to add the SDK to your project.
-
-
-`$ git clone https://github.com/DKE-Data/agrirouter-sdk-python.git`
-
-To install the SDK run the 'setup.py' script in the main directory (for a global install you will need to run this command with root privileges):
-
-`$ cd agrirouter-sdk-python`
-
-`$ virtualenv venv`
-
-`...`
-
-`$ . venv/bin/activate`
-
-`$ python setup.py install`
-
-For more install options type:
-
-`$ python setup.py --help`
-
-== Requirements
-
-Python 3.6 or above is required.
-
 == Running unit tests
 
 `$ pytest`

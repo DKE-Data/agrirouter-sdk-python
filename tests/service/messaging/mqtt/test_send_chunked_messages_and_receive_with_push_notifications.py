@@ -38,8 +38,8 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
     def fixture(self):
         # Setup
         self._log.debug("Setup for the test case.")
-        self._recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH])
-        self._sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH])
+        self._recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGES_RECIPIENT[Identifier.PATH])
+        self._sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGES_SENDER[Identifier.PATH])
 
         # Run the test
         yield

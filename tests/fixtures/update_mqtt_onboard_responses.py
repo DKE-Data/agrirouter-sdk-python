@@ -31,7 +31,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
         )
         save_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH], onboard_response)
 
-    #@pytest.mark.skip(reason="Will fail unless the registration code is changed")
+    @pytest.mark.skip(reason="Will fail unless the registration code is changed")
     def test_update_sender_with_pem(self):
         """ Test the onboarding process for a single MQTT endpoint with a PEM certificate. """
         onboard_response = onboard_communication_unit(
@@ -43,28 +43,28 @@ class TestSingleMqttEndpointWithPEMCertificate:
         )
         save_onboard_response(Identifier.MQTT_SENDER_PEM[Identifier.PATH], onboard_response)
 
-    @pytest.mark.skip(reason="Will fail unless the registration code is changed")
-    def test_create_message_sender_with_pem(self):
+    #@pytest.mark.skip(reason="Will fail unless the registration code is changed")
+    def test_update_messages_sender_with_pem(self):
         sender_onboard_response = onboard_communication_unit(
-            uuid=Identifier.MQTT_MESSAGE_SENDER[Identifier.ID],
+            uuid=Identifier.MQTT_MESSAGES_SENDER[Identifier.ID],
             _environment=QAEnvironment(),
-            registration_code="f1d08095a3",
+            registration_code="26b37bc999",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.MQTT.value)
         )
-        save_onboard_response(Identifier.MQTT_MESSAGE_SENDER[Identifier.PATH], sender_onboard_response)
+        save_onboard_response(Identifier.MQTT_MESSAGES_SENDER[Identifier.PATH], sender_onboard_response)
         self._enable_capabilities(onboard_response=sender_onboard_response, callback=self._on_message_callback)
 
-    @pytest.mark.skip(reason="Will fail unless the registration code is changed")
-    def test_create_message_recipient_with_pem(self):
+    #@pytest.mark.skip(reason="Will fail unless the registration code is changed")
+    def test_update_messages_recipient_with_pem(self):
         recipient_onboard_response = onboard_communication_unit(
-            uuid=Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.ID],
+            uuid=Identifier.MQTT_MESSAGES_RECIPIENT[Identifier.ID],
             _environment=QAEnvironment(),
-            registration_code="8a9440002c",
+            registration_code="4f4bac3b04",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.MQTT.value)
         )
-        save_onboard_response(Identifier.MQTT_MESSAGE_RECIPIENT[Identifier.PATH],
+        save_onboard_response(Identifier.MQTT_MESSAGES_RECIPIENT[Identifier.PATH],
                               recipient_onboard_response)
         self._enable_capabilities(onboard_response=recipient_onboard_response,
                                   callback=self._on_message_callback)

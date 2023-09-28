@@ -6,11 +6,11 @@ pyflakes==2.3.1
 pip~=21.1.1
 cryptography~=3.4.8
 py~=1.11.0
-setuptools~=56.0.0
+setuptools~=68.2.2
 pycparser~=2.20
 idna~=3.2
 urllib3~=1.26.7
-certifi~=2021.5.30
-requests~=2.26.0
+certifi~=2023.7.22
+requests~=2.31.0
 paho-mqtt~=1.5.1
 protobuf~=3.18.0

@@ -307,8 +307,6 @@ class TaskService(AbstractService):
         chunkcomponent.total = parameters.get_chunk_total()
         chunkcomponent.total_size = parameters.get_chunk_total_size()
 
-        print(chunkcomponent)
-
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),

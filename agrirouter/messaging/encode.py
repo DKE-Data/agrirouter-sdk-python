@@ -40,6 +40,8 @@ def encode_header(header_parameters: MessageHeaderParameters) -> RequestEnvelope
     request_envelope.timestamp.FromDatetime(now_as_utc_timestamp())
     if header_parameters.get_recipients() is not None:
         request_envelope.recipients.MergeFrom(header_parameters.get_recipients())
+    if header_parameters.get_chunk_component() is not None:
+        request_envelope.chunk_info.MergeFrom(header_parameters.get_chunk_component())
     if header_parameters.get_metadata() is not None:
         request_envelope.metadata.MergeFrom(header_parameters.get_metadata())
 

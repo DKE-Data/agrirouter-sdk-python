@@ -106,6 +106,7 @@ class TestQueryHeaderService(unittest.TestCase):
                 "Received message for the non checking callback, skipping message and continue to the tests afterwards: " + str(
                     msg.payload))
 
+
         return _inner_function
 
     def _callback_to_set_the_received_message_ids(self):
@@ -170,6 +171,7 @@ class TestQueryHeaderService(unittest.TestCase):
                                                         validity_period=max_validity_period(),
                                                         )
 
+        self.assertIsNotNone(self._received_messages)
         received_message_ids = [self._received_messages.header.message_id]
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
@@ -223,6 +225,7 @@ class TestQueryHeaderService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
+        self.assertIsNotNone(self._received_messages)
         message_for_message_ids = [self._received_messages.header.message_id]
 
         self._messaging_service_for_recipient = MqttMessagingService(

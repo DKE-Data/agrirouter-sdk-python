@@ -24,8 +24,8 @@ class TestSendDirectMessageService(unittest.TestCase):
     Test to send the message to a recipient
     The existing sender and recipient PEM onboard responses are read using OnboardIntegrationService
     """
-    _sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGES_SENDER[Identifier.PATH])
-    _recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGES_RECIPIENT[Identifier.PATH])
+    _sender = read_onboard_response(Identifier.MQTT_MESSAGES_SENDER[Identifier.PATH])
+    _recipient = read_onboard_response(Identifier.MQTT_MESSAGES_RECIPIENT[Identifier.PATH])
 
     _messaging_service_for_sender = None
     _messaging_service_for_recipient = None
@@ -40,11 +40,11 @@ class TestSendDirectMessageService(unittest.TestCase):
     def fixture(self):
         # Setup
         self._messaging_service_for_sender = MqttMessagingService(
-            onboarding_response=self._sender_onboard_response,
+            onboarding_response=self._sender,
             on_message_callback=self._callback_for_sender())
 
         self._messaging_service_for_recipient = MqttMessagingService(
-            onboarding_response=self._recipient_onboard_response,
+            onboarding_response=self._recipient,
             on_message_callback=self._callback_for_recipient())
 
         # Run the test
@@ -56,7 +56,7 @@ class TestSendDirectMessageService(unittest.TestCase):
 
         self._log.info("Deleting received messages from the feed to have a clean state: %s",
                        self._received_messages)
-        self.delete_all_messages_within_the_feed(onboard_response=self._recipient_onboard_response)
+        self.delete_all_messages_within_the_feed(onboard_response=self._recipient)
 
     def test_given_valid_message_content_when_sending_message_to_single_recipient_then_the_message_should_be_delivered(
             self):
@@ -67,14 +67,14 @@ class TestSendDirectMessageService(unittest.TestCase):
         """
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
-            self._sender_onboard_response.get_sensor_alternate_id())
+            self._sender.get_sensor_alternate_id())
 
         send_message_parameters = SendMessageParameters(
-            onboarding_response=self._sender_onboard_response,
+            onboarding_response=self._sender,
             technical_message_type=CapabilityType.IMG_PNG.value,
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
-            recipients=[self._recipient_onboard_response.get_sensor_alternate_id()],
+            recipients=[self._recipient.get_sensor_alternate_id()],
             base64_message_content=DataProvider.read_base64_encoded_image(),
             mode=RequestEnvelope.Mode.Value("DIRECT"))
 
@@ -84,11 +84,13 @@ class TestSendDirectMessageService(unittest.TestCase):
 
         if not self._callback_for_sender_processed:
             self._log.error(
-                "Either the callback for the sender was not processed in time or there was an error during the checks.")
+                "Either the callback for the sender was not processed "
+                "in time or there was an error during the checks.")
 
         if not self._callback_for_recipient_processed:
             self._log.error(
-                "Either the callback for the recipient was not processed in time or there was an error during the checks.")
+                "Either the callback for the recipient was not processed "
+                "in time or there was an error during the checks.")
 
         self.assertTrue(self._callback_for_sender_processed)
         self.assertTrue(self._callback_for_recipient_processed)
@@ -141,7 +143,7 @@ class TestSendDirectMessageService(unittest.TestCase):
         Delete all messages within the feed.
         """
         logging.getLogger(__name__).info(
-            f"Delete all messages within the feed for endpoint '{self._recipient_onboard_response.get_sensor_alternate_id()}'.")
+            f"Delete all messages within the feed for endpoint '{self._recipient.get_sensor_alternate_id()}'.")
         messaging_service = MqttMessagingService(
             onboarding_response=onboard_response,
             on_message_callback=self._callback_for_feed_delete())
@@ -153,7 +155,7 @@ class TestSendDirectMessageService(unittest.TestCase):
             onboarding_response=onboard_response,
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
-            senders=[self._sender_onboard_response.get_sensor_alternate_id()]
+            senders=[self._sender.get_sensor_alternate_id()]
         )
 
         feed_delete_service = FeedDeleteService(messaging_service)

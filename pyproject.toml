@@ -12,4 +12,4 @@ build-backend = "setuptools.build_meta"
 packages = ["agrirouter"]
 
 [tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
+dependencies = { file = ["requirements.txt"] }

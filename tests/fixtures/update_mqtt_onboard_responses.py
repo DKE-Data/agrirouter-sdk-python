@@ -43,7 +43,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
         )
         save_onboard_response(Identifier.MQTT_SENDER_PEM[Identifier.PATH], onboard_response)
 
-    #@pytest.mark.skip(reason="Will fail unless the registration code is changed")
+    @pytest.mark.skip(reason="Will fail unless the registration code is changed")
     def test_update_messages_sender_with_pem(self):
         sender_onboard_response = onboard_communication_unit(
             uuid=Identifier.MQTT_MESSAGES_SENDER[Identifier.ID],
@@ -55,7 +55,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
         save_onboard_response(Identifier.MQTT_MESSAGES_SENDER[Identifier.PATH], sender_onboard_response)
         self._enable_capabilities(onboard_response=sender_onboard_response, callback=self._on_message_callback)
 
-    #@pytest.mark.skip(reason="Will fail unless the registration code is changed")
+    @pytest.mark.skip(reason="Will fail unless the registration code is changed")
     def test_update_messages_recipient_with_pem(self):
         recipient_onboard_response = onboard_communication_unit(
             uuid=Identifier.MQTT_MESSAGES_RECIPIENT[Identifier.ID],

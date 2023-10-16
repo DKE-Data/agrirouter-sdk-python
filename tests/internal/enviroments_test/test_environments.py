@@ -40,7 +40,8 @@ class TestPE:
         response_type = "response_type"
         assert PE().get_secured_onboarding_authorization_url(
             APPLICATION_ID, response_type, "state", redirect_uri
-        ) == "https://goto.my-agrirouter.com/application/{application_id}/authorize?response_type={response_type}&state={state}".format(
+        ) == ("https://goto.my-agrirouter.com/application/{application_id}/"
+              "authorize?response_type={response_type}&state={state}").format(
             # noqa
             application_id=APPLICATION_ID,
             response_type=response_type,

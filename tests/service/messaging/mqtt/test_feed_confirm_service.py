@@ -101,8 +101,7 @@ class TestFeedConfirmService(unittest.TestCase):
         """
         self._log.info("Deleting all existing messages after the test run.")
 
-        self._messaging_service_for_recipient = MqttMessagingService(onboarding_response=onboard_response,
-                                                                     on_message_callback=self._callback_for_feed_delete())
+        self._messaging_service_for_recipient = MqttMessagingService(onboard_response, self._callback_for_feed_delete())
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             onboard_response.get_sensor_alternate_id())
@@ -207,8 +206,8 @@ class TestFeedConfirmService(unittest.TestCase):
             Non checking callback to ensure that the message is processed.
             """
             self._log.info(
-                "Received message for the non checking callback, skipping message and continue to the tests afterwards: " + str(
-                    msg.payload))
+                "Received message for the non checking callback, "
+                "skipping message and continue to the tests afterwards: " + str(msg.payload))
 
         return _inner_function
 

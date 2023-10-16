@@ -30,8 +30,7 @@ jobs:
           python -m pip install flake8 pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Lint with flake8
-        run: |
-          # stop the build if there are Python syntax errors, undefined names or other warnings
+        uses: |
           flake8 .
       - name: Test with pytest
         run: |

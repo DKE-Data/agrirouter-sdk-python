@@ -298,8 +298,8 @@ class TestFeedDeleteService(unittest.TestCase):
             Non checking callback to ensure that the message is processed.
             """
             self._log.info(
-                "Received message for the non checking callback, skipping message and continue to the tests afterwards: " + str(
-                    msg.payload))
+                "Received message for the non checking callback, "
+                "skipping message and continue to the tests afterwards: " + str(msg.payload))
 
         return _inner_function
 
@@ -354,8 +354,8 @@ class TestFeedDeleteService(unittest.TestCase):
             self._log.info(f"Feed delete details: {feed_delete_service_for_empty_result}")
             assert decoded_message.response_envelope.response_code == 204
             assert feed_delete_service_for_empty_result.messages[0].message_code == "VAL_000208"
-            assert feed_delete_service_for_empty_result.messages[
-                       0].message == "Feed does not contain any data to be deleted."
+            assert feed_delete_service_for_empty_result.messages[0].message == ("Feed does not contain "
+                                                                                "any data to be deleted.")
             self._callback_for_feed_delete_service_processed = True
 
         return _inner_function

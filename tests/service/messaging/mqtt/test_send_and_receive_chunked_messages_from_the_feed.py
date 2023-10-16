@@ -23,8 +23,8 @@ from tests.data.onboard_response_integration_service import read_onboard_respons
 
 
 class TestSendAndReceiveChunkedMessages(unittest.TestCase):
-    _recipient_onboard_response = None
-    _sender_onboard_response = None
+    _recipient = None
+    _sender = None
     _messaging_service_for_sender = None
     _messaging_service_for_recipient = None
     _callback_for_chunking_feed_header_query_processed = False
@@ -40,8 +40,8 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
     def fixture(self):
         # Setup
         self._log.debug("Setup for the test case.")
-        self._recipient_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGES_RECIPIENT[Identifier.PATH])
-        self._sender_onboard_response = read_onboard_response(Identifier.MQTT_MESSAGES_SENDER[Identifier.PATH])
+        self._recipient = read_onboard_response(Identifier.MQTT_MESSAGES_RECIPIENT[Identifier.PATH])
+        self._sender = read_onboard_response(Identifier.MQTT_MESSAGES_SENDER[Identifier.PATH])
 
         self._send_direct_chunked_message()
 
@@ -57,7 +57,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
 
         self._log.info("Deleting received messages from the feed to have a clean state: %s",
                        self._received_messages)
-        self._delete_messages_after_test_run(onboard_response=self._recipient_onboard_response)
+        self._delete_messages_after_test_run(onboard_response=self._recipient)
 
     def _delete_messages_after_test_run(self, onboard_response: OnboardResponse):
         """
@@ -75,7 +75,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
             onboarding_response=onboard_response,
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
-            senders=[self._sender_onboard_response.get_sensor_alternate_id()]
+            senders=[self._sender.get_sensor_alternate_id()]
         )
 
         delete_message_service = FeedDeleteService(self._feed_delete_messaging_service)
@@ -93,21 +93,21 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         self._log.info("Testing send message service with the specified recipient")
 
         self._messaging_service_for_sender = MqttMessagingService(
-            onboarding_response=self._sender_onboard_response,
+            onboarding_response=self._sender,
             on_message_callback=self._non_checking_callback())
 
         self._messaging_service_for_recipient = MqttMessagingService(
-            onboarding_response=self._recipient_onboard_response,
+            onboarding_response=self._recipient,
             on_message_callback=self._callback_to_set_the_received_message_ids())
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
-            self._recipient_onboard_response.get_sensor_alternate_id())
+            self._recipient.get_sensor_alternate_id())
 
         message_header_parameters = MessageHeaderParameters(application_message_id=new_uuid(),
                                                             application_message_seq_no=current_sequence_number,
                                                             technical_message_type=CapabilityType.IMG_BMP.value,
                                                             recipients=[
-                                                                self._recipient_onboard_response.get_sensor_alternate_id()],
+                                                                self._recipient.get_sensor_alternate_id()],
                                                             mode=RequestEnvelope.Mode.Value("DIRECT"))
 
         message_payload_parameters = MessagePayloadParameters(type_url=TechnicalMessageType.EMPTY.value,
@@ -115,7 +115,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
 
         message_parameter_tuples = chunk_and_base64encode_each_chunk(header_parameters=message_header_parameters,
                                                                      payload_parameters=message_payload_parameters,
-                                                                     onboarding_response=self._sender_onboard_response)
+                                                                     onboarding_response=self._sender)
 
         for _tuple in message_parameter_tuples:
             self._chunked_message_to_verify.append(_tuple.message_payload_parameters.get_value())
@@ -124,11 +124,11 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         encoded_chunked_messages = encode_chunks_message(message_parameter_tuple=message_parameter_tuples)
 
         chunk_message_parameters = ChunkedMessageParameters(
-            onboarding_response=self._sender_onboard_response,
+            onboarding_response=self._sender,
             technical_message_type=CapabilityType.IMG_BMP.value,
             application_message_id=new_uuid(),
             application_message_seq_no=current_sequence_number,
-            recipients=[self._recipient_onboard_response.get_sensor_alternate_id()],
+            recipients=[self._recipient.get_sensor_alternate_id()],
             encoded_chunked_messages=encoded_chunked_messages)
 
         send_chunked_message_service = SendChunkedMessageService(messaging_service=self._messaging_service_for_sender)
@@ -138,24 +138,24 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         self._messaging_service_for_sender.client.disconnect()
         self._messaging_service_for_recipient.client.disconnect()
 
-    def test_receive_chunked_messages_from_feed_of_an_endpoint_when_sender_id_is_specified_should_return_the_header_for_this_sender_id(
+    def test_receive_chunked_msgs_from_feed_when_sender_id_is_specified_should_return_the_header_for_this_sender_id(
             self):
         """
         Testing query header service when the validity period is specified
         """
         self._log.info("Testing header query service with specific sender id")
         current_sequence_number = SequenceNumberService.next_seq_nr(
-            self._recipient_onboard_response.get_sensor_alternate_id())
+            self._recipient.get_sensor_alternate_id())
 
         self._messaging_service_for_specified_sender_id = MqttMessagingService(
-            onboarding_response=self._recipient_onboard_response,
+            onboarding_response=self._recipient,
             on_message_callback=self._on_query_header_service_callback(self._received_messages))
 
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
-                                                        onboarding_response=self._recipient_onboard_response,
+                                                        onboarding_response=self._recipient,
                                                         senders=[
-                                                            self._sender_onboard_response.get_sensor_alternate_id()],
+                                                            self._sender.get_sensor_alternate_id()],
                                                         )
 
         query_header_service = QueryHeaderService(
@@ -176,8 +176,8 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
             Non checking callback to ensure that the message is processed.
             """
             self._log.info(
-                "Received message for the non checking callback, skipping message and continue to the tests afterwards: " + str(
-                    msg.payload))
+                "Received message for the non checking callback, "
+                "skipping message and continue to the tests afterwards: " + str(msg.payload))
 
         return _inner_function
 

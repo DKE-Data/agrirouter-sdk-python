@@ -119,7 +119,8 @@ class SendMessageParameters(MessageParameters):
         type_url: Url needed for MessagePayloadParameters
         chunk_size: Define the size of the chunks
         application_message_id: The application message ID
-        application_message_seq_no: Sequence number while sending the messages to the agrirouter with SequenceNumberService
+        application_message_seq_no: Sequence number while sending the messages
+        to the agrirouter with SequenceNumberService
         """
 
         super(SendMessageParameters, self).__init__(application_message_id=application_message_id,
@@ -199,7 +200,8 @@ class ChunkedMessageParameters(MessageParameters):
         technical_message_type: TechnicalMessageType class to be sent
         recipients: List of recipients
         application_message_id: The application message ID
-        application_message_seq_no: Sequence number while sending the messages to the agrirouter with SequenceNumberService
+        application_message_seq_no: Sequence number while sending the messages
+        to the agrirouter with SequenceNumberService
         encoded_chunked_messages: List of encoded chunked messages
         """
 

@@ -42,7 +42,7 @@ class TestListEndpointsService(unittest.TestCase):
         """
         Testing list endpoints service
         """
-        self._log.info(f"Starting test for list endpoints service to return unfiltered list of endpoints")
+        self._log.info("Starting test for list endpoints service to return unfiltered list of endpoints")
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
@@ -74,7 +74,7 @@ class TestListEndpointsService(unittest.TestCase):
         """
         Testing list endpoints service
         """
-        self._log.info(f"Starting test for list endpoints service to return filtered list of endpoints")
+        self._log.info("Starting test for list endpoints service to return filtered list of endpoints")
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
@@ -102,12 +102,12 @@ class TestListEndpointsService(unittest.TestCase):
 
         self._messaging_service_for_recipient.client.disconnect()
 
-    def test_list_endpoints_service_without_filters_should_return_all_the_available_endpoints_with_all_possible_message_types(
+    def test_list_endpoints_without_filters_should_return_all_the_available_endpoints_with_all_possible_message_types(
             self):
         """
         Testing list endpoints service
         """
-        self._log.info(f"Starting test for list endpoints service to return all endpoints")
+        self._log.info("Starting test for list endpoints service to return all endpoints")
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())

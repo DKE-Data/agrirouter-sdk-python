@@ -1,11 +1,8 @@
-.
 pytest==6.2.5
 black==21.9b0
 flake8==3.9.2
 pyflakes==2.3.1
-pip~=21.1.1
 cryptography~=3.4.8
-py~=1.11.0
 setuptools~=68.2.2
 pycparser~=2.20
 idna~=3.2

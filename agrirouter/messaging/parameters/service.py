@@ -2,6 +2,7 @@ from copy import deepcopy
 from typing import List
 
 from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
+from agrirouter.generated.commons.message_pb2 import Metadata
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
@@ -20,6 +21,7 @@ class MessageHeaderParameters(Parameters):
                  recipients: list = None,
                  chunk_component: ChunkComponent = None,
                  application_message_id: str = None,
+                 metadata: Metadata = None
                  ):
         super(MessageHeaderParameters, self).__init__(
             application_message_seq_no=application_message_seq_no,
@@ -31,6 +33,7 @@ class MessageHeaderParameters(Parameters):
         self.mode = mode
         self.recipients = recipients
         self.chunk_component = chunk_component
+        self.metadata = metadata
 
     def get_technical_message_type(self) -> str:
         return self.technical_message_type
@@ -43,6 +46,9 @@ class MessageHeaderParameters(Parameters):
 
     def get_chunk_component(self) -> ChunkComponent:
         return self.chunk_component
+
+    def get_metadata(self) -> Metadata:
+        return self.metadata
 
 
 class MessagePayloadParameters:
@@ -434,3 +440,155 @@ class SubscriptionParameters(MessageParameters):
 
     def extend_direction(self, subscription_items: List[Subscription.MessageTypeSubscriptionItem]) -> None:
         self.subscription_items.extend(subscription_items)
+
+
+class ImageParameters(MessageParameters):
+    def __init__(self,
+                 *,
+                 image_encoded: bytes,
+                 image_filename: str,
+                 application_message_seq_no: int,
+                 recipients: list,
+                 application_message_id: str,
+                 team_set_context_id: str = None,
+                 onboarding_response: BaseOnboardingResonse
+                 ):
+        self.image_encoded = image_encoded
+        self.image_filename = image_filename
+        self.recipients = recipients
+        super(ImageParameters, self).__init__(
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
+            onboarding_response=onboarding_response
+        )
+
+    def get_image_encoded(self):
+        return self.image_encoded
+
+    def get_image_filename(self):
+        return self.image_filename
+
+    def get_recipients(self):
+        return self.recipients
+
+    def set_image_encoded(self, image_encoded):
+        self.image_encoded = image_encoded
+
+    def set_image_filename(self, image_filename):
+        self.image_filename = image_filename
+
+    def set_recipients(self, recipients):
+        self.recipients = recipients
+
+
+class TaskParameters(MessageParameters):
+    def __init__(self,
+                 *,
+                 task_encoded: bytes,
+                 task_filename: str,
+                 chunk_context_id: str,
+                 chunk_current: int,
+                 chunk_total: int,
+                 chunk_total_size: int,
+                 application_message_seq_no: int,
+                 recipients: list,
+                 application_message_id: str,
+                 team_set_context_id: str = None,
+                 onboarding_response: BaseOnboardingResonse
+                 ):
+        self.task_encoded = task_encoded
+        self.task_filename = task_filename
+        self.recipients = recipients
+        self.chunk_context_id = chunk_context_id
+        self.chunk_current = chunk_current
+        self.chunk_total = chunk_total
+        self.chunk_total_size = chunk_total_size
+        super(TaskParameters, self).__init__(
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
+            onboarding_response=onboarding_response
+        )
+
+    def get_task_encoded(self):
+        return self.task_encoded
+
+    def get_task_filename(self):
+        return self.task_filename
+    
+    def get_chunk_context_id(self):
+        return self.chunk_context_id
+    
+    def get_chunk_current(self):
+        return self.chunk_current
+    
+    def get_chunk_total(self):
+        return self.chunk_total
+    
+    def get_chunk_total_size(self):
+        return self.chunk_total_size
+
+    def get_recipients(self):
+        return self.recipients
+
+    def set_task_encoded(self, task_encoded):
+        self.task_encoded = task_encoded
+
+    def set_task_filename(self, task_filename):
+        self.task_filename = task_filename
+    
+    def set_chunk_context_id(self, chunk_context_id):
+        self.chunk_context_id = chunk_context_id
+    
+    def set_chunk_current(self, chunk_current):
+        self.chunk_current = chunk_current
+    
+    def set_chunk_total(self, chunk_total):
+        self.chunk_total = chunk_total
+    
+    def set_chunk_total_size(self, chunk_total_size):
+        self.chunk_total_size = chunk_total_size
+
+    def set_recipients(self, recipients):
+        self.recipients = recipients
+
+
+class EfdiParameters(MessageParameters):
+    def __init__(self,
+                 *,
+                 efdi: str,
+                 efdi_filename: str = None,
+                 application_message_seq_no: int,
+                 recipients: list = None,
+                 application_message_id: str,
+                 team_set_context_id: str = None,
+                 onboarding_response: BaseOnboardingResonse
+                 ):
+        self.recipients = recipients
+        self.efdi = efdi
+        self.efdi_filename = efdi_filename
+        super(EfdiParameters, self).__init__(
+            application_message_seq_no=application_message_seq_no,
+            application_message_id=application_message_id,
+            team_set_context_id=team_set_context_id,
+            onboarding_response=onboarding_response
+        )
+
+    def get_efdi(self):
+        return self.efdi
+
+    def get_recipients(self):
+        return self.recipients
+
+    def get_efdi_filename(self):
+        return self.efdi_filename
+
+    def set_efdi(self, efdi):
+        self.efdi = efdi
+
+    def set_recipients(self, recipients):
+        self.recipients = recipients
+
+    def set_efdi_filename(self, efdi_filename):
+        self.efdi_filename = efdi_filename

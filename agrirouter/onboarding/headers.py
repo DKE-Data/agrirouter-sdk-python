@@ -20,7 +20,7 @@ class SoftwareOnboardingHeader:
         header = dict()
         header["Authorization"] = f"Bearer {reg_code}"
         header["Content-Type"] = content_type
-        #header["X-Agrirouter-ApplicationId"] = application_id
-        #header["X-Agrirouter-Signature"] = signature if signature else ""
+        # header["X-Agrirouter-ApplicationId"] = application_id
+        # header["X-Agrirouter-Signature"] = signature if signature else ""
 
         self.params = header

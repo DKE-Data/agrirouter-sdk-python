@@ -3,10 +3,10 @@ import json
 from typing import Union
 from urllib.parse import unquote
 
-from cryptography.exceptions import InvalidSignature
+#from cryptography.exceptions import InvalidSignature
 
 from agrirouter.auth.dto import AuthorizationToken, AuthorizationResultUrl
-from agrirouter.onboarding.signature import verify_signature
+#from agrirouter.onboarding.signature import verify_signature
 
 
 class AuthResponse:
@@ -34,7 +34,7 @@ class AuthResponse:
 
         return self._is_valid
 
-    def verify(self, public_key) -> None:
+#    def verify(self, public_key) -> None:
         """
         Validates signature according to docs:
         https://docs.my-agrirouter.com/agrirouter-interface-documentation/latest/integration/authorization.html#analyse-result
@@ -44,18 +44,18 @@ class AuthResponse:
 
         :return:
         """
-        encoded_data = self.state + self.token
-        unquoted_signature = unquote(self.signature)
-        encoded_signature = base64.b64decode(unquoted_signature.encode("utf-8"))
+#        encoded_data = self.state + self.token
+#        unquoted_signature = unquote(self.signature)
+#        encoded_signature = base64.b64decode(unquoted_signature.encode("utf-8"))
 
-        self._is_valid = True
-        try:
-            verify_signature(encoded_data, encoded_signature, public_key)
-        except InvalidSignature:
-            print("Response is invalid: invalid signature.")
-            self._is_valid = False
-        finally:
-            self._was_verified = True
+#        self._is_valid = True
+#        try:
+#            verify_signature(encoded_data, encoded_signature, public_key)
+#        except InvalidSignature:
+#            print("Response is invalid: invalid signature.")
+#            self._is_valid = False
+#        finally:
+#            self._was_verified = True
 
     @staticmethod
     def decode_token(token: Union[str, bytes]) -> AuthorizationToken:

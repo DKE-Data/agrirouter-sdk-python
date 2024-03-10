@@ -30,3 +30,4 @@ def verify_signature(request_body: str, signature: bytes, public_key: str) -> No
         padding.PKCS1v15(),
         hashes.SHA256()
     )
+

@@ -58,6 +58,7 @@ class MqttMessagingService(AbstractMessagingClient):
             onboard_response=onboarding_response,
             client_id=onboarding_response.get_connection_criteria().get_client_id(),
             on_message_callback=on_message_callback,
+            clean_session=True
         )
         if client_async:
             self.client.connect_async(

@@ -54,7 +54,7 @@ class VerificationResponse(BaseOnboardingResponse):
 
 class OnboardResponse(BaseOnboardingResponse):
     """
-    Response from onboarding request used for Farming Software or Telemetry Platform
+    Response from onboarding request used for CU
     """
 
     DEVICE_ALTERNATE_ID = "deviceAlternateId"
@@ -65,7 +65,7 @@ class OnboardResponse(BaseOnboardingResponse):
     ERROR = "error"
 
     def __init__(self, http_response: Response = None):
-        if http_response:
+        if http_response != None:
             super(OnboardResponse, self).__init__(http_response)
             response_body = http_response.json()
         else:

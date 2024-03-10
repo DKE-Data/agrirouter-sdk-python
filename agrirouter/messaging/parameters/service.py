@@ -450,7 +450,7 @@ class ImageParameters(MessageParameters):
                  recipients: list,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse
+                 onboarding_response: BaseOnboardingResponse
                  ):
         self.image_encoded = image_encoded
         self.image_filename = image_filename
@@ -515,16 +515,16 @@ class TaskParameters(MessageParameters):
 
     def get_task_filename(self):
         return self.task_filename
-    
+
     def get_chunk_context_id(self):
         return self.chunk_context_id
-    
+
     def get_chunk_current(self):
         return self.chunk_current
-    
+
     def get_chunk_total(self):
         return self.chunk_total
-    
+
     def get_chunk_total_size(self):
         return self.chunk_total_size
 
@@ -536,16 +536,16 @@ class TaskParameters(MessageParameters):
 
     def set_task_filename(self, task_filename):
         self.task_filename = task_filename
-    
+
     def set_chunk_context_id(self, chunk_context_id):
         self.chunk_context_id = chunk_context_id
-    
+
     def set_chunk_current(self, chunk_current):
         self.chunk_current = chunk_current
-    
+
     def set_chunk_total(self, chunk_total):
         self.chunk_total = chunk_total
-    
+
     def set_chunk_total_size(self, chunk_total_size):
         self.chunk_total_size = chunk_total_size
 

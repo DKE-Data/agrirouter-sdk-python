@@ -14,7 +14,7 @@ class OnboardParameters:
                  utc_timestamp: object = None,
                  content_type: object = ContentTypes.APPLICATION_JSON.value,
                  certificate_type: object = CertificateTypes.PEM.value,
-                 ) -> object:
+                 ):
         self.id_ = id_
         self.application_id = application_id
         self.content_type = content_type

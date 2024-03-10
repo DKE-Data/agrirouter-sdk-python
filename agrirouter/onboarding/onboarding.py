@@ -2,7 +2,6 @@ import requests
 
 from agrirouter.environments.environmental_services import EnvironmentalService
 from agrirouter.onboarding.exceptions import OnboardException
-# from agrirouter.onboarding.exceptions import RequestNotSigned, OnboardException
 from agrirouter.onboarding.headers import SoftwareOnboardingHeader
 from agrirouter.onboarding.parameters import OnboardParameters
 from agrirouter.onboarding.request import OnboardRequest
@@ -13,8 +12,8 @@ from agrirouter.onboarding.response import VerificationResponse, OnboardResponse
 class SecuredOnboardingService(EnvironmentalService):
 
     def __init__(self, *args, **kwargs):
-        # self._public_key = kwargs.pop("public_key")
-        # self._private_key = kwargs.pop("private_key")
+        self._public_key = kwargs.pop("public_key")
+        self._private_key = kwargs.pop("private_key")
         super(SecuredOnboardingService, self).__init__(*args, **kwargs)
 
     def _create_request(self, params: OnboardParameters) -> OnboardRequest:

@@ -421,7 +421,7 @@ class EfdiTimelogService(AbstractService):
     @staticmethod
     def encode(parameters: EfdiParameters) -> EncodedMessage:
 
-        if parameters.get_efdi_filename() != None:
+        if parameters.get_efdi_filename() is not None:
             metadata = Metadata()
             metadata.file_name = parameters.get_efdi_filename()
         else:
@@ -455,7 +455,7 @@ class EfdiTimelogPublishService(AbstractService):
     @staticmethod
     def encode(parameters: EfdiParameters) -> EncodedMessage:
 
-        if parameters.get_efdi_filename() != None:
+        if parameters.get_efdi_filename() is not None:
             metadata = Metadata()
             metadata.file_name = parameters.get_efdi_filename()
         else:
@@ -488,7 +488,7 @@ class EfdiDeviceDscService(AbstractService):
     @staticmethod
     def encode(parameters: EfdiParameters) -> EncodedMessage:
 
-        if parameters.get_efdi_filename() != None:
+        if parameters.get_efdi_filename() is not None:
             metadata = Metadata()
             metadata.file_name = parameters.get_efdi_filename()
         else:

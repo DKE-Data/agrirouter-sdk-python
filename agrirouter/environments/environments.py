@@ -1,4 +1,4 @@
-from agrirouter.environments.keys import AR_QA_PUBLIC_KEY, AR_PROD_PUBLIC_KEY
+from agrirouter.environments.keys import AR_QA_PUBLIC_KEY
 
 
 class BaseEnvironment:
@@ -58,7 +58,7 @@ class ProductionEnvironment(BaseEnvironment):
     _API_PREFIX = "/api/v1.0"
     _REGISTRATION_SERVICE_URL = "https://onboard.my-agrirouter.com"
 
-    #AR_PUBLIC_KEY = AR_PROD_PUBLIC_KEY
+    # AR_PUBLIC_KEY = AR_PROD_PUBLIC_KEY
 
 
 class QAEnvironment(BaseEnvironment):

@@ -494,7 +494,7 @@ class TaskParameters(MessageParameters):
                  recipients: list,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse
+                 onboarding_response: BaseOnboardingResponse
                  ):
         self.task_encoded = task_encoded
         self.task_filename = task_filename
@@ -562,7 +562,7 @@ class EfdiParameters(MessageParameters):
                  recipients: list = None,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse
+                 onboarding_response: BaseOnboardingResponse
                  ):
         self.recipients = recipients
         self.efdi = efdi

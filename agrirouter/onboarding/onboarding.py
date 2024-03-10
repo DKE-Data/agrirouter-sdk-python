@@ -1,7 +1,8 @@
 import requests
 
 from agrirouter.environments.environmental_services import EnvironmentalService
-#from agrirouter.onboarding.exceptions import RequestNotSigned, OnboardException
+from agrirouter.onboarding.exceptions import OnboardException
+# from agrirouter.onboarding.exceptions import RequestNotSigned, OnboardException
 from agrirouter.onboarding.headers import SoftwareOnboardingHeader
 from agrirouter.onboarding.parameters import OnboardParameters
 from agrirouter.onboarding.request import OnboardRequest
@@ -12,8 +13,8 @@ from agrirouter.onboarding.response import VerificationResponse, OnboardResponse
 class SecuredOnboardingService(EnvironmentalService):
 
     def __init__(self, *args, **kwargs):
-        #self._public_key = kwargs.pop("public_key")
-        #self._private_key = kwargs.pop("private_key")
+        # self._public_key = kwargs.pop("public_key")
+        # self._private_key = kwargs.pop("private_key")
         super(SecuredOnboardingService, self).__init__(*args, **kwargs)
 
     def _create_request(self, params: OnboardParameters) -> OnboardRequest:
@@ -27,14 +28,14 @@ class SecuredOnboardingService(EnvironmentalService):
 
     def _perform_request(self, params: OnboardParameters, url: str) -> requests.Response:
         request = OnboardRequest.from_onboardparameters(params)
-        #request.sign(self._private_key, self._public_key)
-        #if request.is_signed:
+        # request.sign(self._private_key, self._public_key)
+        # if request.is_signed:
         #    return requests.post(
         #        url=url,
         #        data=request.get_body_content(),
         #        headers=request.get_header()
         #    )
-        #raise RequestNotSigned
+        # raise RequestNotSigned
         return requests.post(url=request.get_url(), data=request.get_body_content(), headers=request.get_header())
 
     def verify(self, params: OnboardParameters) -> VerificationResponse:

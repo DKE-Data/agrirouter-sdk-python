@@ -2,7 +2,7 @@
 import pytest
 
 from agrirouter.auth.dto import AuthorizationToken
-from agrirouter.api.exceptions import WrongFieldError
+from agrirouter.api.exceptions import WrongField
 
 
 class TestAuthorizationToken:
@@ -52,7 +52,7 @@ class TestAuthorizationToken:
         expires = "01-01-2021"
         test_object = AuthorizationToken()
 
-        with pytest.raises(WrongFieldError):
+        with pytest.raises(WrongField):
             test_object.json_deserialize({"regcode": regcode, "expires": expires, "wrong_key": account})
 
     def test_json_deserialize_from_valid_json(self):
@@ -73,5 +73,5 @@ class TestAuthorizationToken:
         json_data = '{"account": "account", "regcode": "regcode", "wrong_key": "01-01-2021"}'
         test_object = AuthorizationToken()
 
-        with pytest.raises(WrongFieldError):
+        with pytest.raises(WrongField):
             assert test_object.json_deserialize(json_data)

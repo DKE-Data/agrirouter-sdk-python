@@ -23,3 +23,10 @@ class ContentTypes(BaseEnum):
 class Environments(BaseEnum):
     PRODUCTION: str = "production"
     QA: str = "qa"
+
+
+class RequestHeaders(BaseEnum):
+    AUTHORIZATION: str = "Authorization"
+    X_AGRIROUTER_SIGNATURE: str = "X-Agrirouter-Signature"
+    CONTENT_TYPE: str = "Content-Type"
+    X_AGRIROUTER_APPLICATION_ID: str = "X-Agrirouter-ApplicationId"

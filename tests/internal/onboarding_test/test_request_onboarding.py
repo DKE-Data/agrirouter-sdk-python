@@ -7,7 +7,6 @@ from tests.common.constants import APPLICATION_ID, PUBLIC_KEY, PRIVATE_KEY, ENV
 
 class TestBaseOnboardingRequest:
     reg_code = "8eloz190fd"
-    content_type = "json"
     certification_version_id = "13"
     utc_timestamp = "+03:00"
     time_zone = "01-01-2021"
@@ -15,7 +14,6 @@ class TestBaseOnboardingRequest:
     params = OnboardParameters(
         id_=1,
         application_id=APPLICATION_ID,
-        content_type=content_type,
         certification_version_id=certification_version_id,
         gateway_id=Gateways.MQTT.value,
         certificate_type=CertificateTypes.PEM.value,
@@ -26,14 +24,13 @@ class TestBaseOnboardingRequest:
     onboarding = SecuredOnboardingService(
         env=ENV, public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
     )
-    object = onboarding._create_request(params)
+    request = onboarding._create_request(params)
 
     def test_get_data(self):
-        assert self.object.get_data()["applicationId"] == APPLICATION_ID
-        assert (self.object.get_data()["certificateType"] == CertificateTypes.PEM.value)
-        assert (self.object.get_data()["certificateType"] == CertificateTypes.PEM.value)
+        assert self.request.get_data()["applicationId"] == APPLICATION_ID
+        assert (self.request.get_data()["certificateType"] == CertificateTypes.PEM.value)
+        assert (self.request.get_data()["certificateType"] == CertificateTypes.PEM.value)
 
     def test_get_header(self):
-        assert (self.object.get_header()["Authorization"] == "Bearer " + self.reg_code)
-        assert self.object.get_header()["Content-Type"] == self.content_type
-        assert (self.object.get_header()["X-Agrirouter-ApplicationId"] == APPLICATION_ID)
+        assert (self.request.get_header()["Authorization"] == "Bearer " + self.reg_code)
+        assert (self.request.get_header()["X-Agrirouter-ApplicationId"] == APPLICATION_ID)

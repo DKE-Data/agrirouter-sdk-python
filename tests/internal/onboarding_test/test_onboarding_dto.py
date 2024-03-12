@@ -1,7 +1,7 @@
 """Tests agrirouter/onboarding/dto.py"""
 import pytest
 
-from agrirouter.api.exceptions import WrongFieldError
+from agrirouter.api.exceptions import WrongField
 from agrirouter.onboarding.dto import ConnectionCriteria, Authentication, ErrorResponse
 
 
@@ -32,7 +32,7 @@ class TestConnectionCriteria:
     def test_json_deserialize_from_invalid_dict(self):
         test_object = ConnectionCriteria()
 
-        with pytest.raises(WrongFieldError):
+        with pytest.raises(WrongField):
             test_object.json_deserialize({"clientId": "1", "commands": "commands", "wrong_key": "localhost"})
 
     def test_json_deserialize_from_valid_json(self):
@@ -60,7 +60,7 @@ class TestConnectionCriteria:
         json_data = '{"client_id": "1", "commands": "commands", "wrong_key": "localhost"}'
         test_object = ConnectionCriteria()
 
-        with pytest.raises(WrongFieldError):
+        with pytest.raises(WrongField):
             assert test_object.json_deserialize(json_data)
 
     def test_json_serialize(self):
@@ -127,7 +127,7 @@ class TestAuthentication:
         assert test_object_2.secret == secret
         assert test_object_2.certificate is None
 
-        with pytest.raises(WrongFieldError):
+        with pytest.raises(WrongField):
             assert test_object_2.json_deserialize({"wrong_key": certificate})
 
     def test_json_deserialize_from_valid_dict(self):
@@ -170,7 +170,7 @@ class TestAuthentication:
     def test_json_deserialize_from_invalid_dict(self):
         test_object = Authentication()
 
-        with pytest.raises(WrongFieldError):
+        with pytest.raises(WrongField):
             test_object.json_deserialize({"type": "type", "secret": "secret", "wrong_key": "certificate"})
 
     def test_json_deserialize_from_valid_json(self):
@@ -192,7 +192,7 @@ class TestAuthentication:
         json_data = '{"type": "type", "secret": "secret", "wrong_key": "certificate"}'
         test_object = ConnectionCriteria()
 
-        with pytest.raises(WrongFieldError):
+        with pytest.raises(WrongField):
             assert test_object.json_deserialize(json_data)
 
     def test_json_serialize(self):
@@ -236,7 +236,7 @@ class TestErrorResponse:
         data = {"code": "401", "message": "message", "wrong_field": "target"}
         test_object = ErrorResponse()
 
-        with pytest.raises(WrongFieldError):
+        with pytest.raises(WrongField):
             assert test_object.json_deserialize(data)
 
     def test_json_deserialize_from_valid_json(self):
@@ -259,7 +259,7 @@ class TestErrorResponse:
         json_data = '{"code": "401", "message": "message", "wrong_field": "target"}'
         test_object = ErrorResponse()
 
-        with pytest.raises(WrongFieldError):
+        with pytest.raises(WrongField):
             assert test_object.json_deserialize(json_data)
 
     def test_json_serialize(self):

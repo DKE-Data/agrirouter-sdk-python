@@ -3,7 +3,7 @@ from typing import Union
 
 from requests import Response
 
-from agrirouter.api.exceptions import WrongFieldError
+from agrirouter.api.exceptions import WrongField
 from agrirouter.onboarding.dto import ErrorResponse, ConnectionCriteria, Authentication
 
 
@@ -164,7 +164,7 @@ class OnboardResponse(BaseOnboardingResponse):
                 error_response.json_deserialize(value)
                 self.error = error_response
             else:
-                raise WrongFieldError(f"Unknown field `{key}` for {self.__class__}")
+                raise WrongField(f"Unknown field `{key}` for {self.__class__}")
 
     def __str__(self):
         return str(self.json_serialize())

@@ -1,7 +1,7 @@
 import json
 from typing import Union, Dict
 
-from agrirouter.api.exceptions import WrongFieldError
+from agrirouter.api.exceptions import WrongField
 from agrirouter.utils.utc_time_util import now_as_utc_str
 
 
@@ -57,7 +57,7 @@ class Command:
             if key == self.MESSAGE:
                 self.message = value
             else:
-                raise WrongFieldError(f"Unknown field `{key}` for {self.__class__}")
+                raise WrongField(f"Unknown field `{key}` for {self.__class__}")
 
     def get_message(self) -> str:
         return self.message
@@ -92,7 +92,7 @@ class OutboxMessage:
                 command.json_deserialize(value)
                 self.command = command
             else:
-                raise WrongFieldError(f"Unknown field `{key}` for {self.__class__}")
+                raise WrongField(f"Unknown field `{key}` for {self.__class__}")
 
     def get_capability_alternate_id(self) -> str:
         return self.capability_alternate_id

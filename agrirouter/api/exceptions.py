@@ -18,19 +18,19 @@ class InvalidEnvironmentSetup(AgrirouterBaseException):
                "Please use environments.enums.Environments enum for configure environment properly"
 
 
-class TypeUrlNotFoundError(AgrirouterBaseException):
+class TypeUrlNotFound(AgrirouterBaseException):
     _message = "Given type url not found"
 
 
-class WrongFieldError(AgrirouterBaseException):
+class WrongField(AgrirouterBaseException):
     _message = "Unknown field"
 
 
-class DecodeMessageException(AgrirouterBaseException):
+class CanNotDecodeMessage(AgrirouterBaseException):
     _message = "Can't decode message"
 
 
-class OutboxException(AgrirouterBaseException):
+class CanNotFetchOutboxMessage(AgrirouterBaseException):
     _message = "Can't fetch outbox message"
 
 
@@ -44,7 +44,7 @@ class WrongGateWayType(AgrirouterBaseException):
     _message = "Wrong Gate Way Id. Use onboarding.enums.GateWays values instead."
 
 
-class RequestNotSignedException(AgrirouterBaseException):
+class RequestNotSigned(AgrirouterBaseException):
     """ Exception if request is not signed correctly. """
     _message = """
     Request does not contain signature header. Please sign the request with request.sign() method.\n
@@ -58,6 +58,11 @@ class BadMessagingResult(AgrirouterBaseException):
     _message = "Messaging request failed"
 
 
-class OnboardException(AgrirouterBaseException):
+class UnexpectedErrorDuringOnboarding(AgrirouterBaseException):
     """ Exception if onboarding failed (most likely in case of an unexpected error). """
     _message = "Unexpected error during onboarding."
+
+
+class MissingRegistrationCode(AgrirouterBaseException):
+    """ Exception if registration code is missing. """
+    _message = "Registration code is required"

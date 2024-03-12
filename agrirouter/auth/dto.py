@@ -1,7 +1,7 @@
 import json
 from typing import Union
 
-from agrirouter.api.exceptions import WrongFieldError
+from agrirouter.api.exceptions import WrongField
 
 
 class AuthorizationToken:
@@ -29,7 +29,7 @@ class AuthorizationToken:
             elif key == self.EXPIRES:
                 self.expires = value
             else:
-                raise WrongFieldError(f"Unknown field {key} for AuthorizationToken class")
+                raise WrongField(f"Unknown field {key} for AuthorizationToken class")
 
     def get_account(self) -> str:
         return self.account

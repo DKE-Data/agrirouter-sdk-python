@@ -1,5 +1,5 @@
 from agrirouter.messaging.clients.http import HttpClient
-from agrirouter.api.exceptions import OutboxException
+from agrirouter.api.exceptions import CanNotFetchOutboxMessage
 from agrirouter.messaging.result import OutboxResponse
 
 
@@ -16,6 +16,6 @@ class FetchMessageService:
             response_body = response.read()
             outbox_response.json_deserialize(response_body)
         else:
-            raise OutboxException(f"Could not fetch messages from outbox. Status code was {response.status}")
+            raise CanNotFetchOutboxMessage(f"Could not fetch messages from outbox. Status code was {response.status}")
 
         return outbox_response

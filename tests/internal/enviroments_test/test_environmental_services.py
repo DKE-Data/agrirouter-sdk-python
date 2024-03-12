@@ -3,7 +3,7 @@
 import pytest
 
 from agrirouter.environments.environmental_services import EnvironmentalService
-from agrirouter.environments.exceptions import InvalidEnvironmentSetup
+from agrirouter.api.exceptions import InvalidEnvironmentSetup
 from tests.common.constants import ENV
 
 

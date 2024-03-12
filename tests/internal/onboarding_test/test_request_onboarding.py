@@ -24,7 +24,7 @@ class TestBaseOnboardingRequest:
         reg_code=reg_code,
     )
     onboarding = SecuredOnboardingService(
-        public_key=PUBLIC_KEY, private_key=PRIVATE_KEY, env=ENV
+        env=ENV, public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
     )
     object = onboarding._create_request(params)
 

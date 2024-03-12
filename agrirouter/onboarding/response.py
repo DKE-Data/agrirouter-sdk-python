@@ -3,7 +3,7 @@ from typing import Union
 
 from requests import Response
 
-from agrirouter.messaging.exceptions import WrongFieldError
+from agrirouter.api.exceptions import WrongFieldError
 from agrirouter.onboarding.dto import ErrorResponse, ConnectionCriteria, Authentication
 
 

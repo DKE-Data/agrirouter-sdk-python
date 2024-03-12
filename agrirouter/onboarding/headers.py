@@ -1,4 +1,4 @@
-from agrirouter.constants.media_types import ContentTypes
+from agrirouter.api.enums import ContentTypes
 
 
 class SoftwareOnboardingHeader:
@@ -16,11 +16,11 @@ class SoftwareOnboardingHeader:
     def sign(self, signature: str):
         self.params["X-Agrirouter-Signature"] = signature
 
-    def _set_params(self, reg_code: str, content_type: str):
+    def _set_params(self, reg_code: str, content_type: str, application_id: str, signature: str = None):
         header = dict()
         header["Authorization"] = f"Bearer {reg_code}"
         header["Content-Type"] = content_type
-        # header["X-Agrirouter-ApplicationId"] = application_id
-        # header["X-Agrirouter-Signature"] = signature if signature else ""
+        header["X-Agrirouter-ApplicationId"] = application_id
+        header["X-Agrirouter-Signature"] = signature if signature else ""
 
         self.params = header

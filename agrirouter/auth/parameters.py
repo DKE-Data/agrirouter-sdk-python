@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from agrirouter.auth.enums import ResponseTypes
+from agrirouter.api.enums import ResponseTypes
 
 
 class AuthUrlParameter:

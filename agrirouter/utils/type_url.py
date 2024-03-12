@@ -13,7 +13,7 @@ from agrirouter.generated.messaging.response.payload.feed.feed_response_pb2 impo
 from agrirouter.generated.messaging.request.payload.efdi.efdi_pb2 import TimeLog, ISO11783_TaskData
 
 from agrirouter.generated.messaging.response.payload.feed.push_notification_pb2 import PushNotification
-from agrirouter.messaging.exceptions import TypeUrlNotFoundError
+from agrirouter.api.exceptions import TypeUrlNotFoundError
 
 
 class TypeUrl:

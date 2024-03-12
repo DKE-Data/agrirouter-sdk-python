@@ -2,7 +2,7 @@
 import pytest
 
 from agrirouter.auth.dto import AuthorizationToken
-from agrirouter.messaging.exceptions import WrongFieldError
+from agrirouter.api.exceptions import WrongFieldError
 
 
 class TestAuthorizationToken:

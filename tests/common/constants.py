@@ -1,6 +1,8 @@
+from agrirouter.api.enums import Environments
+
 APPLICATION_ID = "8c947a45-c57d-42d2-affc-206e21d63a50"
 
-ENV = "QA"
+ENV = Environments.QA.value
 
 AUTH_RESULT_URL = (
     "http://fuf.me/?state=46c81f94-d117-4658-9a38-a85692448219&token=eyJhY2NvdW50IjoiMGJhMjRlZWUtYzMwY"

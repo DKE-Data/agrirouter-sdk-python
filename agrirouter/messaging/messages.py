@@ -1,7 +1,7 @@
 import json
 from typing import Union, Dict
 
-from agrirouter.messaging.exceptions import WrongFieldError
+from agrirouter.api.exceptions import WrongFieldError
 from agrirouter.utils.utc_time_util import now_as_utc_str
 
 

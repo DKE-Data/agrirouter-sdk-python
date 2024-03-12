@@ -21,5 +21,5 @@ class ContentTypes(BaseEnum):
 
 
 class Environments(BaseEnum):
-    PRODUCTION = "production"
-    QA = "qa"
+    PRODUCTION: str = "production"
+    QA: str = "qa"

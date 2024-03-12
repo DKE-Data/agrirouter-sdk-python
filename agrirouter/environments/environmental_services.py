@@ -1,6 +1,6 @@
-from agrirouter.auth.enums import Environments
+from agrirouter.api.enums import Environments
+from agrirouter.api.exceptions import InvalidEnvironmentSetup
 from agrirouter.environments.environments import Production, QA
-from agrirouter.environments.exceptions import InvalidEnvironmentSetup
 
 
 class EnvironmentalService:
@@ -29,4 +29,4 @@ class EnvironmentalService:
         elif env == Environments.PRODUCTION.value:
             self._environment = Production()
         else:
-            raise InvalidEnvironmentSetup(env=env)
+            raise InvalidEnvironmentSetup(f"Invalid environment value: {env}")

@@ -1,5 +1,5 @@
 from agrirouter.messaging.clients.http import HttpClient
-from agrirouter.messaging.exceptions import OutboxException
+from agrirouter.api.exceptions import OutboxException
 from agrirouter.messaging.result import OutboxResponse
 
 

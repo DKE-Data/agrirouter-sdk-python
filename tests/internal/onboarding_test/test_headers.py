@@ -1,5 +1,5 @@
 """Test agrirouter/onboarding/headers.py"""
-from agrirouter.constants.media_types import ContentTypes
+from agrirouter.api.enums import ContentTypes
 from agrirouter.onboarding.headers import SoftwareOnboardingHeader
 
 

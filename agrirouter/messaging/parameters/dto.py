@@ -136,7 +136,7 @@ class SendMessageParameters(MessageParameters):
             self._recipients = recipients
 
         if chunk_component:
-            self._chunk_component: ChunkComponent = chunk_component,
+            self._chunk_component: ChunkComponent = chunk_component
         else:
             self._chunk_component = None
 

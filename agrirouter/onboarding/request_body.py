@@ -1,7 +1,7 @@
 import json
 
 from agrirouter.onboarding.enums import CertificateTypes, Gateways
-from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWayType
+from agrirouter.api.exceptions import WrongCertificationType, WrongGateWayType
 
 
 class SoftwareOnboardingBody:

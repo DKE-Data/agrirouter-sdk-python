@@ -1,7 +1,7 @@
 import requests
 
 from agrirouter.environments.environmental_services import EnvironmentalService
-from agrirouter.onboarding.exceptions import RequestNotSigned
+from agrirouter.api.exceptions import RequestNotSignedException
 from agrirouter.revoking.headers import RevokingHeader
 from agrirouter.revoking.parameters import RevokingParameter
 from agrirouter.revoking.request import RevokingRequest
@@ -35,7 +35,7 @@ class Revoking(EnvironmentalService):
                 json=request.get_data(),
                 headers=request.get_header()
             )
-        raise RequestNotSigned
+        raise RequestNotSignedException
 
     def revoke(self, params: RevokingParameter) -> RevokingResponse:
         url = self._environment.get_revoke_url()

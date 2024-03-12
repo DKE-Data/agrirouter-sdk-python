@@ -11,6 +11,15 @@ class BaseEnum(Enum):
         return [key.value for key in cls]
 
 
-class ResponseType(BaseEnum):
+class ResponseTypes(BaseEnum):
     VERIFY = "verify"
     ONBOARD = "onboard"
+
+
+class ContentTypes(BaseEnum):
+    APPLICATION_JSON = "application/json"
+
+
+class Environments(BaseEnum):
+    PRODUCTION = "production"
+    QA = "qa"

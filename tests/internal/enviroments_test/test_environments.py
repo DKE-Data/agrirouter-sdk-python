@@ -1,7 +1,7 @@
 """Test agrirouter/environments/environments.py"""
 
-from agrirouter.environments.environments import ProductionEnvironment as PE
-from agrirouter.environments.environments import QAEnvironment as QAE
+from agrirouter.environments.environments import Production as PE
+from agrirouter.environments.environments import QA as QAE
 from tests.common.constants import APPLICATION_ID
 
 
@@ -32,7 +32,7 @@ class TestPE:
         assert PE().get_revoke_url() == rev_url
 
     def test_get_agrirouter_login_url(self):
-        login_url = PE._ENV_BASE_URL + PE._AGRIROUTER_LOGIN_URL
+        login_url = PE._ENV_BASE_URL + PE._LOGIN_URL
         assert PE().get_agrirouter_login_url() == login_url
 
     def test_get_secured_onboarding_authorization_url(self):
@@ -55,7 +55,7 @@ class TestPE:
         )
 
     def test_get_env_public_key(self):
-        assert PE().get_env_public_key() == PE.AR_PUBLIC_KEY
+        assert PE().get_env_public_key() == PE._AR_PUBLIC_KEY
 
 
 class TestQAE:
@@ -85,7 +85,7 @@ class TestQAE:
         assert QAE().get_revoke_url() == rev_url
 
     def test_get_agrirouter_login_url(self):
-        login_url = QAE._ENV_BASE_URL + QAE._AGRIROUTER_LOGIN_URL
+        login_url = QAE._ENV_BASE_URL + QAE._LOGIN_URL
         assert QAE().get_agrirouter_login_url() == login_url
 
     def test_get_secured_onboarding_authorization_url(self):
@@ -104,4 +104,4 @@ class TestQAE:
         ) == QAE._MQTT_URL_TEMPLATE.format(host="localhost", port="5000")
 
     def test_get_env_public_key(self):
-        assert QAE().get_env_public_key() == QAE.AR_PUBLIC_KEY
+        assert QAE().get_env_public_key() == QAE._AR_PUBLIC_KEY

@@ -1,7 +1,7 @@
 import pytest
 
 from agrirouter import CapabilitiesParameters, CapabilitiesService
-from agrirouter.environments.environments import QAEnvironment
+from agrirouter.environments.environments import QA
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.decode import decode_response
 from agrirouter.messaging.enums import CapabilityType, CapabilityDirectionType
@@ -24,7 +24,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
         """ Test the onboarding process for a single MQTT endpoint with a PEM certificate. """
         onboard_response = onboard_communication_unit(
             uuid=Identifier.MQTT_RECIPIENT_PEM[Identifier.ID],
-            _environment=QAEnvironment(),
+            _environment=QA(),
             registration_code="e53438a6b3",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.MQTT.value)
@@ -36,7 +36,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
         """ Test the onboarding process for a single MQTT endpoint with a PEM certificate. """
         onboard_response = onboard_communication_unit(
             uuid=Identifier.MQTT_SENDER_PEM[Identifier.ID],
-            _environment=QAEnvironment(),
+            _environment=QA(),
             registration_code="7ac0514114",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.MQTT.value)
@@ -47,7 +47,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
     def test_update_messages_sender_with_pem(self):
         sender_onboard_response = onboard_communication_unit(
             uuid=Identifier.MQTT_MESSAGES_SENDER[Identifier.ID],
-            _environment=QAEnvironment(),
+            _environment=QA(),
             registration_code="26b37bc999",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.MQTT.value)
@@ -59,7 +59,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
     def test_update_messages_recipient_with_pem(self):
         recipient_onboard_response = onboard_communication_unit(
             uuid=Identifier.MQTT_MESSAGES_RECIPIENT[Identifier.ID],
-            _environment=QAEnvironment(),
+            _environment=QA(),
             registration_code="4f4bac3b04",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.MQTT.value)

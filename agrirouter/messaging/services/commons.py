@@ -7,7 +7,7 @@ from agrirouter.messaging.messages import Message
 from agrirouter.messaging.parameters.service import MessageParameters
 from agrirouter.messaging.request import MessageRequest
 from agrirouter.messaging.result import MessagingResult
-from agrirouter.onboarding.exceptions import BadMessagingResult
+from agrirouter.api.exceptions import BadMessagingResult
 from agrirouter.onboarding.response import OnboardResponse
 
 

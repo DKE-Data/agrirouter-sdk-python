@@ -6,7 +6,7 @@ from applications import CommunicationUnit
 from onboard_response_integration_service import save_onboard_response
 
 from agrirouter import CapabilitiesService, CapabilitiesParameters
-from agrirouter.environments.environments import QAEnvironment
+from agrirouter.environments.environments import QA
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.enums import CapabilityType, CapabilityDirectionType
 from agrirouter.messaging.services.commons import HttpMessagingService
@@ -21,13 +21,13 @@ from tests.data.identifier import Identifier
 
 class OnboardResponseUpdate(unittest.TestCase):
     _log = logging.getLogger(__name__)
-    _environment = QAEnvironment()
+    _environment = QA()
 
     @pytest.mark.skip(reason="Will fail unless the registration code is changed")
     def test_update_http_cu_recipient(self):
         onboard_response = onboard_communication_unit(
             uuid=Identifier.HTTP_RECIPIENT_PEM[Identifier.ID],
-            _environment=QAEnvironment(),
+            _environment=QA(),
             registration_code="CHANGE_ME",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.HTTP.value)
@@ -40,7 +40,7 @@ class OnboardResponseUpdate(unittest.TestCase):
     def test_update_http_cu_sender(self):
         onboard_response = onboard_communication_unit(
             uuid=Identifier.HTTP_SENDER_PEM[Identifier.ID],
-            _environment=QAEnvironment(),
+            _environment=QA(),
             registration_code="CHANGE_ME",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.HTTP.value)

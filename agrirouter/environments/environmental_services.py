@@ -1,6 +1,6 @@
 from agrirouter.api.enums import Environments
 from agrirouter.api.exceptions import InvalidEnvironmentSetup
-from agrirouter.environments.environments import Production, QA
+from agrirouter.api.environments import Production, QA
 
 
 class EnvironmentalService:

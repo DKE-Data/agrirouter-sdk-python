@@ -1,6 +1,7 @@
 """Tests agrirouter/auth/auth.py"""
 
 from agrirouter import AuthUrlParameter
+from agrirouter.api.enums import Environments
 from agrirouter.auth.auth import Authorization
 from tests.common.constants import (
     PUBLIC_KEY,
@@ -24,7 +25,7 @@ class TestAuthorization:
         assert auth_params.state
 
         auth_client = Authorization(
-            "QA", public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
+            Environments.QA.value, public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
         )
 
         check_url = "https://agrirouter-qa.cfapps.eu10.hana.ondemand.com/application/" \
@@ -49,7 +50,7 @@ class TestAuthorization:
 
     def test_get_auth_result(self):
         auth_client = Authorization(
-            "QA", public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
+            Environments.QA.value, public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
         )
         auth_response = auth_client.extract_auth_response(AUTH_RESULT_URL)
         auth_client.verify_auth_response(auth_response)

@@ -1,7 +1,7 @@
 """Test agrirouter/environments/environments.py"""
 
-from agrirouter.environments.environments import Production as PE
-from agrirouter.environments.environments import QA as QAE
+from agrirouter.api.environments import Production as PE
+from agrirouter.api.environments import QA as QAE
 from tests.common.constants import APPLICATION_ID
 
 

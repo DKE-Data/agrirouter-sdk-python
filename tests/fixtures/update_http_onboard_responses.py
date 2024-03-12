@@ -6,7 +6,7 @@ from applications import CommunicationUnit
 from onboard_response_integration_service import save_onboard_response
 
 from agrirouter import CapabilitiesService, CapabilitiesParameters
-from agrirouter.environments.environments import QA
+from agrirouter.api.environments import QA
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.enums import CapabilityType, CapabilityDirectionType
 from agrirouter.messaging.services.commons import HttpMessagingService

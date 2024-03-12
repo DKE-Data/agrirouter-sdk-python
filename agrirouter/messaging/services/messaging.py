@@ -314,7 +314,7 @@ class SendMessageService(AbstractService):
             team_set_context_id=parameters.get_team_set_context_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),
             recipients=parameters.get_recipients(),
-            chunk_component=parameters.get_chunk_components(),
+            chunk_component=parameters.get_chunk_component(),
             application_message_id=parameters.get_application_message_id()
         )
 

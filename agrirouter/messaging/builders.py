@@ -18,14 +18,14 @@ class SubscriptionItemBuilder:
 
     def with_task_data(self):
         subscription_item = Subscription.MessageTypeSubscriptionItem(
-            technical_message_type=CapabilityType.ISO_11783_TASKDATA_ZIP.value
+            technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value
         )
         self._subscription_items.append(subscription_item)
         return self
 
     def with_device_description(self, ddis: List[int] = None, position: bool = None):
         subscription_item = Subscription.MessageTypeSubscriptionItem(
-            technical_message_type=CapabilityType.ISO_11783_DEVICE_DESCRIPTION_PROTOBUF.value,
+            technical_message_type=CapabilityType.ISO_11783_DEVICE_DESCRIPTION.value,
             ddis=ddis,
             position=position
         )
@@ -34,7 +34,7 @@ class SubscriptionItemBuilder:
 
     def with_time_log(self, ddis: List[int] = None, position: bool = None):
         subscription_item = Subscription.MessageTypeSubscriptionItem(
-            technical_message_type=CapabilityType.ISO_11783_TIMELOG_PROTOBUF.value,
+            technical_message_type=CapabilityType.ISO_11783_TIMELOG.value,
             ddis=ddis,
             position=position
         )
@@ -119,21 +119,21 @@ class CapabilityBuilder:
     def with_task_data(self, direction: int):
         capability = CapabilitySpecification.Capability()
         capability.direction = direction
-        capability.technical_message_type = CapabilityType.ISO_11783_TASKDATA_ZIP.value
+        capability.technical_message_type = CapabilityType.ISO_11783_TASK_DATA_ZIP.value
         self._capabilities.append(capability)
         return self
 
     def with_device_description(self, direction: int):
         capability = CapabilitySpecification.Capability()
         capability.direction = direction
-        capability.technical_message_type = CapabilityType.ISO_11783_DEVICE_DESCRIPTION_PROTOBUF.value
+        capability.technical_message_type = CapabilityType.ISO_11783_DEVICE_DESCRIPTION.value
         self._capabilities.append(capability)
         return self
 
     def with_time_log(self, direction: int):
         capability = CapabilitySpecification.Capability()
         capability.direction = direction
-        capability.technical_message_type = CapabilityType.ISO_11783_TIMELOG_PROTOBUF.value
+        capability.technical_message_type = CapabilityType.ISO_11783_TIMELOG.value
         self._capabilities.append(capability)
         return self
 

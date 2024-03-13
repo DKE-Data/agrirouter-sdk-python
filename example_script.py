@@ -1,11 +1,10 @@
-from pprint import pprint
+import time
 
 from google.protobuf.timestamp_pb2 import Timestamp
 
 from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
-from agrirouter.onboarding.response import SoftwareOnboardingResponse
-import time
+from agrirouter.onboarding.response import OnboardResponse
 
 public_key = """-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzGt41/+kSOTlO1sJvLIN
@@ -46,7 +45,6 @@ KFrlBkR/vzKYjCFXB6cmMP61mUrgGQRoYJQBetAyEiXZL3zjt1R/Dndk0kHkVmHr
 HjmgzBRxXFy5uph6Ue6dxyszaA==
 -----END PRIVATE KEY-----"""
 
-
 onboarding_response_mqtt_data = {
     "deviceAlternateId": "2145df0e-3451-46cb-bf23-23191af66fce",
     "capabilityAlternateId": "523e4623-68d2-43d4-a0cc-e2ada2f68b5e",
@@ -66,22 +64,19 @@ onboarding_response_mqtt_data = {
     }
 }
 
-
-
-
 import agrirouter as ar
-from agrirouter.onboarding.enums import GateWays
+from agrirouter.onboarding.enums import Gateways
 from agrirouter.messaging.enums import CapabilityType
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.services.commons import HttpMessagingService, MqttMessagingService
 from agrirouter import ListEndpointsParameters, ListEndpointsService, SubscriptionService, SubscriptionParameters, \
-    QueryHeaderService, QueryHeaderParameters, CapabilityService, CapabilityParameters
+    QueryHeaderService, QueryHeaderParameters, CapabilitiesService, CapabilitiesParameters
 from agrirouter.utils.uuid_util import new_uuid
 
+application_id = "8c947a45-c57d-42d2-affc-206e21d63a50"  # # store here your application id. You can find it in AR UI
+certification_version_id = "edd5d6b7-45bb-4471-898e-ff9c2a7bf56f"  # # store here your certification version id. You can find it in AR UI
 
-application_id = "8c947a45-c57d-42d2-affc-206e21d63a50"		# # store here your application id. You can find it in AR UI
-certification_version_id = "edd5d6b7-45bb-4471-898e-ff9c2a7bf56f" # # store here your certification version id. You can find it in AR UI
 
 def example_auth():
     print("Authorization...\n")
@@ -115,7 +110,6 @@ def example_auth():
 
 
 def example_onboarding(gateway_id):
-
     auth_data = example_auth()
 
     print("Onboarding...\n")
@@ -123,11 +117,11 @@ def example_onboarding(gateway_id):
     id_ = "urn:myapp:snr00003234"  # just unique
     time_zone = "+03:00"
 
-    onboarding_client = ar.SoftwareOnboarding("QA", public_key=public_key, private_key=private_key)
-    onboarding_parameters = ar.SoftwareOnboardingParameter(id_=id_, application_id=application_id,
-                                                           certification_version_id=certification_version_id,
-                                                           gateway_id=gateway_id, time_zone=time_zone,
-                                                           reg_code=auth_data.get_decoded_token().regcode)
+    onboarding_client = ar.SecuredOnboardingService("QA", public_key=public_key, private_key=private_key)
+    onboarding_parameters = ar.OnboardParameters(id_=id_, application_id=application_id,
+                                                 certification_version_id=certification_version_id,
+                                                 gateway_id=gateway_id, time_zone=time_zone,
+                                                 reg_code=auth_data.get_decoded_token().regcode)
     onboarding_verifying_response = onboarding_client.verify(onboarding_parameters)
     print(f"onboarding_verifying_response.status_code: {onboarding_verifying_response.status_code}")
     print(f"onboarding_verifying_response.text: {onboarding_verifying_response.text}")
@@ -139,7 +133,7 @@ def example_onboarding(gateway_id):
 
 
 def example_list_endpoints_mqtt(onboarding_response_data, foo):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
 
     messaging_service = MqttMessagingService(
@@ -148,7 +142,7 @@ def example_list_endpoints_mqtt(onboarding_response_data, foo):
 
     )
     list_endpoint_parameters = ListEndpointsParameters(
-        technical_message_type=CapabilityType.ISO_11783_TASKDATA_ZIP.value,
+        technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
         direction=ListEndpointsQuery.Direction.Value("SEND_RECEIVE"),
         filtered=False,
         onboarding_response=onboarding_response,
@@ -164,35 +158,37 @@ def example_list_endpoints_mqtt(onboarding_response_data, foo):
     while True:
         time.sleep(1)
 
+
 def example_set_capabilities(onboarding_response_data, mqtt_message_callback):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
     messaging_service = MqttMessagingService(
         onboarding_response=onboarding_response,
         on_message_callback=mqtt_message_callback
     )
-    capabilities_parameters = CapabilityParameters(
+    capabilities_parameters = CapabilitiesParameters(
         onboarding_response=onboarding_response,
         application_message_id=new_uuid(),
         application_message_seq_no=1,
         application_id=application_id,
         certification_version_id=certification_version_id,
         capability_parameters=[
-            CapabilitySpecification.Capability(technical_message_type = CapabilityType.ISO_11783_TASKDATA_ZIP.value, direction = "SEND_RECEIVE")
+            CapabilitySpecification.Capability(technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
+                                               direction="SEND_RECEIVE")
         ],
         enable_push_notification=True,
     )
-    capabilities_service = CapabilityService(messaging_service)
+    capabilities_service = CapabilitiesService(messaging_service)
     capabilities_service.send(capabilities_parameters)
 
 
 def example_list_endpoints_http(onboarding_response_data):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
 
     messaging_service = HttpMessagingService()
     list_endpoint_parameters = ListEndpointsParameters(
-        technical_message_type=CapabilityType.ISO_11783_TASKDATA_ZIP.value,
+        technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
         direction=2,
         filtered=False,
         onboarding_response=onboarding_response,
@@ -208,12 +204,12 @@ def example_list_endpoints_http(onboarding_response_data):
 
 
 def example_subscription_http(onboarding_response_data):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
 
     messaging_service = HttpMessagingService()
     subscription_service = SubscriptionService(messaging_service)
-    tmt = CapabilityType.ISO_11783_TASKDATA_ZIP.value
+    tmt = CapabilityType.ISO_11783_TASK_DATA_ZIP.value
     subscription_item = Subscription.MessageTypeSubscriptionItem(technical_message_type=tmt)
     subscription_parameters = SubscriptionParameters(
         subscription_items=[subscription_item],
@@ -229,12 +225,12 @@ def example_subscription_http(onboarding_response_data):
 
 
 def example_subscription_mqtt(onboarding_response_data, on_msg_callback):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
 
     messaging_service = MqttMessagingService(onboarding_response, on_message_callback=on_msg_callback)
     subscription_service = SubscriptionService(messaging_service)
-    tmt = CapabilityType.ISO_11783_TASKDATA_ZIP.value
+    tmt = CapabilityType.ISO_11783_TASK_DATA_ZIP.value
     subscription_item = Subscription.MessageTypeSubscriptionItem(technical_message_type=tmt)
     subscription_parameters = SubscriptionParameters(
         subscription_items=[subscription_item],
@@ -252,7 +248,7 @@ def example_subscription_mqtt(onboarding_response_data, on_msg_callback):
 
 
 def example_query_header_message_http(onboarding_response_data):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
 
     messaging_service = HttpMessagingService()
@@ -275,7 +271,7 @@ def example_query_header_message_http(onboarding_response_data):
 
 
 def example_query_header_message_mqtt(onboarding_response_data, on_msg_callback):
-    onboarding_response = SoftwareOnboardingResponse()
+    onboarding_response = OnboardResponse()
     onboarding_response.json_deserialize(onboarding_response_data)
 
     messaging_service = MqttMessagingService(onboarding_response, on_message_callback=on_msg_callback)
@@ -300,7 +296,6 @@ def example_query_header_message_mqtt(onboarding_response_data, on_msg_callback)
 
 
 def on_message_callback(client, userdata, msg):
-
     # Define here the way receiving messages will be processed
 
     from agrirouter.messaging.decode import decode_response
@@ -323,7 +318,7 @@ def on_message_callback(client, userdata, msg):
 
 
 if __name__ == "__main__":
-    onboarding_response_mqtt = example_onboarding(GateWays.MQTT.value)
+    onboarding_response_mqtt = example_onboarding(Gateways.MQTT.value)
     example_set_capabilities(onboarding_response_mqtt.json_serialize(), on_message_callback)
     example_list_endpoints_mqtt(onboarding_response_mqtt.json_serialize(), on_message_callback)
 

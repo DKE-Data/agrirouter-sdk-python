@@ -5,17 +5,16 @@ import ssl
 from urllib.parse import urlparse
 
 from agrirouter.messaging.certification import create_certificate_file_from_pen
-from agrirouter.onboarding.response import SoftwareOnboardingResponse
+from agrirouter.onboarding.response import OnboardResponse
 
 
 class HttpClient:
-
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json"
     }
 
-    def make_connection(self, certificate_file_path: str, uri: str, onboard_response: SoftwareOnboardingResponse):
+    def make_connection(self, certificate_file_path: str, uri: str, onboard_response: OnboardResponse):
         context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
         context.load_cert_chain(
             certfile=certificate_file_path,
@@ -29,7 +28,7 @@ class HttpClient:
         )
         return connection
 
-    def send_measure(self, onboard_response: SoftwareOnboardingResponse, request_body=None):
+    def send_measure(self, onboard_response: OnboardResponse, request_body=None):
         return self.send(
             method="POST",
             uri=onboard_response.get_connection_criteria().get_measures(),
@@ -37,7 +36,7 @@ class HttpClient:
             request_body=request_body
         )
 
-    def send_command(self, onboard_response: SoftwareOnboardingResponse, request_body=None):
+    def send_command(self, onboard_response: OnboardResponse, request_body=None):
         return self.send(
             method="GET",
             uri=onboard_response.get_connection_criteria().get_commands(),
@@ -45,7 +44,7 @@ class HttpClient:
             request_body=request_body
         )
 
-    def send(self, method: str, uri: str, onboard_response: SoftwareOnboardingResponse, request_body=None):
+    def send(self, method: str, uri: str, onboard_response: OnboardResponse, request_body=None):
         certificate_file_path = create_certificate_file_from_pen(onboard_response)
         try:
             connection = self.make_connection(certificate_file_path, uri, onboard_response)

@@ -9,11 +9,11 @@ from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 impor
 from agrirouter.generated.messaging.response.payload.account.endpoints_pb2 import ListEndpointsResponse
 from agrirouter.generated.messaging.response.payload.feed.feed_response_pb2 import HeaderQueryResponse, \
     MessageQueryResponse
-from agrirouter.generated.messaging.response.payload.feed.push_notification_pb2 import PushNotification
 
 from agrirouter.generated.messaging.request.payload.efdi.efdi_pb2 import TimeLog, ISO11783_TaskData
 
-from agrirouter.messaging.exceptions import TypeUrlNotFoundError
+from agrirouter.generated.messaging.response.payload.feed.push_notification_pb2 import PushNotification
+from agrirouter.api.exceptions import TypeUrlNotFound
 
 
 class TypeUrl:
@@ -43,5 +43,5 @@ class TypeUrl:
     @classmethod
     def get_command(cls, class_) -> str:
         if class_ not in cls.commands:
-            raise TypeUrlNotFoundError(f"The {class_} type url not found")
+            raise TypeUrlNotFound(f"The {class_} type url not found")
         return cls.prefix + class_.DESCRIPTOR.full_name

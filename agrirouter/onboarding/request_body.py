@@ -1,8 +1,8 @@
 import json
 from datetime import datetime
 
-from agrirouter.onboarding.enums import CertificateTypes, GateWays
-from agrirouter.onboarding.exceptions import WrongCertificationType, WrongGateWay
+from agrirouter.api.exceptions import WrongCertificationType, WrongGateWayType
+from agrirouter.onboarding.enums import CertificateTypes, Gateways
 
 
 class SoftwareOnboardingBody:
@@ -20,7 +20,7 @@ class SoftwareOnboardingBody:
         self._validate_certificate_type(certificate_type)
         self._validate_gateway_id(gateway_id)
 
-        #utc_timestamp = utc_timestamp if utc_timestamp else datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+        utc_timestamp = utc_timestamp if utc_timestamp else datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
         self._set_params(
             id_,
@@ -28,8 +28,8 @@ class SoftwareOnboardingBody:
             certification_version_id,
             gateway_id,
             certificate_type,
-            #utc_timestamp,
-            #time_zone
+            utc_timestamp,
+            time_zone
         )
 
     def get_parameters(self) -> dict:
@@ -51,8 +51,8 @@ class SoftwareOnboardingBody:
             "certificationVersionId": certification_version_id,
             "gatewayId": gateway_id,
             "certificateType": certificate_type,
-            #"UTCTimestamp": utc_timestamp,
-            #"timeZone": time_zone,
+            "UTCTimestamp": utc_timestamp,
+            "timeZone": time_zone,
         }
 
     def json(self) -> str:
@@ -65,5 +65,5 @@ class SoftwareOnboardingBody:
 
     @staticmethod
     def _validate_gateway_id(gateway_id: str) -> None:
-        if gateway_id not in GateWays.values_list():
-            raise WrongGateWay
+        if gateway_id not in Gateways.values_list():
+            raise WrongGateWayType

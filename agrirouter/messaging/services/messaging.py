@@ -1,39 +1,52 @@
+import logging
+
+from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
+from agrirouter.generated.commons.message_pb2 import Metadata
 from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
+from agrirouter.generated.messaging.request.payload.efdi.efdi_pb2 import TimeLog, ISO11783_TaskData
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageDelete, \
     MessageQuery
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.generated.commons.message_pb2 import Metadata
-from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
-
-from agrirouter.generated.messaging.request.payload.efdi.efdi_pb2 import TimeLog, ISO11783_TaskData
-
 from agrirouter.messaging.encode import encode_message
 from agrirouter.messaging.enums import TechnicalMessageType, CapabilityType
 from agrirouter.messaging.messages import EncodedMessage
-from agrirouter.messaging.parameters.dto import MessagingParameters
+from agrirouter.messaging.parameters.dto import MessagingParameters, SendMessageParameters, ChunkedMessageParameters
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
-    CapabilityParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
-    SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters, ImageParameters, TaskParameters, EfdiParameters
-
+    CapabilitiesParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
+    SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters, ImageParameters, TaskParameters, \
+    EfdiParameters
 from agrirouter.utils.type_url import TypeUrl
 from agrirouter.utils.uuid_util import new_uuid
 
 
 class AbstractService:
+    """
+    Abstract service class for all services.
+    """
+    _log = logging.getLogger(__name__)
 
     def __init__(self, messaging_service):
         self.messaging_service = messaging_service
 
     def send(self, parameters):
+        """
+        Send a message to the agrirouter.
+        :param parameters: Parameters for the message.
+        """
+        self._log.debug("Sending message to the agrirouter.")
         messaging_parameters = MessagingParameters(
             onboarding_response=parameters.get_onboarding_response(),
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),
         )
         encoded_messages = self.encode(parameters)
-        messaging_parameters.set_encoded_messages([encoded_messages.get_content()])
+        if type(encoded_messages.get_content()) == list:
+            messaging_parameters.set_encoded_messages(encoded_messages.get_content())
+        else:
+            messaging_parameters.set_encoded_messages([encoded_messages.get_content()])
+
         return self.messaging_service.send(messaging_parameters)
 
     @staticmethod
@@ -41,10 +54,17 @@ class AbstractService:
         ...
 
 
-class CapabilityService(AbstractService):
+class CapabilitiesService(AbstractService):
+    """
+    Service for sending capabilities to the agrirouter.
+    """
 
     @staticmethod
-    def encode(parameters: CapabilityParameters) -> EncodedMessage:
+    def encode(parameters: CapabilitiesParameters) -> EncodedMessage:
+        """
+        Encode the parameters to a message.
+        :param parameters: Parameters for the message.
+        """
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),
@@ -202,9 +222,16 @@ class QueryMessagesService(AbstractService):
 
 
 class QueryHeaderService(AbstractService):
+    """
+    Service to receive the headers of the messages
+    """
 
     @staticmethod
     def encode(parameters: QueryHeaderParameters) -> EncodedMessage:
+        """
+        Encode the parameters into a message
+        parameters: QueryHeaderParameters for the service
+        """
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),
@@ -234,9 +261,16 @@ class QueryHeaderService(AbstractService):
 
 
 class SubscriptionService(AbstractService):
+    """
+    Service for sending subscription messages to the agrirouter.
+    """
 
     @staticmethod
     def encode(parameters: SubscriptionParameters) -> EncodedMessage:
+        """
+        Encode the parameters into a subscription message.
+        parameters: Parameters for the subscription message.
+        """
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),
@@ -263,10 +297,62 @@ class SubscriptionService(AbstractService):
         return encoded_message
 
 
+class SendMessageService(AbstractService):
+    """
+    Service for sending messages to the agrirouter
+    """
+
+    @staticmethod
+    def encode(parameters: SendMessageParameters) -> EncodedMessage:
+        """
+        Encode the parameters into a message.
+        parameters: Parameters for the message service.
+        """
+        message_header_parameters = MessageHeaderParameters(
+            technical_message_type=parameters.get_technical_message_type(),
+            mode=parameters.get_mode(),
+            team_set_context_id=parameters.get_team_set_context_id(),
+            application_message_seq_no=parameters.get_application_message_seq_no(),
+            recipients=parameters.get_recipients(),
+            chunk_component=parameters.get_chunk_component(),
+            application_message_id=parameters.get_application_message_id()
+        )
+
+        message_payload_parameters = MessagePayloadParameters(
+            type_url=parameters.get_type_url() or TechnicalMessageType.EMPTY.value,
+            value=parameters.get_base64_message_content(),
+        )
+
+        message_content = encode_message(message_header_parameters, message_payload_parameters)
+
+        encoded_message = EncodedMessage(
+            id_=new_uuid(),
+            content=message_content
+        )
+
+        return encoded_message
+
+
+class SendChunkedMessageService(AbstractService):
+    """
+    Service for sending chunked messages to the agrirouter
+    """
+
+    @staticmethod
+    def encode(parameters: ChunkedMessageParameters):
+        """
+        parameters: Chunked Message Parameters required
+        """
+        encoded_message = EncodedMessage(
+            id_=new_uuid(),
+            content=parameters.get_encoded_chunked_messages(),
+        )
+        return encoded_message
+
+
 class ImageService(AbstractService):
     @staticmethod
     def encode(parameters: ImageParameters) -> EncodedMessage:
-
         metadata = Metadata()
         metadata.file_name = parameters.get_image_filename()
 
@@ -277,7 +363,7 @@ class ImageService(AbstractService):
             team_set_context_id=parameters.get_team_set_context_id(),
             mode=RequestEnvelope.Mode.Value("DIRECT"),
             technical_message_type=CapabilityType.IMG_JPEG.value,
-            metadata=metadata     
+            metadata=metadata
         )
 
         message_payload_parameters = MessagePayloadParameters(
@@ -291,13 +377,12 @@ class ImageService(AbstractService):
             content=message_content
         )
 
-        return encoded_message  
+        return encoded_message
 
 
 class TaskService(AbstractService):
     @staticmethod
     def encode(parameters: TaskParameters) -> EncodedMessage:
-
         metadata = Metadata()
         metadata.file_name = parameters.get_task_filename()
         # Add ChunkComponent
@@ -311,11 +396,11 @@ class TaskService(AbstractService):
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),
             recipients=parameters.get_recipients(),
-            chunk_component = chunkcomponent,
+            chunk_component=chunkcomponent,
             team_set_context_id=parameters.get_team_set_context_id(),
             mode=RequestEnvelope.Mode.Value("DIRECT"),
-            technical_message_type=CapabilityType.ISO_11783_TASKDATA_ZIP.value,
-            metadata=metadata     
+            technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
+            metadata=metadata
         )
 
         message_payload_parameters = MessagePayloadParameters(
@@ -329,14 +414,14 @@ class TaskService(AbstractService):
             content=message_content
         )
 
-        return encoded_message  
+        return encoded_message
 
 
 class EfdiTimelogService(AbstractService):
     @staticmethod
     def encode(parameters: EfdiParameters) -> EncodedMessage:
 
-        if parameters.get_efdi_filename() != None:
+        if parameters.get_efdi_filename() is not None:
             metadata = Metadata()
             metadata.file_name = parameters.get_efdi_filename()
         else:
@@ -348,8 +433,8 @@ class EfdiTimelogService(AbstractService):
             recipients=parameters.get_recipients(),
             team_set_context_id=parameters.get_team_set_context_id(),
             mode=RequestEnvelope.Mode.Value("DIRECT"),
-            technical_message_type=CapabilityType.ISO_11783_TIMELOG_PROTOBUF.value,
-            metadata = metadata
+            technical_message_type=CapabilityType.ISO_11783_TIMELOG.value,
+            metadata=metadata
         )
 
         message_payload_parameters = MessagePayloadParameters(
@@ -370,7 +455,7 @@ class EfdiTimelogPublishService(AbstractService):
     @staticmethod
     def encode(parameters: EfdiParameters) -> EncodedMessage:
 
-        if parameters.get_efdi_filename() != None:
+        if parameters.get_efdi_filename() is not None:
             metadata = Metadata()
             metadata.file_name = parameters.get_efdi_filename()
         else:
@@ -381,8 +466,8 @@ class EfdiTimelogPublishService(AbstractService):
             application_message_seq_no=parameters.get_application_message_seq_no(),
             team_set_context_id=parameters.get_team_set_context_id(),
             mode=RequestEnvelope.Mode.Value("PUBLISH"),
-            technical_message_type=CapabilityType.ISO_11783_TIMELOG_PROTOBUF.value,
-            metadata = metadata
+            technical_message_type=CapabilityType.ISO_11783_TIMELOG.value,
+            metadata=metadata
         )
 
         message_payload_parameters = MessagePayloadParameters(
@@ -403,19 +488,19 @@ class EfdiDeviceDscService(AbstractService):
     @staticmethod
     def encode(parameters: EfdiParameters) -> EncodedMessage:
 
-        if parameters.get_efdi_filename() != None:
+        if parameters.get_efdi_filename() is not None:
             metadata = Metadata()
             metadata.file_name = parameters.get_efdi_filename()
         else:
-            metadata = None   
+            metadata = None
 
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
             application_message_seq_no=parameters.get_application_message_seq_no(),
             team_set_context_id=parameters.get_team_set_context_id(),
             mode=RequestEnvelope.Mode.Value("PUBLISH"),
-            technical_message_type=CapabilityType.ISO_11783_DEVICE_DESCRIPTION_PROTOBUF.value,
-            metadata=metadata 
+            technical_message_type=CapabilityType.ISO_11783_DEVICE_DESCRIPTION.value,
+            metadata=metadata
         )
 
         message_payload_parameters = MessagePayloadParameters(

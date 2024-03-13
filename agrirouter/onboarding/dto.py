@@ -1,7 +1,7 @@
 import json
 from typing import Union
 
-from agrirouter.messaging.exceptions import WrongFieldError
+from agrirouter.api.exceptions import WrongField
 
 
 class ConnectionCriteria:
@@ -54,7 +54,7 @@ class ConnectionCriteria:
             elif key == self.CLIENT_ID:
                 self.client_id = value
             else:
-                raise WrongFieldError(f"Unknown field {key} for Connection Criteria class")
+                raise WrongField(f"Unknown field {key} for Connection Criteria class")
 
     def get_gateway_id(self) -> str:
         return self.gateway_id
@@ -131,7 +131,7 @@ class Authentication:
             elif key == self.CERTIFICATE:
                 self.certificate = value
             else:
-                raise WrongFieldError(f"Unknown field {key} for Authentication class")
+                raise WrongField(f"Unknown field {key} for Authentication class")
 
     def get_type(self) -> str:
         return self.type
@@ -196,7 +196,7 @@ class ErrorResponse:
             elif key == self.DETAILS:
                 self.details = value
             else:
-                raise WrongFieldError(f"Unknown field {key} for ErrorResponse class")
+                raise WrongField(f"Unknown field {key} for ErrorResponse class")
 
     def get_code(self) -> str:
         return self.code

@@ -1,4 +1,4 @@
-from agrirouter.constants.media_types import ContentTypes
+from agrirouter.api.enums import ContentTypes
 
 
 class RevokingParameter:
@@ -11,7 +11,6 @@ class RevokingParameter:
                  time_zone,
                  content_type=ContentTypes.APPLICATION_JSON.value
                  ):
-
         self.application_id = application_id
         self.content_type = content_type
         self.account_id = account_id

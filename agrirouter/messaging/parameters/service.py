@@ -7,7 +7,7 @@ from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 im
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
 from agrirouter.messaging.parameters.dto import MessageParameters, Parameters
-from agrirouter.onboarding.response import BaseOnboardingResonse
+from agrirouter.onboarding.response import BaseOnboardingResponse
 
 
 class MessageHeaderParameters(Parameters):
@@ -58,7 +58,6 @@ class MessagePayloadParameters:
                  type_url: str,
                  value: str,
                  ):
-
         self.type_url = type_url
         self.value = value
 
@@ -77,7 +76,7 @@ class CloudOnboardParameters(MessageParameters):
                  application_message_seq_no: int,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse
+                 onboarding_response: BaseOnboardingResponse
                  ):
         self.onboarding_requests = onboarding_requests if onboarding_requests else []
         super(CloudOnboardParameters, self).__init__(
@@ -108,7 +107,7 @@ class CloudOffboardParameters(MessageParameters):
                  application_message_seq_no: int,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse
+                 onboarding_response: BaseOnboardingResponse
                  ):
         self.endpoints = endpoints if endpoints else []
         super(CloudOffboardParameters, self).__init__(
@@ -131,7 +130,7 @@ class CloudOffboardParameters(MessageParameters):
         self.endpoints.extend(endpoints)
 
 
-class CapabilityParameters(MessageParameters):
+class CapabilitiesParameters(MessageParameters):
 
     def __init__(self,
                  *,
@@ -142,13 +141,13 @@ class CapabilityParameters(MessageParameters):
                  application_message_seq_no: int,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse
+                 onboarding_response: BaseOnboardingResponse
                  ):
         self.application_id = application_id
         self.certification_version_id = certification_version_id
         self.enable_push_notification = enable_push_notification
         self.capability_parameters = capability_parameters if capability_parameters else []
-        super(CapabilityParameters, self).__init__(
+        super(CapabilitiesParameters, self).__init__(
             application_message_seq_no=application_message_seq_no,
             application_message_id=application_message_id,
             team_set_context_id=team_set_context_id,
@@ -193,7 +192,7 @@ class FeedConfirmParameters(MessageParameters):
                  application_message_seq_no: int,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse
+                 onboarding_response: BaseOnboardingResponse
                  ):
         self.message_ids = message_ids if message_ids else []
         super(FeedConfirmParameters, self).__init__(
@@ -225,7 +224,7 @@ class FeedDeleteParameters(MessageParameters):
                  application_message_seq_no: int,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse,
+                 onboarding_response: BaseOnboardingResponse,
                  ):
         self.message_ids = message_ids if message_ids else []
         self.senders = senders if senders else []
@@ -277,7 +276,7 @@ class ListEndpointsParameters(MessageParameters):
                  application_message_seq_no: int,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse,
+                 onboarding_response: BaseOnboardingResponse,
                  ):
         self.technical_message_type = technical_message_type
         self.direction = direction
@@ -317,7 +316,7 @@ class QueryMessageParameters(MessageParameters):
                  application_message_seq_no: int,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse,
+                 onboarding_response: BaseOnboardingResponse,
                  ):
         self.senders = senders
         self.message_ids = message_ids
@@ -369,7 +368,7 @@ class QueryHeaderParameters(MessageParameters):
                  application_message_seq_no: int,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse,
+                 onboarding_response: BaseOnboardingResponse,
                  ):
         self.senders = senders
         self.message_ids = message_ids
@@ -418,7 +417,7 @@ class SubscriptionParameters(MessageParameters):
                  application_message_seq_no: int,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse,
+                 onboarding_response: BaseOnboardingResponse,
                  subscription_items: List[Subscription.MessageTypeSubscriptionItem] = None,
                  ):
         self.subscription_items = subscription_items if subscription_items else []
@@ -451,7 +450,7 @@ class ImageParameters(MessageParameters):
                  recipients: list,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse
+                 onboarding_response: BaseOnboardingResponse
                  ):
         self.image_encoded = image_encoded
         self.image_filename = image_filename
@@ -495,7 +494,7 @@ class TaskParameters(MessageParameters):
                  recipients: list,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse
+                 onboarding_response: BaseOnboardingResponse
                  ):
         self.task_encoded = task_encoded
         self.task_filename = task_filename
@@ -516,16 +515,16 @@ class TaskParameters(MessageParameters):
 
     def get_task_filename(self):
         return self.task_filename
-    
+
     def get_chunk_context_id(self):
         return self.chunk_context_id
-    
+
     def get_chunk_current(self):
         return self.chunk_current
-    
+
     def get_chunk_total(self):
         return self.chunk_total
-    
+
     def get_chunk_total_size(self):
         return self.chunk_total_size
 
@@ -537,16 +536,16 @@ class TaskParameters(MessageParameters):
 
     def set_task_filename(self, task_filename):
         self.task_filename = task_filename
-    
+
     def set_chunk_context_id(self, chunk_context_id):
         self.chunk_context_id = chunk_context_id
-    
+
     def set_chunk_current(self, chunk_current):
         self.chunk_current = chunk_current
-    
+
     def set_chunk_total(self, chunk_total):
         self.chunk_total = chunk_total
-    
+
     def set_chunk_total_size(self, chunk_total_size):
         self.chunk_total_size = chunk_total_size
 
@@ -563,7 +562,7 @@ class EfdiParameters(MessageParameters):
                  recipients: list = None,
                  application_message_id: str,
                  team_set_context_id: str = None,
-                 onboarding_response: BaseOnboardingResonse
+                 onboarding_response: BaseOnboardingResponse
                  ):
         self.recipients = recipients
         self.efdi = efdi

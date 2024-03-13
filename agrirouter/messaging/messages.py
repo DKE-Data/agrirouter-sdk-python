@@ -1,7 +1,7 @@
 import json
 from typing import Union, Dict
 
-from agrirouter.messaging.exceptions import WrongFieldError
+from agrirouter.api.exceptions import WrongField
 from agrirouter.utils.utc_time_util import now_as_utc_str
 
 
@@ -57,7 +57,7 @@ class Command:
             if key == self.MESSAGE:
                 self.message = value
             else:
-                raise WrongFieldError(f"Unknown field `{key}` for {self.__class__}")
+                raise WrongField(f"Unknown field `{key}` for {self.__class__}")
 
     def get_message(self) -> str:
         return self.message
@@ -67,7 +67,6 @@ class Command:
 
 
 class OutboxMessage:
-
     CAPABILITY_ALTERNATE_ID = "capabilityAlternateId"
     SENSOR_ALTERNATE_ID = "sensorAlternateId"
     COMMAND = "command"
@@ -93,7 +92,7 @@ class OutboxMessage:
                 command.json_deserialize(value)
                 self.command = command
             else:
-                raise WrongFieldError(f"Unknown field `{key}` for {self.__class__}")
+                raise WrongField(f"Unknown field `{key}` for {self.__class__}")
 
     def get_capability_alternate_id(self) -> str:
         return self.capability_alternate_id
@@ -112,3 +111,13 @@ class OutboxMessage:
 
     def set_command(self, command: Command) -> None:
         self.command = command
+
+
+class MessageParameterTuple:
+    """
+    Class used to form a tuple of header and payload parameters
+    """
+
+    def __init__(self, message_header_parameters, message_payload_parameters):
+        self.message_header_parameters = message_header_parameters
+        self.message_payload_parameters = message_payload_parameters

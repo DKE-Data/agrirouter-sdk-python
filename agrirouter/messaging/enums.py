@@ -1,7 +1,11 @@
-from agrirouter.auth.enums import BaseEnum
+from agrirouter.api.enums import BaseEnum
 
 
 class TechnicalMessageType(BaseEnum):
+    """
+    Technical message type.
+    """
+
     EMPTY = ""
     CAPABILITIES = "dke:capabilities"
     SUBSCRIPTION = "dke:subscription"
@@ -16,9 +20,13 @@ class TechnicalMessageType(BaseEnum):
 
 
 class CapabilityType(BaseEnum):
-    ISO_11783_TASKDATA_ZIP = "iso:11783:-10:taskdata:zip"
-    ISO_11783_DEVICE_DESCRIPTION_PROTOBUF = "iso:11783:-10:device_description:protobuf"
-    ISO_11783_TIMELOG_PROTOBUF = "iso:11783:-10:time_log:protobuf"
+    """
+    Type of the capability.
+    """
+
+    ISO_11783_TASK_DATA_ZIP = "iso:11783:-10:taskdata:zip"
+    ISO_11783_DEVICE_DESCRIPTION = "iso:11783:-10:device_description:protobuf"
+    ISO_11783_TIMELOG = "iso:11783:-10:time_log:protobuf"
     IMG_BMP = "img:bmp"
     IMG_JPEG = "img:jpeg"
     IMG_PNG = "img:png"
@@ -28,3 +36,13 @@ class CapabilityType(BaseEnum):
     VID_MP4 = "vid:mp4"
     VID_WMV = "vid:wmv"
     GPS_INFO = "gps:info"
+
+
+class CapabilityDirectionType(BaseEnum):
+    """
+    Direction of the capability.
+    """
+
+    SEND = "SEND"
+    RECEIVE = "RECEIVE"
+    SEND_RECEIVE = "SEND_RECEIVE"

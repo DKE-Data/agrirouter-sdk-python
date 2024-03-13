@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from agrirouter.auth.enums import ResponseType
+from agrirouter.api.enums import ResponseTypes
 
 
 class AuthUrlParameter:
@@ -39,5 +39,5 @@ class AuthUrlParameter:
 
     @staticmethod
     def validate_response_type(response_type) -> None:
-        if response_type not in ResponseType.values_list():
+        if response_type not in ResponseTypes.values_list():
             raise ValueError("Invalid response_type parameter value.")

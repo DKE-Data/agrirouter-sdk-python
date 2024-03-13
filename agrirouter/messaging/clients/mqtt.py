@@ -1,5 +1,6 @@
-import time
+import logging
 import ssl
+import time
 from typing import Any, List, Tuple
 
 import paho.mqtt.client as mqtt_client
@@ -10,6 +11,7 @@ from agrirouter.messaging.clients.constants import SYNC, ASYNC
 
 
 class MqttClient:
+    _log = logging.getLogger(__name__)
 
     def __init__(self,
                  onboard_response,
@@ -47,6 +49,7 @@ class MqttClient:
         self._mode = None
 
     def connect(self, host: str, port: str) -> None:
+        self._log.debug(f"Connecting client to MQTT broker at {host}:{port}")
         self.mqtt_client.connect(
             host=host,
             port=int(port)
@@ -56,6 +59,7 @@ class MqttClient:
         self._mode = SYNC
 
     def connect_async(self, host: str, port: str):
+        self._log.debug(f"Connecting async client to MQTT broker at {host}:{port}")
         self.mqtt_client.connect_async(
             host=host,
             port=int(port)
@@ -68,6 +72,7 @@ class MqttClient:
             time.sleep(1)
 
     def disconnect(self):
+        self._log.debug("Disconnecting client from MQTT broker")
         self.mqtt_client.loop_stop()
         self.mqtt_client.disconnect()
 
@@ -81,6 +86,7 @@ class MqttClient:
         :param qos: int representing the quality of service level to use. May be [0, 1, 2]
         :return: MQTTMessageInfo
         """
+        self._log.debug(f"Publishing message on topic {topic} with payload {payload}")
         message_info = self.mqtt_client.publish(
             topic=topic,
             payload=payload,
@@ -88,8 +94,9 @@ class MqttClient:
         )
         if self._mode == SYNC:
             self.mqtt_client.loop()
-            time.sleep(3)
+            time.sleep(3)  # TODO: Check / Remove this sleep?
             self.mqtt_client.loop()
+        self._log.debug(f"Message published with message info: {message_info}")
         return message_info
 
     def subscribe(self, topics: List[Tuple[str, int]]) -> tuple:
@@ -105,6 +112,7 @@ class MqttClient:
 
         :return: tuple
         """
+        self._log.debug(f"Subscribing to topics {topics}")
         result, mid = self.mqtt_client.subscribe(topics, qos=2)
         return result, mid
 
@@ -119,6 +127,7 @@ class MqttClient:
 
         :return: tuple
         """
+        self._log.debug(f"Unsubscribing from topics {topics}")
         result, mid = self.mqtt_client.unsubscribe(topics)
         return result, mid
 

@@ -1,4 +1,4 @@
-from agrirouter.auth.enums import BaseEnum
+from agrirouter.api.enums import BaseEnum
 
 
 class CertificateTypes(BaseEnum):
@@ -6,6 +6,6 @@ class CertificateTypes(BaseEnum):
     P12 = "P12"
 
 
-class GateWays(BaseEnum):
+class Gateways(BaseEnum):
     MQTT = "2"
-    REST = "3"
+    HTTP = "3"

@@ -1,4 +1,5 @@
 import base64
+import logging
 
 from google.protobuf.any_pb2 import Any
 from google.protobuf.internal.decoder import _DecodeVarint
@@ -9,12 +10,15 @@ from agrirouter.generated.messaging.response.payload.feed.feed_response_pb2 impo
     MessageQueryResponse
 from agrirouter.generated.messaging.response.payload.feed.push_notification_pb2 import PushNotification
 from agrirouter.generated.messaging.response.response_pb2 import ResponseEnvelope, ResponsePayloadWrapper
-from agrirouter.messaging.exceptions import DecodeMessageException
+from agrirouter.api.exceptions import CanNotDecodeMessage
 from agrirouter.messaging.messages import DecodedMessage
 from agrirouter.utils.type_url import TypeUrl
 
 
 def read_properties_buffers_from_input_stream(input_stream) -> tuple:
+    """
+    Read the properties from the input stream.
+    """
     result = []
     pos = 0
     while pos < len(input_stream):
@@ -29,20 +33,26 @@ def read_properties_buffers_from_input_stream(input_stream) -> tuple:
 
 
 def decode_response(message: bytes) -> DecodedMessage:
+    """
+    Decode the response itself.
+    """
     input_stream = base64.b64decode(message)
     response_envelope_buffer, response_payload_buffer = read_properties_buffers_from_input_stream(input_stream)
-
     envelope = ResponseEnvelope()
     envelope.ParseFromString(response_envelope_buffer)
     payload = ResponsePayloadWrapper()
     payload.ParseFromString(response_payload_buffer)
-
     message = DecodedMessage(envelope, payload)
-
     return message
 
 
 def decode_details(details: Any):
+    """
+    Decode the details of a response.
+    """
+    _log = logging.getLogger(__name__)
+    _log.debug(f"Decoding details of type {details.type_url}.")
+
     if details.type_url == TypeUrl.get_type_url(Messages):
         messages = Messages()
         messages.MergeFromString(details.value)
@@ -60,8 +70,9 @@ def decode_details(details: Any):
         message_query_response.MergeFromString(details.value)
         return message_query_response
     elif details.type_url == TypeUrl.get_type_url(PushNotification):
-        pushnotification = PushNotification()
-        pushnotification.MergeFromString(details.value)
-        return pushnotification
+        push_notification = PushNotification()
+        push_notification.MergeFromString(details.value)
+        return push_notification
     else:
-        raise DecodeMessageException(f"Could not handle type {details.type_url} while decoding details.")
+
+        raise CanNotDecodeMessage(f"Could not handle type {details.type_url} while decoding details.")

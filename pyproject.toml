@@ -1,15 +1,21 @@
 [project]
 name = "agrirouter"
 description = "agrirouter SDK"
+readme = "README.md"
 version = "1.0.0b1"
 dynamic = ["dependencies"]
+authors = [
+    { name = "Alexey Petrovsky", email = "petrovsky.lexey@gmail.com" },
+    { name = "Oliver Rahner", email = "o.rahner@dke-data.com" },
+    { name = "Sascha Dömer", email = "Cf4ThQgxcnxAovOUXTNv@saschadoemer.de" },
+]
+
+[project.urls]
+Homepage = "https://github.com/dke-data/agrirouter-sdk-python"
 
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
-
-[tool.setuptools]
-packages = ["agrirouter"]
 
 [tool.setuptools.dynamic]
 dependencies = { file = ["requirements.txt"] }

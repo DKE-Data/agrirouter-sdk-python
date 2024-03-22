@@ -35,4 +35,4 @@ jobs:
           pytest
       - name: Dry run building the wheel
         run: |
-          python setup.py sdist bdist_wheel
+          python -m build --sdist --wheel

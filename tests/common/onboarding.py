@@ -1,5 +1,5 @@
-from agrirouter import OnboardingService, OnboardParameters
-from agrirouter.onboarding.response import OnboardResponse
+from src import OnboardingService, OnboardParameters
+from src.onboarding.response import OnboardResponse
 from tests.data.applications import CommunicationUnit
 
 

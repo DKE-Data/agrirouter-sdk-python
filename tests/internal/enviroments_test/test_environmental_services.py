@@ -1,10 +1,10 @@
-"""Test agrirouter/environments/environmental_services.py"""
+"""Test src/environments/environmental_services.py"""
 
 import pytest
 
-from agrirouter.api.enums import Environments
-from agrirouter.api.exceptions import InvalidEnvironmentSetup
-from agrirouter.environments.environmental_services import EnvironmentalService
+from src.api.enums import Environments
+from src.api.exceptions import InvalidEnvironmentSetup
+from src.environments.environmental_services import EnvironmentalService
 from tests.common.constants import ENV
 
 

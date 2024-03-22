@@ -3,16 +3,16 @@ import unittest
 
 import pytest
 
-from agrirouter import FeedDeleteParameters
-from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.decode import decode_response, decode_details
-from agrirouter.messaging.enums import CapabilityType
-from agrirouter.messaging.messages import OutboxMessage
-from agrirouter.messaging.services.commons import MqttMessagingService
-from agrirouter.messaging.services.messaging import SendMessageService, SendMessageParameters, FeedDeleteService
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.onboarding.response import OnboardResponse
-from agrirouter.utils.uuid_util import new_uuid
+from src import FeedDeleteParameters
+from src.generated.messaging.request.request_pb2 import RequestEnvelope
+from src.messaging.decode import decode_response, decode_details
+from src.messaging.enums import CapabilityType
+from src.messaging.messages import OutboxMessage
+from src.messaging.services.commons import MqttMessagingService
+from src.messaging.services.messaging import SendMessageService, SendMessageParameters, FeedDeleteService
+from src.messaging.services.sequence_number_service import SequenceNumberService
+from src.onboarding.response import OnboardResponse
+from src.utils.uuid_util import new_uuid
 from tests.common.data_provider import DataProvider
 from tests.common.sleeper import Sleeper
 from tests.data.identifier import Identifier
@@ -62,7 +62,7 @@ class TestSendDirectMessageService(unittest.TestCase):
             self):
         """
         Test for sending the valid message content to a single recipient after enabling IMG_PNG capability with
-        sender and recipient Open Connection between Recipient and agrirouter is required. The setup between the
+        sender and recipient Open Connection between Recipient and src is required. The setup between the
         sender and the recipient are done before running the test.
         """
 
@@ -100,7 +100,7 @@ class TestSendDirectMessageService(unittest.TestCase):
             """
             Callback to handle the incoming messages from the MQTT broker
             """
-            self._log.info("Received message for sender from the agrirouter: %s",
+            self._log.info("Received message for sender from the src: %s",
                            msg.payload.decode())
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
@@ -108,7 +108,7 @@ class TestSendDirectMessageService(unittest.TestCase):
             if decoded_message.response_envelope.type != 1:
                 decoded_details = decode_details(decoded_message.response_payload.details)
                 self._log.error(
-                    f"Received wrong message from the agrirouter: {str(decoded_details)}")
+                    f"Received wrong message from the src: {str(decoded_details)}")
             assert decoded_message.response_envelope.response_code == 201
             self._callback_for_sender_processed = True
 
@@ -119,7 +119,7 @@ class TestSendDirectMessageService(unittest.TestCase):
             """
             Callback to handle the incoming messages from the MQTT broker
             """
-            self._log.info("Received message for recipient from the agrirouter: %s",
+            self._log.info("Received message for recipient from the src: %s",
                            msg.payload.decode())
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
@@ -127,7 +127,7 @@ class TestSendDirectMessageService(unittest.TestCase):
             if decoded_message.response_envelope.type != 12:
                 decoded_details = decode_details(decoded_message.response_payload.details)
                 self._log.error(
-                    f"Received wrong message from the agrirouter: {str(decoded_details)}")
+                    f"Received wrong message from the src: {str(decoded_details)}")
             push_notification = decode_details(decoded_message.response_payload.details)
             assert decoded_message.response_envelope.response_code == 200
             assert DataProvider.get_hash(

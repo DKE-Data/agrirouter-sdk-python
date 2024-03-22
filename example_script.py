@@ -2,9 +2,9 @@ import time
 
 from google.protobuf.timestamp_pb2 import Timestamp
 
-from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
-from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
-from agrirouter.onboarding.response import OnboardResponse
+from src.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
+from src.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
+from src.onboarding.response import OnboardResponse
 
 public_key = """-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzGt41/+kSOTlO1sJvLIN
@@ -64,15 +64,15 @@ onboarding_response_mqtt_data = {
     }
 }
 
-import agrirouter as ar
-from agrirouter.onboarding.enums import Gateways
-from agrirouter.messaging.enums import CapabilityType
-from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.messaging.services.commons import HttpMessagingService, MqttMessagingService
-from agrirouter import ListEndpointsParameters, ListEndpointsService, SubscriptionService, SubscriptionParameters, \
+import src as ar
+from src.onboarding.enums import Gateways
+from src.messaging.enums import CapabilityType
+from src.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
+from src.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
+from src.messaging.services.commons import HttpMessagingService, MqttMessagingService
+from src import ListEndpointsParameters, ListEndpointsService, SubscriptionService, SubscriptionParameters, \
     QueryHeaderService, QueryHeaderParameters, CapabilitiesService, CapabilitiesParameters
-from agrirouter.utils.uuid_util import new_uuid
+from src.utils.uuid_util import new_uuid
 
 application_id = "8c947a45-c57d-42d2-affc-206e21d63a50"  # # store here your application id. You can find it in AR UI
 certification_version_id = "edd5d6b7-45bb-4471-898e-ff9c2a7bf56f"  # # store here your certification version id. You can find it in AR UI
@@ -298,9 +298,9 @@ def example_query_header_message_mqtt(onboarding_response_data, on_msg_callback)
 def on_message_callback(client, userdata, msg):
     # Define here the way receiving messages will be processed
 
-    from agrirouter.messaging.decode import decode_response
-    from agrirouter.messaging.decode import decode_details
-    from agrirouter.messaging.messages import OutboxMessage
+    from src.messaging.decode import decode_response
+    from src.messaging.decode import decode_details
+    from src.messaging.messages import OutboxMessage
 
     outbox_message = OutboxMessage()
     outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))

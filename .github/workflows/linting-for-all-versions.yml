@@ -33,3 +33,6 @@ jobs:
       - name: Lint with flake8
         run: |
           flake8 .
+      - name: Dry run building the wheel
+        run: |
+          python setup.py sdist bdist_wheel

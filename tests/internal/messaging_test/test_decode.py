@@ -1,8 +1,8 @@
 import json
 
-from agrirouter.generated.messaging.response.response_pb2 import ResponseEnvelope
-from agrirouter.messaging.decode import decode_details
-from agrirouter.messaging.decode import decode_response
+from src.generated.messaging.response.response_pb2 import ResponseEnvelope
+from src.messaging.decode import decode_details
+from src.messaging.decode import decode_response
 
 MESSAGING_RESULT = b'[{"sensorAlternateId":"185cd97b-ed0b-4e75-a6e2-6be1cdd38a06","capabilityAlternateId":"bbe9f361-b551-48d9-9fca-1b4dc768287c","command":{"message":"XwjIARAKGiQ5NWUzNWE0Zi1jNWM4LTQ1NDEtODE4OS03NmJlMzM0OTc0NDUiJDUzNzYyM2ZjLWY2NmYtNDc5Yi1hMmJhLWVjZjNlNWM3ZjhlMCoMCNTV5YsGEICI8LIDzQIKygIKTnR5cGVzLmFncmlyb3V0ZXIuY29tL2Fncmlyb3V0ZXIucmVzcG9uc2UucGF5bG9hZC5hY2NvdW50Lkxpc3RFbmRwb2ludHNSZXNwb25zZRL3AQp4CiRkNzA0YTQ0My05OWY3LTQ3YjQtYmU1NS1lMmZhMDk2ODllYmUSJFB5dGhvblNES19kZXYgLSAyMDIxLTEwLTI1LCAxMDo1MToxOBoLYXBwbGljYXRpb24iBmFjdGl2ZTIVdXJuOm15YXBwOnNucjAwMDAzMjM0CnsKJDE4NWNkOTdiLWVkMGItNGU3NS1hNmUyLTZiZTFjZGQzOGEwNhIkUHl0aG9uU0RLX2RldiAtIDIwMjEtMTAtMjEsIDIxOjQxOjI0GgthcHBsaWNhdGlvbiIGYWN0aXZlMhh1cm46bXlhcHA6c25yMDAwMDMyMzRzZGY="}}]'  # noqa
 
@@ -15,7 +15,7 @@ def test_decode_response():
 
     assert message.response_payload.details
 
-    assert message.response_payload.details.type_url == "types.agrirouter.com/agrirouter.response.payload.account.ListEndpointsResponse"  # noqa
+    assert message.response_payload.details.type_url == "types.src.com/src.response.payload.account.ListEndpointsResponse"  # noqa
     assert message.response_payload.details.value == b'\nx\n$d704a443-99f7-47b4-be55-e2fa09689ebe\x12$PythonSDK_dev - 2021-10-25, 10:51:18\x1a\x0bapplication"\x06active2\x15urn:myapp:snr00003234\n{\n$185cd97b-ed0b-4e75-a6e2-6be1cdd38a06\x12$PythonSDK_dev - 2021-10-21, 21:41:24\x1a\x0bapplication"\x06active2\x18urn:myapp:snr00003234sdf'  # noqa
 
     assert message.response_envelope.response_code == 200

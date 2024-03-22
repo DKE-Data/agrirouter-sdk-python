@@ -4,17 +4,17 @@ from typing import Optional
 
 import pytest
 
-from agrirouter import QueryMessagesService, QueryMessageParameters, FeedDeleteService, FeedDeleteParameters
-from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.decode import decode_response, decode_details
-from agrirouter.messaging.enums import CapabilityType
-from agrirouter.messaging.messages import OutboxMessage
-from agrirouter.messaging.services.commons import MqttMessagingService
-from agrirouter.messaging.services.messaging import SendMessageService, SendMessageParameters
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.onboarding.response import OnboardResponse
-from agrirouter.utils.utc_time_util import max_validity_period, validity_period_for_seconds
-from agrirouter.utils.uuid_util import new_uuid
+from src import QueryMessagesService, QueryMessageParameters, FeedDeleteService, FeedDeleteParameters
+from src.generated.messaging.request.request_pb2 import RequestEnvelope
+from src.messaging.decode import decode_response, decode_details
+from src.messaging.enums import CapabilityType
+from src.messaging.messages import OutboxMessage
+from src.messaging.services.commons import MqttMessagingService
+from src.messaging.services.messaging import SendMessageService, SendMessageParameters
+from src.messaging.services.sequence_number_service import SequenceNumberService
+from src.onboarding.response import OnboardResponse
+from src.utils.utc_time_util import max_validity_period, validity_period_for_seconds
+from src.utils.uuid_util import new_uuid
 from tests.common.data_provider import DataProvider
 from tests.common.sleeper import Sleeper
 from tests.data.identifier import Identifier
@@ -65,7 +65,7 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
     def send_message_before_the_test_run(self):
         """
             Send a valid message content to a single recipient after enabling IMG_PNG capability with
-            sender and recipient. Open Connection between Recipient and agrirouter is required. The setup between the
+            sender and recipient. Open Connection between Recipient and src is required. The setup between the
             sender and the recipient has been done before running the test.
         """
         self._log.info("Sending a message before the test run")
@@ -307,7 +307,7 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             """
             Callback to set the received message ids
             """
-            self._log.info("Received message for recipient from the agrirouter: %s",
+            self._log.info("Received message for recipient from the src: %s",
                            msg.payload.decode())
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
@@ -315,7 +315,7 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             if decoded_message.response_envelope.type != 12:
                 decoded_details = decode_details(decoded_message.response_payload.details)
                 self._log.error(
-                    f"Received wrong message from the agrirouter: {str(decoded_details)}")
+                    f"Received wrong message from the src: {str(decoded_details)}")
             push_notification = decode_details(decoded_message.response_payload.details)
             assert decoded_message.response_envelope.response_code == 200
             self._received_messages = push_notification.messages[0]

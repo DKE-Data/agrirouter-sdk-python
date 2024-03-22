@@ -1,11 +1,16 @@
 [project]
 name = "agrirouter"
-description = "agrirouter SDK"
-version = "1.0.0b1"
-dynamic = ["dependencies"]
+version = "2.0.0"
+description = "Python SDK for the agrirouter API. This project contains the API for the communication with the agrirouter. Everything you need for the onboarding process, secure communication and much more."
+authors = ["DKE-Data GmbH & Co. KG"]
+authors-email = ["info@dke-data.com"]
+license = "LICENSE"
+requires-python = ">=3.6"
+include-package-data = true
+urls = { "Source" = "https://github.com/DKE-Data/agrirouter-sdk-python" }
+dynamic = ['version', 'description', 'requires-python', 'license', 'authors', 'classifiers', 'urls', 'scripts', 'gui-scripts', 'entry-points', 'dependencies', 'optional-dependencies']
 
 [build-system]
-requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]

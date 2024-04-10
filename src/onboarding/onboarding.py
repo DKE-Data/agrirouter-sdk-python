@@ -44,7 +44,7 @@ class SecuredOnboardingService(EnvironmentalService):
         return VerificationResponse(http_response)
 
     def onboard(self, params: OnboardParameters) -> OnboardResponse:
-        url = self._environment.get_onboard_url()
+        url = self._environment.get_secured_onboard_url()
         http_response = self._perform_request(params=params, url=url)
         if not http_response.ok:
             raise UnexpectedErrorDuringOnboarding(

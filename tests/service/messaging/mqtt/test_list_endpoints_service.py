@@ -5,7 +5,7 @@ import pytest
 
 from src import ListEndpointsService, ListEndpointsParameters
 from src.messaging.decode import decode_response, decode_details
-from src.messaging.enums import CapabilityType, CapabilityDirectionType
+from src.api.enums import CapabilityType, CapabilityDirectionType
 from src.messaging.messages import OutboxMessage
 from src.messaging.services.commons import MqttMessagingService
 from src.messaging.services.sequence_number_service import SequenceNumberService

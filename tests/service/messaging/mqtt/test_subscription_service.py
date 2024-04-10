@@ -6,7 +6,7 @@ import pytest
 from src.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from src.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from src.messaging.decode import decode_response, decode_details
-from src.messaging.enums import CapabilityType, CapabilityDirectionType
+from src.api.enums import CapabilityType, CapabilityDirectionType
 from src.messaging.messages import OutboxMessage
 from src.messaging.parameters.service import SubscriptionParameters, CapabilitiesParameters
 from src.messaging.services.commons import MqttMessagingService

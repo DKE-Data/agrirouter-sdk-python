@@ -9,7 +9,7 @@ from src import FeedDeleteService, FeedDeleteParameters, MessageHeaderParameters
 from src.generated.messaging.request.request_pb2 import RequestEnvelope
 from src.messaging.decode import decode_response, decode_details
 from src.messaging.encode import chunk_and_base64encode_each_chunk, encode_chunks_message
-from src.messaging.enums import CapabilityType, TechnicalMessageType
+from src.api.enums import CapabilityType, TechnicalMessageType
 from src.messaging.messages import OutboxMessage
 from src.messaging.parameters.dto import ChunkedMessageParameters
 from src.messaging.services.commons import MqttMessagingService

@@ -6,7 +6,7 @@ import pytest
 from src import FeedDeleteParameters
 from src.generated.messaging.request.request_pb2 import RequestEnvelope
 from src.messaging.decode import decode_response, decode_details
-from src.messaging.enums import CapabilityType
+from src.api.enums import CapabilityType
 from src.messaging.messages import OutboxMessage
 from src.messaging.services.commons import MqttMessagingService
 from src.messaging.services.messaging import SendMessageService, SendMessageParameters, FeedDeleteService

@@ -4,7 +4,7 @@ from src import CapabilitiesParameters, CapabilitiesService
 from src.api.environments import QA
 from src.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from src.messaging.decode import decode_response
-from src.messaging.enums import CapabilityType, CapabilityDirectionType
+from src.api.enums import CapabilityType, CapabilityDirectionType
 from src.messaging.messages import OutboxMessage
 from src.messaging.services.commons import MqttMessagingService
 from src.messaging.services.sequence_number_service import SequenceNumberService

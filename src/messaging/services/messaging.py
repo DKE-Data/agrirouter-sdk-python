@@ -10,7 +10,7 @@ from src.generated.messaging.request.payload.feed.feed_requests_pb2 import Messa
     MessageQuery
 from src.generated.messaging.request.request_pb2 import RequestEnvelope
 from src.messaging.encode import encode_message
-from src.messaging.enums import TechnicalMessageType, CapabilityType
+from src.api.enums import TechnicalMessageType, CapabilityType
 from src.messaging.messages import EncodedMessage
 from src.messaging.parameters.dto import MessagingParameters, SendMessageParameters, ChunkedMessageParameters
 from src.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \

@@ -8,7 +8,7 @@ from onboard_response_integration_service import save_onboard_response
 from src import CapabilitiesService, CapabilitiesParameters
 from src.api.environments import QA
 from src.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from src.messaging.enums import CapabilityType, CapabilityDirectionType
+from src.api.enums import CapabilityType, CapabilityDirectionType
 from src.messaging.services.commons import HttpMessagingService
 from src.messaging.services.http.fetch_message_service import FetchMessageService
 from src.onboarding.enums import CertificateTypes, Gateways

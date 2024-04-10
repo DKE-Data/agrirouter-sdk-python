@@ -11,3 +11,6 @@ certifi~=2023.7.22
 requests~=2.31.0
 paho-mqtt~=1.5.1
 protobuf~=3.18.0
+google~=3.0.0
+toml~=0.10.2
+build~=1.1.1

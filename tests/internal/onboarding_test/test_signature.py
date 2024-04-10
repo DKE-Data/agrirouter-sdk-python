@@ -1,9 +1,9 @@
-"""Test agrirouter/onboarding/signature.py"""
+"""Test src/onboarding/signature.py"""
 
 import pytest
 from cryptography.exceptions import InvalidSignature
 
-from agrirouter.onboarding.signature import create_signature, verify_signature
+from src.onboarding.signature import create_signature, verify_signature
 from tests.common.constants import PRIVATE_KEY, PUBLIC_KEY
 
 

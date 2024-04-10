@@ -3,16 +3,16 @@ import unittest
 
 import pytest
 
-from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.messaging.decode import decode_response, decode_details
-from agrirouter.messaging.enums import CapabilityDirectionType
-from agrirouter.messaging.enums import CapabilityType
-from agrirouter.messaging.messages import OutboxMessage
-from agrirouter.messaging.parameters.service import CapabilitiesParameters
-from agrirouter.messaging.services.commons import MqttMessagingService
-from agrirouter.messaging.services.messaging import CapabilitiesService
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.utils.uuid_util import new_uuid
+from src.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
+from src.messaging.decode import decode_response, decode_details
+from src.messaging.enums import CapabilityDirectionType
+from src.messaging.enums import CapabilityType
+from src.messaging.messages import OutboxMessage
+from src.messaging.parameters.service import CapabilitiesParameters
+from src.messaging.services.commons import MqttMessagingService
+from src.messaging.services.messaging import CapabilitiesService
+from src.messaging.services.sequence_number_service import SequenceNumberService
+from src.utils.uuid_util import new_uuid
 from tests.common.sleeper import Sleeper
 from tests.data.applications import CommunicationUnit
 from tests.data.identifier import Identifier

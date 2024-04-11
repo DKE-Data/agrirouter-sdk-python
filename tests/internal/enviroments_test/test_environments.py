@@ -1,44 +1,44 @@
 """Test src/environments/environments.py"""
 
-from src.api.environments import Production as PE
-from src.api.environments import QA as QAE
+from src.api.environments import Production
+from src.api.environments import Qa
 from tests.common.constants import APPLICATION_ID
 
 
-class TestPE:
+class TestProduction:
     def test_get_base_url(self):
-        assert PE().get_base_url() == PE._ENV_BASE_URL
+        assert Production().get_base_url() == Production._ENV_BASE_URL
 
     def test_get_api_prefix(self):
-        assert PE().get_api_prefix() == PE._API_PREFIX
+        assert Production().get_api_prefix() == Production._API_PREFIX
 
     def test_get_registration_service_url(self):
-        assert PE().get_registration_service_url() == PE._REGISTRATION_SERVICE_URL
+        assert Production().get_registration_service_url() == Production._REGISTRATION_SERVICE_URL
 
     def test_get_onboard_url(self):
-        onb_url = PE._REGISTRATION_SERVICE_URL + PE._API_PREFIX + "/registration/onboard"
-        assert PE().get_onboard_url() == onb_url
+        onb_url = Production._REGISTRATION_SERVICE_URL + Production._API_PREFIX + "/registration/onboard"
+        assert Production().get_onboard_url() == onb_url
 
     def test_get_secured_onboard_url(self):
-        onb_url = PE._REGISTRATION_SERVICE_URL + PE._API_PREFIX + "/registration/onboard/request"
-        assert PE().get_secured_onboard_url() == onb_url
+        onb_url = Production._REGISTRATION_SERVICE_URL + Production._API_PREFIX + "/registration/onboard/request"
+        assert Production().get_secured_onboard_url() == onb_url
 
     def test_get_verify_onboard_request_url(self):
-        req_url = PE._REGISTRATION_SERVICE_URL + PE._API_PREFIX + "/registration/onboard/verify"
-        assert PE().get_verify_onboard_request_url() == req_url
+        req_url = Production._REGISTRATION_SERVICE_URL + Production._API_PREFIX + "/registration/onboard/verify"
+        assert Production().get_verify_onboard_request_url() == req_url
 
     def test_get_revoke_url(self):
-        rev_url = PE._REGISTRATION_SERVICE_URL + PE._API_PREFIX + "/registration/onboard/revoke"
-        assert PE().get_revoke_url() == rev_url
+        rev_url = Production._REGISTRATION_SERVICE_URL + Production._API_PREFIX + "/registration/onboard/revoke"
+        assert Production().get_revoke_url() == rev_url
 
     def test_get_agrirouter_login_url(self):
-        login_url = PE._ENV_BASE_URL + PE._LOGIN_URL
-        assert PE().get_agrirouter_login_url() == login_url
+        login_url = Production._ENV_BASE_URL + Production._LOGIN_URL
+        assert Production().get_agrirouter_login_url() == login_url
 
     def test_get_secured_onboarding_authorization_url(self):
         redirect_uri = "www.my_redirect.com"
         response_type = "response_type"
-        assert PE().get_secured_onboarding_authorization_url(
+        assert Production().get_secured_onboarding_authorization_url(
             APPLICATION_ID, response_type, "state", redirect_uri
         ) == ("https://goto.my-agrirouter.com/application/{application_id}/"
               "authorize?response_type={response_type}&state={state}").format(
@@ -48,60 +48,60 @@ class TestPE:
             state="state") + f"&redirect_uri={redirect_uri}"
 
     def test_get_mqtt_server_url(self):
-        assert PE().get_mqtt_server_url(
+        assert Production().get_mqtt_server_url(
             "localhost", "5000"
-        ) == PE._MQTT_URL_TEMPLATE.format(
+        ) == Production._MQTT_URL_TEMPLATE.format(
             host="localhost", port="5000"
         )
 
     def test_get_env_public_key(self):
-        assert PE().get_env_public_key() == PE._AR_PUBLIC_KEY
+        assert Production().get_env_public_key() == Production._AR_PUBLIC_KEY
 
 
-class TestQAE:
+class TestQa:
     def test_get_base_url(self):
-        assert QAE().get_base_url() == QAE._ENV_BASE_URL
+        assert Qa().get_base_url() == Qa._ENV_BASE_URL
 
     def test_get_api_prefix(self):
-        assert QAE().get_api_prefix() == QAE._API_PREFIX
+        assert Qa().get_api_prefix() == Qa._API_PREFIX
 
     def test_get_registration_service_url(self):
-        assert QAE().get_registration_service_url() == QAE._REGISTRATION_SERVICE_URL
+        assert Qa().get_registration_service_url() == Qa._REGISTRATION_SERVICE_URL
 
     def test_get_onboard_url(self):
-        onb_url = QAE._REGISTRATION_SERVICE_URL + QAE._API_PREFIX + "/registration/onboard"
-        assert QAE().get_onboard_url() == onb_url
+        onb_url = Qa._REGISTRATION_SERVICE_URL + Qa._API_PREFIX + "/registration/onboard"
+        assert Qa().get_onboard_url() == onb_url
 
     def test_get_secured_onboard_url(self):
-        onb_url = QAE._REGISTRATION_SERVICE_URL + QAE._API_PREFIX + "/registration/onboard/request"
-        assert QAE().get_secured_onboard_url() == onb_url
+        onb_url = Qa._REGISTRATION_SERVICE_URL + Qa._API_PREFIX + "/registration/onboard/request"
+        assert Qa().get_secured_onboard_url() == onb_url
 
     def test_get_verify_onboard_request_url(self):
-        req_url = QAE._REGISTRATION_SERVICE_URL + QAE._API_PREFIX + "/registration/onboard/verify"
-        assert QAE().get_verify_onboard_request_url() == req_url
+        req_url = Qa._REGISTRATION_SERVICE_URL + Qa._API_PREFIX + "/registration/onboard/verify"
+        assert Qa().get_verify_onboard_request_url() == req_url
 
     def test_get_revoke_url(self):
-        rev_url = QAE._REGISTRATION_SERVICE_URL + QAE._API_PREFIX + "/registration/onboard/revoke"
-        assert QAE().get_revoke_url() == rev_url
+        rev_url = Qa._REGISTRATION_SERVICE_URL + Qa._API_PREFIX + "/registration/onboard/revoke"
+        assert Qa().get_revoke_url() == rev_url
 
     def test_get_agrirouter_login_url(self):
-        login_url = QAE._ENV_BASE_URL + QAE._LOGIN_URL
-        assert QAE().get_agrirouter_login_url() == login_url
+        login_url = Qa._ENV_BASE_URL + Qa._LOGIN_URL
+        assert Qa().get_agrirouter_login_url() == login_url
 
     def test_get_secured_onboarding_authorization_url(self):
         redirect_uri = "www.my_redirect.com"
         response_type = "response_type"
-        assert QAE().get_secured_onboarding_authorization_url(
+        assert Qa().get_secured_onboarding_authorization_url(
             APPLICATION_ID, response_type, "state", redirect_uri
-        ) == QAE._ENV_BASE_URL + QAE._SECURED_ONBOARDING_AUTHORIZATION_LINK_TEMPLATE.format(
+        ) == Qa._ENV_BASE_URL + Qa._SECURED_ONBOARDING_AUTHORIZATION_LINK_TEMPLATE.format(
             application_id=APPLICATION_ID,
             response_type=response_type,
             state="state") + f"&redirect_uri={redirect_uri}"
 
     def test_get_mqtt_server_url(self):
-        assert QAE().get_mqtt_server_url(
+        assert Qa().get_mqtt_server_url(
             "localhost", "5000"
-        ) == QAE._MQTT_URL_TEMPLATE.format(host="localhost", port="5000")
+        ) == Qa._MQTT_URL_TEMPLATE.format(host="localhost", port="5000")
 
     def test_get_env_public_key(self):
-        assert QAE().get_env_public_key() == QAE._AR_PUBLIC_KEY
+        assert Qa().get_env_public_key() == Qa._AR_PUBLIC_KEY

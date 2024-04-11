@@ -20,11 +20,6 @@ class ContentTypes(BaseEnum):
     APPLICATION_JSON = "application/json"
 
 
-class Environments(BaseEnum):
-    PRODUCTION: str = "production"
-    QA: str = "qa"
-
-
 class RequestHeaders(BaseEnum):
     AUTHORIZATION: str = "Authorization"
     X_AGRIROUTER_SIGNATURE: str = "X-Agrirouter-Signature"
@@ -77,4 +72,3 @@ class CapabilityDirectionType(BaseEnum):
     SEND = "SEND"
     RECEIVE = "RECEIVE"
     SEND_RECEIVE = "SEND_RECEIVE"
-

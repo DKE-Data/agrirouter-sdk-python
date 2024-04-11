@@ -1,6 +1,5 @@
 """Test src/revoking/parameters.py"""
-
-from src import RevokingParameter
+from src.revoking.parameters import RevokingParameter
 from tests.common.constants import APPLICATION_ID
 
 

@@ -3,11 +3,12 @@ import unittest
 
 import pytest
 
-from src import ListEndpointsService, ListEndpointsParameters
 from src.messaging.decode import decode_response, decode_details
 from src.api.enums import CapabilityType, CapabilityDirectionType
 from src.messaging.messages import OutboxMessage
+from src.messaging.parameters.service import ListEndpointsParameters
 from src.messaging.services.commons import MqttMessagingService
+from src.messaging.services.messaging import ListEndpointsService
 from src.messaging.services.sequence_number_service import SequenceNumberService
 from src.utils.uuid_util import new_uuid
 from tests.common.sleeper import Sleeper

@@ -1,6 +1,4 @@
-from src.api.enums import Environments
-from src.api.exceptions import InvalidEnvironmentSetup
-from src.api.environments import Production, QA
+from src.api.environments import BaseEnvironment
 
 
 class EnvironmentalService:
@@ -11,7 +9,7 @@ class EnvironmentalService:
     - _environment (Environment): The current environment.
     """
 
-    def __init__(self, env: str):
+    def __init__(self, env: BaseEnvironment):
         self._set_env(env)
 
     def _set_env(self, env) -> None:
@@ -24,9 +22,4 @@ class EnvironmentalService:
         Raises:
         - InvalidEnvironmentSetup: If the provided environment value is not valid.
         """
-        if env == Environments.QA.value:
-            self._environment = QA()
-        elif env == Environments.PRODUCTION.value:
-            self._environment = Production()
-        else:
-            raise InvalidEnvironmentSetup(f"Invalid environment value: {env}")
+        self._environment = env

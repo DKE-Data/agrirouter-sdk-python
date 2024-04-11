@@ -1,8 +1,9 @@
 """Test src/onboarding/request.py"""
-
-from src import OnboardParameters, SecuredOnboardingService
+from src.api.environments import Qa
 from src.onboarding.enums import Gateways, CertificateTypes
-from tests.common.constants import APPLICATION_ID, PUBLIC_KEY, PRIVATE_KEY, ENV
+from src.onboarding.onboarding import SecuredOnboardingService
+from src.onboarding.parameters import OnboardParameters
+from tests.common.constants import APPLICATION_ID, PUBLIC_KEY, PRIVATE_KEY
 
 
 class TestBaseOnboardingRequest:
@@ -22,7 +23,7 @@ class TestBaseOnboardingRequest:
         reg_code=reg_code,
     )
     onboarding = SecuredOnboardingService(
-        env=ENV, public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
+        env=Qa(), public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
     )
     request = onboarding._create_request(params)
 

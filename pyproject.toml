@@ -8,12 +8,11 @@ authors = [
     { name = "Sascha Dömer", email = "Cf4ThQgxcnxAovOUXTNv@saschadoemer.de" },
 ]
 readme = "README.md"
-requires-python = ">=3.7, <=3.11"
+requires-python = ">=3.8, <=3.12"
 urls = { "Source" = "https://github.com/DKE-Data/agrirouter-sdk-python" }
 classifiers = [
     "Intended Audience :: Developers",
     "License :: Apache License 2.0",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",

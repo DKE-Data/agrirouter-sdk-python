@@ -4,13 +4,14 @@ from typing import Optional
 
 import pytest
 
-from src import QueryHeaderService, QueryHeaderParameters, FeedDeleteService, FeedDeleteParameters
 from src.generated.messaging.request.request_pb2 import RequestEnvelope
 from src.messaging.decode import decode_response, decode_details
 from src.api.enums import CapabilityType
 from src.messaging.messages import OutboxMessage
+from src.messaging.parameters.service import FeedDeleteParameters, QueryHeaderParameters
 from src.messaging.services.commons import MqttMessagingService
-from src.messaging.services.messaging import SendMessageService, SendMessageParameters
+from src.messaging.services.messaging import SendMessageService, SendMessageParameters, FeedDeleteService, \
+    QueryHeaderService
 from src.messaging.services.sequence_number_service import SequenceNumberService
 from src.onboarding.response import OnboardResponse
 from src.utils.utc_time_util import max_validity_period, validity_period_for_seconds

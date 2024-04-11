@@ -1,5 +1,6 @@
 import requests
 
+from src.api.environments import BaseEnvironment
 from src.api.exceptions import UnexpectedErrorDuringOnboarding, RequestNotSigned
 from src.environments.environmental_services import EnvironmentalService
 from src.onboarding.headers import SoftwareOnboardingHeader
@@ -11,7 +12,7 @@ from src.onboarding.response import VerificationResponse, OnboardResponse
 
 class SecuredOnboardingService(EnvironmentalService):
 
-    def __init__(self, env: str, public_key: str, private_key: str):
+    def __init__(self, env: BaseEnvironment, public_key: str, private_key: str):
         self._public_key = public_key
         self._private_key = private_key
         super(SecuredOnboardingService, self).__init__(env)

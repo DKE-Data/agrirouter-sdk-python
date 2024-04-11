@@ -2,11 +2,12 @@
 
 import pytest
 
+from src.api.environments import Qa
 from src.api.exceptions import WrongCertificationType, WrongGateWayType
 from src.onboarding.enums import Gateways, CertificateTypes
 from src.onboarding.onboarding import SecuredOnboardingService
 from src.onboarding.parameters import OnboardParameters
-from tests.common.constants import PUBLIC_KEY, PRIVATE_KEY, ENV, APPLICATION_ID
+from tests.common.constants import PUBLIC_KEY, PRIVATE_KEY, APPLICATION_ID
 
 
 class TestSoftwareOnboarding:
@@ -22,7 +23,7 @@ class TestSoftwareOnboarding:
             reg_code="8eloz190fd",
         )
         service = SecuredOnboardingService(
-            env=ENV, public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
+            env=Qa(), public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
         )
         assert service._create_request(params)
 
@@ -37,7 +38,7 @@ class TestSoftwareOnboarding:
             reg_code="8eloz190fd",
         )
         service = SecuredOnboardingService(
-            env=ENV, public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
+            env=Qa(), public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
         )
         with pytest.raises(WrongCertificationType):
             assert service._create_request(params)
@@ -53,7 +54,7 @@ class TestSoftwareOnboarding:
             reg_code="8eloz190fd",
         )
         service = SecuredOnboardingService(
-            env=ENV, public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
+            env=Qa(), public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
         )
         with pytest.raises(WrongGateWayType):
             assert service._create_request(params)

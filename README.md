@@ -23,10 +23,10 @@ much more.
 # Installation
 
 Create your virtual environment using any kind of `conda` setup you
-would like to have. The SDK is tested with Python 3.8, 3.9, 3.10 and
-3.11.
+would like to have.
 
 ``` bash
+conda create -n agrirouter-sdk-python python=3.7
 conda create -n agrirouter-sdk-python python=3.8
 conda create -n agrirouter-sdk-python python=3.9
 conda create -n agrirouter-sdk-python python=3.10

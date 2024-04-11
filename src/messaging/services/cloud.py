@@ -2,7 +2,7 @@ from src.generated.cloud_provider_integration.cloud_virtualized_app_registration
     OffboardingRequest
 from src.generated.messaging.request.request_pb2 import RequestEnvelope
 from src.messaging.encode import encode_message
-from src.messaging.enums import TechnicalMessageType
+from src.api.enums import TechnicalMessageType
 from src.messaging.messages import EncodedMessage
 from src.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
     CloudOnboardParameters, CloudOffboardParameters

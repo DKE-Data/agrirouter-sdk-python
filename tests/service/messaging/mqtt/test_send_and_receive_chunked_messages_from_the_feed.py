@@ -4,15 +4,16 @@ from typing import Optional
 
 import pytest
 
-from src import FeedDeleteService, FeedDeleteParameters, MessageHeaderParameters, MessagePayloadParameters, \
-    SendChunkedMessageService, QueryHeaderService, QueryHeaderParameters
 from src.generated.messaging.request.request_pb2 import RequestEnvelope
 from src.messaging.decode import decode_response, decode_details
 from src.messaging.encode import chunk_and_base64encode_each_chunk, encode_chunks_message
-from src.messaging.enums import CapabilityType, TechnicalMessageType
+from src.api.enums import CapabilityType, TechnicalMessageType
 from src.messaging.messages import OutboxMessage
 from src.messaging.parameters.dto import ChunkedMessageParameters
+from src.messaging.parameters.service import FeedDeleteParameters, MessageHeaderParameters, MessagePayloadParameters, \
+    QueryHeaderParameters
 from src.messaging.services.commons import MqttMessagingService
+from src.messaging.services.messaging import FeedDeleteService, SendChunkedMessageService, QueryHeaderService
 from src.messaging.services.sequence_number_service import SequenceNumberService
 from src.onboarding.response import OnboardResponse
 from src.utils.uuid_util import new_uuid

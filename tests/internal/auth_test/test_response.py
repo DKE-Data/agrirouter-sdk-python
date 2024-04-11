@@ -15,7 +15,7 @@ def test_decode_token():
     assert decoded_token.expires
 
 
-def test_verify(authorization):
+def test_verify():
     state = "46c81f94-d117-4658-9a38-a85692448219"
     token = VALID_RESPONSE_TOKEN
     signature = VALID_RESPONSE_SIGNATURE
@@ -34,7 +34,7 @@ def test_verify(authorization):
     assert auth_response.is_valid
 
 
-def test_get_auth_result(authorization):
+def test_get_auth_result():
     state = "46c81f94-d117-4658-9a38-a85692448219"
     token = VALID_RESPONSE_TOKEN
     signature = VALID_RESPONSE_SIGNATURE

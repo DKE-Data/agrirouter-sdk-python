@@ -2,7 +2,7 @@ from typing import List
 
 from src.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from src.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from src.messaging.enums import CapabilityType
+from src.api.enums import CapabilityType
 
 
 class SubscriptionItemBuilder:

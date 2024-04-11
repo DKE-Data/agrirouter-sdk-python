@@ -3,13 +3,13 @@ import unittest
 
 import pytest
 
-from src import FeedDeleteService, FeedDeleteParameters
+from src.api.enums import CapabilityType
 from src.generated.messaging.request.request_pb2 import RequestEnvelope
 from src.messaging.decode import decode_response, decode_details
-from src.messaging.enums import CapabilityType
 from src.messaging.messages import OutboxMessage
+from src.messaging.parameters.service import FeedDeleteParameters
 from src.messaging.services.commons import MqttMessagingService
-from src.messaging.services.messaging import SendMessageService, SendMessageParameters
+from src.messaging.services.messaging import SendMessageService, SendMessageParameters, FeedDeleteService
 from src.messaging.services.sequence_number_service import SequenceNumberService
 from src.utils.utc_time_util import max_validity_period, validity_period_for_seconds
 from src.utils.uuid_util import new_uuid

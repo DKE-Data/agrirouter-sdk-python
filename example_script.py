@@ -66,7 +66,7 @@ onboarding_response_mqtt_data = {
 
 import src as ar
 from src.onboarding.enums import Gateways
-from src.messaging.enums import CapabilityType
+from src.api.enums import CapabilityType
 from src.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from src.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from src.messaging.services.commons import HttpMessagingService, MqttMessagingService

@@ -1,10 +1,10 @@
 import pytest
 
 from src import CapabilitiesParameters, CapabilitiesService
-from src.api.environments import QA
+from src.api.environments import Qa
 from src.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from src.messaging.decode import decode_response
-from src.messaging.enums import CapabilityType, CapabilityDirectionType
+from src.api.enums import CapabilityType, CapabilityDirectionType
 from src.messaging.messages import OutboxMessage
 from src.messaging.services.commons import MqttMessagingService
 from src.messaging.services.sequence_number_service import SequenceNumberService
@@ -24,7 +24,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
         """ Test the onboarding process for a single MQTT endpoint with a PEM certificate. """
         onboard_response = onboard_communication_unit(
             uuid=Identifier.MQTT_RECIPIENT_PEM[Identifier.ID],
-            _environment=QA(),
+            _environment=Qa(),
             registration_code="e53438a6b3",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.MQTT.value)
@@ -36,7 +36,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
         """ Test the onboarding process for a single MQTT endpoint with a PEM certificate. """
         onboard_response = onboard_communication_unit(
             uuid=Identifier.MQTT_SENDER_PEM[Identifier.ID],
-            _environment=QA(),
+            _environment=Qa(),
             registration_code="7ac0514114",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.MQTT.value)
@@ -47,7 +47,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
     def test_update_messages_sender_with_pem(self):
         sender_onboard_response = onboard_communication_unit(
             uuid=Identifier.MQTT_MESSAGES_SENDER[Identifier.ID],
-            _environment=QA(),
+            _environment=Qa(),
             registration_code="26b37bc999",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.MQTT.value)
@@ -59,7 +59,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
     def test_update_messages_recipient_with_pem(self):
         recipient_onboard_response = onboard_communication_unit(
             uuid=Identifier.MQTT_MESSAGES_RECIPIENT[Identifier.ID],
-            _environment=QA(),
+            _environment=Qa(),
             registration_code="4f4bac3b04",
             certification_type_definition=str(CertificateTypes.PEM.value),
             gateway_id=str(Gateways.MQTT.value)

@@ -58,7 +58,7 @@ class Production(BaseEnvironment):
     _AR_PUBLIC_KEY = AR_PROD_PUBLIC_KEY
 
 
-class QA(BaseEnvironment):
+class Qa(BaseEnvironment):
     _ENV_BASE_URL = "https://agrirouter-qa.cfapps.eu10.hana.ondemand.com"
     _API_PREFIX = "/api/v1.0"
     _REGISTRATION_SERVICE_URL = "https://agrirouter-registration-service-hubqa-eu10.cfapps.eu10.hana.ondemand.com"

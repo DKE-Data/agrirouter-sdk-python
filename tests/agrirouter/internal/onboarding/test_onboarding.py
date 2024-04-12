@@ -1,13 +1,12 @@
-"""Test src/onboarding/services.py"""
+"""Test agrirouter/onboarding/onboarding.py"""
 
 import pytest
 
-from src.agrirouter.api.environments import Qa
-from src.agrirouter.api.exceptions import WrongCertificationType, WrongGateWayType
-from src.agrirouter.onboarding.enums import Gateways, CertificateTypes
-from src.agrirouter.onboarding.services import SecuredOnboardingService
-from src.agrirouter.onboarding.parameters import OnboardParameters
-from tests.agrirouter.common.constants import PUBLIC_KEY, PRIVATE_KEY, APPLICATION_ID
+from agrirouter.api.exceptions import WrongCertificationType, WrongGateWayType
+from agrirouter.onboarding.enums import Gateways, CertificateTypes
+from agrirouter.onboarding.onboarding import SecuredOnboardingService
+from agrirouter.onboarding.parameters import OnboardParameters
+from tests.common.constants import PUBLIC_KEY, PRIVATE_KEY, ENV, APPLICATION_ID
 
 
 class TestSoftwareOnboarding:

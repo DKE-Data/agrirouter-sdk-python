@@ -4,23 +4,22 @@ from typing import Optional
 
 import pytest
 
-from src.agrirouter.api.enums import CapabilityType, TechnicalMessageType
-from src.agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from src.agrirouter.messaging.decode import decode_response, decode_details
-from src.agrirouter.messaging.encode import chunk_and_base64encode_each_chunk, encode_chunks_message
-from src.agrirouter.messaging.messages import OutboxMessage
-from src.agrirouter.messaging.parameters.dto import ChunkedMessageParameters
-from src.agrirouter.messaging.parameters.service import FeedDeleteParameters, MessageHeaderParameters, \
-    MessagePayloadParameters, QueryHeaderParameters
-from src.agrirouter.messaging.services.commons import MqttMessagingService
-from src.agrirouter.messaging.services.messaging import FeedDeleteService, SendChunkedMessageService, QueryHeaderService
-from src.agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from src.agrirouter.onboarding.response import OnboardResponse
-from src.agrirouter.utils.uuid_util import new_uuid
-from tests.agrirouter.common.data_provider import DataProvider
-from tests.agrirouter.common.sleeper import Sleeper
-from tests.agrirouter.data.identifier import Identifier
-from tests.agrirouter.data.onboard_response_integration_service import read_onboard_response
+from agrirouter import FeedDeleteService, FeedDeleteParameters, MessageHeaderParameters, MessagePayloadParameters, \
+    SendChunkedMessageService, QueryHeaderService, QueryHeaderParameters
+from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
+from agrirouter.messaging.decode import decode_response, decode_details
+from agrirouter.messaging.encode import chunk_and_base64encode_each_chunk, encode_chunks_message
+from agrirouter.messaging.enums import CapabilityType, TechnicalMessageType
+from agrirouter.messaging.messages import OutboxMessage
+from agrirouter.messaging.parameters.dto import ChunkedMessageParameters
+from agrirouter.messaging.services.commons import MqttMessagingService
+from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
+from agrirouter.onboarding.response import OnboardResponse
+from agrirouter.utils.uuid_util import new_uuid
+from tests.common.data_provider import DataProvider
+from tests.common.sleeper import Sleeper
+from tests.data.identifier import Identifier
+from tests.data.onboard_response_integration_service import read_onboard_response
 
 
 class TestSendAndReceiveChunkedMessages(unittest.TestCase):
@@ -187,7 +186,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
             """
             Callback to handle the incoming messages from the MQTT broker
             """
-            self._log.info("Received message for recipient from the src: %s",
+            self._log.info("Received message for recipient from the agrirouter: %s",
                            msg.payload.decode())
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
@@ -195,7 +194,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
             if decoded_message.response_envelope.type != 12:
                 decoded_details = decode_details(decoded_message.response_payload.details)
                 self._log.error(
-                    f"Received wrong message from the src: {str(decoded_details)}")
+                    f"Received wrong message from the agrirouter: {str(decoded_details)}")
             push_notification = decode_details(decoded_message.response_payload.details)
             current_chunked_message = push_notification.messages[0].content.value
             self._received_messages.append(push_notification.messages[0].header.message_id)

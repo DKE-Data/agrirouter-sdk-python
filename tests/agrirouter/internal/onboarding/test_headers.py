@@ -1,6 +1,6 @@
-"""Test src/onboarding/headers.py"""
-from src.agrirouter.api.enums import ContentTypes
-from src.agrirouter.onboarding.headers import SoftwareOnboardingHeader
+"""Test agrirouter/onboarding/headers.py"""
+from agrirouter.api.enums import ContentTypes
+from agrirouter.onboarding.headers import SoftwareOnboardingHeader
 
 
 class TestSoftwareOnboardingHeader:

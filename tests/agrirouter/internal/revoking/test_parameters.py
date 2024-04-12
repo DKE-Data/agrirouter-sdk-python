@@ -1,6 +1,7 @@
-"""Test src/revoking/parameters.py"""
-from src.agrirouter.revoking.parameters import RevokingParameter
-from tests.agrirouter.common.constants import APPLICATION_ID
+"""Test agrirouter/revoking/parameters.py"""
+
+from agrirouter import RevokingParameter
+from tests.common.constants import APPLICATION_ID
 
 
 class TestRevokingParameter:

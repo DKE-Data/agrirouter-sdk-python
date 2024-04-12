@@ -1,6 +1,6 @@
-from src import OnboardingService, OnboardParameters
-from src.agrirouter.onboarding.response import OnboardResponse
-from tests.agrirouter.data.applications import CommunicationUnit
+from agrirouter import OnboardingService, OnboardParameters
+from agrirouter.onboarding.response import OnboardResponse
+from tests.data.applications import CommunicationUnit
 
 
 def onboard_communication_unit(uuid: str, _environment, registration_code: str,

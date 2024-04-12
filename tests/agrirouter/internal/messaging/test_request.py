@@ -1,7 +1,7 @@
-"""Test src/messaging/request.py"""
+"""Test agrirouter/messaging/request.py"""
 
-from src.agrirouter.messaging.messages import Message
-from src.agrirouter.messaging.request import MessageRequest
+from agrirouter.messaging.messages import Message
+from agrirouter.messaging.request import MessageRequest
 
 
 def test_json_serialize():

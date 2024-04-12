@@ -1,10 +1,10 @@
-"""Test src/onboarding/signature.py"""
+"""Test agrirouter/onboarding/signature.py"""
 
 import pytest
 from cryptography.exceptions import InvalidSignature
 
-from src.agrirouter.onboarding.signature import create_signature, verify_signature
-from tests.agrirouter.common.constants import PRIVATE_KEY, PUBLIC_KEY
+from agrirouter.onboarding.signature import create_signature, verify_signature
+from tests.common.constants import PRIVATE_KEY, PUBLIC_KEY
 
 
 def test_create_signature_ok():

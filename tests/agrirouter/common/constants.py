@@ -1,3 +1,5 @@
+from agrirouter.api.enums import Environments
+
 APPLICATION_ID = "8c947a45-c57d-42d2-affc-206e21d63a50"
 
 AUTH_RESULT_URL = (

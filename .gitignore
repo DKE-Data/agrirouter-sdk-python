@@ -1,6 +1,10 @@
 build
 dist
+
 venv
+env
+virtualenv
+
 .idea
 **/__pycache__
 *.egg-info

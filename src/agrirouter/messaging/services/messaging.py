@@ -1,5 +1,4 @@
-import logging
-
+from agrirouter.api.enums import TechnicalMessageType, CapabilityType
 from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
 from agrirouter.generated.commons.message_pb2 import Metadata
 from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
@@ -10,48 +9,15 @@ from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 impor
     MessageQuery
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.encode import encode_message
-from agrirouter.messaging.enums import TechnicalMessageType, CapabilityType
 from agrirouter.messaging.messages import EncodedMessage
-from agrirouter.messaging.parameters.dto import MessagingParameters, SendMessageParameters, ChunkedMessageParameters
+from agrirouter.messaging.parameters.dto import SendMessageParameters, ChunkedMessageParameters
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
     CapabilitiesParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
     SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters, ImageParameters, TaskParameters, \
     EfdiParameters
+from agrirouter.messaging.services.commons import AbstractService
 from agrirouter.utils.type_url import TypeUrl
 from agrirouter.utils.uuid_util import new_uuid
-
-
-class AbstractService:
-    """
-    Abstract service class for all services.
-    """
-    _log = logging.getLogger(__name__)
-
-    def __init__(self, messaging_service):
-        self.messaging_service = messaging_service
-
-    def send(self, parameters):
-        """
-        Send a message to the agrirouter.
-        :param parameters: Parameters for the message.
-        """
-        self._log.debug("Sending message to the agrirouter.")
-        messaging_parameters = MessagingParameters(
-            onboarding_response=parameters.get_onboarding_response(),
-            application_message_id=parameters.get_application_message_id(),
-            application_message_seq_no=parameters.get_application_message_seq_no(),
-        )
-        encoded_messages = self.encode(parameters)
-        if type(encoded_messages.get_content()) == list:
-            messaging_parameters.set_encoded_messages(encoded_messages.get_content())
-        else:
-            messaging_parameters.set_encoded_messages([encoded_messages.get_content()])
-
-        return self.messaging_service.send(messaging_parameters)
-
-    @staticmethod
-    def encode(*args, **kwargs) -> EncodedMessage:
-        ...
 
 
 class CapabilitiesService(AbstractService):

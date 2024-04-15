@@ -2,14 +2,48 @@ import json
 import logging
 from abc import ABC, abstractmethod
 
+from agrirouter.api.exceptions import BadMessagingResult
 from agrirouter.messaging.clients.http import HttpClient
 from agrirouter.messaging.clients.mqtt import MqttClient
-from agrirouter.messaging.messages import Message
+from agrirouter.messaging.messages import Message, EncodedMessage
+from agrirouter.messaging.parameters.dto import MessagingParameters
 from agrirouter.messaging.parameters.service import MessageParameters
 from agrirouter.messaging.request import MessageRequest
 from agrirouter.messaging.result import MessagingResult
-from agrirouter.api.exceptions import BadMessagingResult
 from agrirouter.onboarding.response import OnboardResponse
+
+
+class AbstractService:
+    """
+    Abstract service class for all services.
+    """
+    _log = logging.getLogger(__name__)
+
+    def __init__(self, messaging_service):
+        self.messaging_service = messaging_service
+
+    def send(self, parameters):
+        """
+        Send a message to the src.
+        :param parameters: Parameters for the message.
+        """
+        self._log.debug("Sending message to the src.")
+        messaging_parameters = MessagingParameters(
+            onboarding_response=parameters.get_onboarding_response(),
+            application_message_id=parameters.get_application_message_id(),
+            application_message_seq_no=parameters.get_application_message_seq_no(),
+        )
+        encoded_messages = self.encode(parameters)
+        if type(encoded_messages.get_content()) == list:
+            messaging_parameters.set_encoded_messages(encoded_messages.get_content())
+        else:
+            messaging_parameters.set_encoded_messages([encoded_messages.get_content()])
+
+        return self.messaging_service.send(messaging_parameters)
+
+    @staticmethod
+    def encode(*args, **kwargs) -> EncodedMessage:
+        ...
 
 
 class AbstractMessagingClient(ABC):

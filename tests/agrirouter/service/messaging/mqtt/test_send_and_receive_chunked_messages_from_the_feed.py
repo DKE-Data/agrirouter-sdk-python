@@ -4,15 +4,16 @@ from typing import Optional
 
 import pytest
 
-from agrirouter import FeedDeleteService, FeedDeleteParameters, MessageHeaderParameters, MessagePayloadParameters, \
-    SendChunkedMessageService, QueryHeaderService, QueryHeaderParameters
+from agrirouter.api.enums import CapabilityType, TechnicalMessageType
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.decode import decode_response, decode_details
 from agrirouter.messaging.encode import chunk_and_base64encode_each_chunk, encode_chunks_message
-from agrirouter.messaging.enums import CapabilityType, TechnicalMessageType
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.dto import ChunkedMessageParameters
+from agrirouter.messaging.parameters.service import FeedDeleteParameters, MessageHeaderParameters, \
+    MessagePayloadParameters, QueryHeaderParameters
 from agrirouter.messaging.services.commons import MqttMessagingService
+from agrirouter.messaging.services.messaging import FeedDeleteService, SendChunkedMessageService, QueryHeaderService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.onboarding.response import OnboardResponse
 from agrirouter.utils.uuid_util import new_uuid

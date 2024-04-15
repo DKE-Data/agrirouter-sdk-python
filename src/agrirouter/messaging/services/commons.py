@@ -24,10 +24,10 @@ class AbstractService:
 
     def send(self, parameters):
         """
-        Send a message to the src.
+        Send a message to the agrirouter.
         :param parameters: Parameters for the message.
         """
-        self._log.debug("Sending message to the src.")
+        self._log.debug("Sending message to the agrirouter.")
         messaging_parameters = MessagingParameters(
             onboarding_response=parameters.get_onboarding_response(),
             application_message_id=parameters.get_application_message_id(),

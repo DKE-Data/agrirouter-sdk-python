@@ -3,15 +3,14 @@ import unittest
 
 import pytest
 
-from agrirouter import FeedConfirmService, FeedDeleteService, FeedDeleteParameters, \
-    FeedConfirmParameters
+from agrirouter.api.enums import CapabilityType
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.decode import decode_response, decode_details
-from agrirouter.messaging.enums import CapabilityType
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.dto import SendMessageParameters
+from agrirouter.messaging.parameters.service import FeedDeleteParameters, FeedConfirmParameters
 from agrirouter.messaging.services.commons import MqttMessagingService
-from agrirouter.messaging.services.messaging import SendMessageService
+from agrirouter.messaging.services.messaging import SendMessageService, FeedDeleteService, FeedConfirmService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.onboarding.response import OnboardResponse
 from agrirouter.utils.uuid_util import new_uuid

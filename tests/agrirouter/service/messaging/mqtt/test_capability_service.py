@@ -5,8 +5,8 @@ import pytest
 
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.decode import decode_response, decode_details
-from agrirouter.messaging.enums import CapabilityDirectionType
-from agrirouter.messaging.enums import CapabilityType
+from agrirouter.api.enums import CapabilityDirectionType
+from agrirouter.api.enums import CapabilityType
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.service import CapabilitiesParameters
 from agrirouter.messaging.services.commons import MqttMessagingService

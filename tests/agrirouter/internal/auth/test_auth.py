@@ -1,7 +1,6 @@
 """Tests agrirouter/auth/auth.py"""
-
+from agrirouter.api.environments import Qa
 from agrirouter.auth.auth import AuthUrlParameter
-from agrirouter.api.enums import Environments
 from agrirouter.auth.auth import Authorization
 from tests.agrirouter.common.constants import (
     PUBLIC_KEY,

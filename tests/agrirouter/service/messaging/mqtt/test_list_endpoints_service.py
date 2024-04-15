@@ -3,11 +3,12 @@ import unittest
 
 import pytest
 
-from agrirouter import ListEndpointsService, ListEndpointsParameters
 from agrirouter.messaging.decode import decode_response, decode_details
-from agrirouter.messaging.enums import CapabilityType, CapabilityDirectionType
+from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
 from agrirouter.messaging.messages import OutboxMessage
+from agrirouter.messaging.parameters.service import ListEndpointsParameters
 from agrirouter.messaging.services.commons import MqttMessagingService
+from agrirouter.messaging.services.messaging import ListEndpointsService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.utils.uuid_util import new_uuid
 from tests.agrirouter.common.sleeper import Sleeper

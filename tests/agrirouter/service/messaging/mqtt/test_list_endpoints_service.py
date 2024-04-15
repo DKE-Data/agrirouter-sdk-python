@@ -10,9 +10,9 @@ from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.services.commons import MqttMessagingService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.utils.uuid_util import new_uuid
-from tests.common.sleeper import Sleeper
-from tests.data.identifier import Identifier
-from tests.data.onboard_response_integration_service import read_onboard_response
+from tests.agrirouter.common.sleeper import Sleeper
+from tests.agrirouter.data.identifier import Identifier
+from tests.agrirouter.data.onboard_response_integration_service import read_onboard_response
 
 
 class TestListEndpointsService(unittest.TestCase):

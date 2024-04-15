@@ -6,7 +6,7 @@ from agrirouter.api.exceptions import WrongCertificationType, WrongGateWayType
 from agrirouter.onboarding.enums import Gateways, CertificateTypes
 from agrirouter.onboarding.onboarding import SecuredOnboardingService
 from agrirouter.onboarding.parameters import OnboardParameters
-from tests.common.constants import PUBLIC_KEY, PRIVATE_KEY, ENV, APPLICATION_ID
+from tests.agrirouter.common.constants import PUBLIC_KEY, PRIVATE_KEY, ENV, APPLICATION_ID
 
 
 class TestSoftwareOnboarding:

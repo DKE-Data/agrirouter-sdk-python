@@ -2,7 +2,7 @@
 
 from agrirouter import OnboardParameters, SecuredOnboardingService
 from agrirouter.onboarding.enums import Gateways, CertificateTypes
-from tests.common.constants import APPLICATION_ID, PUBLIC_KEY, PRIVATE_KEY, ENV
+from tests.agrirouter.common.constants import APPLICATION_ID, PUBLIC_KEY, PRIVATE_KEY, ENV
 
 
 class TestBaseOnboardingRequest:

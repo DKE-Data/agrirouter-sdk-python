@@ -15,10 +15,10 @@ from agrirouter.messaging.services.sequence_number_service import SequenceNumber
 from agrirouter.onboarding.response import OnboardResponse
 from agrirouter.utils.utc_time_util import max_validity_period, validity_period_for_seconds
 from agrirouter.utils.uuid_util import new_uuid
-from tests.common.data_provider import DataProvider
-from tests.common.sleeper import Sleeper
-from tests.data.identifier import Identifier
-from tests.data.onboard_response_integration_service import read_onboard_response
+from tests.agrirouter.common.data_provider import DataProvider
+from tests.agrirouter.common.sleeper import Sleeper
+from tests.agrirouter.data.identifier import Identifier
+from tests.agrirouter.data.onboard_response_integration_service import read_onboard_response
 
 
 class TestQueryMessageServiceForSingleMessage(unittest.TestCase):

@@ -14,9 +14,9 @@ from agrirouter.messaging.services.http.fetch_message_service import FetchMessag
 from agrirouter.onboarding.enums import CertificateTypes, Gateways
 from agrirouter.onboarding.response import OnboardResponse
 from agrirouter.utils.uuid_util import new_uuid
-from tests.common.onboarding import onboard_communication_unit
-from tests.common.sleeper import Sleeper
-from tests.data.identifier import Identifier
+from tests.agrirouter.common.onboarding import onboard_communication_unit
+from tests.agrirouter.common.sleeper import Sleeper
+from tests.agrirouter.data.identifier import Identifier
 
 
 class OnboardResponseUpdate(unittest.TestCase):

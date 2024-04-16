@@ -8,7 +8,7 @@ authors = [
     { name = "Sascha Dömer", email = "Cf4ThQgxcnxAovOUXTNv@saschadoemer.de" },
 ]
 readme = "README.md"
-requires-python = ">=3.7, <=3.11"
+requires-python = ">=3.7" # no upper boundary according to https://discuss.python.org/t/requires-python-upper-limits/12663
 urls = { "Source" = "https://github.com/DKE-Data/agrirouter-sdk-python" }
 classifiers = [
     "Intended Audience :: Developers",
@@ -18,6 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Python Modules"
 ]

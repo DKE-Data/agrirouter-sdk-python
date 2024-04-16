@@ -1,7 +1,7 @@
 import pytest
 
 from agrirouter.api.enums import Environments
-from tests.common.constants import PUBLIC_KEY, PRIVATE_KEY, AUTH_RESULT_URL
+from tests.agrirouter.common.constants import PUBLIC_KEY, PRIVATE_KEY, AUTH_RESULT_URL
 
 
 @pytest.fixture(scope="session")

@@ -2,8 +2,6 @@ pytest==6.2.5
 black==21.9b0
 flake8~=7.0.0; python_version >= "3.8"
 flake8~=5.0.4; python_version <= "3.7"
-pyflakes==2.3.1
-cryptography~=3.4.8
 setuptools~=68.0.0
 pycparser~=2.20
 idna~=3.2

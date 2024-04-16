@@ -1,15 +1,14 @@
-pytest==6.2.5
-black==21.9b0
+
+pytest~=8.1.1; python_version >= "3.8"
+pytest~=7.4.4; python_version <= "3.7"
+build~=1.2.1; python_version >= "3.8"
+build~=0.10.0; python_version <= "3.7"
 flake8~=7.0.0; python_version >= "3.8"
 flake8~=5.0.4; python_version <= "3.7"
+
 setuptools~=68.0.0
-pycparser~=2.20
-idna~=3.2
-urllib3~=1.26.18
-certifi~=2023.7.22
 requests~=2.31.0
 paho-mqtt~=1.5.1
 protobuf~=3.18.0
 google~=3.0.0
 toml~=0.10.2
-build~=1.1.1

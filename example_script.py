@@ -1,4 +1,10 @@
 import time
+import agrirouter as ar
+from agrirouter.onboarding.enums import Gateways
+from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
+from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
+from agrirouter.messaging.services.commons import HttpMessagingService, MqttMessagingService
+from agrirouter.utils.uuid_util import new_uuid
 
 from google.protobuf.timestamp_pb2 import Timestamp
 
@@ -64,15 +70,6 @@ onboarding_response_mqtt_data = {
     }
 }
 
-import agrirouter as ar
-from agrirouter.onboarding.enums import Gateways
-from agrirouter.messaging.enums import CapabilityType
-from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.messaging.services.commons import HttpMessagingService, MqttMessagingService
-from agrirouter import ListEndpointsParameters, ListEndpointsService, SubscriptionService, SubscriptionParameters, \
-    QueryHeaderService, QueryHeaderParameters, CapabilitiesService, CapabilitiesParameters
-from agrirouter.utils.uuid_util import new_uuid
 
 application_id = "8c947a45-c57d-42d2-affc-206e21d63a50"  # # store here your application id. You can find it in AR UI
 certification_version_id = "edd5d6b7-45bb-4471-898e-ff9c2a7bf56f"  # # store here your certification version id. You can find it in AR UI

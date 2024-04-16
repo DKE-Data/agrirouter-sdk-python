@@ -1,12 +1,13 @@
 import pytest
 
-from agrirouter import CapabilitiesParameters, CapabilitiesService
-from agrirouter.api.environments import QA
+from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
+from agrirouter.api.environments import Qa
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.decode import decode_response
-from agrirouter.messaging.enums import CapabilityType, CapabilityDirectionType
 from agrirouter.messaging.messages import OutboxMessage
+from agrirouter.messaging.parameters.service import CapabilitiesParameters
 from agrirouter.messaging.services.commons import MqttMessagingService
+from agrirouter.messaging.services.messaging import CapabilitiesService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.onboarding.enums import CertificateTypes, Gateways
 from agrirouter.utils.uuid_util import new_uuid

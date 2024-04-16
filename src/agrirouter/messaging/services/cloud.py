@@ -1,8 +1,8 @@
+from agrirouter.api.enums import TechnicalMessageType
 from agrirouter.generated.cloud_provider_integration.cloud_virtualized_app_registration_pb2 import OnboardingRequest, \
     OffboardingRequest
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.encode import encode_message
-from agrirouter.messaging.enums import TechnicalMessageType
 from agrirouter.messaging.messages import EncodedMessage
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
     CloudOnboardParameters, CloudOffboardParameters

@@ -1,5 +1,3 @@
-from logging import Logger
-
 from google.protobuf.any_pb2 import Any
 
 from agrirouter.generated.commons.message_pb2 import Message, Messages
@@ -28,6 +26,7 @@ def test_write_proto_parts_to_buffer():
     assert len(result[0]) == envelope.ByteSize()
     assert len(result[1]) == payload.ByteSize()
 
+
 def test_encode_header():
     """
     This test was created due to a Protobuf issue with Python >= 3.8, where
@@ -48,4 +47,3 @@ def test_encode_header():
     assert header.technical_message_type == message_header_parameters.technical_message_type
     assert header.mode == message_header_parameters.mode
     assert header.recipients == message_header_parameters.recipients
-

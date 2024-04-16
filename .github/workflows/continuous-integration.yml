@@ -39,7 +39,14 @@ jobs:
           flake8 .
       - name: Test with pytest
         run: |
-          pytest
+          pytest --junitxml=junit/test-results.xml
       - name: Dry run building the wheel
         run: |
           python -m build --sdist --wheel
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v4
+        if: success() || failure()
+        with:
+          report_paths: 'junit/test-results.xml'
+          detailed_summary: true
+          include_passed: true

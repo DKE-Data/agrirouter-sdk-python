@@ -13,4 +13,3 @@ protobuf~=3.18.0
 google~=3.0.0
 toml~=0.10.2
 build~=1.1.1
-importlib-metadata<5.0

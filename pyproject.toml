@@ -1,6 +1,6 @@
 [project]
 name = "agrirouter"
-version = "2.0.0post1"
+version = "2.0.0b1"
 description = "Python SDK for the agrirouter API. This project contains the API for the communication with the agrirouter. Everything you need for the onboarding process, secure communication and much more."
 authors = [
     { name = "Alexey Petrovsky", email = "petrovsky.lexey@gmail.com" },
@@ -21,6 +21,10 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Python Modules"
+]
+dependencies = [
+    "requests",
+    "protobuf~=3.18.0"
 ]
 
 [build-system]

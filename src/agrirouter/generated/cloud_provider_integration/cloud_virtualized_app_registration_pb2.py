@@ -11,28 +11,28 @@ from google.protobuf import symbol_database as _symbol_database
 
 _sym_db = _symbol_database.Default()
 
-from src.agrirouter.generated.commons import message_pb2 as commons_dot_message__pb2
+from agrirouter.generated.commons import message_pb2 as commons_dot_message__pb2
 
 DESCRIPTOR = _descriptor.FileDescriptor(
     name='cloud-provider-integration/cloud-virtualized-app-registration.proto',
-    package='src.cloud.registration',
+    package='agrirouter.cloud.registration',
     syntax='proto3',
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\nCcloud-provider-integration/cloud-virtualized-app-registration.proto\x12\x1d\x61grirouter.cloud.registration\x1a\x15\x63ommons/message.proto\"\xb7\x01\n\x11OnboardingRequest\x12i\n\x13onboarding_requests\x18\x01 \x03(\x0b\x32L.src.cloud.registration.OnboardingRequest.EndpointRegistrationDetails\x1a\x37\n\x1b\x45ndpointRegistrationDetails\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"\xaf\x03\n\x12OnboardingResponse\x12j\n\x13onboarded_endpoints\x18\x01 \x03(\x0b\x32M.src.cloud.registration.OnboardingResponse.EndpointRegistrationDetails\x12L\n\x08\x66\x61ilures\x18\x02 \x03(\x0b\x32:.src.cloud.registration.OnboardingResponse.Failures\x1a\x99\x01\n\x1b\x45ndpointRegistrationDetails\x12\n\n\x02id\x18\x01 \x01(\t\x12\x1b\n\x13\x64\x65vice_alternate_id\x18\x02 \x01(\t\x12\x1b\n\x13sensor_alternate_id\x18\x03 \x01(\t\x12\x1f\n\x17\x63\x61pability_alternate_id\x18\x04 \x01(\t\x12\x13\n\x0b\x65ndpoint_id\x18\x05 \x01(\t\x1a\x43\n\x08\x46\x61ilures\x12\n\n\x02id\x18\x01 \x01(\t\x12+\n\x06reason\x18\x02 \x01(\x0b\x32\x1b.src.commons.Message\"\'\n\x12OffboardingRequest\x12\x11\n\tendpoints\x18\x01 \x03(\tb\x06proto3'
+    serialized_pb=b'\nCcloud-provider-integration/cloud-virtualized-app-registration.proto\x12\x1d\x61grirouter.cloud.registration\x1a\x15\x63ommons/message.proto\"\xb7\x01\n\x11OnboardingRequest\x12i\n\x13onboarding_requests\x18\x01 \x03(\x0b\x32L.agrirouter.cloud.registration.OnboardingRequest.EndpointRegistrationDetails\x1a\x37\n\x1b\x45ndpointRegistrationDetails\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"\xaf\x03\n\x12OnboardingResponse\x12j\n\x13onboarded_endpoints\x18\x01 \x03(\x0b\x32M.agrirouter.cloud.registration.OnboardingResponse.EndpointRegistrationDetails\x12L\n\x08\x66\x61ilures\x18\x02 \x03(\x0b\x32:.agrirouter.cloud.registration.OnboardingResponse.Failures\x1a\x99\x01\n\x1b\x45ndpointRegistrationDetails\x12\n\n\x02id\x18\x01 \x01(\t\x12\x1b\n\x13\x64\x65vice_alternate_id\x18\x02 \x01(\t\x12\x1b\n\x13sensor_alternate_id\x18\x03 \x01(\t\x12\x1f\n\x17\x63\x61pability_alternate_id\x18\x04 \x01(\t\x12\x13\n\x0b\x65ndpoint_id\x18\x05 \x01(\t\x1a\x43\n\x08\x46\x61ilures\x12\n\n\x02id\x18\x01 \x01(\t\x12+\n\x06reason\x18\x02 \x01(\x0b\x32\x1b.agrirouter.commons.Message\"\'\n\x12OffboardingRequest\x12\x11\n\tendpoints\x18\x01 \x03(\tb\x06proto3'
     ,
     dependencies=[commons_dot_message__pb2.DESCRIPTOR, ])
 
 _ONBOARDINGREQUEST_ENDPOINTREGISTRATIONDETAILS = _descriptor.Descriptor(
     name='EndpointRegistrationDetails',
-    full_name='src.cloud.registration.OnboardingRequest.EndpointRegistrationDetails',
+    full_name='agrirouter.cloud.registration.OnboardingRequest.EndpointRegistrationDetails',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='id', full_name='src.cloud.registration.OnboardingRequest.EndpointRegistrationDetails.id',
+            name='id', full_name='agrirouter.cloud.registration.OnboardingRequest.EndpointRegistrationDetails.id',
             index=0,
             number=1, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
@@ -40,7 +40,7 @@ _ONBOARDINGREQUEST_ENDPOINTREGISTRATIONDETAILS = _descriptor.Descriptor(
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='name', full_name='src.cloud.registration.OnboardingRequest.EndpointRegistrationDetails.name',
+            name='name', full_name='agrirouter.cloud.registration.OnboardingRequest.EndpointRegistrationDetails.name',
             index=1,
             number=2, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
@@ -65,14 +65,14 @@ _ONBOARDINGREQUEST_ENDPOINTREGISTRATIONDETAILS = _descriptor.Descriptor(
 
 _ONBOARDINGREQUEST = _descriptor.Descriptor(
     name='OnboardingRequest',
-    full_name='src.cloud.registration.OnboardingRequest',
+    full_name='agrirouter.cloud.registration.OnboardingRequest',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='onboarding_requests', full_name='src.cloud.registration.OnboardingRequest.onboarding_requests',
+            name='onboarding_requests', full_name='agrirouter.cloud.registration.OnboardingRequest.onboarding_requests',
             index=0,
             number=1, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
@@ -97,14 +97,14 @@ _ONBOARDINGREQUEST = _descriptor.Descriptor(
 
 _ONBOARDINGRESPONSE_ENDPOINTREGISTRATIONDETAILS = _descriptor.Descriptor(
     name='EndpointRegistrationDetails',
-    full_name='src.cloud.registration.OnboardingResponse.EndpointRegistrationDetails',
+    full_name='agrirouter.cloud.registration.OnboardingResponse.EndpointRegistrationDetails',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='id', full_name='src.cloud.registration.OnboardingResponse.EndpointRegistrationDetails.id',
+            name='id', full_name='agrirouter.cloud.registration.OnboardingResponse.EndpointRegistrationDetails.id',
             index=0,
             number=1, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
@@ -113,7 +113,7 @@ _ONBOARDINGRESPONSE_ENDPOINTREGISTRATIONDETAILS = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='device_alternate_id',
-            full_name='src.cloud.registration.OnboardingResponse.EndpointRegistrationDetails.device_alternate_id',
+            full_name='agrirouter.cloud.registration.OnboardingResponse.EndpointRegistrationDetails.device_alternate_id',
             index=1,
             number=2, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
@@ -122,7 +122,7 @@ _ONBOARDINGRESPONSE_ENDPOINTREGISTRATIONDETAILS = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='sensor_alternate_id',
-            full_name='src.cloud.registration.OnboardingResponse.EndpointRegistrationDetails.sensor_alternate_id',
+            full_name='agrirouter.cloud.registration.OnboardingResponse.EndpointRegistrationDetails.sensor_alternate_id',
             index=2,
             number=3, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
@@ -131,7 +131,7 @@ _ONBOARDINGRESPONSE_ENDPOINTREGISTRATIONDETAILS = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='capability_alternate_id',
-            full_name='src.cloud.registration.OnboardingResponse.EndpointRegistrationDetails.capability_alternate_id',
+            full_name='agrirouter.cloud.registration.OnboardingResponse.EndpointRegistrationDetails.capability_alternate_id',
             index=3,
             number=4, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
@@ -140,7 +140,7 @@ _ONBOARDINGRESPONSE_ENDPOINTREGISTRATIONDETAILS = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='endpoint_id',
-            full_name='src.cloud.registration.OnboardingResponse.EndpointRegistrationDetails.endpoint_id',
+            full_name='agrirouter.cloud.registration.OnboardingResponse.EndpointRegistrationDetails.endpoint_id',
             index=4,
             number=5, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
@@ -165,21 +165,21 @@ _ONBOARDINGRESPONSE_ENDPOINTREGISTRATIONDETAILS = _descriptor.Descriptor(
 
 _ONBOARDINGRESPONSE_FAILURES = _descriptor.Descriptor(
     name='Failures',
-    full_name='src.cloud.registration.OnboardingResponse.Failures',
+    full_name='agrirouter.cloud.registration.OnboardingResponse.Failures',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='id', full_name='src.cloud.registration.OnboardingResponse.Failures.id', index=0,
+            name='id', full_name='agrirouter.cloud.registration.OnboardingResponse.Failures.id', index=0,
             number=1, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='reason', full_name='src.cloud.registration.OnboardingResponse.Failures.reason', index=1,
+            name='reason', full_name='agrirouter.cloud.registration.OnboardingResponse.Failures.reason', index=1,
             number=2, type=11, cpp_type=10, label=1,
             has_default_value=False, default_value=None,
             message_type=None, enum_type=None, containing_type=None,
@@ -203,7 +203,7 @@ _ONBOARDINGRESPONSE_FAILURES = _descriptor.Descriptor(
 
 _ONBOARDINGRESPONSE = _descriptor.Descriptor(
     name='OnboardingResponse',
-    full_name='src.cloud.registration.OnboardingResponse',
+    full_name='agrirouter.cloud.registration.OnboardingResponse',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
@@ -211,14 +211,14 @@ _ONBOARDINGRESPONSE = _descriptor.Descriptor(
     fields=[
         _descriptor.FieldDescriptor(
             name='onboarded_endpoints',
-            full_name='src.cloud.registration.OnboardingResponse.onboarded_endpoints', index=0,
+            full_name='agrirouter.cloud.registration.OnboardingResponse.onboarded_endpoints', index=0,
             number=1, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='failures', full_name='src.cloud.registration.OnboardingResponse.failures', index=1,
+            name='failures', full_name='agrirouter.cloud.registration.OnboardingResponse.failures', index=1,
             number=2, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
@@ -242,14 +242,14 @@ _ONBOARDINGRESPONSE = _descriptor.Descriptor(
 
 _OFFBOARDINGREQUEST = _descriptor.Descriptor(
     name='OffboardingRequest',
-    full_name='src.cloud.registration.OffboardingRequest',
+    full_name='agrirouter.cloud.registration.OffboardingRequest',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='endpoints', full_name='src.cloud.registration.OffboardingRequest.endpoints', index=0,
+            name='endpoints', full_name='agrirouter.cloud.registration.OffboardingRequest.endpoints', index=0,
             number=1, type=9, cpp_type=9, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
@@ -289,12 +289,12 @@ OnboardingRequest = _reflection.GeneratedProtocolMessageType('OnboardingRequest'
                                                                             (_message.Message,), {
                                                                                 'DESCRIPTOR': _ONBOARDINGREQUEST_ENDPOINTREGISTRATIONDETAILS,
                                                                                 '__module__': 'cloud_provider_integration.cloud_virtualized_app_registration_pb2'
-                                                                                # @@protoc_insertion_point(class_scope:src.cloud.registration.OnboardingRequest.EndpointRegistrationDetails)
+                                                                                # @@protoc_insertion_point(class_scope:agrirouter.cloud.registration.OnboardingRequest.EndpointRegistrationDetails)
                                                                             })
     ,
     'DESCRIPTOR': _ONBOARDINGREQUEST,
     '__module__': 'cloud_provider_integration.cloud_virtualized_app_registration_pb2'
-    # @@protoc_insertion_point(class_scope:src.cloud.registration.OnboardingRequest)
+    # @@protoc_insertion_point(class_scope:agrirouter.cloud.registration.OnboardingRequest)
 })
 _sym_db.RegisterMessage(OnboardingRequest)
 _sym_db.RegisterMessage(OnboardingRequest.EndpointRegistrationDetails)
@@ -305,19 +305,19 @@ OnboardingResponse = _reflection.GeneratedProtocolMessageType('OnboardingRespons
                                                                             (_message.Message,), {
                                                                                 'DESCRIPTOR': _ONBOARDINGRESPONSE_ENDPOINTREGISTRATIONDETAILS,
                                                                                 '__module__': 'cloud_provider_integration.cloud_virtualized_app_registration_pb2'
-                                                                                # @@protoc_insertion_point(class_scope:src.cloud.registration.OnboardingResponse.EndpointRegistrationDetails)
+                                                                                # @@protoc_insertion_point(class_scope:agrirouter.cloud.registration.OnboardingResponse.EndpointRegistrationDetails)
                                                                             })
     ,
 
     'Failures': _reflection.GeneratedProtocolMessageType('Failures', (_message.Message,), {
         'DESCRIPTOR': _ONBOARDINGRESPONSE_FAILURES,
         '__module__': 'cloud_provider_integration.cloud_virtualized_app_registration_pb2'
-        # @@protoc_insertion_point(class_scope:src.cloud.registration.OnboardingResponse.Failures)
+        # @@protoc_insertion_point(class_scope:agrirouter.cloud.registration.OnboardingResponse.Failures)
     })
     ,
     'DESCRIPTOR': _ONBOARDINGRESPONSE,
     '__module__': 'cloud_provider_integration.cloud_virtualized_app_registration_pb2'
-    # @@protoc_insertion_point(class_scope:src.cloud.registration.OnboardingResponse)
+    # @@protoc_insertion_point(class_scope:agrirouter.cloud.registration.OnboardingResponse)
 })
 _sym_db.RegisterMessage(OnboardingResponse)
 _sym_db.RegisterMessage(OnboardingResponse.EndpointRegistrationDetails)
@@ -326,7 +326,7 @@ _sym_db.RegisterMessage(OnboardingResponse.Failures)
 OffboardingRequest = _reflection.GeneratedProtocolMessageType('OffboardingRequest', (_message.Message,), {
     'DESCRIPTOR': _OFFBOARDINGREQUEST,
     '__module__': 'cloud_provider_integration.cloud_virtualized_app_registration_pb2'
-    # @@protoc_insertion_point(class_scope:src.cloud.registration.OffboardingRequest)
+    # @@protoc_insertion_point(class_scope:agrirouter.cloud.registration.OffboardingRequest)
 })
 _sym_db.RegisterMessage(OffboardingRequest)
 

@@ -1,15 +1,14 @@
-from src.agrirouter.api.enums import TechnicalMessageType
-from src.agrirouter.generated.cloud_provider_integration.cloud_virtualized_app_registration_pb2 import \
-    OnboardingRequest, \
+from agrirouter.api.enums import TechnicalMessageType
+from agrirouter.generated.cloud_provider_integration.cloud_virtualized_app_registration_pb2 import OnboardingRequest, \
     OffboardingRequest
-from src.agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from src.agrirouter.messaging.encode import encode_message
-from src.agrirouter.messaging.messages import EncodedMessage
-from src.agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
+from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
+from agrirouter.messaging.encode import encode_message
+from agrirouter.messaging.messages import EncodedMessage
+from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
     CloudOnboardParameters, CloudOffboardParameters
-from src.agrirouter.messaging.services.messaging import AbstractService
-from src.agrirouter.utils.type_url import TypeUrl
-from src.agrirouter.utils.uuid_util import new_uuid
+from agrirouter.messaging.services.messaging import AbstractService
+from agrirouter.utils.type_url import TypeUrl
+from agrirouter.utils.uuid_util import new_uuid
 
 
 class CloudOnboardService(AbstractService):

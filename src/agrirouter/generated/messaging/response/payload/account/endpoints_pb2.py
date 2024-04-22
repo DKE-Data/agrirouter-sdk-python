@@ -13,16 +13,16 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
     name='messaging/response/payload/account/endpoints.proto',
-    package='src.response.payload.account',
+    package='agrirouter.response.payload.account',
     syntax='proto3',
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n2messaging/response/payload/account/endpoints.proto\x12#src.response.payload.account\"\x82\x04\n\x15ListEndpointsResponse\x12V\n\tendpoints\x18\x01 \x03(\x0b\x32\x43.src.response.payload.account.ListEndpointsResponse.Endpoint\x1a\x86\x01\n\x0bMessageType\x12\x1e\n\x16technical_message_type\x18\x01 \x01(\t\x12W\n\tdirection\x18\x02 \x01(\x0e\x32\x44.src.response.payload.account.ListEndpointsResponse.Direction\x1a\xd1\x01\n\x08\x45ndpoint\x12\x13\n\x0b\x65ndpoint_id\x18\x01 \x01(\t\x12\x15\n\rendpoint_name\x18\x02 \x01(\t\x12\x15\n\rendpoint_type\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\t\x12]\n\rmessage_types\x18\x05 \x03(\x0b\x32\x46.src.response.payload.account.ListEndpointsResponse.MessageType\x12\x13\n\x0b\x65xternal_id\x18\x06 \x01(\t\"4\n\tDirection\x12\x08\n\x04SEND\x10\x00\x12\x0b\n\x07RECEIVE\x10\x01\x12\x10\n\x0cSEND_RECEIVE\x10\x02\x62\x06proto3'
+    serialized_pb=b'\n2messaging/response/payload/account/endpoints.proto\x12#agrirouter.response.payload.account\"\x82\x04\n\x15ListEndpointsResponse\x12V\n\tendpoints\x18\x01 \x03(\x0b\x32\x43.agrirouter.response.payload.account.ListEndpointsResponse.Endpoint\x1a\x86\x01\n\x0bMessageType\x12\x1e\n\x16technical_message_type\x18\x01 \x01(\t\x12W\n\tdirection\x18\x02 \x01(\x0e\x32\x44.agrirouter.response.payload.account.ListEndpointsResponse.Direction\x1a\xd1\x01\n\x08\x45ndpoint\x12\x13\n\x0b\x65ndpoint_id\x18\x01 \x01(\t\x12\x15\n\rendpoint_name\x18\x02 \x01(\t\x12\x15\n\rendpoint_type\x18\x03 \x01(\t\x12\x0e\n\x06status\x18\x04 \x01(\t\x12]\n\rmessage_types\x18\x05 \x03(\x0b\x32\x46.agrirouter.response.payload.account.ListEndpointsResponse.MessageType\x12\x13\n\x0b\x65xternal_id\x18\x06 \x01(\t\"4\n\tDirection\x12\x08\n\x04SEND\x10\x00\x12\x0b\n\x07RECEIVE\x10\x01\x12\x10\n\x0cSEND_RECEIVE\x10\x02\x62\x06proto3'
 )
 
 _LISTENDPOINTSRESPONSE_DIRECTION = _descriptor.EnumDescriptor(
     name='Direction',
-    full_name='src.response.payload.account.ListEndpointsResponse.Direction',
+    full_name='agrirouter.response.payload.account.ListEndpointsResponse.Direction',
     filename=None,
     file=DESCRIPTOR,
     create_key=_descriptor._internal_create_key,
@@ -52,7 +52,7 @@ _sym_db.RegisterEnumDescriptor(_LISTENDPOINTSRESPONSE_DIRECTION)
 
 _LISTENDPOINTSRESPONSE_MESSAGETYPE = _descriptor.Descriptor(
     name='MessageType',
-    full_name='src.response.payload.account.ListEndpointsResponse.MessageType',
+    full_name='agrirouter.response.payload.account.ListEndpointsResponse.MessageType',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
@@ -60,7 +60,7 @@ _LISTENDPOINTSRESPONSE_MESSAGETYPE = _descriptor.Descriptor(
     fields=[
         _descriptor.FieldDescriptor(
             name='technical_message_type',
-            full_name='src.response.payload.account.ListEndpointsResponse.MessageType.technical_message_type',
+            full_name='agrirouter.response.payload.account.ListEndpointsResponse.MessageType.technical_message_type',
             index=0,
             number=1, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
@@ -69,7 +69,7 @@ _LISTENDPOINTSRESPONSE_MESSAGETYPE = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='direction',
-            full_name='src.response.payload.account.ListEndpointsResponse.MessageType.direction', index=1,
+            full_name='agrirouter.response.payload.account.ListEndpointsResponse.MessageType.direction', index=1,
             number=2, type=14, cpp_type=8, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
@@ -93,7 +93,7 @@ _LISTENDPOINTSRESPONSE_MESSAGETYPE = _descriptor.Descriptor(
 
 _LISTENDPOINTSRESPONSE_ENDPOINT = _descriptor.Descriptor(
     name='Endpoint',
-    full_name='src.response.payload.account.ListEndpointsResponse.Endpoint',
+    full_name='agrirouter.response.payload.account.ListEndpointsResponse.Endpoint',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
@@ -101,7 +101,7 @@ _LISTENDPOINTSRESPONSE_ENDPOINT = _descriptor.Descriptor(
     fields=[
         _descriptor.FieldDescriptor(
             name='endpoint_id',
-            full_name='src.response.payload.account.ListEndpointsResponse.Endpoint.endpoint_id', index=0,
+            full_name='agrirouter.response.payload.account.ListEndpointsResponse.Endpoint.endpoint_id', index=0,
             number=1, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
@@ -109,7 +109,7 @@ _LISTENDPOINTSRESPONSE_ENDPOINT = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='endpoint_name',
-            full_name='src.response.payload.account.ListEndpointsResponse.Endpoint.endpoint_name', index=1,
+            full_name='agrirouter.response.payload.account.ListEndpointsResponse.Endpoint.endpoint_name', index=1,
             number=2, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
@@ -117,14 +117,14 @@ _LISTENDPOINTSRESPONSE_ENDPOINT = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='endpoint_type',
-            full_name='src.response.payload.account.ListEndpointsResponse.Endpoint.endpoint_type', index=2,
+            full_name='agrirouter.response.payload.account.ListEndpointsResponse.Endpoint.endpoint_type', index=2,
             number=3, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='status', full_name='src.response.payload.account.ListEndpointsResponse.Endpoint.status',
+            name='status', full_name='agrirouter.response.payload.account.ListEndpointsResponse.Endpoint.status',
             index=3,
             number=4, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
@@ -133,7 +133,7 @@ _LISTENDPOINTSRESPONSE_ENDPOINT = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='message_types',
-            full_name='src.response.payload.account.ListEndpointsResponse.Endpoint.message_types', index=4,
+            full_name='agrirouter.response.payload.account.ListEndpointsResponse.Endpoint.message_types', index=4,
             number=5, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
@@ -141,7 +141,7 @@ _LISTENDPOINTSRESPONSE_ENDPOINT = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='external_id',
-            full_name='src.response.payload.account.ListEndpointsResponse.Endpoint.external_id', index=5,
+            full_name='agrirouter.response.payload.account.ListEndpointsResponse.Endpoint.external_id', index=5,
             number=6, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
@@ -165,14 +165,14 @@ _LISTENDPOINTSRESPONSE_ENDPOINT = _descriptor.Descriptor(
 
 _LISTENDPOINTSRESPONSE = _descriptor.Descriptor(
     name='ListEndpointsResponse',
-    full_name='src.response.payload.account.ListEndpointsResponse',
+    full_name='agrirouter.response.payload.account.ListEndpointsResponse',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='endpoints', full_name='src.response.payload.account.ListEndpointsResponse.endpoints', index=0,
+            name='endpoints', full_name='agrirouter.response.payload.account.ListEndpointsResponse.endpoints', index=0,
             number=1, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
@@ -209,19 +209,19 @@ ListEndpointsResponse = _reflection.GeneratedProtocolMessageType('ListEndpointsR
     'MessageType': _reflection.GeneratedProtocolMessageType('MessageType', (_message.Message,), {
         'DESCRIPTOR': _LISTENDPOINTSRESPONSE_MESSAGETYPE,
         '__module__': 'messaging.response.payload.account.endpoints_pb2'
-        # @@protoc_insertion_point(class_scope:src.response.payload.account.ListEndpointsResponse.MessageType)
+        # @@protoc_insertion_point(class_scope:agrirouter.response.payload.account.ListEndpointsResponse.MessageType)
     })
     ,
 
     'Endpoint': _reflection.GeneratedProtocolMessageType('Endpoint', (_message.Message,), {
         'DESCRIPTOR': _LISTENDPOINTSRESPONSE_ENDPOINT,
         '__module__': 'messaging.response.payload.account.endpoints_pb2'
-        # @@protoc_insertion_point(class_scope:src.response.payload.account.ListEndpointsResponse.Endpoint)
+        # @@protoc_insertion_point(class_scope:agrirouter.response.payload.account.ListEndpointsResponse.Endpoint)
     })
     ,
     'DESCRIPTOR': _LISTENDPOINTSRESPONSE,
     '__module__': 'messaging.response.payload.account.endpoints_pb2'
-    # @@protoc_insertion_point(class_scope:src.response.payload.account.ListEndpointsResponse)
+    # @@protoc_insertion_point(class_scope:agrirouter.response.payload.account.ListEndpointsResponse)
 })
 _sym_db.RegisterMessage(ListEndpointsResponse)
 _sym_db.RegisterMessage(ListEndpointsResponse.MessageType)

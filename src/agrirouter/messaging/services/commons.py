@@ -2,15 +2,15 @@ import json
 import logging
 from abc import ABC, abstractmethod
 
-from src.agrirouter.api.exceptions import BadMessagingResult
-from src.agrirouter.messaging.clients.http import HttpClient
-from src.agrirouter.messaging.clients.mqtt import MqttClient
-from src.agrirouter.messaging.messages import Message, EncodedMessage
-from src.agrirouter.messaging.parameters.dto import MessagingParameters
-from src.agrirouter.messaging.parameters.service import MessageParameters
-from src.agrirouter.messaging.request import MessageRequest
-from src.agrirouter.messaging.result import MessagingResult
-from src.agrirouter.onboarding.response import OnboardResponse
+from agrirouter.api.exceptions import BadMessagingResult
+from agrirouter.messaging.clients.http import HttpClient
+from agrirouter.messaging.clients.mqtt import MqttClient
+from agrirouter.messaging.messages import Message, EncodedMessage
+from agrirouter.messaging.parameters.dto import MessagingParameters
+from agrirouter.messaging.parameters.service import MessageParameters
+from agrirouter.messaging.request import MessageRequest
+from agrirouter.messaging.result import MessagingResult
+from agrirouter.onboarding.response import OnboardResponse
 
 
 class AbstractService:
@@ -24,10 +24,10 @@ class AbstractService:
 
     def send(self, parameters):
         """
-        Send a message to the src.
+        Send a message to the agrirouter.
         :param parameters: Parameters for the message.
         """
-        self._log.debug("Sending message to the src.")
+        self._log.debug("Sending message to the agrirouter.")
         messaging_parameters = MessagingParameters(
             onboarding_response=parameters.get_onboarding_response(),
             application_message_id=parameters.get_application_message_id(),

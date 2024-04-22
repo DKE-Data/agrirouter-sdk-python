@@ -1,4 +1,4 @@
-from src.agrirouter.api.enums import ContentTypes
+from agrirouter.api.enums import ContentTypes
 
 
 class RevokingHeader:

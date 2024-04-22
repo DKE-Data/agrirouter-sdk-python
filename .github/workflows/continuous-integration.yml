@@ -6,6 +6,12 @@ name: Continuous Integration
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      python-version:
+        description: 'Python versions'
+        required: true
+        default: '["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]'
 
 jobs:
   build:
@@ -15,7 +21,7 @@ jobs:
       max-parallel: 1
       fail-fast: false
       matrix:
-        python-version: [ "3.11" ]
+        python-version: ${{ github.event_name == 'push' && '3.11' || fromJson(github.event.inputs.python-version) }}
 
     steps:
       - uses: actions/checkout@v4
@@ -27,12 +33,21 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install -e .
       - name: Lint with flake8
         run: |
           flake8 .
       - name: Test with pytest
         run: |
-          pytest
+          pytest --junitxml=junit/test-results.xml
       - name: Dry run building the wheel
         run: |
           python -m build --sdist --wheel
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v4
+        if: success() || failure()
+        with:
+          check_name: "Test Report (${{ matrix.python-version }})"
+          report_paths: 'junit/test-results.xml'
+          detailed_summary: true
+          include_passed: true

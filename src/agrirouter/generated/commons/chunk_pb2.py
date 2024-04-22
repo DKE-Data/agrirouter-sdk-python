@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
     name='commons/chunk.proto',
-    package='src.commons',
+    package='agrirouter.commons',
     syntax='proto3',
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
@@ -22,35 +22,35 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _CHUNKCOMPONENT = _descriptor.Descriptor(
     name='ChunkComponent',
-    full_name='src.agrirouter.commons.ChunkComponent',
+    full_name='agrirouter.commons.ChunkComponent',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='context_id', full_name='src.agrirouter.commons.ChunkComponent.context_id', index=0,
+            name='context_id', full_name='agrirouter.commons.ChunkComponent.context_id', index=0,
             number=1, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='current', full_name='src.agrirouter.commons.ChunkComponent.current', index=1,
+            name='current', full_name='agrirouter.commons.ChunkComponent.current', index=1,
             number=2, type=3, cpp_type=2, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='total', full_name='src.agrirouter.commons.ChunkComponent.total', index=2,
+            name='total', full_name='agrirouter.commons.ChunkComponent.total', index=2,
             number=3, type=3, cpp_type=2, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='total_size', full_name='src.agrirouter.commons.ChunkComponent.total_size', index=3,
+            name='total_size', full_name='agrirouter.commons.ChunkComponent.total_size', index=3,
             number=4, type=3, cpp_type=2, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
@@ -78,7 +78,7 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 ChunkComponent = _reflection.GeneratedProtocolMessageType('ChunkComponent', (_message.Message,), {
     'DESCRIPTOR': _CHUNKCOMPONENT,
     '__module__': 'commons.chunk_pb2'
-    # @@protoc_insertion_point(class_scope:src.agrirouter.commons.ChunkComponent)
+    # @@protoc_insertion_point(class_scope:agrirouter.commons.ChunkComponent)
 })
 _sym_db.RegisterMessage(ChunkComponent)
 

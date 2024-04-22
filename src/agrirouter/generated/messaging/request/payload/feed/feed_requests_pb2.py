@@ -15,31 +15,31 @@ from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__
 
 DESCRIPTOR = _descriptor.FileDescriptor(
     name='messaging/request/payload/feed/feed-requests.proto',
-    package='src.feed.request',
+    package='agrirouter.feed.request',
     syntax='proto3',
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n2messaging/request/payload/feed/feed-requests.proto\x12\x17\x61grirouter.feed.request\x1a\x1fgoogle/protobuf/timestamp.proto\"l\n\x0eValidityPeriod\x12-\n\tsent_from\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12+\n\x07sent_to\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"v\n\x0cMessageQuery\x12\x13\n\x0bmessage_ids\x18\x01 \x03(\t\x12\x0f\n\x07senders\x18\x02 \x03(\t\x12@\n\x0fvalidity_period\x18\x03 \x01(\x0b\x32\'.src.feed.request.ValidityPeriod\"%\n\x0eMessageConfirm\x12\x13\n\x0bmessage_ids\x18\x01 \x03(\t\"w\n\rMessageDelete\x12\x13\n\x0bmessage_ids\x18\x01 \x03(\t\x12\x0f\n\x07senders\x18\x02 \x03(\t\x12@\n\x0fvalidity_period\x18\x03 \x01(\x0b\x32\'.src.feed.request.ValidityPeriodb\x06proto3'
+    serialized_pb=b'\n2messaging/request/payload/feed/feed-requests.proto\x12\x17\x61grirouter.feed.request\x1a\x1fgoogle/protobuf/timestamp.proto\"l\n\x0eValidityPeriod\x12-\n\tsent_from\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12+\n\x07sent_to\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"v\n\x0cMessageQuery\x12\x13\n\x0bmessage_ids\x18\x01 \x03(\t\x12\x0f\n\x07senders\x18\x02 \x03(\t\x12@\n\x0fvalidity_period\x18\x03 \x01(\x0b\x32\'.agrirouter.feed.request.ValidityPeriod\"%\n\x0eMessageConfirm\x12\x13\n\x0bmessage_ids\x18\x01 \x03(\t\"w\n\rMessageDelete\x12\x13\n\x0bmessage_ids\x18\x01 \x03(\t\x12\x0f\n\x07senders\x18\x02 \x03(\t\x12@\n\x0fvalidity_period\x18\x03 \x01(\x0b\x32\'.agrirouter.feed.request.ValidityPeriodb\x06proto3'
     ,
     dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR, ])
 
 _VALIDITYPERIOD = _descriptor.Descriptor(
     name='ValidityPeriod',
-    full_name='src.feed.request.ValidityPeriod',
+    full_name='agrirouter.feed.request.ValidityPeriod',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='sent_from', full_name='src.feed.request.ValidityPeriod.sent_from', index=0,
+            name='sent_from', full_name='agrirouter.feed.request.ValidityPeriod.sent_from', index=0,
             number=1, type=11, cpp_type=10, label=1,
             has_default_value=False, default_value=None,
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='sent_to', full_name='src.feed.request.ValidityPeriod.sent_to', index=1,
+            name='sent_to', full_name='agrirouter.feed.request.ValidityPeriod.sent_to', index=1,
             number=2, type=11, cpp_type=10, label=1,
             has_default_value=False, default_value=None,
             message_type=None, enum_type=None, containing_type=None,
@@ -63,28 +63,28 @@ _VALIDITYPERIOD = _descriptor.Descriptor(
 
 _MESSAGEQUERY = _descriptor.Descriptor(
     name='MessageQuery',
-    full_name='src.feed.request.MessageQuery',
+    full_name='agrirouter.feed.request.MessageQuery',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='message_ids', full_name='src.feed.request.MessageQuery.message_ids', index=0,
+            name='message_ids', full_name='agrirouter.feed.request.MessageQuery.message_ids', index=0,
             number=1, type=9, cpp_type=9, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='senders', full_name='src.feed.request.MessageQuery.senders', index=1,
+            name='senders', full_name='agrirouter.feed.request.MessageQuery.senders', index=1,
             number=2, type=9, cpp_type=9, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='validity_period', full_name='src.feed.request.MessageQuery.validity_period', index=2,
+            name='validity_period', full_name='agrirouter.feed.request.MessageQuery.validity_period', index=2,
             number=3, type=11, cpp_type=10, label=1,
             has_default_value=False, default_value=None,
             message_type=None, enum_type=None, containing_type=None,
@@ -108,14 +108,14 @@ _MESSAGEQUERY = _descriptor.Descriptor(
 
 _MESSAGECONFIRM = _descriptor.Descriptor(
     name='MessageConfirm',
-    full_name='src.feed.request.MessageConfirm',
+    full_name='agrirouter.feed.request.MessageConfirm',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='message_ids', full_name='src.feed.request.MessageConfirm.message_ids', index=0,
+            name='message_ids', full_name='agrirouter.feed.request.MessageConfirm.message_ids', index=0,
             number=1, type=9, cpp_type=9, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
@@ -139,28 +139,28 @@ _MESSAGECONFIRM = _descriptor.Descriptor(
 
 _MESSAGEDELETE = _descriptor.Descriptor(
     name='MessageDelete',
-    full_name='src.feed.request.MessageDelete',
+    full_name='agrirouter.feed.request.MessageDelete',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='message_ids', full_name='src.feed.request.MessageDelete.message_ids', index=0,
+            name='message_ids', full_name='agrirouter.feed.request.MessageDelete.message_ids', index=0,
             number=1, type=9, cpp_type=9, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='senders', full_name='src.feed.request.MessageDelete.senders', index=1,
+            name='senders', full_name='agrirouter.feed.request.MessageDelete.senders', index=1,
             number=2, type=9, cpp_type=9, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='validity_period', full_name='src.feed.request.MessageDelete.validity_period', index=2,
+            name='validity_period', full_name='agrirouter.feed.request.MessageDelete.validity_period', index=2,
             number=3, type=11, cpp_type=10, label=1,
             has_default_value=False, default_value=None,
             message_type=None, enum_type=None, containing_type=None,
@@ -195,28 +195,28 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 ValidityPeriod = _reflection.GeneratedProtocolMessageType('ValidityPeriod', (_message.Message,), {
     'DESCRIPTOR': _VALIDITYPERIOD,
     '__module__': 'messaging.request.payload.feed.feed_requests_pb2'
-    # @@protoc_insertion_point(class_scope:src.feed.request.ValidityPeriod)
+    # @@protoc_insertion_point(class_scope:agrirouter.feed.request.ValidityPeriod)
 })
 _sym_db.RegisterMessage(ValidityPeriod)
 
 MessageQuery = _reflection.GeneratedProtocolMessageType('MessageQuery', (_message.Message,), {
     'DESCRIPTOR': _MESSAGEQUERY,
     '__module__': 'messaging.request.payload.feed.feed_requests_pb2'
-    # @@protoc_insertion_point(class_scope:src.feed.request.MessageQuery)
+    # @@protoc_insertion_point(class_scope:agrirouter.feed.request.MessageQuery)
 })
 _sym_db.RegisterMessage(MessageQuery)
 
 MessageConfirm = _reflection.GeneratedProtocolMessageType('MessageConfirm', (_message.Message,), {
     'DESCRIPTOR': _MESSAGECONFIRM,
     '__module__': 'messaging.request.payload.feed.feed_requests_pb2'
-    # @@protoc_insertion_point(class_scope:src.feed.request.MessageConfirm)
+    # @@protoc_insertion_point(class_scope:agrirouter.feed.request.MessageConfirm)
 })
 _sym_db.RegisterMessage(MessageConfirm)
 
 MessageDelete = _reflection.GeneratedProtocolMessageType('MessageDelete', (_message.Message,), {
     'DESCRIPTOR': _MESSAGEDELETE,
     '__module__': 'messaging.request.payload.feed.feed_requests_pb2'
-    # @@protoc_insertion_point(class_scope:src.feed.request.MessageDelete)
+    # @@protoc_insertion_point(class_scope:agrirouter.feed.request.MessageDelete)
 })
 _sym_db.RegisterMessage(MessageDelete)
 

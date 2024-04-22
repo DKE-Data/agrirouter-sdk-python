@@ -4,8 +4,8 @@ import os
 import ssl
 from urllib.parse import urlparse
 
-from src.agrirouter.messaging.certification import create_certificate_file_from_pen
-from src.agrirouter.onboarding.response import OnboardResponse
+from agrirouter.messaging.certification import create_certificate_file_from_pen
+from agrirouter.onboarding.response import OnboardResponse
 
 
 class HttpClient:

@@ -13,23 +13,23 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
     name='messaging/response/payload/endpoint/capability.proto',
-    package='src.response.payload.endpoint',
+    package='agrirouter.response.payload.endpoint',
     syntax='proto3',
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n4messaging/response/payload/endpoint/capability.proto\x12$src.response.payload.endpoint\"\xc5\x01\n\x12\x43\x61pabilityResponse\x12\x1e\n\x16\x61pplication_message_id\x18\x01 \x01(\t\x12V\n\nrecipients\x18\x02 \x03(\x0b\x32\x42.src.response.payload.endpoint.CapabilityResponse.Recipient\x1a\x37\n\tRecipient\x12\n\n\x02id\x18\x01 \x01(\t\x12\x1e\n\x16technical_message_type\x18\x02 \x03(\tb\x06proto3'
+    serialized_pb=b'\n4messaging/response/payload/endpoint/capability.proto\x12$agrirouter.response.payload.endpoint\"\xc5\x01\n\x12\x43\x61pabilityResponse\x12\x1e\n\x16\x61pplication_message_id\x18\x01 \x01(\t\x12V\n\nrecipients\x18\x02 \x03(\x0b\x32\x42.agrirouter.response.payload.endpoint.CapabilityResponse.Recipient\x1a\x37\n\tRecipient\x12\n\n\x02id\x18\x01 \x01(\t\x12\x1e\n\x16technical_message_type\x18\x02 \x03(\tb\x06proto3'
 )
 
 _CAPABILITYRESPONSE_RECIPIENT = _descriptor.Descriptor(
     name='Recipient',
-    full_name='src.response.payload.endpoint.CapabilityResponse.Recipient',
+    full_name='agrirouter.response.payload.endpoint.CapabilityResponse.Recipient',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='id', full_name='src.response.payload.endpoint.CapabilityResponse.Recipient.id', index=0,
+            name='id', full_name='agrirouter.response.payload.endpoint.CapabilityResponse.Recipient.id', index=0,
             number=1, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
@@ -37,7 +37,7 @@ _CAPABILITYRESPONSE_RECIPIENT = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='technical_message_type',
-            full_name='src.response.payload.endpoint.CapabilityResponse.Recipient.technical_message_type',
+            full_name='agrirouter.response.payload.endpoint.CapabilityResponse.Recipient.technical_message_type',
             index=1,
             number=2, type=9, cpp_type=9, label=3,
             has_default_value=False, default_value=[],
@@ -62,7 +62,7 @@ _CAPABILITYRESPONSE_RECIPIENT = _descriptor.Descriptor(
 
 _CAPABILITYRESPONSE = _descriptor.Descriptor(
     name='CapabilityResponse',
-    full_name='src.response.payload.endpoint.CapabilityResponse',
+    full_name='agrirouter.response.payload.endpoint.CapabilityResponse',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
@@ -70,14 +70,14 @@ _CAPABILITYRESPONSE = _descriptor.Descriptor(
     fields=[
         _descriptor.FieldDescriptor(
             name='application_message_id',
-            full_name='src.response.payload.endpoint.CapabilityResponse.application_message_id', index=0,
+            full_name='agrirouter.response.payload.endpoint.CapabilityResponse.application_message_id', index=0,
             number=1, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='recipients', full_name='src.response.payload.endpoint.CapabilityResponse.recipients', index=1,
+            name='recipients', full_name='agrirouter.response.payload.endpoint.CapabilityResponse.recipients', index=1,
             number=2, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
@@ -109,12 +109,12 @@ CapabilityResponse = _reflection.GeneratedProtocolMessageType('CapabilityRespons
     'Recipient': _reflection.GeneratedProtocolMessageType('Recipient', (_message.Message,), {
         'DESCRIPTOR': _CAPABILITYRESPONSE_RECIPIENT,
         '__module__': 'messaging.response.payload.endpoint.capability_pb2'
-        # @@protoc_insertion_point(class_scope:src.response.payload.endpoint.CapabilityResponse.Recipient)
+        # @@protoc_insertion_point(class_scope:agrirouter.response.payload.endpoint.CapabilityResponse.Recipient)
     })
     ,
     'DESCRIPTOR': _CAPABILITYRESPONSE,
     '__module__': 'messaging.response.payload.endpoint.capability_pb2'
-    # @@protoc_insertion_point(class_scope:src.response.payload.endpoint.CapabilityResponse)
+    # @@protoc_insertion_point(class_scope:agrirouter.response.payload.endpoint.CapabilityResponse)
 })
 _sym_db.RegisterMessage(CapabilityResponse)
 _sym_db.RegisterMessage(CapabilityResponse.Recipient)

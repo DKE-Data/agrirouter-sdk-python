@@ -13,16 +13,16 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
     name='messaging/request/payload/account/endpoints.proto',
-    package='src.request.payload.account',
+    package='agrirouter.request.payload.account',
     syntax='proto3',
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n1messaging/request/payload/account/endpoints.proto\x12\"src.request.payload.account\"\xbf\x01\n\x12ListEndpointsQuery\x12\x1e\n\x16technical_message_type\x18\x01 \x01(\t\x12S\n\tdirection\x18\x02 \x01(\x0e\x32@.src.request.payload.account.ListEndpointsQuery.Direction\"4\n\tDirection\x12\x08\n\x04SEND\x10\x00\x12\x0b\n\x07RECEIVE\x10\x01\x12\x10\n\x0cSEND_RECEIVE\x10\x02\x62\x06proto3'
+    serialized_pb=b'\n1messaging/request/payload/account/endpoints.proto\x12\"agrirouter.request.payload.account\"\xbf\x01\n\x12ListEndpointsQuery\x12\x1e\n\x16technical_message_type\x18\x01 \x01(\t\x12S\n\tdirection\x18\x02 \x01(\x0e\x32@.agrirouter.request.payload.account.ListEndpointsQuery.Direction\"4\n\tDirection\x12\x08\n\x04SEND\x10\x00\x12\x0b\n\x07RECEIVE\x10\x01\x12\x10\n\x0cSEND_RECEIVE\x10\x02\x62\x06proto3'
 )
 
 _LISTENDPOINTSQUERY_DIRECTION = _descriptor.EnumDescriptor(
     name='Direction',
-    full_name='src.request.payload.account.ListEndpointsQuery.Direction',
+    full_name='agrirouter.request.payload.account.ListEndpointsQuery.Direction',
     filename=None,
     file=DESCRIPTOR,
     create_key=_descriptor._internal_create_key,
@@ -52,7 +52,7 @@ _sym_db.RegisterEnumDescriptor(_LISTENDPOINTSQUERY_DIRECTION)
 
 _LISTENDPOINTSQUERY = _descriptor.Descriptor(
     name='ListEndpointsQuery',
-    full_name='src.request.payload.account.ListEndpointsQuery',
+    full_name='agrirouter.request.payload.account.ListEndpointsQuery',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
@@ -60,14 +60,14 @@ _LISTENDPOINTSQUERY = _descriptor.Descriptor(
     fields=[
         _descriptor.FieldDescriptor(
             name='technical_message_type',
-            full_name='src.request.payload.account.ListEndpointsQuery.technical_message_type', index=0,
+            full_name='agrirouter.request.payload.account.ListEndpointsQuery.technical_message_type', index=0,
             number=1, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='direction', full_name='src.request.payload.account.ListEndpointsQuery.direction', index=1,
+            name='direction', full_name='agrirouter.request.payload.account.ListEndpointsQuery.direction', index=1,
             number=2, type=14, cpp_type=8, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
@@ -98,7 +98,7 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 ListEndpointsQuery = _reflection.GeneratedProtocolMessageType('ListEndpointsQuery', (_message.Message,), {
     'DESCRIPTOR': _LISTENDPOINTSQUERY,
     '__module__': 'messaging.request.payload.account.endpoints_pb2'
-    # @@protoc_insertion_point(class_scope:src.request.payload.account.ListEndpointsQuery)
+    # @@protoc_insertion_point(class_scope:agrirouter.request.payload.account.ListEndpointsQuery)
 })
 _sym_db.RegisterMessage(ListEndpointsQuery)
 

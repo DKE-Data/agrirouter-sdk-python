@@ -1,6 +1,6 @@
-from src.agrirouter.api.enums import ContentTypes
-from src.agrirouter.onboarding.enums import CertificateTypes
-from src.agrirouter.utils.utc_time_util import now_as_utc_str
+from agrirouter.api.enums import ContentTypes
+from agrirouter.onboarding.enums import CertificateTypes
+from agrirouter.utils.utc_time_util import now_as_utc_str
 
 
 class OnboardParameters:

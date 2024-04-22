@@ -1,8 +1,8 @@
 from urllib.parse import urlparse, parse_qs
 
-from src.agrirouter.auth.parameters import AuthUrlParameter
-from src.agrirouter.auth.response import AuthResponse
-from src.agrirouter.environments.environmental_services import EnvironmentalService
+from agrirouter.auth.parameters import AuthUrlParameter
+from agrirouter.auth.response import AuthResponse
+from agrirouter.environments.environmental_services import EnvironmentalService
 
 
 class Authorization(EnvironmentalService):

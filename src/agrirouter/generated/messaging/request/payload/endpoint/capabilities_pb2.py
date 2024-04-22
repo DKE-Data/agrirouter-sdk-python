@@ -13,16 +13,16 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
     name='messaging/request/payload/endpoint/capabilities.proto',
-    package='src.request.payload.endpoint',
+    package='agrirouter.request.payload.endpoint',
     syntax='proto3',
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n5messaging/request/payload/endpoint/capabilities.proto\x12#src.request.payload.endpoint\"\xb9\x04\n\x17\x43\x61pabilitySpecification\x12]\n\x0c\x63\x61pabilities\x18\x01 \x03(\x0b\x32G.src.request.payload.endpoint.CapabilitySpecification.Capability\x12\x1c\n\x14\x61pp_certification_id\x18\x02 \x01(\t\x12$\n\x1c\x61pp_certification_version_id\x18\x03 \x01(\t\x12p\n\x19\x65nable_push_notifications\x18\x04 \x01(\x0e\x32M.src.request.payload.endpoint.CapabilitySpecification.PushNotification\x1a\x87\x01\n\nCapability\x12\x1e\n\x16technical_message_type\x18\x01 \x01(\t\x12Y\n\tdirection\x18\x02 \x01(\x0e\x32\x46.src.request.payload.endpoint.CapabilitySpecification.Direction\"4\n\tDirection\x12\x08\n\x04SEND\x10\x00\x12\x0b\n\x07RECEIVE\x10\x01\x12\x10\n\x0cSEND_RECEIVE\x10\x02\"I\n\x10PushNotification\x12\x0c\n\x08\x44ISABLED\x10\x00\x12\x0b\n\x07\x45NABLED\x10\x01\x12\x1a\n\x16\x45NABLED_HIGH_FREQUENCY\x10\x02\x62\x06proto3'
+    serialized_pb=b'\n5messaging/request/payload/endpoint/capabilities.proto\x12#agrirouter.request.payload.endpoint\"\xb9\x04\n\x17\x43\x61pabilitySpecification\x12]\n\x0c\x63\x61pabilities\x18\x01 \x03(\x0b\x32G.agrirouter.request.payload.endpoint.CapabilitySpecification.Capability\x12\x1c\n\x14\x61pp_certification_id\x18\x02 \x01(\t\x12$\n\x1c\x61pp_certification_version_id\x18\x03 \x01(\t\x12p\n\x19\x65nable_push_notifications\x18\x04 \x01(\x0e\x32M.agrirouter.request.payload.endpoint.CapabilitySpecification.PushNotification\x1a\x87\x01\n\nCapability\x12\x1e\n\x16technical_message_type\x18\x01 \x01(\t\x12Y\n\tdirection\x18\x02 \x01(\x0e\x32\x46.agrirouter.request.payload.endpoint.CapabilitySpecification.Direction\"4\n\tDirection\x12\x08\n\x04SEND\x10\x00\x12\x0b\n\x07RECEIVE\x10\x01\x12\x10\n\x0cSEND_RECEIVE\x10\x02\"I\n\x10PushNotification\x12\x0c\n\x08\x44ISABLED\x10\x00\x12\x0b\n\x07\x45NABLED\x10\x01\x12\x1a\n\x16\x45NABLED_HIGH_FREQUENCY\x10\x02\x62\x06proto3'
 )
 
 _CAPABILITYSPECIFICATION_DIRECTION = _descriptor.EnumDescriptor(
     name='Direction',
-    full_name='src.request.payload.endpoint.CapabilitySpecification.Direction',
+    full_name='agrirouter.request.payload.endpoint.CapabilitySpecification.Direction',
     filename=None,
     file=DESCRIPTOR,
     create_key=_descriptor._internal_create_key,
@@ -52,7 +52,7 @@ _sym_db.RegisterEnumDescriptor(_CAPABILITYSPECIFICATION_DIRECTION)
 
 _CAPABILITYSPECIFICATION_PUSHNOTIFICATION = _descriptor.EnumDescriptor(
     name='PushNotification',
-    full_name='src.request.payload.endpoint.CapabilitySpecification.PushNotification',
+    full_name='agrirouter.request.payload.endpoint.CapabilitySpecification.PushNotification',
     filename=None,
     file=DESCRIPTOR,
     create_key=_descriptor._internal_create_key,
@@ -82,7 +82,7 @@ _sym_db.RegisterEnumDescriptor(_CAPABILITYSPECIFICATION_PUSHNOTIFICATION)
 
 _CAPABILITYSPECIFICATION_CAPABILITY = _descriptor.Descriptor(
     name='Capability',
-    full_name='src.request.payload.endpoint.CapabilitySpecification.Capability',
+    full_name='agrirouter.request.payload.endpoint.CapabilitySpecification.Capability',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
@@ -90,7 +90,7 @@ _CAPABILITYSPECIFICATION_CAPABILITY = _descriptor.Descriptor(
     fields=[
         _descriptor.FieldDescriptor(
             name='technical_message_type',
-            full_name='src.request.payload.endpoint.CapabilitySpecification.Capability.technical_message_type',
+            full_name='agrirouter.request.payload.endpoint.CapabilitySpecification.Capability.technical_message_type',
             index=0,
             number=1, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
@@ -99,7 +99,7 @@ _CAPABILITYSPECIFICATION_CAPABILITY = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='direction',
-            full_name='src.request.payload.endpoint.CapabilitySpecification.Capability.direction', index=1,
+            full_name='agrirouter.request.payload.endpoint.CapabilitySpecification.Capability.direction', index=1,
             number=2, type=14, cpp_type=8, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
@@ -123,14 +123,14 @@ _CAPABILITYSPECIFICATION_CAPABILITY = _descriptor.Descriptor(
 
 _CAPABILITYSPECIFICATION = _descriptor.Descriptor(
     name='CapabilitySpecification',
-    full_name='src.request.payload.endpoint.CapabilitySpecification',
+    full_name='agrirouter.request.payload.endpoint.CapabilitySpecification',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='capabilities', full_name='src.request.payload.endpoint.CapabilitySpecification.capabilities',
+            name='capabilities', full_name='agrirouter.request.payload.endpoint.CapabilitySpecification.capabilities',
             index=0,
             number=1, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
@@ -139,7 +139,7 @@ _CAPABILITYSPECIFICATION = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='app_certification_id',
-            full_name='src.request.payload.endpoint.CapabilitySpecification.app_certification_id', index=1,
+            full_name='agrirouter.request.payload.endpoint.CapabilitySpecification.app_certification_id', index=1,
             number=2, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
@@ -147,7 +147,7 @@ _CAPABILITYSPECIFICATION = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='app_certification_version_id',
-            full_name='src.request.payload.endpoint.CapabilitySpecification.app_certification_version_id',
+            full_name='agrirouter.request.payload.endpoint.CapabilitySpecification.app_certification_version_id',
             index=2,
             number=3, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
@@ -156,7 +156,7 @@ _CAPABILITYSPECIFICATION = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='enable_push_notifications',
-            full_name='src.request.payload.endpoint.CapabilitySpecification.enable_push_notifications', index=3,
+            full_name='agrirouter.request.payload.endpoint.CapabilitySpecification.enable_push_notifications', index=3,
             number=4, type=14, cpp_type=8, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
@@ -195,12 +195,12 @@ CapabilitySpecification = _reflection.GeneratedProtocolMessageType('CapabilitySp
     'Capability': _reflection.GeneratedProtocolMessageType('Capability', (_message.Message,), {
         'DESCRIPTOR': _CAPABILITYSPECIFICATION_CAPABILITY,
         '__module__': 'messaging.request.payload.endpoint.capabilities_pb2'
-        # @@protoc_insertion_point(class_scope:src.request.payload.endpoint.CapabilitySpecification.Capability)
+        # @@protoc_insertion_point(class_scope:agrirouter.request.payload.endpoint.CapabilitySpecification.Capability)
     })
     ,
     'DESCRIPTOR': _CAPABILITYSPECIFICATION,
     '__module__': 'messaging.request.payload.endpoint.capabilities_pb2'
-    # @@protoc_insertion_point(class_scope:src.request.payload.endpoint.CapabilitySpecification)
+    # @@protoc_insertion_point(class_scope:agrirouter.request.payload.endpoint.CapabilitySpecification)
 })
 _sym_db.RegisterMessage(CapabilitySpecification)
 _sym_db.RegisterMessage(CapabilitySpecification.Capability)

@@ -1,13 +1,13 @@
 from copy import deepcopy
 from typing import List
 
-from src.agrirouter.generated.commons.chunk_pb2 import ChunkComponent
-from src.agrirouter.generated.commons.message_pb2 import Metadata
-from src.agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from src.agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from src.agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
-from src.agrirouter.messaging.parameters.dto import MessageParameters, Parameters
-from src.agrirouter.onboarding.response import BaseOnboardingResponse
+from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
+from agrirouter.generated.commons.message_pb2 import Metadata
+from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
+from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
+from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
+from agrirouter.messaging.parameters.dto import MessageParameters, Parameters
+from agrirouter.onboarding.response import BaseOnboardingResponse
 
 
 class MessageHeaderParameters(Parameters):

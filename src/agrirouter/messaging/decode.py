@@ -4,15 +4,15 @@ import logging
 from google.protobuf.any_pb2 import Any
 from google.protobuf.internal.decoder import _DecodeVarint
 
-from src.agrirouter.generated.commons.message_pb2 import Messages
-from src.agrirouter.generated.messaging.response.payload.account.endpoints_pb2 import ListEndpointsResponse
-from src.agrirouter.generated.messaging.response.payload.feed.feed_response_pb2 import HeaderQueryResponse, \
+from agrirouter.generated.commons.message_pb2 import Messages
+from agrirouter.generated.messaging.response.payload.account.endpoints_pb2 import ListEndpointsResponse
+from agrirouter.generated.messaging.response.payload.feed.feed_response_pb2 import HeaderQueryResponse, \
     MessageQueryResponse
-from src.agrirouter.generated.messaging.response.payload.feed.push_notification_pb2 import PushNotification
-from src.agrirouter.generated.messaging.response.response_pb2 import ResponseEnvelope, ResponsePayloadWrapper
-from src.agrirouter.api.exceptions import CanNotDecodeMessage
-from src.agrirouter.messaging.messages import DecodedMessage
-from src.agrirouter.utils.type_url import TypeUrl
+from agrirouter.generated.messaging.response.payload.feed.push_notification_pb2 import PushNotification
+from agrirouter.generated.messaging.response.response_pb2 import ResponseEnvelope, ResponsePayloadWrapper
+from agrirouter.api.exceptions import CanNotDecodeMessage
+from agrirouter.messaging.messages import DecodedMessage
+from agrirouter.utils.type_url import TypeUrl
 
 
 def read_properties_buffers_from_input_stream(input_stream) -> tuple:

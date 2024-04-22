@@ -3,8 +3,8 @@ from typing import Union
 
 from requests import Response
 
-from src.agrirouter.api.exceptions import WrongField
-from src.agrirouter.onboarding.dto import ErrorResponse, ConnectionCriteria, Authentication
+from agrirouter.api.exceptions import WrongField
+from agrirouter.onboarding.dto import ErrorResponse, ConnectionCriteria, Authentication
 
 
 class BaseOnboardingResponse:

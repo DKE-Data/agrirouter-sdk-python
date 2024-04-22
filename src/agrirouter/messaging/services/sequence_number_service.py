@@ -3,7 +3,7 @@ from typing import Dict
 
 class SequenceNumberService:
     """
-    Service to generate sequence numbers while sending messages to the src. The sequence
+    Service to generate sequence numbers while sending messages to the agrirouter. The sequence
     number generation is based on the ID of the endpoint, therefore a sequence number can be used
     multiple times for different endpoints.
     """

@@ -1,9 +1,9 @@
 from copy import deepcopy
 from typing import List
 
-from src.agrirouter.generated.commons.chunk_pb2 import ChunkComponent
-from src.agrirouter.messaging.messages import EncodedMessage
-from src.agrirouter.onboarding.response import BaseOnboardingResponse
+from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
+from agrirouter.messaging.messages import EncodedMessage
+from agrirouter.onboarding.response import BaseOnboardingResponse
 
 
 class Parameters:
@@ -93,7 +93,7 @@ class MessagingParameters(MessageParameters):
 
 class SendMessageParameters(MessageParameters):
     """
-        Parameters to send messages to the src
+        Parameters to send messages to the agrirouter
         The class inherits from MessageParameters class
     """
 
@@ -120,7 +120,7 @@ class SendMessageParameters(MessageParameters):
         chunk_size: Define the size of the chunks
         application_message_id: The application message ID
         application_message_seq_no: Sequence number while sending the messages
-        to the src with SequenceNumberService
+        to the agrirouter with SequenceNumberService
         """
 
         super(SendMessageParameters, self).__init__(application_message_id=application_message_id,
@@ -167,7 +167,7 @@ class SendMessageParameters(MessageParameters):
 
 class ChunkedMessageParameters(MessageParameters):
     """
-        Parameters to send chunked messages to the src
+        Parameters to send chunked messages to the agrirouter
         The class inherits from MessageParameters class
     """
 
@@ -186,7 +186,7 @@ class ChunkedMessageParameters(MessageParameters):
         recipients: List of recipients
         application_message_id: The application message ID
         application_message_seq_no: Sequence number while sending the messages
-        to the src with SequenceNumberService
+        to the agrirouter with SequenceNumberService
         encoded_chunked_messages: List of encoded chunked messages
         """
 

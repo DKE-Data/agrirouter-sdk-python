@@ -1,7 +1,7 @@
 import json
 from typing import Union
 
-from src.agrirouter.api.exceptions import WrongField
+from agrirouter.api.exceptions import WrongField
 
 
 class AuthorizationToken:

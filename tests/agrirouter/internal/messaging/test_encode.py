@@ -1,9 +1,10 @@
 from google.protobuf.any_pb2 import Any
 
-from src.agrirouter.generated.commons.message_pb2 import Message, Messages
-from src.agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope, RequestPayloadWrapper
-from src.agrirouter.messaging.decode import read_properties_buffers_from_input_stream
-from src.agrirouter.messaging.encode import write_proto_parts_to_buffer
+from agrirouter.generated.commons.message_pb2 import Message, Messages
+from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope, RequestPayloadWrapper
+from agrirouter.messaging.decode import read_properties_buffers_from_input_stream
+from agrirouter.messaging.encode import write_proto_parts_to_buffer, encode_header
+from agrirouter.messaging.parameters.service import MessageHeaderParameters
 
 
 def test_write_proto_parts_to_buffer():
@@ -24,3 +25,25 @@ def test_write_proto_parts_to_buffer():
     assert len(result) == 2
     assert len(result[0]) == envelope.ByteSize()
     assert len(result[1]) == payload.ByteSize()
+
+
+def test_encode_header():
+    """
+    This test was created due to a Protobuf issue with Python >= 3.8, where
+    `MergeFromString()` wouldn't accept lists as parameteres anymore.
+    """
+    message_header_parameters = MessageHeaderParameters()
+    message_header_parameters.recipients = [
+        "f1b3b3b3-7b3b-4b3b-b3b3-b3b3b3b3b3b3"
+    ]
+    message_header_parameters.application_message_id = "f1b3b3b3-7b3b-4b3b-b3b3-b3b3b3b3b3b3"
+    message_header_parameters.application_message_seq_no = 1
+    message_header_parameters.technical_message_type = "iso-11783-10:taskdata:zip"
+    message_header_parameters.mode = RequestEnvelope.Mode.Value("DIRECT")
+
+    header = encode_header(message_header_parameters)
+    assert header.application_message_id == message_header_parameters.application_message_id
+    assert header.application_message_seq_no == message_header_parameters.application_message_seq_no
+    assert header.technical_message_type == message_header_parameters.technical_message_type
+    assert header.mode == message_header_parameters.mode
+    assert header.recipients == message_header_parameters.recipients

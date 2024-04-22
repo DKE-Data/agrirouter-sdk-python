@@ -1,7 +1,7 @@
 import os
 import tempfile
 
-from src.agrirouter.onboarding.response import OnboardResponse
+from agrirouter.onboarding.response import OnboardResponse
 
 
 def create_certificate_file_from_pen(onboard_response: OnboardResponse):

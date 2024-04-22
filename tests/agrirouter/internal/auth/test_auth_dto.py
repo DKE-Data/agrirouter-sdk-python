@@ -1,8 +1,8 @@
-"""Tests src/auth/dto.py"""
+"""Tests agrirouter/auth/dto.py"""
 import pytest
 
-from src.agrirouter.auth.dto import AuthorizationToken
-from src.agrirouter.api.exceptions import WrongField
+from agrirouter.auth.dto import AuthorizationToken
+from agrirouter.api.exceptions import WrongField
 
 
 class TestAuthorizationToken:

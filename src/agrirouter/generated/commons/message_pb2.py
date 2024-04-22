@@ -13,30 +13,30 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
     name='commons/message.proto',
-    package='src.commons',
+    package='agrirouter.commons',
     syntax='proto3',
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
-    serialized_pb=b'\n\x15\x63ommons/message.proto\x12\x12\x61grirouter.commons\"\x92\x01\n\x07Message\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x14\n\x0cmessage_code\x18\x02 \x01(\t\x12\x33\n\x04\x61rgs\x18\x03 \x03(\x0b\x32%.src.commons.Message.ArgsEntry\x1a+\n\tArgsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x1d\n\x08Metadata\x12\x11\n\tfile_name\x18\x01 \x01(\t\"9\n\x08Messages\x12-\n\x08messages\x18\x01 \x03(\x0b\x32\x1b.src.commons.Messageb\x06proto3'
+    serialized_pb=b'\n\x15\x63ommons/message.proto\x12\x12\x61grirouter.commons\"\x92\x01\n\x07Message\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x14\n\x0cmessage_code\x18\x02 \x01(\t\x12\x33\n\x04\x61rgs\x18\x03 \x03(\x0b\x32%.agrirouter.commons.Message.ArgsEntry\x1a+\n\tArgsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x1d\n\x08Metadata\x12\x11\n\tfile_name\x18\x01 \x01(\t\"9\n\x08Messages\x12-\n\x08messages\x18\x01 \x03(\x0b\x32\x1b.agrirouter.commons.Messageb\x06proto3'
 )
 
 _MESSAGE_ARGSENTRY = _descriptor.Descriptor(
     name='ArgsEntry',
-    full_name='src.commons.Message.ArgsEntry',
+    full_name='agrirouter.commons.Message.ArgsEntry',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='key', full_name='src.commons.Message.ArgsEntry.key', index=0,
+            name='key', full_name='agrirouter.commons.Message.ArgsEntry.key', index=0,
             number=1, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='value', full_name='src.commons.Message.ArgsEntry.value', index=1,
+            name='value', full_name='agrirouter.commons.Message.ArgsEntry.value', index=1,
             number=2, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
@@ -60,28 +60,28 @@ _MESSAGE_ARGSENTRY = _descriptor.Descriptor(
 
 _MESSAGE = _descriptor.Descriptor(
     name='Message',
-    full_name='src.commons.Message',
+    full_name='agrirouter.commons.Message',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='message', full_name='src.commons.Message.message', index=0,
+            name='message', full_name='agrirouter.commons.Message.message', index=0,
             number=1, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='message_code', full_name='src.commons.Message.message_code', index=1,
+            name='message_code', full_name='agrirouter.commons.Message.message_code', index=1,
             number=2, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
             is_extension=False, extension_scope=None,
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
-            name='args', full_name='src.commons.Message.args', index=2,
+            name='args', full_name='agrirouter.commons.Message.args', index=2,
             number=3, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
@@ -105,14 +105,14 @@ _MESSAGE = _descriptor.Descriptor(
 
 _METADATA = _descriptor.Descriptor(
     name='Metadata',
-    full_name='src.commons.Metadata',
+    full_name='agrirouter.commons.Metadata',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='file_name', full_name='src.commons.Metadata.file_name', index=0,
+            name='file_name', full_name='agrirouter.commons.Metadata.file_name', index=0,
             number=1, type=9, cpp_type=9, label=1,
             has_default_value=False, default_value=b"".decode('utf-8'),
             message_type=None, enum_type=None, containing_type=None,
@@ -136,14 +136,14 @@ _METADATA = _descriptor.Descriptor(
 
 _MESSAGES = _descriptor.Descriptor(
     name='Messages',
-    full_name='src.commons.Messages',
+    full_name='agrirouter.commons.Messages',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='messages', full_name='src.commons.Messages.messages', index=0,
+            name='messages', full_name='agrirouter.commons.Messages.messages', index=0,
             number=1, type=11, cpp_type=10, label=3,
             has_default_value=False, default_value=[],
             message_type=None, enum_type=None, containing_type=None,
@@ -178,12 +178,12 @@ Message = _reflection.GeneratedProtocolMessageType('Message', (_message.Message,
     'ArgsEntry': _reflection.GeneratedProtocolMessageType('ArgsEntry', (_message.Message,), {
         'DESCRIPTOR': _MESSAGE_ARGSENTRY,
         '__module__': 'commons.message_pb2'
-        # @@protoc_insertion_point(class_scope:src.commons.Message.ArgsEntry)
+        # @@protoc_insertion_point(class_scope:agrirouter.commons.Message.ArgsEntry)
     })
     ,
     'DESCRIPTOR': _MESSAGE,
     '__module__': 'commons.message_pb2'
-    # @@protoc_insertion_point(class_scope:src.commons.Message)
+    # @@protoc_insertion_point(class_scope:agrirouter.commons.Message)
 })
 _sym_db.RegisterMessage(Message)
 _sym_db.RegisterMessage(Message.ArgsEntry)
@@ -191,14 +191,14 @@ _sym_db.RegisterMessage(Message.ArgsEntry)
 Metadata = _reflection.GeneratedProtocolMessageType('Metadata', (_message.Message,), {
     'DESCRIPTOR': _METADATA,
     '__module__': 'commons.message_pb2'
-    # @@protoc_insertion_point(class_scope:src.commons.Metadata)
+    # @@protoc_insertion_point(class_scope:agrirouter.commons.Metadata)
 })
 _sym_db.RegisterMessage(Metadata)
 
 Messages = _reflection.GeneratedProtocolMessageType('Messages', (_message.Message,), {
     'DESCRIPTOR': _MESSAGES,
     '__module__': 'commons.message_pb2'
-    # @@protoc_insertion_point(class_scope:src.commons.Messages)
+    # @@protoc_insertion_point(class_scope:agrirouter.commons.Messages)
 })
 _sym_db.RegisterMessage(Messages)
 

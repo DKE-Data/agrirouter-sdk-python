@@ -5,17 +5,17 @@ from typing import List
 from google.protobuf.any_pb2 import Any
 from google.protobuf.internal.encoder import _VarintBytes
 
-from src.agrirouter.generated.commons.chunk_pb2 import ChunkComponent
-from src.agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope, RequestPayloadWrapper
-from src.agrirouter.messaging.messages import MessageParameterTuple
-from src.agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters
-from src.agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from src.agrirouter.onboarding.response import OnboardResponse
-from src.agrirouter.utils.utc_time_util import now_as_utc_timestamp
-from src.agrirouter.utils.uuid_util import new_uuid
+from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
+from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope, RequestPayloadWrapper
+from agrirouter.messaging.messages import MessageParameterTuple
+from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters
+from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
+from agrirouter.onboarding.response import OnboardResponse
+from agrirouter.utils.utc_time_util import now_as_utc_timestamp
+from agrirouter.utils.uuid_util import new_uuid
 
 MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT = 767997 // 2
-log = logging.getLogger("com.dke.data.src.sdk.encode")
+log = logging.getLogger("com.dke.data.agrirouter.sdk.encode")
 
 
 def write_proto_parts_to_buffer(parts: list, buffer: bytes = b""):
@@ -62,11 +62,11 @@ def encode_header(header_parameters: MessageHeaderParameters) -> RequestEnvelope
         request_envelope.team_set_context_id = header_parameters.get_team_set_context_id()
     request_envelope.timestamp.FromDatetime(now_as_utc_timestamp())
     if header_parameters.get_recipients() is not None:
-        request_envelope.recipients.MergeFrom(header_parameters.get_recipients())
+        request_envelope.recipients.extend(header_parameters.get_recipients())
     if header_parameters.get_chunk_component() is not None:
-        request_envelope.chunk_info.MergeFrom(header_parameters.get_chunk_component())
+        request_envelope.chunk_info.extend(header_parameters.get_chunk_component())
     if header_parameters.get_metadata() is not None:
-        request_envelope.metadata.MergeFrom(header_parameters.get_metadata())
+        request_envelope.metadata.extend(header_parameters.get_metadata())
 
     return request_envelope
 

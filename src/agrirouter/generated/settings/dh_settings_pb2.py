@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
     name='settings/dh-settings.proto',
-    package='src.message.settings',
+    package='agrirouter.message.settings',
     syntax='proto3',
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
@@ -22,14 +22,14 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _DATAHUBCONTROLSETTINGS = _descriptor.Descriptor(
     name='DataHubControlSettings',
-    full_name='src.message.settings.DataHubControlSettings',
+    full_name='agrirouter.message.settings.DataHubControlSettings',
     filename=None,
     file=DESCRIPTOR,
     containing_type=None,
     create_key=_descriptor._internal_create_key,
     fields=[
         _descriptor.FieldDescriptor(
-            name='max_message_size', full_name='src.message.settings.DataHubControlSettings.max_message_size',
+            name='max_message_size', full_name='agrirouter.message.settings.DataHubControlSettings.max_message_size',
             index=0,
             number=1, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
@@ -38,7 +38,7 @@ _DATAHUBCONTROLSETTINGS = _descriptor.Descriptor(
             serialized_options=None, file=DESCRIPTOR, create_key=_descriptor._internal_create_key),
         _descriptor.FieldDescriptor(
             name='max_messages_per_query',
-            full_name='src.message.settings.DataHubControlSettings.max_messages_per_query', index=1,
+            full_name='agrirouter.message.settings.DataHubControlSettings.max_messages_per_query', index=1,
             number=2, type=5, cpp_type=1, label=1,
             has_default_value=False, default_value=0,
             message_type=None, enum_type=None, containing_type=None,
@@ -66,7 +66,7 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 DataHubControlSettings = _reflection.GeneratedProtocolMessageType('DataHubControlSettings', (_message.Message,), {
     'DESCRIPTOR': _DATAHUBCONTROLSETTINGS,
     '__module__': 'settings.dh_settings_pb2'
-    # @@protoc_insertion_point(class_scope:src.message.settings.DataHubControlSettings)
+    # @@protoc_insertion_point(class_scope:agrirouter.message.settings.DataHubControlSettings)
 })
 _sym_db.RegisterMessage(DataHubControlSettings)
 

@@ -1,4 +1,4 @@
-![agrirouter logo](./assets/images/agrirouter.svg)
+<img src="https://files.my-agrirouter.com/agrirouter_logo.svg" height="100" />
 
 # About the project
 

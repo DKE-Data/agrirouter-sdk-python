@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from google.protobuf.timestamp_pb2 import Timestamp
 
-from src.agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
+from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
 
 
 def now_as_utc_timestamp() -> datetime:

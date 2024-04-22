@@ -1,7 +1,7 @@
 import logging
 
-from src.agrirouter.api.enums import ContentTypes, RequestHeaders
-from src.agrirouter.api.exceptions import MissingRegistrationCode
+from agrirouter.api.enums import ContentTypes, RequestHeaders
+from agrirouter.api.exceptions import MissingRegistrationCode
 
 
 class SoftwareOnboardingHeader:

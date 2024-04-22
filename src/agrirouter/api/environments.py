@@ -1,4 +1,4 @@
-from src.agrirouter.api.keys import AR_QA_PUBLIC_KEY, AR_PROD_PUBLIC_KEY
+from agrirouter.api.keys import AR_QA_PUBLIC_KEY, AR_PROD_PUBLIC_KEY
 
 
 class BaseEnvironment:

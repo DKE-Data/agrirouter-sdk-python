@@ -6,8 +6,8 @@ from typing import Any, List, Tuple
 import paho.mqtt.client as mqtt_client
 from paho.mqtt.client import MQTTv31, MQTTMessageInfo
 
-from src.agrirouter.messaging.certification import create_certificate_file_from_pen
-from src.agrirouter.messaging.clients.constants import SYNC, ASYNC
+from agrirouter.messaging.certification import create_certificate_file_from_pen
+from agrirouter.messaging.clients.constants import SYNC, ASYNC
 
 
 class MqttClient:

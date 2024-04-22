@@ -1,8 +1,8 @@
 import json
 from typing import Union, Dict
 
-from src.agrirouter.api.exceptions import WrongField
-from src.agrirouter.utils.utc_time_util import now_as_utc_str
+from agrirouter.api.exceptions import WrongField
+from agrirouter.utils.utc_time_util import now_as_utc_str
 
 
 class EncodedMessage:

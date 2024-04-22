@@ -1,6 +1,6 @@
-from src.agrirouter.onboarding.signature import create_signature
-from src.agrirouter.revoking.headers import RevokingHeader
-from src.agrirouter.revoking.request_body import RevokingBody
+from agrirouter.onboarding.signature import create_signature
+from agrirouter.revoking.headers import RevokingHeader
+from agrirouter.revoking.request_body import RevokingBody
 
 
 class RevokingRequest:

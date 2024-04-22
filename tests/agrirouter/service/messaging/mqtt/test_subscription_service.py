@@ -3,16 +3,16 @@ import unittest
 
 import pytest
 
-from src.agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from src.agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from src.agrirouter.messaging.decode import decode_response, decode_details
-from src.agrirouter.api.enums import CapabilityType, CapabilityDirectionType
-from src.agrirouter.messaging.messages import OutboxMessage
-from src.agrirouter.messaging.parameters.service import SubscriptionParameters, CapabilitiesParameters
-from src.agrirouter.messaging.services.commons import MqttMessagingService
-from src.agrirouter.messaging.services.messaging import SubscriptionService, CapabilitiesService
-from src.agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from src.agrirouter.utils.uuid_util import new_uuid
+from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
+from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
+from agrirouter.messaging.decode import decode_response, decode_details
+from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
+from agrirouter.messaging.messages import OutboxMessage
+from agrirouter.messaging.parameters.service import SubscriptionParameters, CapabilitiesParameters
+from agrirouter.messaging.services.commons import MqttMessagingService
+from agrirouter.messaging.services.messaging import SubscriptionService, CapabilitiesService
+from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
+from agrirouter.utils.uuid_util import new_uuid
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.applications import CommunicationUnit
 from tests.agrirouter.data.identifier import Identifier

@@ -1,8 +1,8 @@
-from src.agrirouter.api.enums import RequestHeaders
-from src.agrirouter.onboarding.headers import SoftwareOnboardingHeader
-from src.agrirouter.onboarding.parameters import OnboardParameters
-from src.agrirouter.onboarding.request_body import SoftwareOnboardingBody
-from src.agrirouter.onboarding.signature import create_signature, verify_signature
+from agrirouter.api.enums import RequestHeaders
+from agrirouter.onboarding.headers import SoftwareOnboardingHeader
+from agrirouter.onboarding.parameters import OnboardParameters
+from agrirouter.onboarding.request_body import SoftwareOnboardingBody
+from agrirouter.onboarding.signature import create_signature, verify_signature
 
 
 class OnboardRequest:

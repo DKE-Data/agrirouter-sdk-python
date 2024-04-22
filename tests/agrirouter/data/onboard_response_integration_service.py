@@ -2,7 +2,7 @@ import json
 import os
 
 import tests
-from src.agrirouter.onboarding.response import OnboardResponse
+from agrirouter.onboarding.response import OnboardResponse
 
 
 def read_onboard_response(identifier: str) -> OnboardResponse:
@@ -34,6 +34,6 @@ def _get_path_for_onboard_responses(identifier: str) -> str:
     """
     path = os.path.join(
         os.path.dirname(tests.__file__),
-        f"data/onboarding_responses/{identifier}.json"
+        f"agrirouter/data/onboarding_responses/{identifier}.json"
     )
     return path

@@ -1,7 +1,7 @@
 import json
 from typing import List, Union
 
-from src.agrirouter.messaging.messages import OutboxMessage
+from agrirouter.messaging.messages import OutboxMessage
 
 
 class MessagingResult:

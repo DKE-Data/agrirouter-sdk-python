@@ -1,4 +1,4 @@
-from src.agrirouter.api.enums import BaseEnum
+from agrirouter.api.enums import BaseEnum
 
 
 class CertificateTypes(BaseEnum):

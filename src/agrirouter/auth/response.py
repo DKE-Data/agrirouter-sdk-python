@@ -5,14 +5,14 @@ from urllib.parse import unquote
 
 from cryptography.exceptions import InvalidSignature
 
-from src.agrirouter.auth.dto import AuthorizationToken, AuthorizationResultUrl
-from src.agrirouter.onboarding.signature import verify_signature
+from agrirouter.auth.dto import AuthorizationToken, AuthorizationResultUrl
+from agrirouter.onboarding.signature import verify_signature
 
 
 # from cryptography.exceptions import InvalidSignature
 
 
-# from src.agrirouter.onboarding.signature import verify_signature
+# from agrirouter.onboarding.signature import verify_signature
 
 
 class AuthResponse:

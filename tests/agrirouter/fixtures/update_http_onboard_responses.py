@@ -2,21 +2,22 @@ import logging
 import unittest
 
 import pytest
-from applications import CommunicationUnit
-from onboard_response_integration_service import save_onboard_response
 
-from src import CapabilitiesService, CapabilitiesParameters
-from src.agrirouter.api.environments import Qa
-from src.agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from src.agrirouter.api.enums import CapabilityType, CapabilityDirectionType
-from src.agrirouter.messaging.services.commons import HttpMessagingService
-from src.agrirouter.messaging.services.http.fetch_message_service import FetchMessageService
-from src.agrirouter.onboarding.enums import CertificateTypes, Gateways
-from src.agrirouter.onboarding.response import OnboardResponse
-from src.agrirouter.utils.uuid_util import new_uuid
+from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
+from agrirouter.api.environments import Qa
+from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
+from agrirouter.messaging.parameters.service import CapabilitiesParameters
+from agrirouter.messaging.services.commons import HttpMessagingService
+from agrirouter.messaging.services.http.fetch_message_service import FetchMessageService
+from agrirouter.messaging.services.messaging import CapabilitiesService
+from agrirouter.onboarding.enums import CertificateTypes, Gateways
+from agrirouter.onboarding.response import OnboardResponse
+from agrirouter.utils.uuid_util import new_uuid
 from tests.agrirouter.common.onboarding import onboard_communication_unit
 from tests.agrirouter.common.sleeper import Sleeper
+from tests.agrirouter.data.applications import CommunicationUnit
 from tests.agrirouter.data.identifier import Identifier
+from tests.agrirouter.data.onboard_response_integration_service import save_onboard_response
 
 
 class OnboardResponseUpdate(unittest.TestCase):

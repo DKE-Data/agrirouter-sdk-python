@@ -1,28 +1,28 @@
-from src.agrirouter.api.enums import TechnicalMessageType, CapabilityType
-from src.agrirouter.generated.commons.chunk_pb2 import ChunkComponent
-from src.agrirouter.generated.commons.message_pb2 import Metadata
-from src.agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
-from src.agrirouter.generated.messaging.request.payload.efdi.efdi_pb2 import TimeLog, ISO11783_TaskData
-from src.agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from src.agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from src.agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageDelete, \
+from agrirouter.api.enums import TechnicalMessageType, CapabilityType
+from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
+from agrirouter.generated.commons.message_pb2 import Metadata
+from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
+from agrirouter.generated.messaging.request.payload.efdi.efdi_pb2 import TimeLog, ISO11783_TaskData
+from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
+from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
+from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageDelete, \
     MessageQuery
-from src.agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from src.agrirouter.messaging.encode import encode_message
-from src.agrirouter.messaging.messages import EncodedMessage
-from src.agrirouter.messaging.parameters.dto import SendMessageParameters, ChunkedMessageParameters
-from src.agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
+from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
+from agrirouter.messaging.encode import encode_message
+from agrirouter.messaging.messages import EncodedMessage
+from agrirouter.messaging.parameters.dto import SendMessageParameters, ChunkedMessageParameters
+from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
     CapabilitiesParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
     SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters, ImageParameters, TaskParameters, \
     EfdiParameters
-from src.agrirouter.messaging.services.commons import AbstractService
-from src.agrirouter.utils.type_url import TypeUrl
-from src.agrirouter.utils.uuid_util import new_uuid
+from agrirouter.messaging.services.commons import AbstractService
+from agrirouter.utils.type_url import TypeUrl
+from agrirouter.utils.uuid_util import new_uuid
 
 
 class CapabilitiesService(AbstractService):
     """
-    Service for sending capabilities to the src.
+    Service for sending capabilities to the agrirouter.
     """
 
     @staticmethod
@@ -228,7 +228,7 @@ class QueryHeaderService(AbstractService):
 
 class SubscriptionService(AbstractService):
     """
-    Service for sending subscription messages to the src.
+    Service for sending subscription messages to the agrirouter.
     """
 
     @staticmethod
@@ -265,7 +265,7 @@ class SubscriptionService(AbstractService):
 
 class SendMessageService(AbstractService):
     """
-    Service for sending messages to the src
+    Service for sending messages to the agrirouter
     """
 
     @staticmethod
@@ -301,7 +301,7 @@ class SendMessageService(AbstractService):
 
 class SendChunkedMessageService(AbstractService):
     """
-    Service for sending chunked messages to the src
+    Service for sending chunked messages to the agrirouter
     """
 
     @staticmethod

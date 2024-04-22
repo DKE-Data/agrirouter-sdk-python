@@ -1,4 +1,4 @@
-from src.agrirouter.api.environments import BaseEnvironment
+from agrirouter.api.environments import BaseEnvironment
 
 
 class EnvironmentalService:

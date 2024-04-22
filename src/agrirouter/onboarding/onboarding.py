@@ -1,13 +1,13 @@
 import requests
 
-from src.agrirouter.api.environments import BaseEnvironment
-from src.agrirouter.api.exceptions import UnexpectedErrorDuringOnboarding, RequestNotSigned
-from src.agrirouter.environments.environmental_services import EnvironmentalService
-from src.agrirouter.onboarding.headers import SoftwareOnboardingHeader
-from src.agrirouter.onboarding.parameters import OnboardParameters
-from src.agrirouter.onboarding.request import OnboardRequest
-from src.agrirouter.onboarding.request_body import SoftwareOnboardingBody
-from src.agrirouter.onboarding.response import VerificationResponse, OnboardResponse
+from agrirouter.api.environments import BaseEnvironment
+from agrirouter.api.exceptions import UnexpectedErrorDuringOnboarding, RequestNotSigned
+from agrirouter.environments.environmental_services import EnvironmentalService
+from agrirouter.onboarding.headers import SoftwareOnboardingHeader
+from agrirouter.onboarding.parameters import OnboardParameters
+from agrirouter.onboarding.request import OnboardRequest
+from agrirouter.onboarding.request_body import SoftwareOnboardingBody
+from agrirouter.onboarding.response import VerificationResponse, OnboardResponse
 
 
 class SecuredOnboardingService(EnvironmentalService):
@@ -69,7 +69,7 @@ class OnboardingService(EnvironmentalService):
 
     def onboard(self, params: OnboardParameters) -> OnboardResponse:
         """
-        Onboard a device to the src.
+        Onboard a device to the agrirouter.
         """
         url = self._environment.get_onboard_url()
         http_response = self._perform_request(params=params, url=url)

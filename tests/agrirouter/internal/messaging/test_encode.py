@@ -3,7 +3,7 @@ from google.protobuf.any_pb2 import Any
 from agrirouter.generated.commons.message_pb2 import Message, Messages
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope, RequestPayloadWrapper
 from agrirouter.messaging.decode import DecodingService
-from agrirouter.messaging.encode import write_proto_parts_to_buffer, encode_header
+from agrirouter.messaging.encode import write_proto_parts_to_buffer, EncodingService
 from agrirouter.messaging.parameters.service import MessageHeaderParameters
 
 
@@ -41,7 +41,7 @@ def test_encode_header():
     message_header_parameters.technical_message_type = "iso-11783-10:taskdata:zip"
     message_header_parameters.mode = RequestEnvelope.Mode.Value("DIRECT")
 
-    header = encode_header(message_header_parameters)
+    header = EncodingService.encode_header(message_header_parameters)
     assert header.application_message_id == message_header_parameters.application_message_id
     assert header.application_message_seq_no == message_header_parameters.application_message_seq_no
     assert header.technical_message_type == message_header_parameters.technical_message_type

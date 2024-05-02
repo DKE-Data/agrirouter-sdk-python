@@ -37,134 +37,137 @@ def encode_message(header_parameters: MessageHeaderParameters, payload_parameter
     :payload_parameters: Message Payload Parameters
     Returns decoded data
     """
-    request_envelope = encode_header(header_parameters)
-    request_payload = encode_payload(payload_parameters)
+    request_envelope = EncodingService.encode_header(header_parameters)
+    request_payload = EncodingService.encode_payload(payload_parameters)
     raw_data = write_proto_parts_to_buffer([request_envelope, request_payload])
     return base64.b64encode(raw_data).decode()
 
 
-def encode_header(header_parameters: MessageHeaderParameters) -> RequestEnvelope:
-    """
-    Encode header to RequestEnvelope protobuf
-    :header_parameters: Message Header Parameters
-    Returns RequestEnvelope with parameters set
-    """
-    request_envelope = RequestEnvelope()
-    request_envelope.application_message_id = header_parameters.get_application_message_id() \
-        if header_parameters.get_application_message_id() else new_uuid()
-    request_envelope.application_message_seq_no = header_parameters.get_application_message_seq_no()
-    request_envelope.technical_message_type = header_parameters.get_technical_message_type()
+class EncodingService:
 
-    request_envelope.mode = header_parameters.get_mode() \
-        if header_parameters.get_mode() else RequestEnvelope.Mode.Value("DIRECT")
+    @staticmethod
+    def chunk_and_base64encode_each_chunk(header_parameters: MessageHeaderParameters,
+                                          payload_parameters: MessagePayloadParameters,
+                                          onboarding_response: OnboardResponse) -> List[MessageParameterTuple]:
+        """
+        Chunk and encode each chunk
+        :header_parameters - Message Header Parameters
+        :payload_parameters - Message Payload Parameters
+        :onboarding_response - Onboarding Response for endpoint ID
+        Returns list of message parameter tuples
+        """
 
-    if header_parameters.get_team_set_context_id() is not None:
-        request_envelope.team_set_context_id = header_parameters.get_team_set_context_id()
-    request_envelope.timestamp.FromDatetime(now_as_utc_timestamp())
-    if header_parameters.get_recipients() is not None:
-        request_envelope.recipients.extend(header_parameters.get_recipients())
-    if header_parameters.get_chunk_component() is not None:
-        request_envelope.chunk_info.extend(header_parameters.get_chunk_component())
-    if header_parameters.get_metadata() is not None:
-        request_envelope.metadata.extend(header_parameters.get_metadata())
+        whole_message = payload_parameters.get_value()
+        message_chunks = EncodingService._split_into_chunks(whole_message)
 
-    return request_envelope
+        if payload_parameters is None or header_parameters is None:
+            raise ValueError('The parameters cannot be NULL')
 
+        if len(whole_message) <= MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:
+            log.info("Message is not chunked, because it is smaller than the maximum size of a chunk.")
+            return [MessageParameterTuple(message_header_parameters=header_parameters,
+                                          message_payload_parameters=payload_parameters)]
 
-def encode_payload(payload_parameters: MessagePayloadParameters) -> RequestPayloadWrapper:
-    """
-    Encode header to RequestPayloadWrapper protobuf
-    :payload_parameters: Message Payload Parameters
-    Returns RequestPayloadWrapper with parameters set
-    """
-    any_proto_wrapper = Any()
-    any_proto_wrapper.type_url = payload_parameters.get_type_url()
-    any_proto_wrapper.value = payload_parameters.get_value()
-    request_payload = RequestPayloadWrapper(details=any_proto_wrapper)
-    return request_payload
+        log.info("Message is chunked, because it is bigger than the maximum size of a chunk.")
+        tuples = []
+        chunk_context_id = new_uuid()
+        chunk_number = 1
 
+        for chunk in message_chunks:
+            chunk_message_id = new_uuid()
+            sequence_number_for_chunk = SequenceNumberService.next_seq_nr(
+                onboarding_response.get_sensor_alternate_id())
 
-def encode_chunks_message(message_parameter_tuple: List[MessageParameterTuple]) -> List:
-    """
-    Encode chunks of messages
-    :message_parameter_tuple - Tuple of message parameters
-    Returns list of encoded chunked messages
-    """
-    return [encode_message(_tuple.message_header_parameters, _tuple.message_payload_parameters) for _tuple in
-            message_parameter_tuple]
+            header_parameters_copy = MessageHeaderParameters()
+            header_parameters_copy.set_application_message_id(chunk_message_id)
+            header_parameters_copy.set_application_message_seq_no(sequence_number_for_chunk)
 
+            chunk_info = ChunkComponent()
+            chunk_info.context_id = chunk_context_id
+            chunk_info.current = chunk_number
+            chunk_info.total = len(message_chunks)
+            chunk_info.total_size = len(whole_message)
+            header_parameters_copy.chunk_component = chunk_info
+            header_parameters_copy.technical_message_type = header_parameters.get_technical_message_type()
+            header_parameters_copy.mode = header_parameters.get_mode()
+            header_parameters_copy.recipients = header_parameters.get_recipients()
 
-def chunk_and_base64encode_each_chunk(header_parameters: MessageHeaderParameters,
-                                      payload_parameters: MessagePayloadParameters,
-                                      onboarding_response: OnboardResponse) -> List[MessageParameterTuple]:
-    """
-    Chunk and encode each chunk
-    :header_parameters - Message Header Parameters
-    :payload_parameters - Message Payload Parameters
-    :onboarding_response - Onboarding Response for endpoint ID
-    Returns list of message parameter tuples
-    """
+            payload_parameters_copy = MessagePayloadParameters(type_url='',
+                                                               value='')
+            payload_parameters_copy.value = base64.b64encode(chunk)
+            payload_parameters_copy.type_url = payload_parameters.get_type_url()
 
-    whole_message = payload_parameters.get_value()
-    message_chunks = split_into_chunks(whole_message)
+            tuples.append(MessageParameterTuple(message_header_parameters=header_parameters_copy,
+                                                message_payload_parameters=payload_parameters_copy))
+            chunk_number += 1
 
-    if payload_parameters is None or header_parameters is None:
-        raise ValueError('The parameters cannot be NULL')
+        log.info("Message was chunked into %s chunks.", len(tuples))
+        return tuples
 
-    if len(whole_message) <= MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:
-        log.info("Message is not chunked, because it is smaller than the maximum size of a chunk.")
-        return [MessageParameterTuple(message_header_parameters=header_parameters,
-                                      message_payload_parameters=payload_parameters)]
+    @staticmethod
+    def _split_into_chunks(whole_message: str):
+        """
+        Split the whole message into chunks
+        :whole_message - Message to split into chunks
+        Returns a list of chunks
+        """
+        chunks = []
+        remaining_bytes = whole_message
+        while len(remaining_bytes) > MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:
+            chunk = remaining_bytes[:MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT]
+            chunks.append(chunk)
+            remaining_bytes = remaining_bytes[MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:]
+        if len(remaining_bytes) > 0:
+            chunks.append(remaining_bytes)
+        return chunks
 
-    log.info("Message is chunked, because it is bigger than the maximum size of a chunk.")
-    tuples = []
-    chunk_context_id = new_uuid()
-    chunk_number = 1
+    @staticmethod
+    def encode_chunks_message(message_parameter_tuple: List[MessageParameterTuple]) -> List:
+        """
+        Encode chunks of messages
+        :message_parameter_tuple - Tuple of message parameters
+        Returns list of encoded chunked messages
+        """
+        return [encode_message(_tuple.message_header_parameters, _tuple.message_payload_parameters) for _tuple in
+                message_parameter_tuple]
 
-    for chunk in message_chunks:
-        chunk_message_id = new_uuid()
-        sequence_number_for_chunk = SequenceNumberService.next_seq_nr(
-            onboarding_response.get_sensor_alternate_id())
+    @staticmethod
+    def encode_header(header_parameters: MessageHeaderParameters) -> RequestEnvelope:
+        """
+        Encode header to RequestEnvelope protobuf
+        :header_parameters: Message Header Parameters
+        Returns RequestEnvelope with parameters set
+        """
+        request_envelope = RequestEnvelope()
+        request_envelope.application_message_id = header_parameters.get_application_message_id() \
+            if header_parameters.get_application_message_id() else new_uuid()
+        request_envelope.application_message_seq_no = header_parameters.get_application_message_seq_no()
+        request_envelope.technical_message_type = header_parameters.get_technical_message_type()
 
-        header_parameters_copy = MessageHeaderParameters()
-        header_parameters_copy.set_application_message_id(chunk_message_id)
-        header_parameters_copy.set_application_message_seq_no(sequence_number_for_chunk)
+        request_envelope.mode = header_parameters.get_mode() \
+            if header_parameters.get_mode() else RequestEnvelope.Mode.Value("DIRECT")
 
-        chunk_info = ChunkComponent()
-        chunk_info.context_id = chunk_context_id
-        chunk_info.current = chunk_number
-        chunk_info.total = len(message_chunks)
-        chunk_info.total_size = len(whole_message)
-        header_parameters_copy.chunk_component = chunk_info
-        header_parameters_copy.technical_message_type = header_parameters.get_technical_message_type()
-        header_parameters_copy.mode = header_parameters.get_mode()
-        header_parameters_copy.recipients = header_parameters.get_recipients()
+        if header_parameters.get_team_set_context_id() is not None:
+            request_envelope.team_set_context_id = header_parameters.get_team_set_context_id()
+        request_envelope.timestamp.FromDatetime(now_as_utc_timestamp())
+        if header_parameters.get_recipients() is not None:
+            request_envelope.recipients.extend(header_parameters.get_recipients())
+        if header_parameters.get_chunk_component() is not None:
+            request_envelope.chunk_info.extend(header_parameters.get_chunk_component())
+        if header_parameters.get_metadata() is not None:
+            request_envelope.metadata.extend(header_parameters.get_metadata())
 
-        payload_parameters_copy = MessagePayloadParameters(type_url='',
-                                                           value='')
-        payload_parameters_copy.value = base64.b64encode(chunk)
-        payload_parameters_copy.type_url = payload_parameters.get_type_url()
+        return request_envelope
 
-        tuples.append(MessageParameterTuple(message_header_parameters=header_parameters_copy,
-                                            message_payload_parameters=payload_parameters_copy))
-        chunk_number += 1
-
-    log.info("Message was chunked into %s chunks.", len(tuples))
-    return tuples
-
-
-def split_into_chunks(whole_message: str):
-    """
-    Split the whole message into chunks
-    :whole_message - Message to split into chunks
-    Returns a list of chunks
-    """
-    chunks = []
-    remaining_bytes = whole_message
-    while len(remaining_bytes) > MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:
-        chunk = remaining_bytes[:MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT]
-        chunks.append(chunk)
-        remaining_bytes = remaining_bytes[MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:]
-    if len(remaining_bytes) > 0:
-        chunks.append(remaining_bytes)
-    return chunks
+    @staticmethod
+    def encode_payload(payload_parameters: MessagePayloadParameters) -> RequestPayloadWrapper:
+        """
+        Encode header to RequestPayloadWrapper protobuf
+        :payload_parameters: Message Payload Parameters
+        Returns RequestPayloadWrapper with parameters set
+        """
+        any_proto_wrapper = Any()
+        any_proto_wrapper.type_url = payload_parameters.get_type_url()
+        any_proto_wrapper.value = payload_parameters.get_value()
+        request_payload = RequestPayloadWrapper(details=any_proto_wrapper)
+        return request_payload

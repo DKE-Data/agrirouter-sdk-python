@@ -7,7 +7,7 @@ import pytest
 from agrirouter.api.enums import CapabilityType, TechnicalMessageType
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.decode import DecodingService
-from agrirouter.messaging.encode import chunk_and_base64encode_each_chunk, encode_chunks_message
+from agrirouter.messaging.encode import EncodingService
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.dto import ChunkedMessageParameters
 from agrirouter.messaging.parameters.service import FeedDeleteParameters, MessageHeaderParameters, \
@@ -114,15 +114,17 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         message_payload_parameters = MessagePayloadParameters(type_url=TechnicalMessageType.EMPTY.value,
                                                               value=DataProvider.read_base64_encoded_large_bmp())
 
-        message_parameter_tuples = chunk_and_base64encode_each_chunk(header_parameters=message_header_parameters,
-                                                                     payload_parameters=message_payload_parameters,
-                                                                     onboarding_response=self._sender)
+        message_parameter_tuples = EncodingService.chunk_and_base64encode_each_chunk(
+            header_parameters=message_header_parameters,
+            payload_parameters=message_payload_parameters,
+            onboarding_response=self._sender)
 
         for _tuple in message_parameter_tuples:
             self._chunked_message_to_verify.append(_tuple.message_payload_parameters.get_value())
             assert len(_tuple.message_payload_parameters.get_value()) <= self._MAX_CHUNK_SIZE
 
-        encoded_chunked_messages = encode_chunks_message(message_parameter_tuple=message_parameter_tuples)
+        encoded_chunked_messages = EncodingService.encode_chunks_message(
+            message_parameter_tuple=message_parameter_tuples)
 
         chunk_message_parameters = ChunkedMessageParameters(
             onboarding_response=self._sender,

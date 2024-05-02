@@ -7,9 +7,9 @@ from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
 from agrirouter.api.enums import CertificateTypes, Gateways
 from agrirouter.api.env import Qa
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.service.messaging import CapabilitiesService
-from agrirouter.service.messaging import HttpMessagingService
-from agrirouter.service.messaging.http import FetchMessageService
+from agrirouter.service.messaging.common import HttpMessagingService
+from agrirouter.service.messaging.http.message_fetching import FetchMessageService
+from agrirouter.service.messaging.message_sending import CapabilitiesService
 from agrirouter.service.onboarding import OnboardResponse
 from agrirouter.service.parameter.messaging import CapabilitiesParameters
 from agrirouter.util.uuid_util import UUIDUtil

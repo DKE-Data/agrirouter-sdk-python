@@ -62,7 +62,7 @@ class CloudOffboardService(AbstractService):
             value=offboarding_request.SerializeToString()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=UUIDUtil.new_uuid(),
             content=message_content

@@ -31,7 +31,7 @@ def test_decode_details():
     json_response = json.loads(MESSAGING_RESULT)
     message = DecodingService.decode_response(json_response[0]["command"]["message"].encode())
     details = message.response_payload.details
-    decoded_details = decode_details(details)
+    decoded_details = DecodingService.decode_details(details)
 
     assert decoded_details.endpoints
     assert len(decoded_details.endpoints) == 2

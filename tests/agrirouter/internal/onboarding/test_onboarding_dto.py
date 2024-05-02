@@ -2,7 +2,7 @@
 import pytest
 
 from agrirouter.api.exceptions import WrongField
-from agrirouter.service.onboarding import ConnectionCriteria, Authentication, ErrorResponse
+from agrirouter.service.dto.response.onboarding import Authentication, ConnectionCriteria, ErrorResponse
 
 
 class TestConnectionCriteria:

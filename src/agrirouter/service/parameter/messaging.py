@@ -1,13 +1,13 @@
 from copy import deepcopy
 from typing import List
 
+from agrirouter.api.messages import EncodedMessage
 from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
 from agrirouter.generated.commons.message_pb2 import Metadata
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
-from agrirouter.service.dto.messaging import MessageParameters
-from agrirouter.service.dto.response.onboarding import BaseOnboardingResponse
+from agrirouter.service.dto.response.messaging import BaseOnboardingResponse
 
 
 class Parameters:

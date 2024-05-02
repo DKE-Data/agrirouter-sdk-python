@@ -9,13 +9,12 @@ from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 im
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageDelete, \
     MessageQuery
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.service.dto.messaging import SendMessageParameters, ChunkedMessageParameters
 from agrirouter.service.messaging.common import AbstractService
 from agrirouter.service.messaging.encoding import EncodingService
 from agrirouter.service.parameter.messaging import MessageHeaderParameters, MessagePayloadParameters, \
     CapabilitiesParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
     SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters, ImageParameters, TaskParameters, \
-    EfdiParameters
+    EfdiParameters, SendMessageParameters, ChunkedMessageParameters
 from agrirouter.util.type_url import TypeUrl
 from agrirouter.util.uuid_util import UUIDUtil
 

@@ -5,9 +5,9 @@ import pytest
 
 from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
 from agrirouter.api.messages import OutboxMessage
-from agrirouter.service.messaging import ListEndpointsService
-from agrirouter.service.messaging import MqttMessagingService
+from agrirouter.service.messaging.common import MqttMessagingService
 from agrirouter.service.messaging.decoding import DecodingService
+from agrirouter.service.messaging.message_sending import ListEndpointsService
 from agrirouter.service.messaging.sequence_numbers import SequenceNumberService
 from agrirouter.service.parameter.messaging import ListEndpointsParameters
 from agrirouter.util.uuid_util import UUIDUtil

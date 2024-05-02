@@ -1,21 +1,21 @@
 import time
 import agrirouter as ar
 from agrirouter.api.enums import CapabilityType
+from agrirouter.service.dto.response.messaging import OnboardResponse
+from agrirouter.service.messaging.common import MqttMessagingService, HttpMessagingService
+from agrirouter.service.messaging.message_sending import ListEndpointsService, CapabilitiesService, SubscriptionService, \
+    QueryHeaderService
 from agrirouter.service.parameter.messaging import QueryHeaderParameters, ListEndpointsParameters, \
     CapabilitiesParameters, SubscriptionParameters
-from agrirouter.service.messaging import QueryHeaderService, ListEndpointsService, CapabilitiesService, \
-    SubscriptionService
 from agrirouter.api.enums import Gateways
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.service.messaging import HttpMessagingService, MqttMessagingService
 from agrirouter.util.uuid_util import UUIDUtil
 
 from google.protobuf.timestamp_pb2 import Timestamp
 
 from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
-from agrirouter.service.onboarding import OnboardResponse
 
 public_key = """-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzGt41/+kSOTlO1sJvLIN

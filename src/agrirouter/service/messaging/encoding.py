@@ -8,7 +8,7 @@ from google.protobuf.internal.encoder import _VarintBytes
 from agrirouter.api.messages import MessageParameterTuple
 from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope, RequestPayloadWrapper
-from agrirouter.service.dto.response.onboarding import OnboardResponse
+from agrirouter.service.dto.response.messaging import OnboardResponse
 from agrirouter.service.messaging.sequence_numbers import SequenceNumberService
 from agrirouter.service.parameter.messaging import MessageHeaderParameters, MessagePayloadParameters
 from agrirouter.util.utc_time_util import UtcTimeUtil

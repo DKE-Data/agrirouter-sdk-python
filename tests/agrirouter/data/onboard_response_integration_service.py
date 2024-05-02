@@ -2,7 +2,7 @@ import json
 import os
 
 import tests
-from agrirouter.service.onboarding import OnboardResponse
+from agrirouter.service.dto.response.messaging import OnboardResponse
 
 
 def read_onboard_response(identifier: str) -> OnboardResponse:

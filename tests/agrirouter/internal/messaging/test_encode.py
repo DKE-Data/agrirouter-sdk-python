@@ -3,7 +3,7 @@ from google.protobuf.any_pb2 import Any
 from agrirouter.generated.commons.message_pb2 import Message, Messages
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope, RequestPayloadWrapper
 from agrirouter.messaging.decode import DecodingService
-from agrirouter.messaging.encode import write_proto_parts_to_buffer, EncodingService
+from agrirouter.messaging.encode import EncodingService
 from agrirouter.messaging.parameters.service import MessageHeaderParameters
 
 
@@ -19,7 +19,7 @@ def test_write_proto_parts_to_buffer():
     envelope = RequestEnvelope(mode=mode, technical_message_type=tmt, team_set_context_id=team_set_context_id)
     payload = RequestPayloadWrapper(details=Any(type_url=type_url, value=messages.SerializeToString()))
 
-    buffer = write_proto_parts_to_buffer([envelope, payload])
+    buffer = EncodingService.write_proto_parts_to_buffer([envelope, payload])
     result = DecodingService.read_properties_buffers_from_input_stream(buffer)
 
     assert len(result) == 2

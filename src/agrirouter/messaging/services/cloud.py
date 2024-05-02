@@ -2,7 +2,7 @@ from agrirouter.api.enums import TechnicalMessageType
 from agrirouter.generated.cloud_provider_integration.cloud_virtualized_app_registration_pb2 import OnboardingRequest, \
     OffboardingRequest
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.encode import encode_message
+from agrirouter.messaging.encode import EncodingService
 from agrirouter.messaging.messages import EncodedMessage
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
     CloudOnboardParameters, CloudOffboardParameters
@@ -32,7 +32,7 @@ class CloudOnboardService(AbstractService):
             value=onboarding_request.SerializeToString()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content

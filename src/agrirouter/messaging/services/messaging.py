@@ -8,7 +8,7 @@ from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 im
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageDelete, \
     MessageQuery
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.encode import encode_message
+from agrirouter.messaging.encode import EncodingService
 from agrirouter.messaging.messages import EncodedMessage
 from agrirouter.messaging.parameters.dto import SendMessageParameters, ChunkedMessageParameters
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
@@ -52,7 +52,7 @@ class CapabilitiesService(AbstractService):
             value=capability_specification.SerializeToString()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content
@@ -82,7 +82,7 @@ class FeedConfirmService(AbstractService):
             value=message_confirm.SerializeToString()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content
@@ -114,7 +114,7 @@ class FeedDeleteService(AbstractService):
             value=message_delete.SerializeToString()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content
@@ -146,7 +146,7 @@ class ListEndpointsService(AbstractService):
             value=list_endpoints_query.SerializeToString()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content
@@ -178,7 +178,7 @@ class QueryMessagesService(AbstractService):
             value=message_query.SerializeToString()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content
@@ -217,7 +217,7 @@ class QueryHeaderService(AbstractService):
             value=message_query.SerializeToString()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content
@@ -254,7 +254,7 @@ class SubscriptionService(AbstractService):
             value=subscription.SerializeToString()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content
@@ -289,7 +289,7 @@ class SendMessageService(AbstractService):
             value=parameters.get_base64_message_content(),
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
 
         encoded_message = EncodedMessage(
             id_=new_uuid(),
@@ -337,7 +337,7 @@ class ImageService(AbstractService):
             value=parameters.get_image_encoded()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content
@@ -374,7 +374,7 @@ class TaskService(AbstractService):
             value=parameters.get_task_encoded()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content
@@ -408,7 +408,7 @@ class EfdiTimelogService(AbstractService):
             value=parameters.get_efdi()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content
@@ -441,7 +441,7 @@ class EfdiTimelogPublishService(AbstractService):
             value=parameters.get_efdi()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content
@@ -474,7 +474,7 @@ class EfdiDeviceDscService(AbstractService):
             value=parameters.get_efdi()
         )
 
-        message_content = encode_message(message_header_parameters, message_payload_parameters)
+        message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
             id_=new_uuid(),
             content=message_content

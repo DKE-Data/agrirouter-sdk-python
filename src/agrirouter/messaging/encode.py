@@ -18,32 +18,32 @@ MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT = 767997 // 2
 log = logging.getLogger("com.dke.data.agrirouter.sdk.encode")
 
 
-def write_proto_parts_to_buffer(parts: list, buffer: bytes = b""):
-    """
-    Writing proto parts to buffer
-    """
-    for part in parts:
-        part_size = part.ByteSize()
-        buffer += _VarintBytes(part_size)
-        buffer += part.SerializeToString()
-
-    return buffer
-
-
-def encode_message(header_parameters: MessageHeaderParameters, payload_parameters: MessagePayloadParameters) -> str:
-    """
-    Encoding message with the following arguments
-    :header_parameters - Message Header Parameters
-    :payload_parameters: Message Payload Parameters
-    Returns decoded data
-    """
-    request_envelope = EncodingService.encode_header(header_parameters)
-    request_payload = EncodingService.encode_payload(payload_parameters)
-    raw_data = write_proto_parts_to_buffer([request_envelope, request_payload])
-    return base64.b64encode(raw_data).decode()
-
-
 class EncodingService:
+
+    @staticmethod
+    def encode_message(header_parameters: MessageHeaderParameters, payload_parameters: MessagePayloadParameters) -> str:
+        """
+        Encoding message with the following arguments
+        :header_parameters - Message Header Parameters
+        :payload_parameters: Message Payload Parameters
+        Returns decoded data
+        """
+        request_envelope = EncodingService.encode_header(header_parameters)
+        request_payload = EncodingService.encode_payload(payload_parameters)
+        raw_data = EncodingService.write_proto_parts_to_buffer([request_envelope, request_payload])
+        return base64.b64encode(raw_data).decode()
+
+    @staticmethod
+    def write_proto_parts_to_buffer(parts: list, buffer: bytes = b""):
+        """
+        Writing proto parts to buffer
+        """
+        for part in parts:
+            part_size = part.ByteSize()
+            buffer += _VarintBytes(part_size)
+            buffer += part.SerializeToString()
+
+        return buffer
 
     @staticmethod
     def chunk_and_base64encode_each_chunk(header_parameters: MessageHeaderParameters,

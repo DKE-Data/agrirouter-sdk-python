@@ -3,7 +3,7 @@ import unittest
 
 import pytest
 
-from agrirouter.messaging.decode import DecodingService, decode_details
+from agrirouter.messaging.decode import DecodingService
 from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.service import ListEndpointsParameters
@@ -140,7 +140,7 @@ class TestListEndpointsService(unittest.TestCase):
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            list_endpoints_service_details = decode_details(decoded_message.response_payload.details)
+            list_endpoints_service_details = DecodingService.decode_details(decoded_message.response_payload.details)
             self._log.info(f"List endpoints service details: {list_endpoints_service_details}")
             assert decoded_message.response_envelope.response_code == 200
             for _endpoint in list_endpoints_service_details.endpoints:
@@ -169,7 +169,7 @@ class TestListEndpointsService(unittest.TestCase):
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            list_endpoints_service_details = decode_details(decoded_message.response_payload.details)
+            list_endpoints_service_details = DecodingService.decode_details(decoded_message.response_payload.details)
             self._log.info(f"List endpoints service details: {list_endpoints_service_details}")
             assert decoded_message.response_envelope.response_code == 200
             for _endpoint in list_endpoints_service_details.endpoints:

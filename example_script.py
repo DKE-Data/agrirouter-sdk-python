@@ -301,7 +301,6 @@ def on_message_callback(client, userdata, msg):
     # Define here the way receiving messages will be processed
 
     from agrirouter.messaging.decode import DecodingService
-    from agrirouter.messaging.decode import decode_details
     from agrirouter.messaging.messages import OutboxMessage
 
     outbox_message = OutboxMessage()
@@ -313,7 +312,7 @@ def on_message_callback(client, userdata, msg):
     print(decoded_message.response_envelope)
 
     try:
-        decoded_details = decode_details(decoded_message.response_payload.details)
+        decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
         print(decoded_details)
     except Exception as exc:
         print("Error in decoding details: ", exc)

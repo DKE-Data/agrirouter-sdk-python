@@ -5,7 +5,7 @@ import pytest
 
 from agrirouter.api.enums import CapabilityType, TechnicalMessageType
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.decode import DecodingService, decode_details
+from agrirouter.messaging.decode import DecodingService
 from agrirouter.messaging.encode import chunk_and_base64encode_each_chunk, encode_chunks_message
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.dto import ChunkedMessageParameters
@@ -163,10 +163,10 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.type != 12:
-                decoded_details = decode_details(decoded_message.response_payload.details)
+                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
                 self._log.error(
                     f"Received wrong message from the agrirouter: {str(decoded_details)}")
-            push_notification = decode_details(decoded_message.response_payload.details)
+            push_notification = DecodingService.decode_details(decoded_message.response_payload.details)
             current_chunked_message = push_notification.messages[0].content.value
             assert decoded_message.response_envelope.response_code == 200
             assert DataProvider.get_hash(current_chunked_message) == DataProvider.get_hash(
@@ -185,7 +185,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            delete_details = decode_details(decoded_message.response_payload.details)
+            delete_details = DecodingService.decode_details(decoded_message.response_payload.details)
             self._log.info("Details for the message removal: " + str(delete_details))
             assert decoded_message.response_envelope.response_code == 201
 

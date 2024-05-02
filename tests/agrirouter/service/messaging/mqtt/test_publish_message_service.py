@@ -4,7 +4,7 @@ import unittest
 import pytest
 
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.decode import DecodingService, decode_details
+from agrirouter.messaging.decode import DecodingService
 from agrirouter.api.enums import CapabilityType
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.service import FeedDeleteParameters
@@ -104,7 +104,7 @@ class TestSendDirectMessageService(unittest.TestCase):
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.type != 1:
-                decoded_details = decode_details(decoded_message.response_payload.details)
+                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
                 self._log.error(
                     f"Received wrong message from the agrirouter: {str(decoded_details)}")
             assert decoded_message.response_envelope.response_code == 201
@@ -123,10 +123,10 @@ class TestSendDirectMessageService(unittest.TestCase):
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.type != 12:
-                decoded_details = decode_details(decoded_message.response_payload.details)
+                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
                 self._log.error(
                     f"Received wrong message from the agrirouter: {str(decoded_details)}")
-            push_notification = decode_details(decoded_message.response_payload.details)
+            push_notification = DecodingService.decode_details(decoded_message.response_payload.details)
             assert decoded_message.response_envelope.response_code == 200
             assert DataProvider.get_hash(
                 push_notification.messages[0].content.value) == DataProvider.get_hash(
@@ -170,7 +170,7 @@ class TestSendDirectMessageService(unittest.TestCase):
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            delete_details = decode_details(decoded_message.response_payload.details)
+            delete_details = DecodingService.decode_details(decoded_message.response_payload.details)
             self._log.info("Details for the message removal: " + str(delete_details))
             assert decoded_message.response_envelope.response_code == 201
 

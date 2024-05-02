@@ -4,7 +4,7 @@ import unittest
 import pytest
 
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.messaging.decode import DecodingService, decode_details
+from agrirouter.messaging.decode import DecodingService
 from agrirouter.api.enums import CapabilityDirectionType
 from agrirouter.api.enums import CapabilityType
 from agrirouter.messaging.messages import OutboxMessage
@@ -67,7 +67,7 @@ class TestMqttCapabilitiesService(unittest.TestCase):
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.response_code != 201:
-                decoded_details = decode_details(decoded_message.response_payload.details)
+                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
                 self._log.error("Message details: " + str(decoded_details))
             assert decoded_message.response_envelope.response_code == 201
             self._callback_processed = True

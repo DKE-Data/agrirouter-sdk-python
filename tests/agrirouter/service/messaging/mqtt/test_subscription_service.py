@@ -5,7 +5,7 @@ import pytest
 
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from agrirouter.messaging.decode import DecodingService, decode_details
+from agrirouter.messaging.decode import DecodingService
 from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.service import SubscriptionParameters, CapabilitiesParameters
@@ -81,7 +81,7 @@ class TestSubscriptionService(unittest.TestCase):
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.response_code != 201:
-                decoded_details = decode_details(decoded_message.response_payload.details)
+                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
                 self._log.error("Message could not be processed. Response code: " + str(
                     decoded_message.response_envelope.response_code))
                 self._log.error("Message details: " + str(decoded_details))
@@ -127,7 +127,7 @@ class TestSubscriptionService(unittest.TestCase):
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.response_code != 201:
-                decoded_details = decode_details(decoded_message.response_payload.details)
+                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
                 self._log.error("Message details: " + str(decoded_details))
             assert decoded_message.response_envelope.response_code == 201
             self._callback_processed = True

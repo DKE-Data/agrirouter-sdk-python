@@ -1,6 +1,6 @@
-from agrirouter.api.enums import ContentTypes
 from agrirouter.api.enums import CertificateTypes
-from agrirouter.utils.utc_time_util import now_as_utc_str
+from agrirouter.api.enums import ContentTypes
+from agrirouter.utils.utc_time_util import UtcTimeUtil
 
 
 class OnboardParameters:
@@ -20,7 +20,7 @@ class OnboardParameters:
         self.certification_version_id = certification_version_id
         self.gateway_id = str(gateway_id)
         self.certificate_type = certificate_type
-        self.utc_timestamp = str(utc_timestamp) if utc_timestamp else now_as_utc_str()
+        self.utc_timestamp = str(utc_timestamp) if utc_timestamp else UtcTimeUtil.now_as_utc_str()
         self.time_zone = str(time_zone)
         self.reg_code = reg_code
 

@@ -11,7 +11,7 @@ from agrirouter.messaging.messages import MessageParameterTuple
 from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.onboarding.response import OnboardResponse
-from agrirouter.utils.utc_time_util import now_as_utc_timestamp
+from agrirouter.utils.utc_time_util import UtcTimeUtil
 from agrirouter.utils.uuid_util import new_uuid
 
 MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT = 767997 // 2
@@ -128,7 +128,8 @@ class EncodingService:
         :message_parameter_tuple - Tuple of message parameters
         Returns list of encoded chunked messages
         """
-        return [encode_message(_tuple.message_header_parameters, _tuple.message_payload_parameters) for _tuple in
+        return [EncodingService.encode_message(_tuple.message_header_parameters, _tuple.message_payload_parameters) for
+                _tuple in
                 message_parameter_tuple]
 
     @staticmethod
@@ -149,7 +150,7 @@ class EncodingService:
 
         if header_parameters.get_team_set_context_id() is not None:
             request_envelope.team_set_context_id = header_parameters.get_team_set_context_id()
-        request_envelope.timestamp.FromDatetime(now_as_utc_timestamp())
+        request_envelope.timestamp.FromDatetime(UtcTimeUtil.now_as_utc_timestamp())
         if header_parameters.get_recipients() is not None:
             request_envelope.recipients.extend(header_parameters.get_recipients())
         if header_parameters.get_chunk_component() is not None:

@@ -4,9 +4,9 @@ from typing import Optional
 
 import pytest
 
+from agrirouter.api.enums import CapabilityType
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.messaging.decode import DecodingService
-from agrirouter.api.enums import CapabilityType
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.service import FeedDeleteParameters, QueryHeaderParameters
 from agrirouter.messaging.services.commons import MqttMessagingService
@@ -14,7 +14,7 @@ from agrirouter.messaging.services.messaging import SendMessageService, SendMess
     QueryHeaderService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.onboarding.response import OnboardResponse
-from agrirouter.utils.utc_time_util import max_validity_period, validity_period_for_seconds
+from agrirouter.utils.utc_time_util import UtcTimeUtil
 from agrirouter.utils.uuid_util import new_uuid
 from tests.agrirouter.common.data_provider import DataProvider
 from tests.agrirouter.common.sleeper import Sleeper
@@ -166,7 +166,7 @@ class TestQueryHeaderService(unittest.TestCase):
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=self._recipient_onboard_response,
-                                                        validity_period=max_validity_period(),
+                                                        validity_period=UtcTimeUtil.max_validity_period(),
                                                         )
 
         self.assertIsNotNone(self._received_messages)
@@ -343,7 +343,7 @@ class TestQueryHeaderService(unittest.TestCase):
         query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=self._recipient_onboard_response,
-                                                        validity_period=validity_period_for_seconds(5),
+                                                        validity_period=UtcTimeUtil.validity_period_for_seconds(5),
                                                         )
 
         query_header_service = QueryHeaderService(_messaging_service)

@@ -12,7 +12,7 @@ from agrirouter.messaging.services.commons import MqttMessagingService
 from agrirouter.messaging.services.messaging import SendMessageService, SendMessageParameters, FeedDeleteService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.utils.utc_time_util import UtcTimeUtil
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.utils.uuid_util import UUIDUtil
 from tests.agrirouter.common.data_provider import DataProvider
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.identifier import Identifier
@@ -76,7 +76,7 @@ class TestFeedDeleteService(unittest.TestCase):
         send_message_parameters = SendMessageParameters(
             onboarding_response=self._sender_onboard_response,
             technical_message_type=CapabilityType.IMG_PNG.value,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             recipients=[self._recipient_onboard_response.get_sensor_alternate_id()],
             base64_message_content=DataProvider.read_base64_encoded_image(),
@@ -104,7 +104,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             senders=[self._sender_onboard_response.get_sensor_alternate_id()]
         )
@@ -133,7 +133,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             message_ids=[self._received_messages.header.message_id]
         )
@@ -162,7 +162,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             validity_period=UtcTimeUtil.max_validity_period()
         )
@@ -191,9 +191,9 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
-            message_ids=[new_uuid()]
+            message_ids=[UUIDUtil.new_uuid()]
         )
 
         delete_message_service = FeedDeleteService(self._messaging_service_for_recipient)
@@ -220,9 +220,9 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
-            senders=[new_uuid()]
+            senders=[UUIDUtil.new_uuid()]
         )
 
         delete_message_service = FeedDeleteService(self._messaging_service_for_recipient)
@@ -249,7 +249,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             validity_period=UtcTimeUtil.validity_period_for_seconds(5)
         )
@@ -278,7 +278,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             validity_period=UtcTimeUtil.validity_period_for_seconds(5)
         )

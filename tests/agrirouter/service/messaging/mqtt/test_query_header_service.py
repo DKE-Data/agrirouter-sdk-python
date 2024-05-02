@@ -15,7 +15,7 @@ from agrirouter.messaging.services.messaging import SendMessageService, SendMess
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.onboarding.response import OnboardResponse
 from agrirouter.utils.utc_time_util import UtcTimeUtil
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.utils.uuid_util import UUIDUtil
 from tests.agrirouter.common.data_provider import DataProvider
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.identifier import Identifier
@@ -85,7 +85,7 @@ class TestQueryHeaderService(unittest.TestCase):
         send_message_parameters = SendMessageParameters(
             onboarding_response=self._sender_onboard_response,
             technical_message_type=CapabilityType.IMG_PNG.value,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             recipients=[self._recipient_onboard_response.get_sensor_alternate_id()],
             base64_message_content=DataProvider.read_base64_encoded_image(),
@@ -144,7 +144,7 @@ class TestQueryHeaderService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             senders=[self._sender_onboard_response.get_sensor_alternate_id()]
         )
@@ -163,7 +163,7 @@ class TestQueryHeaderService(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
 
-        query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
+        query_header_parameters = QueryHeaderParameters(application_message_id=UUIDUtil.new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=self._recipient_onboard_response,
                                                         validity_period=UtcTimeUtil.max_validity_period(),
@@ -197,7 +197,7 @@ class TestQueryHeaderService(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._on_query_header_service_callback(None))
 
-        query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
+        query_header_parameters = QueryHeaderParameters(application_message_id=UUIDUtil.new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=self._recipient_onboard_response,
                                                         senders=[
@@ -230,7 +230,7 @@ class TestQueryHeaderService(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._on_query_header_service_callback(message_for_message_ids))
 
-        query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
+        query_header_parameters = QueryHeaderParameters(application_message_id=UUIDUtil.new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=self._recipient_onboard_response,
                                                         message_ids=message_for_message_ids,
@@ -258,7 +258,7 @@ class TestQueryHeaderService(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._incomplete_attributes_callback())
 
-        query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
+        query_header_parameters = QueryHeaderParameters(application_message_id=UUIDUtil.new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=self._recipient_onboard_response,
                                                         )
@@ -285,10 +285,10 @@ class TestQueryHeaderService(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._empty_result_in_response_callback())
 
-        query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
+        query_header_parameters = QueryHeaderParameters(application_message_id=UUIDUtil.new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=self._recipient_onboard_response,
-                                                        message_ids=[new_uuid()],
+                                                        message_ids=[UUIDUtil.new_uuid()],
                                                         )
 
         query_header_service = QueryHeaderService(self._messaging_service_for_recipient)
@@ -313,10 +313,10 @@ class TestQueryHeaderService(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._empty_result_in_response_callback())
 
-        query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
+        query_header_parameters = QueryHeaderParameters(application_message_id=UUIDUtil.new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=self._recipient_onboard_response,
-                                                        senders=[new_uuid()],
+                                                        senders=[UUIDUtil.new_uuid()],
                                                         )
 
         query_header_service = QueryHeaderService(self._messaging_service_for_recipient)
@@ -340,7 +340,7 @@ class TestQueryHeaderService(unittest.TestCase):
         _messaging_service = MqttMessagingService(onboarding_response=self._recipient_onboard_response,
                                                   on_message_callback=self._empty_result_in_response_callback())
 
-        query_header_parameters = QueryHeaderParameters(application_message_id=new_uuid(),
+        query_header_parameters = QueryHeaderParameters(application_message_id=UUIDUtil.new_uuid(),
                                                         application_message_seq_no=current_sequence_number,
                                                         onboarding_response=self._recipient_onboard_response,
                                                         validity_period=UtcTimeUtil.validity_period_for_seconds(5),

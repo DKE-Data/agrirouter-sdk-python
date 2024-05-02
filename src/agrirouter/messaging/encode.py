@@ -12,7 +12,7 @@ from agrirouter.messaging.parameters.service import MessageHeaderParameters, Mes
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.onboarding.response import OnboardResponse
 from agrirouter.utils.utc_time_util import UtcTimeUtil
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.utils.uuid_util import UUIDUtil
 
 MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT = 767997 // 2
 log = logging.getLogger("com.dke.data.agrirouter.sdk.encode")
@@ -70,11 +70,11 @@ class EncodingService:
 
         log.info("Message is chunked, because it is bigger than the maximum size of a chunk.")
         tuples = []
-        chunk_context_id = new_uuid()
+        chunk_context_id = UUIDUtil.new_uuid()
         chunk_number = 1
 
         for chunk in message_chunks:
-            chunk_message_id = new_uuid()
+            chunk_message_id = UUIDUtil.new_uuid()
             sequence_number_for_chunk = SequenceNumberService.next_seq_nr(
                 onboarding_response.get_sensor_alternate_id())
 
@@ -141,7 +141,7 @@ class EncodingService:
         """
         request_envelope = RequestEnvelope()
         request_envelope.application_message_id = header_parameters.get_application_message_id() \
-            if header_parameters.get_application_message_id() else new_uuid()
+            if header_parameters.get_application_message_id() else UUIDUtil.new_uuid()
         request_envelope.application_message_seq_no = header_parameters.get_application_message_seq_no()
         request_envelope.technical_message_type = header_parameters.get_technical_message_type()
 

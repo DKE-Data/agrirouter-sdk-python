@@ -10,7 +10,7 @@ from agrirouter.messaging.parameters.service import ListEndpointsParameters
 from agrirouter.messaging.services.commons import MqttMessagingService
 from agrirouter.messaging.services.messaging import ListEndpointsService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.utils.uuid_util import UUIDUtil
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.identifier import Identifier
 from tests.agrirouter.data.onboard_response_integration_service import read_onboard_response
@@ -52,7 +52,7 @@ class TestListEndpointsService(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._list_endpoints_service_callback())
 
-        list_endpoints_parameters = ListEndpointsParameters(application_message_id=new_uuid(),
+        list_endpoints_parameters = ListEndpointsParameters(application_message_id=UUIDUtil.new_uuid(),
                                                             application_message_seq_no=current_sequence_number,
                                                             onboarding_response=self._recipient_onboard_response,
                                                             filtered=True,
@@ -84,7 +84,7 @@ class TestListEndpointsService(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._list_endpoints_service_callback())
 
-        list_endpoints_parameters = ListEndpointsParameters(application_message_id=new_uuid(),
+        list_endpoints_parameters = ListEndpointsParameters(application_message_id=UUIDUtil.new_uuid(),
                                                             application_message_seq_no=current_sequence_number,
                                                             onboarding_response=self._recipient_onboard_response,
                                                             filtered=True,
@@ -117,7 +117,7 @@ class TestListEndpointsService(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._list_endpoints_service_for_all_endpoints_callback())
 
-        list_endpoints_parameters = ListEndpointsParameters(application_message_id=new_uuid(),
+        list_endpoints_parameters = ListEndpointsParameters(application_message_id=UUIDUtil.new_uuid(),
                                                             application_message_seq_no=current_sequence_number,
                                                             onboarding_response=self._recipient_onboard_response,
                                                             )

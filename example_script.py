@@ -9,7 +9,7 @@ from agrirouter.api.enums import Gateways
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.services.commons import HttpMessagingService, MqttMessagingService
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.utils.uuid_util import UUIDUtil
 
 from google.protobuf.timestamp_pb2 import Timestamp
 
@@ -148,7 +148,7 @@ def example_list_endpoints_mqtt(onboarding_response_data, foo):
         direction=ListEndpointsQuery.Direction.Value("SEND_RECEIVE"),
         filtered=False,
         onboarding_response=onboarding_response,
-        application_message_id=new_uuid(),
+        application_message_id=UUIDUtil.new_uuid(),
         application_message_seq_no=1,
     )
     list_endpoint_service = ListEndpointsService(messaging_service)
@@ -170,7 +170,7 @@ def example_set_capabilities(onboarding_response_data, mqtt_message_callback):
     )
     capabilities_parameters = CapabilitiesParameters(
         onboarding_response=onboarding_response,
-        application_message_id=new_uuid(),
+        application_message_id=UUIDUtil.new_uuid(),
         application_message_seq_no=1,
         application_id=application_id,
         certification_version_id=certification_version_id,
@@ -194,7 +194,7 @@ def example_list_endpoints_http(onboarding_response_data):
         direction=2,
         filtered=False,
         onboarding_response=onboarding_response,
-        application_message_id=new_uuid(),
+        application_message_id=UUIDUtil.new_uuid(),
         application_message_seq_no=1,
     )
     list_endpoint_service = ListEndpointsService(messaging_service)
@@ -216,7 +216,7 @@ def example_subscription_http(onboarding_response_data):
     subscription_parameters = SubscriptionParameters(
         subscription_items=[subscription_item],
         onboarding_response=onboarding_response,
-        application_message_id=new_uuid(),
+        application_message_id=UUIDUtil.new_uuid(),
         application_message_seq_no=1,
     )
 
@@ -237,7 +237,7 @@ def example_subscription_mqtt(onboarding_response_data, on_msg_callback):
     subscription_parameters = SubscriptionParameters(
         subscription_items=[subscription_item],
         onboarding_response=onboarding_response,
-        application_message_id=new_uuid(),
+        application_message_id=UUIDUtil.new_uuid(),
         application_message_seq_no=1,
     )
 
@@ -259,11 +259,11 @@ def example_query_header_message_http(onboarding_response_data):
     sent_to = Timestamp()
     validity_period = ValidityPeriod(sent_from=sent_from, sent_to=sent_to)
     query_header_parameters = QueryHeaderParameters(
-        message_ids=[new_uuid(), new_uuid()],
-        senders=[new_uuid(), new_uuid()],
+        message_ids=[UUIDUtil.new_uuid(), UUIDUtil.new_uuid()],
+        senders=[UUIDUtil.new_uuid(), UUIDUtil.new_uuid()],
         validity_period=validity_period,
         onboarding_response=onboarding_response,
-        application_message_id=new_uuid(),
+        application_message_id=UUIDUtil.new_uuid(),
         application_message_seq_no=1,
     )
     messaging_result = query_header_service.send(query_header_parameters)
@@ -282,11 +282,11 @@ def example_query_header_message_mqtt(onboarding_response_data, on_msg_callback)
     sent_to = Timestamp()
     validity_period = ValidityPeriod(sent_from=sent_from, sent_to=sent_to)
     query_header_parameters = QueryHeaderParameters(
-        message_ids=[new_uuid(), new_uuid()],
-        senders=[new_uuid(), new_uuid()],
+        message_ids=[UUIDUtil.new_uuid(), UUIDUtil.new_uuid()],
+        senders=[UUIDUtil.new_uuid(), UUIDUtil.new_uuid()],
         validity_period=validity_period,
         onboarding_response=onboarding_response,
-        application_message_id=new_uuid(),
+        application_message_id=UUIDUtil.new_uuid(),
         application_message_seq_no=1,
     )
     messaging_result = query_header_service.send(query_header_parameters)

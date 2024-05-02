@@ -8,7 +8,7 @@ from agrirouter.messaging.parameters.service import MessageHeaderParameters, Mes
     CloudOnboardParameters, CloudOffboardParameters
 from agrirouter.messaging.services.messaging import AbstractService
 from agrirouter.utils.type_url import TypeUrl
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.utils.uuid_util import UUIDUtil
 
 
 class CloudOnboardService(AbstractService):
@@ -34,7 +34,7 @@ class CloudOnboardService(AbstractService):
 
         message_content = EncodingService.encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
-            id_=new_uuid(),
+            id_=UUIDUtil.new_uuid(),
             content=message_content
         )
 
@@ -64,7 +64,7 @@ class CloudOffboardService(AbstractService):
 
         message_content = encode_message(message_header_parameters, message_payload_parameters)
         encoded_message = EncodedMessage(
-            id_=new_uuid(),
+            id_=UUIDUtil.new_uuid(),
             content=message_content
         )
 

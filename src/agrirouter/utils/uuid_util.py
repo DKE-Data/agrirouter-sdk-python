@@ -1,18 +1,21 @@
 import uuid
 
 
-def new_uuid():
-    """
+class UUIDUtil:
 
-    new_uuid() -> str
+    @staticmethod
+    def new_uuid():
+        """
 
-    Generates a new universally unique identifier (UUID) and returns it as a string representation.
+        UUIDUtil.new_uuid() -> str
 
-    Returns:
-        str: A string representation of the generated UUID.
+        Generates a new universally unique identifier (UUID) and returns it as a string representation.
 
-    Example:
-        >>> new_uuid()
-        'c5616b83-733b-4500-8c7a-efbff81b226b'
-    """
-    return str(uuid.uuid4())
+        Returns:
+            str: A string representation of the generated UUID.
+
+        Example:
+            >>> UUIDUtil.new_uuid()
+            'c5616b83-733b-4500-8c7a-efbff81b226b'
+        """
+        return str(uuid.uuid4())

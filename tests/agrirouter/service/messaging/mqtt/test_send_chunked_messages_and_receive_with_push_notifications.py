@@ -15,7 +15,7 @@ from agrirouter.messaging.services.commons import MqttMessagingService
 from agrirouter.messaging.services.messaging import FeedDeleteService, SendChunkedMessageService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.onboarding.response import OnboardResponse
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.utils.uuid_util import UUIDUtil
 from tests.agrirouter.common.data_provider import DataProvider
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.identifier import Identifier
@@ -70,7 +70,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             senders=[self._sender.get_sensor_alternate_id()]
         )
@@ -100,7 +100,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient.get_sensor_alternate_id())
 
-        message_header_parameters = MessageHeaderParameters(application_message_id=new_uuid(),
+        message_header_parameters = MessageHeaderParameters(application_message_id=UUIDUtil.new_uuid(),
                                                             application_message_seq_no=current_sequence_number,
                                                             technical_message_type=CapabilityType.IMG_BMP.value,
                                                             recipients=[
@@ -128,7 +128,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         chunk_message_parameters = ChunkedMessageParameters(
             onboarding_response=self._sender,
             technical_message_type=CapabilityType.IMG_BMP.value,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             recipients=[self._recipient.get_sensor_alternate_id()],
             encoded_chunked_messages=encoded_chunked_messages)

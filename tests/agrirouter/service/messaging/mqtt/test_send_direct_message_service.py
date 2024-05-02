@@ -12,7 +12,7 @@ from agrirouter.messaging.services.commons import MqttMessagingService
 from agrirouter.messaging.services.messaging import SendMessageService, SendMessageParameters, FeedDeleteService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
 from agrirouter.onboarding.response import OnboardResponse
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.utils.uuid_util import UUIDUtil
 from tests.agrirouter.common.data_provider import DataProvider
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.identifier import Identifier
@@ -72,7 +72,7 @@ class TestSendDirectMessageService(unittest.TestCase):
         send_message_parameters = SendMessageParameters(
             onboarding_response=self._sender,
             technical_message_type=CapabilityType.IMG_PNG.value,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             recipients=[self._recipient.get_sensor_alternate_id()],
             base64_message_content=DataProvider.read_base64_encoded_image(),
@@ -153,7 +153,7 @@ class TestSendDirectMessageService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             senders=[self._sender.get_sensor_alternate_id()]
         )

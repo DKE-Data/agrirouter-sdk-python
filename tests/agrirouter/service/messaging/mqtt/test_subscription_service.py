@@ -12,7 +12,7 @@ from agrirouter.messaging.parameters.service import SubscriptionParameters, Capa
 from agrirouter.messaging.services.commons import MqttMessagingService
 from agrirouter.messaging.services.messaging import SubscriptionService, CapabilitiesService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.utils.uuid_util import UUIDUtil
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.applications import CommunicationUnit
 from tests.agrirouter.data.identifier import Identifier
@@ -44,7 +44,7 @@ class TestSubscriptionService(unittest.TestCase):
             self._onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
             onboarding_response=self._onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             application_id=CommunicationUnit.application_id,
             certification_version_id=CommunicationUnit.certification_version_id,
@@ -103,7 +103,7 @@ class TestSubscriptionService(unittest.TestCase):
         subscription_parameters = SubscriptionParameters(
             subscription_items=[subscription_item],
             onboarding_response=self._onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
         )
         subscription_service.send(subscription_parameters)

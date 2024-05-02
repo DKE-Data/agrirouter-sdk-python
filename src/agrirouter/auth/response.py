@@ -6,13 +6,7 @@ from urllib.parse import unquote
 from cryptography.exceptions import InvalidSignature
 
 from agrirouter.auth.dto import AuthorizationToken, AuthorizationResultUrl
-from agrirouter.onboarding.signature import verify_signature
-
-
-# from cryptography.exceptions import InvalidSignature
-
-
-# from agrirouter.onboarding.signature import verify_signature
+from agrirouter.onboarding.signature import SignatureService
 
 
 class AuthResponse:
@@ -57,7 +51,7 @@ class AuthResponse:
 
         self._is_valid = True
         try:
-            verify_signature(encoded_data, encoded_signature, public_key)
+            SignatureService.verify_signature(encoded_data, encoded_signature, public_key)
         except InvalidSignature:
             print("Response is invalid: invalid signature.")
             self._is_valid = False

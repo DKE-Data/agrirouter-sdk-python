@@ -2,7 +2,7 @@ from agrirouter.api.enums import RequestHeaders
 from agrirouter.onboarding.headers import SoftwareOnboardingHeader
 from agrirouter.onboarding.parameters import OnboardParameters
 from agrirouter.onboarding.request_body import SoftwareOnboardingBody
-from agrirouter.onboarding.signature import create_signature, verify_signature
+from agrirouter.onboarding.signature import SignatureService
 
 
 class OnboardRequest:
@@ -31,8 +31,8 @@ class OnboardRequest:
 
     def sign(self, private_key, public_key):
         body = self.get_body_content()
-        signature = create_signature(body, private_key)
-        verify_signature(body, bytes.fromhex(signature), public_key)
+        signature = SignatureService.create_signature(body, private_key)
+        SignatureService.verify_signature(body, bytes.fromhex(signature), public_key)
         self.header.sign(signature)
 
     @property

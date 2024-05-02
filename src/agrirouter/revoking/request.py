@@ -1,4 +1,4 @@
-from agrirouter.onboarding.signature import create_signature
+from agrirouter.onboarding.signature import SignatureService
 from agrirouter.revoking.headers import RevokingHeader
 from agrirouter.revoking.request_body import RevokingBody
 
@@ -23,7 +23,7 @@ class RevokingRequest:
 
     def sign(self, private_key):
         body = self.get_body_content()
-        signature = create_signature(body, private_key)
+        signature = SignatureService.create_signature(body, private_key)
         self.header.sign(signature)
 
     @property

@@ -77,3 +77,29 @@ class CapabilityDirectionType(BaseEnum):
     SEND = "SEND"
     RECEIVE = "RECEIVE"
     SEND_RECEIVE = "SEND_RECEIVE"
+
+
+class CertificateTypes(BaseEnum):
+    """
+    CertificateTypes Enum Class
+
+    An enum class representing different types of certificates.
+
+    Attributes:
+        PEM (str): The PEM certificate type.
+        P12 (str): The P12 certificate type.
+    """
+    PEM = "PEM"
+    P12 = "P12"
+
+
+class Gateways(BaseEnum):
+    """
+    Enum class to store the possible gateways for communication.
+
+    Attributes:
+        MQTT (str): The MQTT gateway.
+        HTTP (str): The HTTP gateway.
+    """
+    MQTT = "2"
+    HTTP = "3"

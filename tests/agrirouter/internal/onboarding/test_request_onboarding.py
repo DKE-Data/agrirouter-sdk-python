@@ -1,6 +1,6 @@
 """Test src/onboarding/request.py"""
 from agrirouter.api.environments import Qa
-from agrirouter.onboarding.enums import Gateways, CertificateTypes
+from agrirouter.api.enums import Gateways, CertificateTypes
 from agrirouter.onboarding.onboarding import SecuredOnboardingService
 from agrirouter.onboarding.parameters import OnboardParameters
 from tests.agrirouter.common.constants import APPLICATION_ID, PUBLIC_KEY, PRIVATE_KEY

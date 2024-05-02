@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 
 from agrirouter.api.exceptions import WrongCertificationType, WrongGateWayType
-from agrirouter.onboarding.enums import CertificateTypes, Gateways
+from agrirouter.api.enums import CertificateTypes, Gateways
 
 
 class SoftwareOnboardingBody:

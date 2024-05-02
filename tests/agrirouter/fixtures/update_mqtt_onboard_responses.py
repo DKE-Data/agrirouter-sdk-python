@@ -9,7 +9,7 @@ from agrirouter.messaging.parameters.service import CapabilitiesParameters
 from agrirouter.messaging.services.commons import MqttMessagingService
 from agrirouter.messaging.services.messaging import CapabilitiesService
 from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.onboarding.enums import CertificateTypes, Gateways
+from agrirouter.api.enums import CertificateTypes, Gateways
 from agrirouter.utils.uuid_util import new_uuid
 from tests.agrirouter.common.onboarding import onboard_communication_unit
 from tests.agrirouter.common.sleeper import Sleeper

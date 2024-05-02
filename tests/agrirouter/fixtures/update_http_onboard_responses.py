@@ -10,7 +10,7 @@ from agrirouter.messaging.parameters.service import CapabilitiesParameters
 from agrirouter.messaging.services.commons import HttpMessagingService
 from agrirouter.messaging.services.http.fetch_message_service import FetchMessageService
 from agrirouter.messaging.services.messaging import CapabilitiesService
-from agrirouter.onboarding.enums import CertificateTypes, Gateways
+from agrirouter.api.enums import CertificateTypes, Gateways
 from agrirouter.onboarding.response import OnboardResponse
 from agrirouter.utils.uuid_util import new_uuid
 from tests.agrirouter.common.onboarding import onboard_communication_unit

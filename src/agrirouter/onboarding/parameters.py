@@ -1,5 +1,5 @@
 from agrirouter.api.enums import ContentTypes
-from agrirouter.onboarding.enums import CertificateTypes
+from agrirouter.api.enums import CertificateTypes
 from agrirouter.utils.utc_time_util import now_as_utc_str
 
 

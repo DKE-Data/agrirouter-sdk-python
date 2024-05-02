@@ -5,7 +5,7 @@ from agrirouter.messaging.parameters.service import QueryHeaderParameters, ListE
     CapabilitiesParameters, SubscriptionParameters
 from agrirouter.messaging.services.messaging import QueryHeaderService, ListEndpointsService, CapabilitiesService, \
     SubscriptionService
-from agrirouter.onboarding.enums import Gateways
+from agrirouter.api.enums import Gateways
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.services.commons import HttpMessagingService, MqttMessagingService

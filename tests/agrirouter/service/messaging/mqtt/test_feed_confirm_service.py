@@ -4,15 +4,15 @@ import unittest
 import pytest
 
 from agrirouter.api.enums import CapabilityType
-from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.service.messaging.decoding import DecodingService
 from agrirouter.api.messages import OutboxMessage
+from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
 from agrirouter.service.dto.messaging import SendMessageParameters
-from agrirouter.service.parameter.messaging import FeedDeleteParameters, FeedConfirmParameters
 from agrirouter.service.messaging import MqttMessagingService
 from agrirouter.service.messaging import SendMessageService, FeedDeleteService, FeedConfirmService
+from agrirouter.service.messaging.decoding import DecodingService
 from agrirouter.service.messaging.sequence_numbers import SequenceNumberService
 from agrirouter.service.onboarding import OnboardResponse
+from agrirouter.service.parameter.messaging import FeedDeleteParameters, FeedConfirmParameters
 from agrirouter.util.uuid_util import UUIDUtil
 from tests.agrirouter.common.data_provider import DataProvider
 from tests.agrirouter.common.sleeper import Sleeper
@@ -273,7 +273,8 @@ class TestFeedConfirmService(unittest.TestCase):
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
             decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            feed_confirm_details_for_empty_messages = DecodingService.decode_details(decoded_message.response_payload.details)
+            feed_confirm_details_for_empty_messages = DecodingService.decode_details(
+                decoded_message.response_payload.details)
             self._log.info(f"Feed confirm details for empty messages: {feed_confirm_details_for_empty_messages}")
             assert decoded_message.response_envelope.response_code == 200
             for _message in feed_confirm_details_for_empty_messages.messages:

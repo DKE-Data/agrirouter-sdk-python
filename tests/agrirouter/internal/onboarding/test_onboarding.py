@@ -2,11 +2,11 @@
 
 import pytest
 
+from agrirouter.api.enums import Gateways, CertificateTypes
 from agrirouter.api.env import Qa
 from agrirouter.api.exceptions import WrongCertificationType, WrongGateWayType
-from agrirouter.api.enums import Gateways, CertificateTypes
-from agrirouter.service.onboarding import SecuredOnboardingService
 from agrirouter.service.onboarding import OnboardParameters
+from agrirouter.service.onboarding import SecuredOnboardingService
 from tests.agrirouter.common.constants import PUBLIC_KEY, PRIVATE_KEY, APPLICATION_ID
 
 

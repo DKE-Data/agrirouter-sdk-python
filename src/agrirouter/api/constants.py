@@ -17,3 +17,7 @@ AR_PROD_PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\n" \
                      "GNASOOHju7ewlYjkyGIRxxAoc3C0w5dg1qlLiAFWToYwgDOcUpLRjU/7bzGiGvp8\n" \
                      "RwIDAQAB\n" \
                      "-----END PUBLIC KEY-----"
+
+ASYNC = "ASYNC"
+
+SYNC = "SYNC"

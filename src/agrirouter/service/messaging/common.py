@@ -3,14 +3,14 @@ import logging
 from abc import ABC, abstractmethod
 
 from agrirouter.api.exceptions import BadMessagingResult
+from agrirouter.api.messages import Message, EncodedMessage
 from agrirouter.service.client.http import HttpClient
 from agrirouter.service.client.mqtt import MqttClient
-from agrirouter.api.messages import Message, EncodedMessage
 from agrirouter.service.dto.messaging import MessagingParameters
-from agrirouter.service.parameter.messaging import MessageParameters
 from agrirouter.service.dto.request.messaging import MessageRequest
 from agrirouter.service.dto.response.messaging import MessagingResult
 from agrirouter.service.dto.response.onboarding import OnboardResponse
+from agrirouter.service.parameter.messaging import MessageParameters
 
 
 class AbstractService:

@@ -2,10 +2,10 @@ import requests
 
 from agrirouter.api.env import EnvironmentalService
 from agrirouter.api.exceptions import RequestNotSigned
-from agrirouter.service.parameter.revoking import RevokingParameter
 from agrirouter.service.dto.request.revoking import RevokingBody, RevokingHeader
 from agrirouter.service.dto.request.revoking import RevokingRequest
 from agrirouter.service.dto.response.revoking import RevokingResponse
+from agrirouter.service.parameter.revoking import RevokingParameter
 
 
 class RevokingService(EnvironmentalService):

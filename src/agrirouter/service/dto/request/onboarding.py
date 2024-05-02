@@ -4,8 +4,8 @@ from datetime import datetime
 
 from agrirouter.api.enums import RequestHeaders, CertificateTypes, Gateways, ContentTypes
 from agrirouter.api.exceptions import WrongCertificationType, WrongGateWayType, MissingRegistrationCode
-from agrirouter.service.signature import SignatureService
 from agrirouter.service.parameter.onboarding import OnboardParameters
+from agrirouter.service.signature import SignatureService
 
 
 class SoftwareOnboardingHeader:

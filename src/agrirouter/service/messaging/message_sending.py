@@ -1,4 +1,5 @@
 from agrirouter.api.enums import TechnicalMessageType, CapabilityType
+from agrirouter.api.messages import EncodedMessage
 from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
 from agrirouter.generated.commons.message_pb2 import Metadata
 from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
@@ -8,14 +9,13 @@ from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 im
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageDelete, \
     MessageQuery
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.service.messaging.encoding import EncodingService
-from agrirouter.api.messages import EncodedMessage
 from agrirouter.service.dto.messaging import SendMessageParameters, ChunkedMessageParameters
+from agrirouter.service.messaging.common import AbstractService
+from agrirouter.service.messaging.encoding import EncodingService
 from agrirouter.service.parameter.messaging import MessageHeaderParameters, MessagePayloadParameters, \
     CapabilitiesParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
     SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters, ImageParameters, TaskParameters, \
     EfdiParameters
-from agrirouter.service.messaging.common import AbstractService
 from agrirouter.util.type_url import TypeUrl
 from agrirouter.util.uuid_util import UUIDUtil
 

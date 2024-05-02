@@ -1,10 +1,10 @@
 import requests
+from agrirouter.service.onboarding.request_headers import SoftwareOnboardingHeader
 
 from agrirouter.api.env import BaseEnvironment
 from agrirouter.api.env import EnvironmentalService
 from agrirouter.api.exceptions import UnexpectedErrorDuringOnboarding, RequestNotSigned
 from agrirouter.service.dto.request.onboarding import OnboardRequest, SoftwareOnboardingBody
-from agrirouter.service.onboarding.request_headers import SoftwareOnboardingHeader
 from agrirouter.service.dto.response.onboarding import VerificationResponse, OnboardResponse
 from agrirouter.service.parameter.onboarding import OnboardParameters
 

@@ -1,8 +1,8 @@
 from copy import deepcopy
 from typing import List
 
-from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
 from agrirouter.api.messages import EncodedMessage
+from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
 from agrirouter.service.dto.response.onboarding import BaseOnboardingResponse
 
 

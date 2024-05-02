@@ -5,13 +5,13 @@ from google.protobuf.any_pb2 import Any
 from google.protobuf.internal.decoder import _DecodeVarint
 
 from agrirouter.api.exceptions import CanNotDecodeMessage
+from agrirouter.api.messages import DecodedMessage
 from agrirouter.generated.commons.message_pb2 import Messages
 from agrirouter.generated.messaging.response.payload.account.endpoints_pb2 import ListEndpointsResponse
 from agrirouter.generated.messaging.response.payload.feed.feed_response_pb2 import HeaderQueryResponse, \
     MessageQueryResponse
 from agrirouter.generated.messaging.response.payload.feed.push_notification_pb2 import PushNotification
 from agrirouter.generated.messaging.response.response_pb2 import ResponseEnvelope, ResponsePayloadWrapper
-from agrirouter.api.messages import DecodedMessage
 from agrirouter.util.type_url import TypeUrl
 
 

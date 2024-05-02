@@ -3,7 +3,7 @@ import pytest
 from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
 from agrirouter.api.environments import Qa
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.messaging.decode import decode_response
+from agrirouter.messaging.decode import DecodingService
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.service import CapabilitiesParameters
 from agrirouter.messaging.services.commons import MqttMessagingService
@@ -113,7 +113,7 @@ class TestSingleMqttEndpointWithPEMCertificate:
         """
         outbox_message = OutboxMessage()
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-        decoded_message = decode_response(outbox_message.command.message.encode())
+        decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
         while not decoded_message:
             Sleeper.process_the_command()
         assert decoded_message.response_envelope.response_code == 201

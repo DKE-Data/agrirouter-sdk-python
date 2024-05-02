@@ -5,7 +5,7 @@ import pytest
 
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from agrirouter.messaging.decode import decode_response, decode_details
+from agrirouter.messaging.decode import DecodingService, decode_details
 from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.service import SubscriptionParameters, CapabilitiesParameters
@@ -79,7 +79,7 @@ class TestSubscriptionService(unittest.TestCase):
                 "Received message from MQTT broker after sending the capabilities, checking the result.")
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.response_code != 201:
                 decoded_details = decode_details(decoded_message.response_payload.details)
                 self._log.error("Message could not be processed. Response code: " + str(
@@ -125,7 +125,7 @@ class TestSubscriptionService(unittest.TestCase):
                 "Received message from MQTT broker after sending the subscriptions, checking the result.")
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.response_code != 201:
                 decoded_details = decode_details(decoded_message.response_payload.details)
                 self._log.error("Message details: " + str(decoded_details))

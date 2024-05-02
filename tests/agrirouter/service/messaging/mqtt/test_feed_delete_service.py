@@ -5,7 +5,7 @@ import pytest
 
 from agrirouter.api.enums import CapabilityType
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.decode import decode_response, decode_details
+from agrirouter.messaging.decode import DecodingService, decode_details
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.service import FeedDeleteParameters
 from agrirouter.messaging.services.commons import MqttMessagingService
@@ -312,7 +312,7 @@ class TestFeedDeleteService(unittest.TestCase):
                            msg.payload.decode())
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.type != 12:
                 decoded_details = decode_details(decoded_message.response_payload.details)
                 self._log.error(
@@ -331,7 +331,7 @@ class TestFeedDeleteService(unittest.TestCase):
             self._log.info("Received message after deleting messages: " + str(msg.payload))
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             feed_delete_details = decode_details(decoded_message.response_payload.details)
             self._log.info("Details for the message removal: " + str(feed_delete_details))
             message_ids_in_feed = [_message.args['messageId'] for _message in feed_delete_details.messages]
@@ -349,7 +349,7 @@ class TestFeedDeleteService(unittest.TestCase):
             self._log.info("Callback for checking if no messages are received.")
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             feed_delete_service_for_empty_result = decode_details(decoded_message.response_payload.details)
             self._log.info(f"Feed delete details: {feed_delete_service_for_empty_result}")
             assert decoded_message.response_envelope.response_code == 204

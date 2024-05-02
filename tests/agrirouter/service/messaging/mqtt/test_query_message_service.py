@@ -5,7 +5,7 @@ from typing import Optional
 import pytest
 
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.decode import decode_response, decode_details
+from agrirouter.messaging.decode import DecodingService, decode_details
 from agrirouter.api.enums import CapabilityType
 from agrirouter.messaging.messages import OutboxMessage
 from agrirouter.messaging.parameters.service import FeedDeleteParameters, QueryMessageParameters
@@ -312,7 +312,7 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
                            msg.payload.decode())
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.type != 12:
                 decoded_details = decode_details(decoded_message.response_payload.details)
                 self._log.error(
@@ -331,7 +331,7 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             self._log.info("Received message after deleting messages: " + str(msg.payload))
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             delete_details = decode_details(decoded_message.response_payload.details)
             self._log.info("Details for the message removal: " + str(delete_details))
             assert decoded_message.response_envelope.response_code == 201
@@ -346,7 +346,7 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             self._log.info("Callback for checking if the content from query messages are received.")
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             query_message_details = decode_details(decoded_message.response_payload.details)
             self._log.info(f"Query Message Service Details: {query_message_details}")
             assert decoded_message.response_envelope.type == 7
@@ -376,7 +376,7 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             self._log.info("Callback for checking if no messages are received.")
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             assert decoded_message.response_envelope.response_code == 204
             self._callback_for_feed_message_query_processed = True
 

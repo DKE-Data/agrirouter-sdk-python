@@ -1,5 +1,10 @@
 import time
 import agrirouter as ar
+from agrirouter.api.enums import CapabilityType
+from agrirouter.messaging.parameters.service import QueryHeaderParameters, ListEndpointsParameters, \
+    CapabilitiesParameters, SubscriptionParameters
+from agrirouter.messaging.services.messaging import QueryHeaderService, ListEndpointsService, CapabilitiesService, \
+    SubscriptionService
 from agrirouter.onboarding.enums import Gateways
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
@@ -295,7 +300,7 @@ def example_query_header_message_mqtt(onboarding_response_data, on_msg_callback)
 def on_message_callback(client, userdata, msg):
     # Define here the way receiving messages will be processed
 
-    from agrirouter.messaging.decode import decode_response
+    from agrirouter.messaging.decode import DecodingService
     from agrirouter.messaging.decode import decode_details
     from agrirouter.messaging.messages import OutboxMessage
 
@@ -304,7 +309,7 @@ def on_message_callback(client, userdata, msg):
 
     print(outbox_message.command.message)
 
-    decoded_message = decode_response(outbox_message.command.message)
+    decoded_message = DecodingService.decode_response(outbox_message.command.message)
     print(decoded_message.response_envelope)
 
     try:

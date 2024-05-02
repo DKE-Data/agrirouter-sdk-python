@@ -1,6 +1,6 @@
 from agrirouter.api.enums import CertificateTypes
 from agrirouter.api.enums import ContentTypes
-from agrirouter.utils.utc_time_util import UtcTimeUtil
+from agrirouter.util.utc_time_util import UtcTimeUtil
 
 
 class OnboardParameters:

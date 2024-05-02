@@ -6,13 +6,13 @@ import pytest
 from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
 from agrirouter.api.env import Qa
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.messaging.parameters.service import CapabilitiesParameters
-from agrirouter.messaging.services.commons import HttpMessagingService
-from agrirouter.messaging.services.http.fetch_message_service import FetchMessageService
-from agrirouter.messaging.services.messaging import CapabilitiesService
+from agrirouter.service.parameter.messaging import CapabilitiesParameters
+from agrirouter.service.messaging import HttpMessagingService
+from agrirouter.service.messaging.http import FetchMessageService
+from agrirouter.service.messaging import CapabilitiesService
 from agrirouter.api.enums import CertificateTypes, Gateways
-from agrirouter.onboarding.response import OnboardResponse
-from agrirouter.utils.uuid_util import UUIDUtil
+from agrirouter.service.onboarding import OnboardResponse
+from agrirouter.util.uuid_util import UUIDUtil
 from tests.agrirouter.common.onboarding import onboard_communication_unit
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.applications import CommunicationUnit

@@ -1,6 +1,6 @@
-from agrirouter.messaging.clients.http import HttpClient
 from agrirouter.api.exceptions import CanNotFetchOutboxMessage
-from agrirouter.messaging.result import OutboxResponse
+from agrirouter.service.client.http import HttpClient
+from agrirouter.service.dto.response.messaging import OutboxResponse
 
 
 class FetchMessageService:

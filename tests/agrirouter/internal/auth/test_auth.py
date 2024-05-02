@@ -1,7 +1,7 @@
-"""Tests agrirouter/auth/auth.py"""
+"""Tests agrirouter/auth/authorization.py"""
 from agrirouter.api.env import Qa
-from agrirouter.auth.auth import AuthUrlParameter
-from agrirouter.auth.auth import Authorization
+from agrirouter.service.authorization import AuthUrlParameter
+from agrirouter.service.authorization import AuthorizationService
 from tests.agrirouter.common.constants import (
     PUBLIC_KEY,
     PRIVATE_KEY,
@@ -11,7 +11,7 @@ from tests.agrirouter.common.constants import (
 
 class TestAuthorization:
     def test_extract_query_params(self):
-        auth_client = Authorization(Qa(), public_key=PUBLIC_KEY, private_key=PRIVATE_KEY)
+        auth_client = AuthorizationService(Qa(), public_key=PUBLIC_KEY, private_key=PRIVATE_KEY)
         test_uri = "key1=val1&key2=val2&key3=val3"
         params = auth_client._extract_query_params(test_uri)
         assert params == {"key1": "val1", "key2": "val2", "key3": "val3"}
@@ -22,7 +22,7 @@ class TestAuthorization:
         )
         assert auth_params.state
 
-        auth_client = Authorization(
+        auth_client = AuthorizationService(
             Qa(), public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
         )
 
@@ -32,7 +32,7 @@ class TestAuthorization:
         assert check_url == result_url.split("state")[0]
 
     def test_extract_auth_response(self):
-        auth_client = Authorization(Qa(), public_key=PUBLIC_KEY, private_key=PRIVATE_KEY)
+        auth_client = AuthorizationService(Qa(), public_key=PUBLIC_KEY, private_key=PRIVATE_KEY)
         state = "3770a15d-adf3-4900-a435-464978fe8054"
         token = "token"
         signature = "signature"
@@ -47,7 +47,7 @@ class TestAuthorization:
         assert response.is_successful
 
     def test_get_auth_result(self):
-        auth_client = Authorization(
+        auth_client = AuthorizationService(
             env=Qa(), public_key=PUBLIC_KEY, private_key=PRIVATE_KEY
         )
         auth_response = auth_client.extract_auth_response(AUTH_RESULT_URL)

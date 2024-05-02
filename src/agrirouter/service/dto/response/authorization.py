@@ -5,8 +5,8 @@ from urllib.parse import unquote
 
 from cryptography.exceptions import InvalidSignature
 
-from agrirouter.auth.dto import AuthorizationToken, AuthorizationResultUrl
-from agrirouter.onboarding.signature import SignatureService
+from agrirouter.service.dto.request.authorization import AuthorizationToken, AuthorizationResultUrl
+from agrirouter.service.signature import SignatureService
 
 
 class AuthResponse:

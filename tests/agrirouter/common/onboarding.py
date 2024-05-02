@@ -1,6 +1,6 @@
-from agrirouter.onboarding.onboarding import OnboardingService
-from agrirouter.onboarding.parameters import OnboardParameters
-from agrirouter.onboarding.response import OnboardResponse
+from agrirouter.service.onboarding import OnboardingService
+from agrirouter.service.onboarding import OnboardParameters
+from agrirouter.service.onboarding import OnboardResponse
 from tests.agrirouter.data.applications import CommunicationUnit
 
 

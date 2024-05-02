@@ -1,8 +1,8 @@
-"""Tests agrirouter/onboarding/dto.py"""
+"""Tests agrirouter/onboarding/authorization.py"""
 import pytest
 
 from agrirouter.api.exceptions import WrongField
-from agrirouter.onboarding.dto import ConnectionCriteria, Authentication, ErrorResponse
+from agrirouter.service.onboarding import ConnectionCriteria, Authentication, ErrorResponse
 
 
 class TestConnectionCriteria:

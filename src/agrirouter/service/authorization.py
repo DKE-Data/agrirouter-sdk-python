@@ -1,11 +1,11 @@
 from urllib.parse import urlparse, parse_qs
 
-from agrirouter.auth.parameters import AuthUrlParameter
-from agrirouter.auth.response import AuthResponse
+from agrirouter.service.parameter.authorization import AuthUrlParameter
+from agrirouter.service.dto.response.authorization import AuthResponse
 from agrirouter.api.env import EnvironmentalService
 
 
-class Authorization(EnvironmentalService):
+class AuthorizationService(EnvironmentalService):
     SIGNATURE_KEY = "signature"
     STATE_KEY = "state"
     TOKEN_KEY = "token"
@@ -14,7 +14,7 @@ class Authorization(EnvironmentalService):
     def __init__(self, env, public_key, private_key):
         self._public_key = public_key
         self._private_key = private_key
-        super(Authorization, self).__init__(env)
+        super(AuthorizationService, self).__init__(env)
 
     def get_auth_request_url(self, parameters: AuthUrlParameter) -> str:
         auth_parameters = parameters.get_parameters()

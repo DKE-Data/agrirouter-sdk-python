@@ -3,7 +3,7 @@
 import pytest
 from cryptography.exceptions import InvalidSignature
 
-from agrirouter.onboarding.signature import SignatureService
+from agrirouter.service.signature import SignatureService
 from tests.agrirouter.common.constants import PRIVATE_KEY, PUBLIC_KEY
 
 

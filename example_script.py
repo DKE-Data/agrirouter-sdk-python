@@ -1,21 +1,21 @@
 import time
 import agrirouter as ar
 from agrirouter.api.enums import CapabilityType
-from agrirouter.messaging.parameters.service import QueryHeaderParameters, ListEndpointsParameters, \
+from agrirouter.service.parameter.messaging import QueryHeaderParameters, ListEndpointsParameters, \
     CapabilitiesParameters, SubscriptionParameters
-from agrirouter.messaging.services.messaging import QueryHeaderService, ListEndpointsService, CapabilitiesService, \
+from agrirouter.service.messaging import QueryHeaderService, ListEndpointsService, CapabilitiesService, \
     SubscriptionService
 from agrirouter.api.enums import Gateways
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.messaging.services.commons import HttpMessagingService, MqttMessagingService
-from agrirouter.utils.uuid_util import UUIDUtil
+from agrirouter.service.messaging import HttpMessagingService, MqttMessagingService
+from agrirouter.util.uuid_util import UUIDUtil
 
 from google.protobuf.timestamp_pb2 import Timestamp
 
 from agrirouter.generated.messaging.request.payload.account.endpoints_pb2 import ListEndpointsQuery
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import ValidityPeriod
-from agrirouter.onboarding.response import OnboardResponse
+from agrirouter.service.onboarding import OnboardResponse
 
 public_key = """-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzGt41/+kSOTlO1sJvLIN
@@ -300,8 +300,8 @@ def example_query_header_message_mqtt(onboarding_response_data, on_msg_callback)
 def on_message_callback(client, userdata, msg):
     # Define here the way receiving messages will be processed
 
-    from agrirouter.messaging.decode import DecodingService
-    from agrirouter.messaging.messages import OutboxMessage
+    from agrirouter.service.messaging.decoding import DecodingService
+    from agrirouter.api.messages import OutboxMessage
 
     outbox_message = OutboxMessage()
     outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))

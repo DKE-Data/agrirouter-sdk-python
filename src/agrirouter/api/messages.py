@@ -2,7 +2,7 @@ import json
 from typing import Union, Dict
 
 from agrirouter.api.exceptions import WrongField
-from agrirouter.utils.utc_time_util import UtcTimeUtil
+from agrirouter.util.utc_time_util import UtcTimeUtil
 
 
 class EncodedMessage:
@@ -115,7 +115,7 @@ class OutboxMessage:
 
 class MessageParameterTuple:
     """
-    Class used to form a tuple of header and payload parameters
+    Class used to form a tuple of header and payload parameter
     """
 
     def __init__(self, message_header_parameters, message_payload_parameters):

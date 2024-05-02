@@ -8,16 +8,16 @@ from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 im
 from agrirouter.generated.messaging.request.payload.feed.feed_requests_pb2 import MessageConfirm, MessageDelete, \
     MessageQuery
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.encode import EncodingService
-from agrirouter.messaging.messages import EncodedMessage
-from agrirouter.messaging.parameters.dto import SendMessageParameters, ChunkedMessageParameters
-from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters, \
+from agrirouter.service.messaging.encoding import EncodingService
+from agrirouter.api.messages import EncodedMessage
+from agrirouter.service.dto.messaging import SendMessageParameters, ChunkedMessageParameters
+from agrirouter.service.parameter.messaging import MessageHeaderParameters, MessagePayloadParameters, \
     CapabilitiesParameters, FeedConfirmParameters, FeedDeleteParameters, ListEndpointsParameters, \
     SubscriptionParameters, QueryHeaderParameters, QueryMessageParameters, ImageParameters, TaskParameters, \
     EfdiParameters
-from agrirouter.messaging.services.commons import AbstractService
-from agrirouter.utils.type_url import TypeUrl
-from agrirouter.utils.uuid_util import UUIDUtil
+from agrirouter.service.messaging.common import AbstractService
+from agrirouter.util.type_url import TypeUrl
+from agrirouter.util.uuid_util import UUIDUtil
 
 
 class CapabilitiesService(AbstractService):
@@ -28,7 +28,7 @@ class CapabilitiesService(AbstractService):
     @staticmethod
     def encode(parameters: CapabilitiesParameters) -> EncodedMessage:
         """
-        Encode the parameters to a message.
+        Encode the parameter to a message.
         :param parameters: Parameters for the message.
         """
         message_header_parameters = MessageHeaderParameters(
@@ -195,8 +195,8 @@ class QueryHeaderService(AbstractService):
     @staticmethod
     def encode(parameters: QueryHeaderParameters) -> EncodedMessage:
         """
-        Encode the parameters into a message
-        parameters: QueryHeaderParameters for the service
+        Encode the parameter into a message
+        parameter: QueryHeaderParameters for the service
         """
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
@@ -234,8 +234,8 @@ class SubscriptionService(AbstractService):
     @staticmethod
     def encode(parameters: SubscriptionParameters) -> EncodedMessage:
         """
-        Encode the parameters into a subscription message.
-        parameters: Parameters for the subscription message.
+        Encode the parameter into a subscription message.
+        parameter: Parameters for the subscription message.
         """
         message_header_parameters = MessageHeaderParameters(
             application_message_id=parameters.get_application_message_id(),
@@ -271,8 +271,8 @@ class SendMessageService(AbstractService):
     @staticmethod
     def encode(parameters: SendMessageParameters) -> EncodedMessage:
         """
-        Encode the parameters into a message.
-        parameters: Parameters for the message service.
+        Encode the parameter into a message.
+        parameter: Parameters for the message service.
         """
         message_header_parameters = MessageHeaderParameters(
             technical_message_type=parameters.get_technical_message_type(),
@@ -307,7 +307,7 @@ class SendChunkedMessageService(AbstractService):
     @staticmethod
     def encode(parameters: ChunkedMessageParameters):
         """
-        parameters: Chunked Message Parameters required
+        parameter: Chunked Message Parameters required
         """
         encoded_message = EncodedMessage(
             id_=UUIDUtil.new_uuid(),

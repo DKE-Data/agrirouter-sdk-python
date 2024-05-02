@@ -67,7 +67,7 @@ class Qa(BaseEnvironment):
 
 class EnvironmentalService:
     """
-    A class that provides environmental services based on the provided environment value.
+    A class that provides environmental messaging based on the provided environment value.
 
     Attributes:
     - _environment (Environment): The current environment.

@@ -3,19 +3,19 @@ import logging
 from abc import ABC, abstractmethod
 
 from agrirouter.api.exceptions import BadMessagingResult
-from agrirouter.messaging.clients.http import HttpClient
-from agrirouter.messaging.clients.mqtt import MqttClient
-from agrirouter.messaging.messages import Message, EncodedMessage
-from agrirouter.messaging.parameters.dto import MessagingParameters
-from agrirouter.messaging.parameters.service import MessageParameters
-from agrirouter.messaging.request import MessageRequest
-from agrirouter.messaging.result import MessagingResult
-from agrirouter.onboarding.response import OnboardResponse
+from agrirouter.service.client.http import HttpClient
+from agrirouter.service.client.mqtt import MqttClient
+from agrirouter.api.messages import Message, EncodedMessage
+from agrirouter.service.dto.messaging import MessagingParameters
+from agrirouter.service.parameter.messaging import MessageParameters
+from agrirouter.service.dto.request.messaging import MessageRequest
+from agrirouter.service.dto.response.messaging import MessagingResult
+from agrirouter.service.dto.response.onboarding import OnboardResponse
 
 
 class AbstractService:
     """
-    Abstract service class for all services.
+    Abstract service class for all messaging.
     """
     _log = logging.getLogger(__name__)
 

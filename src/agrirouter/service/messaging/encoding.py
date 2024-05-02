@@ -7,12 +7,12 @@ from google.protobuf.internal.encoder import _VarintBytes
 
 from agrirouter.generated.commons.chunk_pb2 import ChunkComponent
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope, RequestPayloadWrapper
-from agrirouter.messaging.messages import MessageParameterTuple
-from agrirouter.messaging.parameters.service import MessageHeaderParameters, MessagePayloadParameters
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.onboarding.response import OnboardResponse
-from agrirouter.utils.utc_time_util import UtcTimeUtil
-from agrirouter.utils.uuid_util import UUIDUtil
+from agrirouter.api.messages import MessageParameterTuple
+from agrirouter.service.parameter.messaging import MessageHeaderParameters, MessagePayloadParameters
+from agrirouter.service.messaging.sequence_numbers import SequenceNumberService
+from agrirouter.service.dto.response.onboarding import OnboardResponse
+from agrirouter.util.utc_time_util import UtcTimeUtil
+from agrirouter.util.uuid_util import UUIDUtil
 
 MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT = 767997 // 2
 log = logging.getLogger("com.dke.data.agrirouter.sdk.encode")
@@ -61,7 +61,7 @@ class EncodingService:
         message_chunks = EncodingService._split_into_chunks(whole_message)
 
         if payload_parameters is None or header_parameters is None:
-            raise ValueError('The parameters cannot be NULL')
+            raise ValueError('The parameter cannot be NULL')
 
         if len(whole_message) <= MAX_LENGTH_FOR_RAW_MESSAGE_CONTENT:
             log.info("Message is not chunked, because it is smaller than the maximum size of a chunk.")
@@ -125,7 +125,7 @@ class EncodingService:
     def encode_chunks_message(message_parameter_tuple: List[MessageParameterTuple]) -> List:
         """
         Encode chunks of messages
-        :message_parameter_tuple - Tuple of message parameters
+        :message_parameter_tuple - Tuple of message parameter
         Returns list of encoded chunked messages
         """
         return [EncodingService.encode_message(_tuple.message_header_parameters, _tuple.message_payload_parameters) for
@@ -137,7 +137,7 @@ class EncodingService:
         """
         Encode header to RequestEnvelope protobuf
         :header_parameters: Message Header Parameters
-        Returns RequestEnvelope with parameters set
+        Returns RequestEnvelope with parameter set
         """
         request_envelope = RequestEnvelope()
         request_envelope.application_message_id = header_parameters.get_application_message_id() \
@@ -165,7 +165,7 @@ class EncodingService:
         """
         Encode header to RequestPayloadWrapper protobuf
         :payload_parameters: Message Payload Parameters
-        Returns RequestPayloadWrapper with parameters set
+        Returns RequestPayloadWrapper with parameter set
         """
         any_proto_wrapper = Any()
         any_proto_wrapper.type_url = payload_parameters.get_type_url()

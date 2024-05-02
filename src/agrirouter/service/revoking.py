@@ -2,19 +2,18 @@ import requests
 
 from agrirouter.api.env import EnvironmentalService
 from agrirouter.api.exceptions import RequestNotSigned
-from agrirouter.revoking.headers import RevokingHeader
-from agrirouter.revoking.parameters import RevokingParameter
-from agrirouter.revoking.request import RevokingRequest
-from agrirouter.revoking.request_body import RevokingBody
-from agrirouter.revoking.response import RevokingResponse
+from agrirouter.service.parameter.revoking import RevokingParameter
+from agrirouter.service.dto.request.revoking import RevokingBody, RevokingHeader
+from agrirouter.service.dto.request.revoking import RevokingRequest
+from agrirouter.service.dto.response.revoking import RevokingResponse
 
 
-class Revoking(EnvironmentalService):
+class RevokingService(EnvironmentalService):
 
     def __init__(self, *args, **kwargs):
         self._public_key = kwargs.pop("public_key")
         self._private_key = kwargs.pop("private_key")
-        super(Revoking, self).__init__(*args, **kwargs)
+        super(RevokingService, self).__init__(*args, **kwargs)
 
     def _create_request(self, params: RevokingParameter, url: str) -> RevokingRequest:
         body_params = params.get_body_params()

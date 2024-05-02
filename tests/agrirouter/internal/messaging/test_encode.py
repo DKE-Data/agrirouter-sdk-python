@@ -2,9 +2,9 @@ from google.protobuf.any_pb2 import Any
 
 from agrirouter.generated.commons.message_pb2 import Message, Messages
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope, RequestPayloadWrapper
-from agrirouter.messaging.decode import DecodingService
-from agrirouter.messaging.encode import EncodingService
-from agrirouter.messaging.parameters.service import MessageHeaderParameters
+from agrirouter.service.messaging.decoding import DecodingService
+from agrirouter.service.messaging.encoding import EncodingService
+from agrirouter.service.parameter.messaging import MessageHeaderParameters
 
 
 def test_write_proto_parts_to_buffer():

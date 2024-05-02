@@ -7,7 +7,7 @@ import paho.mqtt.client as mqtt_client
 from paho.mqtt.client import MQTTv31, MQTTMessageInfo
 
 from agrirouter.api.constants import SYNC, ASYNC
-from agrirouter.messaging.certification import CertificationService
+from agrirouter.service.certification import CertificationService
 
 
 class MqttClient:

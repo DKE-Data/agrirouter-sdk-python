@@ -1,10 +1,10 @@
-"""Tests agrirouter/auth/response.py"""
+"""Tests agrirouter/auth/authorization.py"""
 
 import re
 
 import pytest
 
-from agrirouter.auth.response import AuthResponse
+from agrirouter.service.dto.response.authorization import AuthResponse
 from tests.agrirouter.common.constants import VALID_RESPONSE_SIGNATURE, VALID_RESPONSE_TOKEN, AR_PUBLIC_KEY
 
 

@@ -1,7 +1,7 @@
 import os
 import tempfile
 
-from agrirouter.onboarding.response import OnboardResponse
+from agrirouter.service.dto.response.onboarding import OnboardResponse
 
 
 class CertificationService:

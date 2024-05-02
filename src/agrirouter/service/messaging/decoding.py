@@ -11,8 +11,8 @@ from agrirouter.generated.messaging.response.payload.feed.feed_response_pb2 impo
     MessageQueryResponse
 from agrirouter.generated.messaging.response.payload.feed.push_notification_pb2 import PushNotification
 from agrirouter.generated.messaging.response.response_pb2 import ResponseEnvelope, ResponsePayloadWrapper
-from agrirouter.messaging.messages import DecodedMessage
-from agrirouter.utils.type_url import TypeUrl
+from agrirouter.api.messages import DecodedMessage
+from agrirouter.util.type_url import TypeUrl
 
 
 class DecodingService:

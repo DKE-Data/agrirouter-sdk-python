@@ -6,8 +6,8 @@ from typing import Any, List, Tuple
 import paho.mqtt.client as mqtt_client
 from paho.mqtt.client import MQTTv31, MQTTMessageInfo
 
-from agrirouter.messaging.certification import create_certificate_file_from_pen
 from agrirouter.api.mqtt_connection_mode import SYNC, ASYNC
+from agrirouter.messaging.certification import CertificationService
 
 
 class MqttClient:
@@ -37,7 +37,7 @@ class MqttClient:
         self.mqtt_client.on_subscribe = self._get_on_subscribe_callback()
         self.mqtt_client.on_unsubscribe = self._get_on_unsubscribe_callback()
 
-        certificate_file_path = create_certificate_file_from_pen(onboard_response)
+        certificate_file_path = CertificationService.create_certificate_file_from_pen(onboard_response)
         context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
         context.load_cert_chain(
             certfile=certificate_file_path,

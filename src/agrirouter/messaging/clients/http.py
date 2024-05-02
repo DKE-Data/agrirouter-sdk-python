@@ -4,7 +4,7 @@ import os
 import ssl
 from urllib.parse import urlparse
 
-from agrirouter.messaging.certification import create_certificate_file_from_pen
+from agrirouter.messaging.certification import CertificationService
 from agrirouter.onboarding.response import OnboardResponse
 
 
@@ -45,7 +45,7 @@ class HttpClient:
         )
 
     def send(self, method: str, uri: str, onboard_response: OnboardResponse, request_body=None):
-        certificate_file_path = create_certificate_file_from_pen(onboard_response)
+        certificate_file_path = CertificationService.create_certificate_file_from_pen(onboard_response)
         try:
             connection = self.make_connection(certificate_file_path, uri, onboard_response)
             if request_body is not None:

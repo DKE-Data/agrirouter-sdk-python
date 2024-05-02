@@ -15,8 +15,8 @@ class RevokingHeader:
     def get_header(self) -> dict:
         return self.params
 
-    def sign(self, signatute):
-        self.params["X-Agrirouter-Signature"] = signatute
+    def sign(self, signature):
+        self.params["X-Agrirouter-Signature"] = signature
 
     def _set_params(self, application_id: str, signature: str, content_type: str):
         header = dict()

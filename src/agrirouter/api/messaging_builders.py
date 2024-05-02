@@ -1,8 +1,8 @@
 from typing import List
 
+from agrirouter.api.enums import CapabilityType
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from agrirouter.api.enums import CapabilityType
 
 
 class SubscriptionItemBuilder:

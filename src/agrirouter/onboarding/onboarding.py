@@ -1,8 +1,8 @@
 import requests
 
-from agrirouter.api.environments import BaseEnvironment
+from agrirouter.api.env import BaseEnvironment
 from agrirouter.api.exceptions import UnexpectedErrorDuringOnboarding, RequestNotSigned
-from agrirouter.environments.environmental_services import EnvironmentalService
+from agrirouter.api.env import EnvironmentalService
 from agrirouter.onboarding.headers import SoftwareOnboardingHeader
 from agrirouter.onboarding.parameters import OnboardParameters
 from agrirouter.onboarding.request import OnboardRequest

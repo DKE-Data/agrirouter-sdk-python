@@ -1,6 +1,6 @@
 import requests
 
-from agrirouter.environments.environmental_services import EnvironmentalService
+from agrirouter.api.env import EnvironmentalService
 from agrirouter.api.exceptions import RequestNotSigned
 from agrirouter.revoking.headers import RevokingHeader
 from agrirouter.revoking.parameters import RevokingParameter

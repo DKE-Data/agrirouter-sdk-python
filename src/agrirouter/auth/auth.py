@@ -2,7 +2,7 @@ from urllib.parse import urlparse, parse_qs
 
 from agrirouter.auth.parameters import AuthUrlParameter
 from agrirouter.auth.response import AuthResponse
-from agrirouter.environments.environmental_services import EnvironmentalService
+from agrirouter.api.env import EnvironmentalService
 
 
 class Authorization(EnvironmentalService):

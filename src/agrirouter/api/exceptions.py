@@ -15,7 +15,7 @@ class BadAuthResponse(AgrirouterBaseException):
 
 class InvalidEnvironmentSetup(AgrirouterBaseException):
     _message = "Invalid value of env parameter. [QA] or [Production] values are allowed. " \
-               "Please use environments.enums.Environments enum for configure environment properly"
+               "Please use env.enums.Environments enum for configure environment properly"
 
 
 class TypeUrlNotFound(AgrirouterBaseException):

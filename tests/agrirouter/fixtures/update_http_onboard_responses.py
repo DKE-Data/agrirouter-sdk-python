@@ -4,7 +4,7 @@ import unittest
 import pytest
 
 from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
-from agrirouter.api.environments import Qa
+from agrirouter.api.env import Qa
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.messaging.parameters.service import CapabilitiesParameters
 from agrirouter.messaging.services.commons import HttpMessagingService

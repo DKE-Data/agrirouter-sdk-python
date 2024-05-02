@@ -1,7 +1,7 @@
-"""Test src/environments/environments.py"""
+"""Test src/env/env.py"""
 
-from src.agrirouter.api.environments import Production
-from src.agrirouter.api.environments import Qa
+from src.agrirouter.api.env import Production
+from src.agrirouter.api.env import Qa
 from tests.agrirouter.common.constants import APPLICATION_ID
 
 

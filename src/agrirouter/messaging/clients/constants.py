@@ -1,2 +1,0 @@
-ASYNC = "ASYNC"
-SYNC = "SYNC"

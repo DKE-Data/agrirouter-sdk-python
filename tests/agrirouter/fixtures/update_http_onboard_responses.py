@@ -4,15 +4,15 @@ import unittest
 import pytest
 
 from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
-from agrirouter.api.environments import Qa
+from agrirouter.api.enums import CertificateTypes, Gateways
+from agrirouter.api.env import Qa
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.messaging.parameters.service import CapabilitiesParameters
-from agrirouter.messaging.services.commons import HttpMessagingService
-from agrirouter.messaging.services.http.fetch_message_service import FetchMessageService
-from agrirouter.messaging.services.messaging import CapabilitiesService
-from agrirouter.onboarding.enums import CertificateTypes, Gateways
-from agrirouter.onboarding.response import OnboardResponse
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.service.messaging.common import HttpMessagingService
+from agrirouter.service.messaging.http.message_fetching import FetchMessageService
+from agrirouter.service.messaging.message_sending import CapabilitiesService
+from agrirouter.service.onboarding import OnboardResponse
+from agrirouter.service.parameter.messaging import CapabilitiesParameters
+from agrirouter.util.uuid_util import UUIDUtil
 from tests.agrirouter.common.onboarding import onboard_communication_unit
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.applications import CommunicationUnit
@@ -62,7 +62,7 @@ class OnboardResponseUpdate(unittest.TestCase):
         capabilities_service = CapabilitiesService(messaging_service)
         capabilities_parameters = CapabilitiesParameters(
             onboarding_response=onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=1,
             application_id=CommunicationUnit.application_id,
             certification_version_id=CommunicationUnit.certification_version_id,

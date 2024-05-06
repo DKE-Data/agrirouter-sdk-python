@@ -4,18 +4,17 @@ import unittest
 import pytest
 
 from agrirouter.api.enums import CapabilityType, TechnicalMessageType
+from agrirouter.api.messages import OutboxMessage
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.decode import decode_response, decode_details
-from agrirouter.messaging.encode import chunk_and_base64encode_each_chunk, encode_chunks_message
-from agrirouter.messaging.messages import OutboxMessage
-from agrirouter.messaging.parameters.dto import ChunkedMessageParameters
-from agrirouter.messaging.parameters.service import FeedDeleteParameters, MessageHeaderParameters, \
-    MessagePayloadParameters
-from agrirouter.messaging.services.commons import MqttMessagingService
-from agrirouter.messaging.services.messaging import FeedDeleteService, SendChunkedMessageService
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.onboarding.response import OnboardResponse
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.service.messaging.common import MqttMessagingService
+from agrirouter.service.messaging.decoding import DecodingService
+from agrirouter.service.messaging.encoding import EncodingService
+from agrirouter.service.messaging.message_sending import FeedDeleteService, SendChunkedMessageService
+from agrirouter.service.messaging.sequence_numbers import SequenceNumberService
+from agrirouter.service.onboarding import OnboardResponse
+from agrirouter.service.parameter.messaging import FeedDeleteParameters, MessageHeaderParameters, \
+    MessagePayloadParameters, ChunkedMessageParameters
+from agrirouter.util.uuid_util import UUIDUtil
 from tests.agrirouter.common.data_provider import DataProvider
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.identifier import Identifier
@@ -70,7 +69,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             senders=[self._sender.get_sensor_alternate_id()]
         )
@@ -100,7 +99,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient.get_sensor_alternate_id())
 
-        message_header_parameters = MessageHeaderParameters(application_message_id=new_uuid(),
+        message_header_parameters = MessageHeaderParameters(application_message_id=UUIDUtil.new_uuid(),
                                                             application_message_seq_no=current_sequence_number,
                                                             technical_message_type=CapabilityType.IMG_BMP.value,
                                                             recipients=[
@@ -110,15 +109,17 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         message_payload_parameters = MessagePayloadParameters(type_url=TechnicalMessageType.EMPTY.value,
                                                               value=DataProvider.read_base64_encoded_large_bmp())
 
-        message_parameter_tuples = chunk_and_base64encode_each_chunk(header_parameters=message_header_parameters,
-                                                                     payload_parameters=message_payload_parameters,
-                                                                     onboarding_response=self._sender)
+        message_parameter_tuples = EncodingService.chunk_and_base64encode_each_chunk(
+            header_parameters=message_header_parameters,
+            payload_parameters=message_payload_parameters,
+            onboarding_response=self._sender)
 
         for _tuple in message_parameter_tuples:
             self._chunked_message_to_verify.append(_tuple.message_payload_parameters.get_value())
             assert len(_tuple.message_payload_parameters.get_value()) <= self._MAX_CHUNK_SIZE
 
-        encoded_chunked_messages = encode_chunks_message(message_parameter_tuple=message_parameter_tuples)
+        encoded_chunked_messages = EncodingService.encode_chunks_message(
+            message_parameter_tuple=message_parameter_tuples)
 
         if not len(encoded_chunked_messages) == 10:
             self._log.error("Number of chunks not as expected. Check the data being chunked. ")
@@ -126,7 +127,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         chunk_message_parameters = ChunkedMessageParameters(
             onboarding_response=self._sender,
             technical_message_type=CapabilityType.IMG_BMP.value,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             recipients=[self._recipient.get_sensor_alternate_id()],
             encoded_chunked_messages=encoded_chunked_messages)
@@ -161,12 +162,12 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
                            msg.payload.decode())
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.type != 12:
-                decoded_details = decode_details(decoded_message.response_payload.details)
+                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
                 self._log.error(
                     f"Received wrong message from the agrirouter: {str(decoded_details)}")
-            push_notification = decode_details(decoded_message.response_payload.details)
+            push_notification = DecodingService.decode_details(decoded_message.response_payload.details)
             current_chunked_message = push_notification.messages[0].content.value
             assert decoded_message.response_envelope.response_code == 200
             assert DataProvider.get_hash(current_chunked_message) == DataProvider.get_hash(
@@ -184,8 +185,8 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
             self._log.info("Received message after deleting messages: " + str(msg.payload))
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
-            delete_details = decode_details(decoded_message.response_payload.details)
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+            delete_details = DecodingService.decode_details(decoded_message.response_payload.details)
             self._log.info("Details for the message removal: " + str(delete_details))
             assert decoded_message.response_envelope.response_code == 201
 

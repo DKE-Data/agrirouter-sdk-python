@@ -1,5 +1,5 @@
-"""Test agrirouter/revoking/parameters.py"""
-from agrirouter.revoking.parameters import RevokingParameter
+"""Test agrirouter/revoking/authorization.py"""
+from agrirouter.service.parameter.revoking import RevokingParameter
 
 from tests.agrirouter.common.constants import APPLICATION_ID
 

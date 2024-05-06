@@ -1,7 +1,6 @@
-"""Test src/environments/environmental_services.py"""
+"""Test src/env/environmental_services.py"""
 
-from src.agrirouter.api.environments import Qa, Production
-from src.agrirouter.environments.environmental_services import EnvironmentalService
+from src.agrirouter.api.env import Qa, Production, EnvironmentalService
 
 
 def test_arclient_set_env():

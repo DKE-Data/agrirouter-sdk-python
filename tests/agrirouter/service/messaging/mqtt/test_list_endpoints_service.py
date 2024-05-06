@@ -3,14 +3,14 @@ import unittest
 
 import pytest
 
-from agrirouter.messaging.decode import decode_response, decode_details
 from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
-from agrirouter.messaging.messages import OutboxMessage
-from agrirouter.messaging.parameters.service import ListEndpointsParameters
-from agrirouter.messaging.services.commons import MqttMessagingService
-from agrirouter.messaging.services.messaging import ListEndpointsService
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.api.messages import OutboxMessage
+from agrirouter.service.messaging.common import MqttMessagingService
+from agrirouter.service.messaging.decoding import DecodingService
+from agrirouter.service.messaging.message_sending import ListEndpointsService
+from agrirouter.service.messaging.sequence_numbers import SequenceNumberService
+from agrirouter.service.parameter.messaging import ListEndpointsParameters
+from agrirouter.util.uuid_util import UUIDUtil
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.identifier import Identifier
 from tests.agrirouter.data.onboard_response_integration_service import read_onboard_response
@@ -52,7 +52,7 @@ class TestListEndpointsService(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._list_endpoints_service_callback())
 
-        list_endpoints_parameters = ListEndpointsParameters(application_message_id=new_uuid(),
+        list_endpoints_parameters = ListEndpointsParameters(application_message_id=UUIDUtil.new_uuid(),
                                                             application_message_seq_no=current_sequence_number,
                                                             onboarding_response=self._recipient_onboard_response,
                                                             filtered=True,
@@ -84,7 +84,7 @@ class TestListEndpointsService(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._list_endpoints_service_callback())
 
-        list_endpoints_parameters = ListEndpointsParameters(application_message_id=new_uuid(),
+        list_endpoints_parameters = ListEndpointsParameters(application_message_id=UUIDUtil.new_uuid(),
                                                             application_message_seq_no=current_sequence_number,
                                                             onboarding_response=self._recipient_onboard_response,
                                                             filtered=True,
@@ -117,7 +117,7 @@ class TestListEndpointsService(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._list_endpoints_service_for_all_endpoints_callback())
 
-        list_endpoints_parameters = ListEndpointsParameters(application_message_id=new_uuid(),
+        list_endpoints_parameters = ListEndpointsParameters(application_message_id=UUIDUtil.new_uuid(),
                                                             application_message_seq_no=current_sequence_number,
                                                             onboarding_response=self._recipient_onboard_response,
                                                             )
@@ -139,8 +139,8 @@ class TestListEndpointsService(unittest.TestCase):
             self._log.info("Callback for checking if messages are received.")
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
-            list_endpoints_service_details = decode_details(decoded_message.response_payload.details)
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+            list_endpoints_service_details = DecodingService.decode_details(decoded_message.response_payload.details)
             self._log.info(f"List endpoints service details: {list_endpoints_service_details}")
             assert decoded_message.response_envelope.response_code == 200
             for _endpoint in list_endpoints_service_details.endpoints:
@@ -168,8 +168,8 @@ class TestListEndpointsService(unittest.TestCase):
             self._log.info("Callback for checking if messages are received.")
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
-            list_endpoints_service_details = decode_details(decoded_message.response_payload.details)
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+            list_endpoints_service_details = DecodingService.decode_details(decoded_message.response_payload.details)
             self._log.info(f"List endpoints service details: {list_endpoints_service_details}")
             assert decoded_message.response_envelope.response_code == 200
             for _endpoint in list_endpoints_service_details.endpoints:

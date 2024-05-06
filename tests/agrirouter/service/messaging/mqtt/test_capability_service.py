@@ -3,16 +3,16 @@ import unittest
 
 import pytest
 
-from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
-from agrirouter.messaging.decode import decode_response, decode_details
 from agrirouter.api.enums import CapabilityDirectionType
 from agrirouter.api.enums import CapabilityType
-from agrirouter.messaging.messages import OutboxMessage
-from agrirouter.messaging.parameters.service import CapabilitiesParameters
-from agrirouter.messaging.services.commons import MqttMessagingService
-from agrirouter.messaging.services.messaging import CapabilitiesService
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.api.messages import OutboxMessage
+from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
+from agrirouter.service.messaging.common import MqttMessagingService
+from agrirouter.service.messaging.decoding import DecodingService
+from agrirouter.service.messaging.message_sending import CapabilitiesService
+from agrirouter.service.messaging.sequence_numbers import SequenceNumberService
+from agrirouter.service.parameter.messaging import CapabilitiesParameters
+from agrirouter.util.uuid_util import UUIDUtil
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.applications import CommunicationUnit
 from tests.agrirouter.data.identifier import Identifier
@@ -65,9 +65,9 @@ class TestMqttCapabilitiesService(unittest.TestCase):
             self._log.info("Received message after sending capabilities: " + str(msg.payload))
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.response_code != 201:
-                decoded_details = decode_details(decoded_message.response_payload.details)
+                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
                 self._log.error("Message details: " + str(decoded_details))
             assert decoded_message.response_envelope.response_code == 201
             self._callback_processed = True
@@ -79,7 +79,7 @@ class TestMqttCapabilitiesService(unittest.TestCase):
             onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
             onboarding_response=onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             application_id=CommunicationUnit.application_id,
             certification_version_id=CommunicationUnit.certification_version_id,

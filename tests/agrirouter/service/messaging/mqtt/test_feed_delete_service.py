@@ -4,15 +4,15 @@ import unittest
 import pytest
 
 from agrirouter.api.enums import CapabilityType
+from agrirouter.api.messages import OutboxMessage
 from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.decode import decode_response, decode_details
-from agrirouter.messaging.messages import OutboxMessage
-from agrirouter.messaging.parameters.service import FeedDeleteParameters
-from agrirouter.messaging.services.commons import MqttMessagingService
-from agrirouter.messaging.services.messaging import SendMessageService, SendMessageParameters, FeedDeleteService
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.utils.utc_time_util import max_validity_period, validity_period_for_seconds
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.service.messaging.common import MqttMessagingService
+from agrirouter.service.messaging.decoding import DecodingService
+from agrirouter.service.messaging.message_sending import SendMessageService, FeedDeleteService
+from agrirouter.service.messaging.sequence_numbers import SequenceNumberService
+from agrirouter.service.parameter.messaging import FeedDeleteParameters, SendMessageParameters
+from agrirouter.util.utc_time_util import UtcTimeUtil
+from agrirouter.util.uuid_util import UUIDUtil
 from tests.agrirouter.common.data_provider import DataProvider
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.identifier import Identifier
@@ -76,7 +76,7 @@ class TestFeedDeleteService(unittest.TestCase):
         send_message_parameters = SendMessageParameters(
             onboarding_response=self._sender_onboard_response,
             technical_message_type=CapabilityType.IMG_PNG.value,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             recipients=[self._recipient_onboard_response.get_sensor_alternate_id()],
             base64_message_content=DataProvider.read_base64_encoded_image(),
@@ -104,7 +104,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             senders=[self._sender_onboard_response.get_sensor_alternate_id()]
         )
@@ -133,7 +133,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             message_ids=[self._received_messages.header.message_id]
         )
@@ -162,9 +162,9 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
-            validity_period=max_validity_period()
+            validity_period=UtcTimeUtil.max_validity_period()
         )
 
         delete_message_service = FeedDeleteService(self._messaging_service_for_recipient)
@@ -191,9 +191,9 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
-            message_ids=[new_uuid()]
+            message_ids=[UUIDUtil.new_uuid()]
         )
 
         delete_message_service = FeedDeleteService(self._messaging_service_for_recipient)
@@ -220,9 +220,9 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
-            senders=[new_uuid()]
+            senders=[UUIDUtil.new_uuid()]
         )
 
         delete_message_service = FeedDeleteService(self._messaging_service_for_recipient)
@@ -249,9 +249,9 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
-            validity_period=validity_period_for_seconds(5)
+            validity_period=UtcTimeUtil.validity_period_for_seconds(5)
         )
 
         delete_message_service = FeedDeleteService(self._messaging_service_for_recipient)
@@ -278,9 +278,9 @@ class TestFeedDeleteService(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=self._recipient_onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
-            validity_period=validity_period_for_seconds(5)
+            validity_period=UtcTimeUtil.validity_period_for_seconds(5)
         )
 
         delete_message_service = FeedDeleteService(self._messaging_service_for_recipient)
@@ -312,12 +312,12 @@ class TestFeedDeleteService(unittest.TestCase):
                            msg.payload.decode())
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.type != 12:
-                decoded_details = decode_details(decoded_message.response_payload.details)
+                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
                 self._log.error(
                     f"Received wrong message from the agrirouter: {str(decoded_details)}")
-            push_notification = decode_details(decoded_message.response_payload.details)
+            push_notification = DecodingService.decode_details(decoded_message.response_payload.details)
             assert decoded_message.response_envelope.response_code == 200
             self._received_messages = push_notification.messages[0]
 
@@ -331,8 +331,8 @@ class TestFeedDeleteService(unittest.TestCase):
             self._log.info("Received message after deleting messages: " + str(msg.payload))
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
-            feed_delete_details = decode_details(decoded_message.response_payload.details)
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+            feed_delete_details = DecodingService.decode_details(decoded_message.response_payload.details)
             self._log.info("Details for the message removal: " + str(feed_delete_details))
             message_ids_in_feed = [_message.args['messageId'] for _message in feed_delete_details.messages]
             assert decoded_message.response_envelope.response_code == 201
@@ -349,8 +349,9 @@ class TestFeedDeleteService(unittest.TestCase):
             self._log.info("Callback for checking if no messages are received.")
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
-            feed_delete_service_for_empty_result = decode_details(decoded_message.response_payload.details)
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+            feed_delete_service_for_empty_result = DecodingService.decode_details(
+                decoded_message.response_payload.details)
             self._log.info(f"Feed delete details: {feed_delete_service_for_empty_result}")
             assert decoded_message.response_envelope.response_code == 204
             assert feed_delete_service_for_empty_result.messages[0].message_code == "VAL_000208"

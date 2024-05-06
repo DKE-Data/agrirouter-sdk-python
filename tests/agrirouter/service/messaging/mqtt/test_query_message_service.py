@@ -4,18 +4,17 @@ from typing import Optional
 
 import pytest
 
-from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
-from agrirouter.messaging.decode import decode_response, decode_details
 from agrirouter.api.enums import CapabilityType
-from agrirouter.messaging.messages import OutboxMessage
-from agrirouter.messaging.parameters.service import FeedDeleteParameters, QueryMessageParameters
-from agrirouter.messaging.services.commons import MqttMessagingService
-from agrirouter.messaging.services.messaging import SendMessageService, SendMessageParameters, FeedDeleteService, \
-    QueryMessagesService
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.onboarding.response import OnboardResponse
-from agrirouter.utils.utc_time_util import max_validity_period, validity_period_for_seconds
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.api.messages import OutboxMessage
+from agrirouter.generated.messaging.request.request_pb2 import RequestEnvelope
+from agrirouter.service.messaging.common import MqttMessagingService
+from agrirouter.service.messaging.decoding import DecodingService
+from agrirouter.service.messaging.message_sending import SendMessageService, FeedDeleteService, QueryMessagesService
+from agrirouter.service.messaging.sequence_numbers import SequenceNumberService
+from agrirouter.service.onboarding import OnboardResponse
+from agrirouter.service.parameter.messaging import FeedDeleteParameters, QueryMessageParameters, SendMessageParameters
+from agrirouter.util.utc_time_util import UtcTimeUtil
+from agrirouter.util.uuid_util import UUIDUtil
 from tests.agrirouter.common.data_provider import DataProvider
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.identifier import Identifier
@@ -85,7 +84,7 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
         send_message_parameters = SendMessageParameters(
             onboarding_response=self._sender_onboard_response,
             technical_message_type=CapabilityType.IMG_PNG.value,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             recipients=[self._recipient_onboard_response.get_sensor_alternate_id()],
             base64_message_content=DataProvider.read_base64_encoded_image(),
@@ -111,7 +110,7 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
 
         delete_message_parameters = FeedDeleteParameters(
             onboarding_response=onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             senders=[self._sender_onboard_response.get_sensor_alternate_id()]
         )
@@ -135,10 +134,10 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._on_query_message_service_callback([self._received_messages.header.message_id]))
 
-        query_message_parameters = QueryMessageParameters(application_message_id=new_uuid(),
+        query_message_parameters = QueryMessageParameters(application_message_id=UUIDUtil.new_uuid(),
                                                           application_message_seq_no=current_sequence_number,
                                                           onboarding_response=self._recipient_onboard_response,
-                                                          validity_period=max_validity_period(),
+                                                          validity_period=UtcTimeUtil.max_validity_period(),
                                                           )
 
         query_message_service = QueryMessagesService(self._messaging_service_for_recipient)
@@ -163,7 +162,7 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._on_query_message_service_callback(None))
 
-        query_message_parameters = QueryMessageParameters(application_message_id=new_uuid(),
+        query_message_parameters = QueryMessageParameters(application_message_id=UUIDUtil.new_uuid(),
                                                           application_message_seq_no=current_sequence_number,
                                                           onboarding_response=self._recipient_onboard_response,
                                                           senders=[
@@ -192,7 +191,7 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._on_query_message_service_callback([self._received_messages.header.message_id]))
 
-        query_message_parameters = QueryMessageParameters(application_message_id=new_uuid(),
+        query_message_parameters = QueryMessageParameters(application_message_id=UUIDUtil.new_uuid(),
                                                           application_message_seq_no=current_sequence_number,
                                                           onboarding_response=self._recipient_onboard_response,
                                                           message_ids=[
@@ -221,10 +220,10 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._empty_result_in_response_callback())
 
-        query_message_parameters = QueryMessageParameters(application_message_id=new_uuid(),
+        query_message_parameters = QueryMessageParameters(application_message_id=UUIDUtil.new_uuid(),
                                                           application_message_seq_no=current_sequence_number,
                                                           onboarding_response=self._recipient_onboard_response,
-                                                          message_ids=[new_uuid()],
+                                                          message_ids=[UUIDUtil.new_uuid()],
                                                           )
 
         query_message_service = QueryMessagesService(self._messaging_service_for_recipient)
@@ -249,10 +248,10 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._empty_result_in_response_callback())
 
-        query_message_parameters = QueryMessageParameters(application_message_id=new_uuid(),
+        query_message_parameters = QueryMessageParameters(application_message_id=UUIDUtil.new_uuid(),
                                                           application_message_seq_no=current_sequence_number,
                                                           onboarding_response=self._recipient_onboard_response,
-                                                          senders=[new_uuid()],
+                                                          senders=[UUIDUtil.new_uuid()],
                                                           )
 
         query_message_service = QueryMessagesService(self._messaging_service_for_recipient)
@@ -277,10 +276,11 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             onboarding_response=self._recipient_onboard_response,
             on_message_callback=self._empty_result_in_response_callback())
 
-        query_message_parameters = QueryMessageParameters(application_message_id=new_uuid(),
+        query_message_parameters = QueryMessageParameters(application_message_id=UUIDUtil.new_uuid(),
                                                           application_message_seq_no=current_sequence_number,
                                                           onboarding_response=self._recipient_onboard_response,
-                                                          validity_period=validity_period_for_seconds(seconds=5),
+                                                          validity_period=UtcTimeUtil.validity_period_for_seconds(
+                                                              seconds=5),
                                                           )
 
         query_message_service = QueryMessagesService(self._messaging_service_for_recipient)
@@ -312,12 +312,12 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
                            msg.payload.decode())
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.type != 12:
-                decoded_details = decode_details(decoded_message.response_payload.details)
+                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
                 self._log.error(
                     f"Received wrong message from the agrirouter: {str(decoded_details)}")
-            push_notification = decode_details(decoded_message.response_payload.details)
+            push_notification = DecodingService.decode_details(decoded_message.response_payload.details)
             assert decoded_message.response_envelope.response_code == 200
             self._received_messages = push_notification.messages[0]
 
@@ -331,8 +331,8 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             self._log.info("Received message after deleting messages: " + str(msg.payload))
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
-            delete_details = decode_details(decoded_message.response_payload.details)
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+            delete_details = DecodingService.decode_details(decoded_message.response_payload.details)
             self._log.info("Details for the message removal: " + str(delete_details))
             assert decoded_message.response_envelope.response_code == 201
 
@@ -346,8 +346,8 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             self._log.info("Callback for checking if the content from query messages are received.")
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
-            query_message_details = decode_details(decoded_message.response_payload.details)
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+            query_message_details = DecodingService.decode_details(decoded_message.response_payload.details)
             self._log.info(f"Query Message Service Details: {query_message_details}")
             assert decoded_message.response_envelope.type == 7
             message_query_message_ids = [query_message_details.messages[idx].header.message_id for idx in
@@ -376,7 +376,7 @@ class TestQueryMessageServiceForSingleMessage(unittest.TestCase):
             self._log.info("Callback for checking if no messages are received.")
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             assert decoded_message.response_envelope.response_code == 204
             self._callback_for_feed_message_query_processed = True
 

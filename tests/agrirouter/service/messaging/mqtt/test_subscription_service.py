@@ -3,16 +3,16 @@ import unittest
 
 import pytest
 
+from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
+from agrirouter.api.messages import OutboxMessage
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
-from agrirouter.messaging.decode import decode_response, decode_details
-from agrirouter.api.enums import CapabilityType, CapabilityDirectionType
-from agrirouter.messaging.messages import OutboxMessage
-from agrirouter.messaging.parameters.service import SubscriptionParameters, CapabilitiesParameters
-from agrirouter.messaging.services.commons import MqttMessagingService
-from agrirouter.messaging.services.messaging import SubscriptionService, CapabilitiesService
-from agrirouter.messaging.services.sequence_number_service import SequenceNumberService
-from agrirouter.utils.uuid_util import new_uuid
+from agrirouter.service.messaging.common import MqttMessagingService
+from agrirouter.service.messaging.decoding import DecodingService
+from agrirouter.service.messaging.message_sending import CapabilitiesService, SubscriptionService
+from agrirouter.service.messaging.sequence_numbers import SequenceNumberService
+from agrirouter.service.parameter.messaging import SubscriptionParameters, CapabilitiesParameters
+from agrirouter.util.uuid_util import UUIDUtil
 from tests.agrirouter.common.sleeper import Sleeper
 from tests.agrirouter.data.applications import CommunicationUnit
 from tests.agrirouter.data.identifier import Identifier
@@ -44,7 +44,7 @@ class TestSubscriptionService(unittest.TestCase):
             self._onboard_response.get_sensor_alternate_id())
         capabilities_parameters = CapabilitiesParameters(
             onboarding_response=self._onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
             application_id=CommunicationUnit.application_id,
             certification_version_id=CommunicationUnit.certification_version_id,
@@ -79,9 +79,9 @@ class TestSubscriptionService(unittest.TestCase):
                 "Received message from MQTT broker after sending the capabilities, checking the result.")
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.response_code != 201:
-                decoded_details = decode_details(decoded_message.response_payload.details)
+                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
                 self._log.error("Message could not be processed. Response code: " + str(
                     decoded_message.response_envelope.response_code))
                 self._log.error("Message details: " + str(decoded_details))
@@ -103,7 +103,7 @@ class TestSubscriptionService(unittest.TestCase):
         subscription_parameters = SubscriptionParameters(
             subscription_items=[subscription_item],
             onboarding_response=self._onboard_response,
-            application_message_id=new_uuid(),
+            application_message_id=UUIDUtil.new_uuid(),
             application_message_seq_no=current_sequence_number,
         )
         subscription_service.send(subscription_parameters)
@@ -125,9 +125,9 @@ class TestSubscriptionService(unittest.TestCase):
                 "Received message from MQTT broker after sending the subscriptions, checking the result.")
             outbox_message = OutboxMessage()
             outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = decode_response(outbox_message.command.message.encode())
+            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
             if decoded_message.response_envelope.response_code != 201:
-                decoded_details = decode_details(decoded_message.response_payload.details)
+                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
                 self._log.error("Message details: " + str(decoded_details))
             assert decoded_message.response_envelope.response_code == 201
             self._callback_processed = True

@@ -25,6 +25,8 @@ jobs:
       - name: Run internal tests
         run: |
           pytest tests/agrirouter/internal --junitxml=junit/test-results.xml
+      - name: Show git status to debug version string generation
+        run: git status
       - name: Build a binary wheel and a source tarball
         run: python3 -m build
       - name: Store the distribution packages

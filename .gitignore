@@ -18,3 +18,5 @@ virtualenv
 /paho/
 /paho_mqtt-1.6.1.dist-info/
 .vscode
+
+junit/

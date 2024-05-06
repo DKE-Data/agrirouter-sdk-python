@@ -4,6 +4,7 @@ dist
 venv
 env
 virtualenv
+.venv
 
 .idea
 **/__pycache__
@@ -16,3 +17,4 @@ virtualenv
 /paho_mqtt-1.6.1.dist-info/
 /paho/
 /paho_mqtt-1.6.1.dist-info/
+.vscode

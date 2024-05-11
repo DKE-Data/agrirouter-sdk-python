@@ -43,8 +43,8 @@ class TestEnvironments(unittest.TestCase):
 
     def test_get_secured_onboarding_authorization_url(self):
         env = environments.BaseEnvironment()
-        expected_url = "/application/test_app/authorize?response_type=test_response_type&state=test_state&redirect_uri=test_redirect_uri"
-        assert env.get_secured_onboarding_authorization_url("test_app", "test_response_type", "test_state",
+        expected_url = "/application/test_app/authorize?response_type=test_response_type&state=test_state&redirect_uri=test_redirect_uri"  # noqa
+        assert env.get_secured_onboarding_authorization_url("test_app", "test_response_type", "test_state",  # noqa
                                                             "test_redirect_uri") == expected_url
 
     def test_get_mqtt_server_url(self):

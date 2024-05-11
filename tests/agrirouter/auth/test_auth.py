@@ -36,7 +36,7 @@ class TestAuthorization(unittest.TestCase):
         assert auth_response.state == 'state'
         assert auth_response.token == 'token'
         assert auth_response.signature == 'signature'
-        assert auth_response.error == None
+        assert auth_response.error is None
 
     def test_extract_auth_response_and_error(self):
         authorization = Authorization(MockEnvironment(), 'public_key', 'private_key')

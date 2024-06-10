@@ -1,12 +1,16 @@
 import time
-import agrirouter as ar
 from agrirouter.api.enums import CapabilityType
+from agrirouter.api.env import Qa
+from agrirouter.service.parameter.authorization import AuthUrlParameter
+from agrirouter.service.parameter.onboarding import OnboardParameters
+from agrirouter.service.authorization import AuthorizationService
 from agrirouter.service.dto.response.messaging import OnboardResponse
 from agrirouter.service.messaging.common import MqttMessagingService, HttpMessagingService
 from agrirouter.service.messaging.message_sending import ListEndpointsService, CapabilitiesService, SubscriptionService, \
     QueryHeaderService
 from agrirouter.service.parameter.messaging import QueryHeaderParameters, ListEndpointsParameters, \
     CapabilitiesParameters, SubscriptionParameters
+from agrirouter.service.onboarding import SecuredOnboardingService
 from agrirouter.api.enums import Gateways
 from agrirouter.generated.messaging.request.payload.endpoint.subscription_pb2 import Subscription
 from agrirouter.generated.messaging.request.payload.endpoint.capabilities_pb2 import CapabilitySpecification
@@ -83,8 +87,8 @@ certification_version_id = "edd5d6b7-45bb-4471-898e-ff9c2a7bf56f"  # # store her
 def example_auth():
     print("Authorization...\n")
 
-    auth_params = ar.AuthUrlParameter(application_id=application_id, response_type="onboard")
-    auth_client = ar.Authorization("QA", public_key=public_key, private_key=private_key)
+    auth_params = AuthUrlParameter(application_id=application_id, response_type="onboard")
+    auth_client = AuthorizationService(Qa(), public_key=public_key, private_key=private_key)
     auth_url = auth_client.get_auth_request_url(
         auth_params)  # use this url to authorize the user as described at https://docs.my-agrirouter.com/agrirouter-interface-documentation/latest/integration/authorization.html#perform-authorization
     print(f"auth_url={auth_url}")
@@ -116,11 +120,11 @@ def example_onboarding(gateway_id):
 
     print("Onboarding...\n")
 
-    id_ = "urn:myapp:snr00003234"  # just unique
+    id_ = "urn:myapp:snr000032dd34"  # just unique
     time_zone = "+03:00"
 
-    onboarding_client = ar.SecuredOnboardingService("QA", public_key=public_key, private_key=private_key)
-    onboarding_parameters = ar.OnboardParameters(id_=id_, application_id=application_id,
+    onboarding_client = SecuredOnboardingService(Qa(), public_key=public_key, private_key=private_key)
+    onboarding_parameters = OnboardParameters(id_=id_, application_id=application_id,
                                                  certification_version_id=certification_version_id,
                                                  gateway_id=gateway_id, time_zone=time_zone,
                                                  reg_code=auth_data.get_decoded_token().regcode)
@@ -154,7 +158,7 @@ def example_list_endpoints_mqtt(onboarding_response_data, foo):
     list_endpoint_service = ListEndpointsService(messaging_service)
 
     messaging_result = list_endpoint_service.send(list_endpoint_parameters)
-    print("Sent message: ", messaging_result)
+    print("Sent message: ", messaging_result.messages_ids)
 
     # Is needed for waiting of messaging responses from outbox
     while True:
@@ -294,6 +298,7 @@ def example_query_header_message_mqtt(onboarding_response_data, on_msg_callback)
 
     # Is needed for waiting of messaging responses from outbox
     while True:
+        messaging_service.client.loop()
         time.sleep(1)
 
 

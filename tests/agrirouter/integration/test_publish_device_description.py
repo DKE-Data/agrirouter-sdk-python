@@ -23,7 +23,6 @@ class TestPublishDeviceDescription(unittest.TestCase):
     _log = logging.getLogger(__name__)
     _callback_processed = False
 
-
     @pytest.fixture(autouse=True)
     def fixture(self):
         self._onboard_response = read_onboard_response(Identifier.MQTT_MESSAGES_SENDER[Identifier.PATH])
@@ -33,7 +32,6 @@ class TestPublishDeviceDescription(unittest.TestCase):
         yield
 
         self._messaging_service.client.disconnect()
-
 
     def test_given_valid_device_description_when_publishing_the_message_the_agrirouter_should_accept_it(self):
         device_description = Parse(self._deviceDescriptionAsJson, ISO11783_TaskData())
@@ -66,11 +64,19 @@ class TestPublishDeviceDescription(unittest.TestCase):
         outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
         decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
 
-        self._log.info(f"Received message with application message id {decoded_message.response_envelope.application_message_id}: {msg.payload}")
+        self._log.info(f"Received message with application message id "
+                       f"{decoded_message.response_envelope.application_message_id}: {msg.payload}")
         decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
         if decoded_message.response_envelope.response_code != 201:
             self._log.info("Message details: " + str(decoded_details))
-        assert decoded_message.response_envelope.response_code == 201 or (decoded_message.response_envelope.response_code == 400 and decoded_details.messages[0].message_code == "VAL_000004")
+        assert (
+                decoded_message.response_envelope.response_code == 201
+                or
+                (
+                        decoded_message.response_envelope.response_code == 400
+                        and decoded_details.messages[0].message_code == "VAL_000004"
+                )
+        )
         self._callback_processed = True
 
     _deviceDescriptionAsJson = ("{\n" +

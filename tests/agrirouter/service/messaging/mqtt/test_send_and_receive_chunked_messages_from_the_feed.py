@@ -67,7 +67,7 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         self._log.info("Deleting all existing messages after the test run.")
 
         self._feed_delete_messaging_service = MqttMessagingService(onboarding_response=onboard_response,
-                                                                   on_message_callback=self._callback_for_feed_delete())
+                                                                   on_message_callback=self._callback_for_feed_delete)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             onboard_response.get_sensor_alternate_id())
@@ -95,11 +95,11 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
 
         self._messaging_service_for_sender = MqttMessagingService(
             onboarding_response=self._sender,
-            on_message_callback=self._non_checking_callback())
+            on_message_callback=self._non_checking_callback)
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient,
-            on_message_callback=self._callback_to_set_the_received_message_ids())
+            on_message_callback=self._callback_to_set_the_received_message_ids)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient.get_sensor_alternate_id())
@@ -173,56 +173,47 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         self._callback_for_feed_header_query_processed = False
         self._messaging_service_for_specified_sender_id.client.disconnect()
 
-    def _non_checking_callback(self):
-        def _inner_function(client, userdata, msg):
-            """
-            Non checking callback to ensure that the message is processed.
-            """
-            self._log.info(
-                "Received message for the non checking callback, "
-                "skipping message and continue to the tests afterwards: " + str(msg.payload))
+    def _non_checking_callback(self, client, userdata, msg):
+        """
+        Non checking callback to ensure that the message is processed.
+        """
+        self._log.info(
+            "Received message for the non checking callback, "
+            "skipping message and continue to the tests afterwards: " + str(msg.payload))
 
-        return _inner_function
+    def _callback_to_set_the_received_message_ids(self, client, userdata, msg):
+        """
+        Callback to handle the incoming messages from the MQTT broker
+        """
+        self._log.info("Received message for recipient from the agrirouter: %s",
+                       msg.payload.decode())
+        outbox_message = OutboxMessage()
+        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+        decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+        if decoded_message.response_envelope.type != 12:
+            decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
+            self._log.error(
+                f"Received wrong message from the agrirouter: {str(decoded_details)}")
+        push_notification = DecodingService.decode_details(decoded_message.response_payload.details)
+        current_chunked_message = push_notification.messages[0].content.value
+        self._received_messages.append(push_notification.messages[0].header.message_id)
+        assert decoded_message.response_envelope.response_code == 200
+        assert DataProvider.get_hash(current_chunked_message) == DataProvider.get_hash(
+            self._chunked_message_to_verify[0])
+        self._chunked_message_to_verify.pop(0)
+        self._callback_for_chunking_feed_header_query_processed = True
 
-    def _callback_to_set_the_received_message_ids(self):
-        def _inner_function(client, userdata, msg):
-            """
-            Callback to handle the incoming messages from the MQTT broker
-            """
-            self._log.info("Received message for recipient from the agrirouter: %s",
-                           msg.payload.decode())
-            outbox_message = OutboxMessage()
-            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            if decoded_message.response_envelope.type != 12:
-                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
-                self._log.error(
-                    f"Received wrong message from the agrirouter: {str(decoded_details)}")
-            push_notification = DecodingService.decode_details(decoded_message.response_payload.details)
-            current_chunked_message = push_notification.messages[0].content.value
-            self._received_messages.append(push_notification.messages[0].header.message_id)
-            assert decoded_message.response_envelope.response_code == 200
-            assert DataProvider.get_hash(current_chunked_message) == DataProvider.get_hash(
-                self._chunked_message_to_verify[0])
-            self._chunked_message_to_verify.pop(0)
-            self._callback_for_chunking_feed_header_query_processed = True
-
-        return _inner_function
-
-    def _callback_for_feed_delete(self):
-        def _inner_function(client, userdata, msg):
-            """
-            Callback to decode Feed Delete Service
-            """
-            self._log.info("Received message after deleting messages: " + str(msg.payload))
-            outbox_message = OutboxMessage()
-            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            delete_details = DecodingService.decode_details(decoded_message.response_payload.details)
-            self._log.info("Details for the message removal: " + str(delete_details))
-            assert decoded_message.response_envelope.response_code == 201
-
-        return _inner_function
+    def _callback_for_feed_delete(self, client, userdata, msg):
+        """
+        Callback to decode Feed Delete Service
+        """
+        self._log.info("Received message after deleting messages: " + str(msg.payload))
+        outbox_message = OutboxMessage()
+        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+        decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+        delete_details = DecodingService.decode_details(decoded_message.response_payload.details)
+        self._log.info("Details for the message removal: " + str(delete_details))
+        assert decoded_message.response_envelope.response_code == 201
 
     def _on_query_header_service_callback(self, message_ids: Optional[list]):
         def _inner_function(client, userdata, msg):

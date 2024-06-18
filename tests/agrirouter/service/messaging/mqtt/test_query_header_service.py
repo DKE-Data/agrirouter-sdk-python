@@ -124,7 +124,6 @@ class TestQueryHeaderService(unittest.TestCase):
 
         self._received_messages = push_notification.messages[0]
 
-
     def _delete_messages_after_test_run(self, onboard_response: OnboardResponse):
         """
         Delete the messages after the test run.

@@ -143,12 +143,12 @@ class TestSendAndReceiveChunkedMessages(unittest.TestCase):
         self._callback_for_chunking_message_processed = False
 
     def _non_checking_callback(self, client, userdata, msg):
-            """
-            Non checking callback to ensure that the message is processed.
-            """
-            self._log.info(
-                "Received message for the non checking callback, "
-                "skipping message and continue to the tests afterwards: " + str(msg.payload))
+        """
+        Non checking callback to ensure that the message is processed.
+        """
+        self._log.info(
+            "Received message for the non checking callback, "
+            "skipping message and continue to the tests afterwards: " + str(msg.payload))
 
     def _callback_to_set_the_received_message_ids(self, client, userdata, msg):
         """

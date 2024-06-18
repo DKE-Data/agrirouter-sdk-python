@@ -168,4 +168,3 @@ class TestSendDirectMessageService(unittest.TestCase):
         delete_details = DecodingService.decode_details(decoded_message.response_payload.details)
         self._log.info("Details for the message removal: " + str(delete_details))
         assert decoded_message.response_envelope.response_code == 201
-

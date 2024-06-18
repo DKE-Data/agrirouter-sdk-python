@@ -70,104 +70,102 @@ class TestPublishDeviceDescription(unittest.TestCase):
         if decoded_message.response_envelope.response_code != 201:
             self._log.info("Message details: " + str(decoded_details))
         assert (
-                decoded_message.response_envelope.response_code == 201
-                or
-                (
-                        decoded_message.response_envelope.response_code == 400
-                        and decoded_details.messages[0].message_code == "VAL_000004"
-                )
+            decoded_message.response_envelope.response_code == 201 or (
+                decoded_message.response_envelope.response_code == 400
+                and decoded_details.messages[0].message_code == "VAL_000004"  # noqa: W503
+            )
         )
         self._callback_processed = True
 
-    _deviceDescriptionAsJson = ("{\n" +
-                                "  \"versionMajor\": \"VERSION_MAJOR_E2_DIS\",\n" +
-                                "  \"versionMinor\": 1,\n" +
-                                "  \"taskControllerManufacturer\": \"HOLMER EasyHelp 4.0\",\n" +
-                                "  \"taskControllerVersion\": \"0.0.1\",\n" +
-                                "  \"device\": [\n" +
-                                "    {\n" +
-                                "      \"deviceId\": {\n" +
-                                "        \"number\": \"-1\"\n" +
-                                "      },\n" +
-                                "      \"deviceDesignator\": \"harvester\",\n" +
-                                "      \"clientName\": \"oBCEAD3hBNI=\",\n" +
-                                "      \"deviceSerialNumber\": \"T4_4095\",\n" +
-                                "      \"deviceElement\": [\n" +
-                                "        {\n" +
-                                "          \"deviceElementId\": {\n" +
-                                "            \"number\": \"-1\"\n" +
-                                "          },\n" +
-                                "          \"deviceElementObjectId\": 100,\n" +
-                                "          \"deviceElementType\": \"C_DEVICE\",\n" +
-                                "          \"deviceElementDesignator\": \"Maschine\",\n" +
-                                "          \"deviceObjectReference\": [\n" +
-                                "            {\n" +
-                                "              \"deviceObjectId\": 10000\n" +
-                                "            },\n" +
-                                "            {\n" +
-                                "              \"deviceObjectId\": 10001\n" +
-                                "            },\n" +
-                                "            {\n" +
-                                "              \"deviceObjectId\": 10002\n" +
-                                "            },\n" +
-                                "            {\n" +
-                                "              \"deviceObjectId\": 10003\n" +
-                                "            },\n" +
-                                "            {\n" +
-                                "              \"deviceObjectId\": 10004\n" +
-                                "            }\n" +
-                                "          ]\n" +
-                                "        }\n" +
-                                "      ],\n" +
-                                "      \"deviceProcessData\": [\n" +
-                                "        {\n" +
-                                "          \"deviceProcessDataObjectId\": 10000,\n" +
-                                "          \"deviceProcessDataDdi\": 271,\n" +
-                                "          \"deviceValuePresentationObjectId\": 10000\n" +
-                                "        },\n" +
-                                "        {\n" +
-                                "          \"deviceProcessDataObjectId\": 10001,\n" +
-                                "          \"deviceProcessDataDdi\": 394,\n" +
-                                "          \"deviceValuePresentationObjectId\": 10001\n" +
-                                "        },\n" +
-                                "        {\n" +
-                                "          \"deviceProcessDataObjectId\": 10002,\n" +
-                                "          \"deviceProcessDataDdi\": 395,\n" +
-                                "          \"deviceValuePresentationObjectId\": 10002\n" +
-                                "        },\n" +
-                                "        {\n" +
-                                "          \"deviceProcessDataObjectId\": 10003,\n" +
-                                "          \"deviceProcessDataDdi\": 397,\n" +
-                                "          \"deviceValuePresentationObjectId\": 10003\n" +
-                                "        },\n" +
-                                "        {\n" +
-                                "          \"deviceProcessDataObjectId\": 10004,\n" +
-                                "          \"deviceProcessDataDdi\": 493,\n" +
-                                "          \"deviceValuePresentationObjectId\": 10004\n" +
-                                "        }\n" +
-                                "      ],\n" +
-                                "      \"deviceValuePresentation\": [\n" +
-                                "        {\n" +
-                                "          \"deviceValuePresentationObjectId\": 10000,\n" +
-                                "          \"scale\": 1.0\n" +
-                                "        },\n" +
-                                "        {\n" +
-                                "          \"deviceValuePresentationObjectId\": 10001,\n" +
-                                "          \"scale\": 1.0\n" +
-                                "        },\n" +
-                                "        {\n" +
-                                "          \"deviceValuePresentationObjectId\": 10002,\n" +
-                                "          \"scale\": 1.0\n" +
-                                "        },\n" +
-                                "        {\n" +
-                                "          \"deviceValuePresentationObjectId\": 10003,\n" +
-                                "          \"scale\": 1.0\n" +
-                                "        },\n" +
-                                "        {\n" +
-                                "          \"deviceValuePresentationObjectId\": 10004,\n" +
-                                "          \"scale\": 1.0\n" +
-                                "        }\n" +
-                                "      ]\n" +
-                                "    }\n" +
-                                "  ]\n" +
+    _deviceDescriptionAsJson = ("{\n"
+                                "  \"versionMajor\": \"VERSION_MAJOR_E2_DIS\",\n"
+                                "  \"versionMinor\": 1,\n"
+                                "  \"taskControllerManufacturer\": \"HOLMER EasyHelp 4.0\",\n"
+                                "  \"taskControllerVersion\": \"0.0.1\",\n"
+                                "  \"device\": [\n"
+                                "    {\n"
+                                "      \"deviceId\": {\n"
+                                "        \"number\": \"-1\"\n"
+                                "      },\n"
+                                "      \"deviceDesignator\": \"harvester\",\n"
+                                "      \"clientName\": \"oBCEAD3hBNI=\",\n"
+                                "      \"deviceSerialNumber\": \"T4_4095\",\n"
+                                "      \"deviceElement\": [\n"
+                                "        {\n"
+                                "          \"deviceElementId\": {\n"
+                                "            \"number\": \"-1\"\n"
+                                "          },\n"
+                                "          \"deviceElementObjectId\": 100,\n"
+                                "          \"deviceElementType\": \"C_DEVICE\",\n"
+                                "          \"deviceElementDesignator\": \"Maschine\",\n"
+                                "          \"deviceObjectReference\": [\n"
+                                "            {\n"
+                                "              \"deviceObjectId\": 10000\n"
+                                "            },\n"
+                                "            {\n"
+                                "              \"deviceObjectId\": 10001\n"
+                                "            },\n"
+                                "            {\n"
+                                "              \"deviceObjectId\": 10002\n"
+                                "            },\n"
+                                "            {\n"
+                                "              \"deviceObjectId\": 10003\n"
+                                "            },\n"
+                                "            {\n"
+                                "              \"deviceObjectId\": 10004\n"
+                                "            }\n"
+                                "          ]\n"
+                                "        }\n"
+                                "      ],\n"
+                                "      \"deviceProcessData\": [\n"
+                                "        {\n"
+                                "          \"deviceProcessDataObjectId\": 10000,\n"
+                                "          \"deviceProcessDataDdi\": 271,\n"
+                                "          \"deviceValuePresentationObjectId\": 10000\n"
+                                "        },\n"
+                                "        {\n"
+                                "          \"deviceProcessDataObjectId\": 10001,\n"
+                                "          \"deviceProcessDataDdi\": 394,\n"
+                                "          \"deviceValuePresentationObjectId\": 10001\n"
+                                "        },\n"
+                                "        {\n"
+                                "          \"deviceProcessDataObjectId\": 10002,\n"
+                                "          \"deviceProcessDataDdi\": 395,\n"
+                                "          \"deviceValuePresentationObjectId\": 10002\n"
+                                "        },\n"
+                                "        {\n"
+                                "          \"deviceProcessDataObjectId\": 10003,\n"
+                                "          \"deviceProcessDataDdi\": 397,\n"
+                                "          \"deviceValuePresentationObjectId\": 10003\n"
+                                "        },\n"
+                                "        {\n"
+                                "          \"deviceProcessDataObjectId\": 10004,\n"
+                                "          \"deviceProcessDataDdi\": 493,\n"
+                                "          \"deviceValuePresentationObjectId\": 10004\n"
+                                "        }\n"
+                                "      ],\n"
+                                "      \"deviceValuePresentation\": [\n"
+                                "        {\n"
+                                "          \"deviceValuePresentationObjectId\": 10000,\n"
+                                "          \"scale\": 1.0\n"
+                                "        },\n"
+                                "        {\n"
+                                "          \"deviceValuePresentationObjectId\": 10001,\n"
+                                "          \"scale\": 1.0\n"
+                                "        },\n"
+                                "        {\n"
+                                "          \"deviceValuePresentationObjectId\": 10002,\n"
+                                "          \"scale\": 1.0\n"
+                                "        },\n"
+                                "        {\n"
+                                "          \"deviceValuePresentationObjectId\": 10003,\n"
+                                "          \"scale\": 1.0\n"
+                                "        },\n"
+                                "        {\n"
+                                "          \"deviceValuePresentationObjectId\": 10004,\n"
+                                "          \"scale\": 1.0\n"
+                                "        }\n"
+                                "      ]\n"
+                                "    }\n"
+                                "  ]\n"
                                 "}")

@@ -29,7 +29,7 @@ class TestMqttCapabilitiesService(unittest.TestCase):
     def fixture(self):
         self._onboard_response = read_onboard_response(Identifier.MQTT_RECIPIENT_PEM[Identifier.PATH])
         self._messaging_service = MqttMessagingService(onboarding_response=self._onboard_response,
-                                                       on_message_callback=self._message_callback())
+                                                       on_message_callback=self._message_callback)
 
         yield
 
@@ -57,22 +57,19 @@ class TestMqttCapabilitiesService(unittest.TestCase):
         self._send_capabilities(onboard_response=self._onboard_response,
                                 direction=CapabilityDirectionType.SEND.value)
 
-    def _message_callback(self):
-        def _inner_function(client, userdata, msg):
-            """
-            Callback to handle the incoming messages from the MQTT broker
-            """
-            self._log.info("Received message after sending capabilities: " + str(msg.payload))
-            outbox_message = OutboxMessage()
-            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            if decoded_message.response_envelope.response_code != 201:
-                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
-                self._log.error("Message details: " + str(decoded_details))
-            assert decoded_message.response_envelope.response_code == 201
-            self._callback_processed = True
-
-        return _inner_function
+    def _message_callback(self, client, userdata, msg):
+        """
+        Callback to handle the incoming messages from the MQTT broker
+        """
+        self._log.info("Received message after sending capabilities: " + str(msg.payload))
+        outbox_message = OutboxMessage()
+        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+        decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+        if decoded_message.response_envelope.response_code != 201:
+            decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
+            self._log.error("Message details: " + str(decoded_details))
+        assert decoded_message.response_envelope.response_code == 201
+        self._callback_processed = True
 
     def _send_capabilities(self, onboard_response, direction):
         current_sequence_number = SequenceNumberService.next_seq_nr(

@@ -64,11 +64,11 @@ class TestFeedDeleteService(unittest.TestCase):
 
         self._messaging_service_for_sender = MqttMessagingService(
             onboarding_response=self._sender_onboard_response,
-            on_message_callback=self._non_checking_callback())
+            on_message_callback=self._non_checking_callback)
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._callback_to_set_the_received_message_ids())
+            on_message_callback=self._callback_to_set_the_received_message_ids)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._sender_onboard_response.get_sensor_alternate_id())
@@ -97,7 +97,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._callback_for_feed_delete_service())
+            on_message_callback=self._callback_for_feed_delete_service)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
@@ -126,7 +126,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._callback_for_feed_delete_service())
+            on_message_callback=self._callback_for_feed_delete_service)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
@@ -155,7 +155,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._callback_for_feed_delete_service())
+            on_message_callback=self._callback_for_feed_delete_service)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
@@ -184,7 +184,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._empty_result_in_response_callback())
+            on_message_callback=self._empty_result_in_response_callback)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
@@ -213,7 +213,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._empty_result_in_response_callback())
+            on_message_callback=self._empty_result_in_response_callback)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
@@ -242,7 +242,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._empty_result_in_response_callback())
+            on_message_callback=self._empty_result_in_response_callback)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
@@ -271,7 +271,7 @@ class TestFeedDeleteService(unittest.TestCase):
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._empty_result_in_response_callback())
+            on_message_callback=self._empty_result_in_response_callback)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._recipient_onboard_response.get_sensor_alternate_id())
@@ -292,71 +292,59 @@ class TestFeedDeleteService(unittest.TestCase):
         self.assertTrue(self._callback_for_feed_delete_service_processed)
         self._callback_for_feed_delete_service_processed = False
 
-    def _non_checking_callback(self):
-        def _inner_function(client, userdata, msg):
-            """
-            Non checking callback to ensure that the message is processed.
-            """
-            self._log.info(
-                "Received message for the non checking callback, "
-                "skipping message and continue to the tests afterwards: " + str(msg.payload))
+    def _non_checking_callback(self, client, userdata, msg):
+        """
+        Non checking callback to ensure that the message is processed.
+        """
+        self._log.info(
+            "Received message for the non checking callback, "
+            "skipping message and continue to the tests afterwards: " + str(msg.payload))
 
-        return _inner_function
+    def _callback_to_set_the_received_message_ids(self, client, userdata, msg):
+        """
+        Callback to set the received message ids
+        """
+        self._log.info("Received message for recipient from the agrirouter: %s",
+                       msg.payload.decode())
+        outbox_message = OutboxMessage()
+        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+        decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+        if decoded_message.response_envelope.type != 12:
+            decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
+            self._log.error(
+                f"Received wrong message from the agrirouter: {str(decoded_details)}")
+        push_notification = DecodingService.decode_details(decoded_message.response_payload.details)
+        assert decoded_message.response_envelope.response_code == 200
+        self._received_messages = push_notification.messages[0]
 
-    def _callback_to_set_the_received_message_ids(self):
-        def _inner_function(client, userdata, msg):
-            """
-            Callback to set the received message ids
-            """
-            self._log.info("Received message for recipient from the agrirouter: %s",
-                           msg.payload.decode())
-            outbox_message = OutboxMessage()
-            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            if decoded_message.response_envelope.type != 12:
-                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
-                self._log.error(
-                    f"Received wrong message from the agrirouter: {str(decoded_details)}")
-            push_notification = DecodingService.decode_details(decoded_message.response_payload.details)
-            assert decoded_message.response_envelope.response_code == 200
-            self._received_messages = push_notification.messages[0]
+    def _callback_for_feed_delete_service(self, client, userdata, msg):
+        """
+        Callback to decode Feed Delete Service
+        """
+        self._log.info("Received message after deleting messages: " + str(msg.payload))
+        outbox_message = OutboxMessage()
+        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+        decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+        feed_delete_details = DecodingService.decode_details(decoded_message.response_payload.details)
+        self._log.info("Details for the message removal: " + str(feed_delete_details))
+        message_ids_in_feed = [_message.args['messageId'] for _message in feed_delete_details.messages]
+        assert decoded_message.response_envelope.response_code == 201
+        assert self._received_messages.header.message_id in message_ids_in_feed
+        self._callback_for_feed_delete_service_processed = True
 
-        return _inner_function
-
-    def _callback_for_feed_delete_service(self):
-        def _inner_function(client, userdata, msg):
-            """
-            Callback to decode Feed Delete Service
-            """
-            self._log.info("Received message after deleting messages: " + str(msg.payload))
-            outbox_message = OutboxMessage()
-            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            feed_delete_details = DecodingService.decode_details(decoded_message.response_payload.details)
-            self._log.info("Details for the message removal: " + str(feed_delete_details))
-            message_ids_in_feed = [_message.args['messageId'] for _message in feed_delete_details.messages]
-            assert decoded_message.response_envelope.response_code == 201
-            assert self._received_messages.header.message_id in message_ids_in_feed
-            self._callback_for_feed_delete_service_processed = True
-
-        return _inner_function
-
-    def _empty_result_in_response_callback(self):
-        def _inner_function(client, userdata, msg):
-            """
-            Callback to decode query header service response when incorrect ids are passed as arguments
-            """
-            self._log.info("Callback for checking if no messages are received.")
-            outbox_message = OutboxMessage()
-            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            feed_delete_service_for_empty_result = DecodingService.decode_details(
-                decoded_message.response_payload.details)
-            self._log.info(f"Feed delete details: {feed_delete_service_for_empty_result}")
-            assert decoded_message.response_envelope.response_code == 204
-            assert feed_delete_service_for_empty_result.messages[0].message_code == "VAL_000208"
-            assert feed_delete_service_for_empty_result.messages[0].message == ("Feed does not contain "
-                                                                                "any data to be deleted.")
-            self._callback_for_feed_delete_service_processed = True
-
-        return _inner_function
+    def _empty_result_in_response_callback(self, client, userdata, msg):
+        """
+        Callback to decode query header service response when incorrect ids are passed as arguments
+        """
+        self._log.info("Callback for checking if no messages are received.")
+        outbox_message = OutboxMessage()
+        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+        decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+        feed_delete_service_for_empty_result = DecodingService.decode_details(
+            decoded_message.response_payload.details)
+        self._log.info(f"Feed delete details: {feed_delete_service_for_empty_result}")
+        assert decoded_message.response_envelope.response_code == 204
+        assert feed_delete_service_for_empty_result.messages[0].message_code == "VAL_000208"
+        assert feed_delete_service_for_empty_result.messages[0].message == ("Feed does not contain "
+                                                                            "any data to be deleted.")
+        self._callback_for_feed_delete_service_processed = True

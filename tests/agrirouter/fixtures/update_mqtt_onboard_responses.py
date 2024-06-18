@@ -102,6 +102,14 @@ class TestSingleMqttEndpointWithPEMCertificate:
             CapabilitySpecification.Capability(technical_message_type=CapabilityType.ISO_11783_TASK_DATA_ZIP.value,
                                                direction=CapabilityDirectionType.SEND_RECEIVE.value))
 
+        capabilities_parameters.capability_parameters.append(
+            CapabilitySpecification.Capability(technical_message_type=CapabilityType.ISO_11783_DEVICE_DESCRIPTION.value,
+                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
+
+        capabilities_parameters.capability_parameters.append(
+            CapabilitySpecification.Capability(technical_message_type=CapabilityType.ISO_11783_TIMELOG.value,
+                                               direction=CapabilityDirectionType.SEND_RECEIVE.value))
+
         capabilities_service = CapabilitiesService(messaging_service)
         capabilities_service.send(capabilities_parameters)
         Sleeper.process_the_command()

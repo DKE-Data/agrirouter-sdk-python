@@ -1,4 +1,4 @@
-from agrirouter.api.constants import AR_QA_PUBLIC_KEY, AR_PROD_PUBLIC_KEY
+from agrirouter.api.constants import AR_QA_PUBLIC_KEY, AR2_QA_PUBLIC_KEY, AR_PROD_PUBLIC_KEY
 
 
 class BaseEnvironment:
@@ -63,6 +63,13 @@ class Qa(BaseEnvironment):
     _API_PREFIX = "/api/v1.0"
     _REGISTRATION_SERVICE_URL = "https://agrirouter-registration-service-hubqa-eu10.cfapps.eu10.hana.ondemand.com"
     _AR_PUBLIC_KEY = AR_QA_PUBLIC_KEY
+
+
+class Ar2Qa(BaseEnvironment):
+    _ENV_BASE_URL = "https://app.qa.agrirouter.farm"
+    _API_PREFIX = "/api/v1.0"
+    _REGISTRATION_SERVICE_URL = "https://endpoint-service.qa.agrirouter.farm"
+    _AR_PUBLIC_KEY = AR2_QA_PUBLIC_KEY
 
 
 class EnvironmentalService:

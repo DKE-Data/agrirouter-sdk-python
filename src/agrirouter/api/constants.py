@@ -8,6 +8,16 @@ AR_QA_PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\n" \
                    "qwIDAQAB\n" \
                    "-----END PUBLIC KEY-----"
 
+AR2_QA_PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\n" \
+                    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw4DStz1cikiCqTd70p9i\n" \
+                    "RBBx4vdTEtZAaWtvswu/IdMNoXP30+1ExVc3oJ0wHn3DMWItMLtn0gUSjj+XzDN5\n" \
+                    "yrmwUSS6qqyAFinLBUio88EyEQAocZo270bDk9gSndftIvvQ82Iu6p4gRg1zbPNF\n" \
+                    "CoBdLCQx7MN2zbl+/kmuZXzeEXZwAT94O8IbbTTAz9Wy5MUrAlJwNVaZir9bY6AZ\n" \
+                    "CvgUPNRL2Jq9yz8IeoawhLNOo6ae47Jcf88x+7t/eN8QSrGu50WD1qpZbTReH7FA\n" \
+                    "ju9qUVOmP1P9rSYkuhrkWg16Qrw1t8hEqMiRDNYUUTkqEit+H1CNEBgr6t3RIC5t\n" \
+                    "fQIDAQAB\n" \
+                    "-----END PUBLIC KEY-----"
+
 AR_PROD_PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----\n" \
                      "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwCxD31sYtzH9NTfZ6n8H\n" \
                      "+H/QgOaoTL9GAakplAsdwYSLjBpgYMZOHIgkdM9ksRP8WsITChtZtxrCnBjR8bap\n" \

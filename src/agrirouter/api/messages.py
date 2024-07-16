@@ -36,7 +36,7 @@ class Message:
 
     def __init__(self, content):
         self.content = content
-        self.timestamp = UtcTimeUtil.now_as_utc_str()
+        self.timestamp = str(int(UtcTimeUtil.now_as_utc_timestamp().timestamp()))
 
     def json_serialize(self) -> dict:
         return {

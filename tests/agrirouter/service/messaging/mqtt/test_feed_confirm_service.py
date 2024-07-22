@@ -68,11 +68,11 @@ class TestFeedConfirmService(unittest.TestCase):
 
         self._messaging_service_for_sender = MqttMessagingService(
             onboarding_response=self._sender_onboard_response,
-            on_message_callback=self._non_checking_callback())
+            on_message_callback=self._non_checking_callback)
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._callback_to_set_the_received_message_ids())
+            on_message_callback=self._callback_to_set_the_received_message_ids)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             self._sender_onboard_response.get_sensor_alternate_id())
@@ -99,7 +99,7 @@ class TestFeedConfirmService(unittest.TestCase):
         """
         self._log.info("Deleting all existing messages after the test run.")
 
-        self._messaging_service_for_recipient = MqttMessagingService(onboard_response, self._callback_for_feed_delete())
+        self._messaging_service_for_recipient = MqttMessagingService(onboard_response, self._callback_for_feed_delete)
 
         current_sequence_number = SequenceNumberService.next_seq_nr(
             onboard_response.get_sensor_alternate_id())
@@ -127,7 +127,7 @@ class TestFeedConfirmService(unittest.TestCase):
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._feed_confirm_service_callback())
+            on_message_callback=self._feed_confirm_service_callback)
 
         feed_confirm_parameters = FeedConfirmParameters(message_ids=[self._received_messages.header.message_id],
                                                         application_message_id=UUIDUtil.new_uuid(),
@@ -154,7 +154,7 @@ class TestFeedConfirmService(unittest.TestCase):
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._empty_result_in_response_callback())
+            on_message_callback=self._empty_result_in_response_callback)
 
         feed_confirm_parameters = FeedConfirmParameters(message_ids=[UUIDUtil.new_uuid()],
                                                         application_message_id=UUIDUtil.new_uuid(),
@@ -181,7 +181,7 @@ class TestFeedConfirmService(unittest.TestCase):
 
         self._messaging_service_for_recipient = MqttMessagingService(
             onboarding_response=self._recipient_onboard_response,
-            on_message_callback=self._empty_result_in_response_callback())
+            on_message_callback=self._empty_result_in_response_callback)
 
         feed_confirm_parameters = FeedConfirmParameters(message_ids=[UUIDUtil.new_uuid(), UUIDUtil.new_uuid()],
                                                         application_message_id=UUIDUtil.new_uuid(),
@@ -198,88 +198,73 @@ class TestFeedConfirmService(unittest.TestCase):
         self.assertTrue(self._callback_for_feed_confirm_service_processed)
         self._callback_for_feed_confirm_service_processed = False
 
-    def _non_checking_callback(self):
-        def _inner_function(client, userdata, msg):
-            """
-            Non checking callback to ensure that the message is processed.
-            """
-            self._log.info(
-                "Received message for the non checking callback, "
-                "skipping message and continue to the tests afterwards: " + str(msg.payload))
+    def _non_checking_callback(self, client, userdata, msg):
+        """
+        Non checking callback to ensure that the message is processed.
+        """
+        self._log.info(
+            "Received message for the non checking callback, "
+            "skipping message and continue to the tests afterwards: " + str(msg.payload))
 
-        return _inner_function
+    def _callback_to_set_the_received_message_ids(self, client, userdata, msg):
+        """
+        Callback to set the received message ids
+        """
+        self._log.info("Received message for recipient from the agrirouter: %s",
+                       msg.payload.decode())
+        outbox_message = OutboxMessage()
+        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+        decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+        if decoded_message.response_envelope.type != 12:
+            decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
+            self._log.error(
+                f"Received wrong message from the agrirouter: {str(decoded_details)}")
+        push_notification = DecodingService.decode_details(decoded_message.response_payload.details)
+        assert decoded_message.response_envelope.response_code == 200
+        self._received_messages = push_notification.messages[0]
 
-    def _callback_to_set_the_received_message_ids(self):
-        def _inner_function(client, userdata, msg):
-            """
-            Callback to set the received message ids
-            """
-            self._log.info("Received message for recipient from the agrirouter: %s",
-                           msg.payload.decode())
-            outbox_message = OutboxMessage()
-            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            if decoded_message.response_envelope.type != 12:
-                decoded_details = DecodingService.decode_details(decoded_message.response_payload.details)
-                self._log.error(
-                    f"Received wrong message from the agrirouter: {str(decoded_details)}")
-            push_notification = DecodingService.decode_details(decoded_message.response_payload.details)
-            assert decoded_message.response_envelope.response_code == 200
-            self._received_messages = push_notification.messages[0]
+    def _callback_for_feed_delete(self, client, userdata, msg):
+        """
+        Callback to decode Feed Delete Service
+        """
+        self._log.info("Received message after deleting messages: " + str(msg.payload))
+        outbox_message = OutboxMessage()
+        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+        decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+        delete_details = DecodingService.decode_details(decoded_message.response_payload.details)
+        self._log.info("Details for the message removal: " + str(delete_details))
+        assert decoded_message.response_envelope.response_code == 201
 
-        return _inner_function
+    def _feed_confirm_service_callback(self, client, userdata, msg):
+        """
+        Callback function for feed confirm service
+        """
+        self._log.info("Callback for checking if the feed confirm messages are received.")
+        outbox_message = OutboxMessage()
+        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+        decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+        feed_confirm_details = DecodingService.decode_details(decoded_message.response_payload.details)
+        self._log.info(f"Feed Confirm Service Details: {feed_confirm_details}")
+        assert decoded_message.response_envelope.response_code == 200
+        assert all(
+            self._received_messages.header.message_id in feed_confirm_details.messages[idx].args['messageId'] for
+            idx in range(len(feed_confirm_details.messages)))
+        self._callback_for_feed_confirm_service_processed = True
 
-    def _callback_for_feed_delete(self):
-        def _inner_function(client, userdata, msg):
-            """
-            Callback to decode Feed Delete Service
-            """
-            self._log.info("Received message after deleting messages: " + str(msg.payload))
-            outbox_message = OutboxMessage()
-            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            delete_details = DecodingService.decode_details(decoded_message.response_payload.details)
-            self._log.info("Details for the message removal: " + str(delete_details))
-            assert decoded_message.response_envelope.response_code == 201
+    def _empty_result_in_response_callback(self, client, userdata, msg):
+        """
+        Callback to decode query header service response when incorrect ids are passed as arguments
+        """
+        self._log.info("Callback for checking if no messages are received.")
+        outbox_message = OutboxMessage()
+        outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
+        decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
+        feed_confirm_details_for_empty_messages = DecodingService.decode_details(
+            decoded_message.response_payload.details)
+        self._log.info(f"Feed confirm details for empty messages: {feed_confirm_details_for_empty_messages}")
+        assert decoded_message.response_envelope.response_code == 200
+        for _message in feed_confirm_details_for_empty_messages.messages:
+            assert _message.message_code == "VAL_000205"
+            assert self._received_messages.header.message_id != _message.args['messageId']
 
-        return _inner_function
-
-    def _feed_confirm_service_callback(self):
-        def _inner_function(client, userdata, msg):
-            """
-            Callback function for feed confirm service
-            """
-            self._log.info("Callback for checking if the feed confirm messages are received.")
-            outbox_message = OutboxMessage()
-            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            feed_confirm_details = DecodingService.decode_details(decoded_message.response_payload.details)
-            self._log.info(f"Feed Confirm Service Details: {feed_confirm_details}")
-            assert decoded_message.response_envelope.response_code == 200
-            assert all(
-                self._received_messages.header.message_id in feed_confirm_details.messages[idx].args['messageId'] for
-                idx in range(len(feed_confirm_details.messages)))
-            self._callback_for_feed_confirm_service_processed = True
-
-        return _inner_function
-
-    def _empty_result_in_response_callback(self):
-        def _inner_function(client, userdata, msg):
-            """
-            Callback to decode query header service response when incorrect ids are passed as arguments
-            """
-            self._log.info("Callback for checking if no messages are received.")
-            outbox_message = OutboxMessage()
-            outbox_message.json_deserialize(msg.payload.decode().replace("'", '"'))
-            decoded_message = DecodingService.decode_response(outbox_message.command.message.encode())
-            feed_confirm_details_for_empty_messages = DecodingService.decode_details(
-                decoded_message.response_payload.details)
-            self._log.info(f"Feed confirm details for empty messages: {feed_confirm_details_for_empty_messages}")
-            assert decoded_message.response_envelope.response_code == 200
-            for _message in feed_confirm_details_for_empty_messages.messages:
-                assert _message.message_code == "VAL_000205"
-                assert self._received_messages.header.message_id != _message.args['messageId']
-
-            self._callback_for_feed_confirm_service_processed = True
-
-        return _inner_function
+        self._callback_for_feed_confirm_service_processed = True

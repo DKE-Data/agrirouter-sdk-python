@@ -76,6 +76,8 @@ class DecodingService:
             push_notification = PushNotification()
             push_notification.MergeFromString(details.value)
             return push_notification
+        elif not details.type_url:
+            # mainly a workaround for agrirouter 2 bug: https://github.com/DKE-Data/agrirouter/issues/11
+            return None
         else:
-
             raise CanNotDecodeMessage(f"Could not handle type {details.type_url} while decoding details.")

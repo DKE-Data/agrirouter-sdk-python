@@ -1,5 +1,12 @@
 <img src="https://files.my-agrirouter.com/agrirouter_logo.svg" height="100" />
 
+> [!IMPORTANT]
+> **Deprecation of old SDKs**
+>
+> With the launch of the new agrirouter API ("G4") in April > 2026, this SDK has been deprecated.
+>
+> Please find information about the new, fully REST based API in our new [developer docs](https://agrirouter.com/docs).
+
 # About the project
 
 The agrirouter is a universal data exchange platform for farmers and
